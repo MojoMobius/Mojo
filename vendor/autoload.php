@@ -5,10 +5,7 @@
 $ourFolderName = "mojo_V2";
 $foldernamefull = $_SERVER['REQUEST_URI'];  
 if (strpos($foldernamefull, $ourFolderName) === false) {
-    $replaceurl = str_replace('mojo_v2', $ourFolderName, $foldernamefull);
-    $actual_link = "http://".$_SERVER['HTTP_HOST']."".$replaceurl;
-    echo '<html><script> window.location.href = "'.$actual_link.'"; </script></html>'; 
-    die;
+    
 }
 
 require_once __DIR__ . '/composer/autoload_real.php';
