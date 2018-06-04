@@ -1,0 +1,1037 @@
+2016-10-04 10:10:44 Error: Fatal Error (1): Class 'AppController' not found in [C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php, line 9]
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-04 10:10:48 Error: [Cake\Error\FatalErrorException] Class 'AppController' not found
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Class 'AppContr...', 'C:\\xampp\\htdocs...', 9)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-04 10:18:07 Error: Fatal Error (1): Class 'AppController' not found in [C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php, line 9]
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-04 10:18:07 Error: [Cake\Error\FatalErrorException] Class 'AppController' not found
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Class 'AppContr...', 'C:\\xampp\\htdocs...', 9)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-04 10:21:23 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-04 10:31:45 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-04 10:35:13 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-04 10:35:16 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-04 10:38:52 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:19:23 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(19): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:19:49 Error: [Cake\Controller\Exception\MissingActionException] Action PagesController::index() could not be found, or is not accessible.
+Exception Attributes: array (
+  'controller' => 'PagesController',
+  'action' => 'index',
+  'prefix' => '',
+  'plugin' => NULL,
+)
+Request URL: /Pages
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\PagesController))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#13 {main}
+
+
+2016-10-06 05:22:25 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:23:12 Error: [RuntimeException] Unable to find table class for current entity
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\Form\EntityContext.php(99): Cake\View\Form\EntityContext->_prepare()
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\Helper\FormHelper.php(269): Cake\View\Form\EntityContext->__construct(Object(Cake\Network\Request), Array)
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\Helper\FormHelper.php(2604): Cake\View\Helper\FormHelper->Cake\View\Helper\{closure}(Object(Cake\Network\Request), Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\Helper\FormHelper.php(351): Cake\View\Helper\FormHelper->_getContext(Array)
+#4 C:\xampp\htdocs\mojo\src\Template\ImportInitiates\index.ctp(2): Cake\View\Helper\FormHelper->create(Array)
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\View.php(1012): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\View.php(971): Cake\View\View->_evaluate('C:\\xampp\\htdocs...', Array)
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\View\View.php(595): Cake\View\View->_render('C:\\xampp\\htdocs...')
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(617): Cake\View\View->render(NULL, NULL)
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(128): Cake\Controller\Controller->render()
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#21 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#22 {main}
+
+
+2016-10-06 05:25:20 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:27:10 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:31:31 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:32:05 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 05:33:01 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 06:05:30 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 06:34:19 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 06:35:24 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 06:41:42 Error: Fatal Error (1): Call to a member function GetProjects() on boolean in [C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php, line 18]
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-06 06:41:45 Error: [Cake\Error\FatalErrorException] Call to a member function GetProjects() on boolean
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 18)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-06 06:42:41 Error: Fatal Error (1): Call to a member function GetProjects() on boolean in [C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php, line 18]
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-06 06:42:42 Error: [Cake\Error\FatalErrorException] Call to a member function GetProjects() on boolean
+Request URL: /mojo/ImportInitiates
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 18)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-06 06:46:34 Error: [BadMethodCallException] Unknown method "GetProjects"
+Request URL: /ImportInitiates
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->__call('GetProjects', Array)
+#1 C:\xampp\htdocs\mojo\src\Controller\ImportInitiatesController.php(18): Cake\ORM\Table->GetProjects()
+#2 [internal function]: App\Controller\ImportInitiatesController->index()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\ImportInitiatesController))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#17 {main}
+
+
+2016-10-06 07:32:13 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Bookmark could not be found.
+Exception Attributes: array (
+  'class' => 'Bookmark',
+  'plugin' => false,
+  'prefix' => false,
+  '_ext' => false,
+)
+Request URL: /Bookmark
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ControllerFactory.php(72): Cake\Http\ControllerFactory->missingController(Object(Cake\Network\Request))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(93): Cake\Http\ControllerFactory->create(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#13 {main}
+
+
+2016-10-06 07:32:18 Error: Fatal Error (1): Call to a member function user() on boolean in [C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php, line 23]
+Request URL: /mojo/Bookmarks
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-06 07:32:19 Error: [Cake\Error\FatalErrorException] Call to a member function user() on boolean
+Request URL: /mojo/Bookmarks
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 23)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-06 07:36:14 Error: [Cake\Database\Exception] Cannot describe bookmarks. It has 0 columns.
+Request URL: /Bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Schema\CachedCollection.php(63): Cake\Database\Schema\Collection->describe('bookmarks', Array)
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(440): Cake\Database\Schema\CachedCollection->describe('bookmarks')
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(211): Cake\ORM\Table->schema()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(168): Cake\ORM\Query->addDefaultTypes(Object(App\Model\Table\BookmarksTable))
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1336): Cake\ORM\Query->__construct(Object(Cake\Database\Connection), Object(App\Model\Table\BookmarksTable))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(964): Cake\ORM\Table->query()
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Component\PaginatorComponent.php(183): Cake\ORM\Table->find('all', Array)
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(713): Cake\Controller\Component\PaginatorComponent->paginate(Object(App\Model\Table\BookmarksTable), Array)
+#8 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(26): Cake\Controller\Controller->paginate(Object(App\Model\Table\BookmarksTable))
+#9 [internal function]: App\Controller\BookmarksController->index()
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#21 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#22 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#23 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#24 {main}
+
+
+2016-10-06 07:38:46 Error: [Cake\Datasource\Exception\InvalidPrimaryKeyException] Record not found in table "bookmarks" with primary key [NULL]
+Request URL: /bookmarks/view
+Referer URL: http://localhost:8080/mojo/Bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(41): Cake\ORM\Table->get(NULL, Array)
+#1 [internal function]: App\Controller\BookmarksController->view()
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#16 {main}
+
+
+2016-10-06 07:39:25 Error: [Cake\Datasource\Exception\InvalidPrimaryKeyException] Record not found in table "bookmarks" with primary key [NULL]
+Request URL: /bookmarks/view
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(41): Cake\ORM\Table->get(NULL, Array)
+#1 [internal function]: App\Controller\BookmarksController->view()
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#16 {main}
+
+
+2016-10-06 07:39:53 Error: [Cake\Datasource\Exception\InvalidPrimaryKeyException] Record not found in table "bookmarks" with primary key [NULL]
+Request URL: /bookmarks/view
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(41): Cake\ORM\Table->get(NULL, Array)
+#1 [internal function]: App\Controller\BookmarksController->view()
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#16 {main}
+
+
+2016-10-06 07:42:02 Error: [Cake\Database\Exception] Cannot describe users. It has 0 columns.
+Request URL: /bookmarks/view/1
+Referer URL: http://localhost:8080/mojo/Bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Schema\CachedCollection.php(63): Cake\Database\Schema\Collection->describe('users', Array)
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(440): Cake\Database\Schema\CachedCollection->describe('users')
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(518): Cake\ORM\Table->schema()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(391): Cake\ORM\Table->primaryKey()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(368): Cake\ORM\Query->_addAssociationsToTypeMap(Object(App\Model\Table\BookmarksTable), Object(Cake\Database\TypeMap), Array)
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(697): Cake\ORM\Query->contain(Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1936): Cake\ORM\Query->applyOptions(Array)
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(967): Cake\ORM\Table->callFinder('all', Object(Cake\ORM\Query), Array)
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1211): Cake\ORM\Table->find('all', Array)
+#9 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(41): Cake\ORM\Table->get('1', Array)
+#10 [internal function]: App\Controller\BookmarksController->view('1')
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#21 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#22 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#23 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#24 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#25 {main}
+
+
+2016-10-06 07:45:32 Error: [Cake\Database\Exception] Cannot describe tags. It has 0 columns.
+Request URL: /bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/Bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Schema\CachedCollection.php(63): Cake\Database\Schema\Collection->describe('tags', Array)
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(440): Cake\Database\Schema\CachedCollection->describe('tags')
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(518): Cake\ORM\Table->schema()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(391): Cake\ORM\Table->primaryKey()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(368): Cake\ORM\Query->_addAssociationsToTypeMap(Object(App\Model\Table\BookmarksTable), Object(Cake\Database\TypeMap), Array)
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(697): Cake\ORM\Query->contain(Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1936): Cake\ORM\Query->applyOptions(Array)
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(967): Cake\ORM\Table->callFinder('all', Object(Cake\ORM\Query), Array)
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1211): Cake\ORM\Table->find('all', Array)
+#9 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(77): Cake\ORM\Table->get('1', Array)
+#10 [internal function]: App\Controller\BookmarksController->edit('1')
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#21 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#22 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#23 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#24 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#25 {main}
+
+
+2016-10-06 07:45:56 Error: [Cake\Database\Exception] Cannot describe tags. It has 0 columns.
+Request URL: /bookmarks/edit/1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Schema\CachedCollection.php(63): Cake\Database\Schema\Collection->describe('tags', Array)
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(440): Cake\Database\Schema\CachedCollection->describe('tags')
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(211): Cake\ORM\Table->schema()
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Query.php(168): Cake\ORM\Query->addDefaultTypes(Object(Cake\ORM\Table))
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1336): Cake\ORM\Query->__construct(Object(Cake\Database\Connection), Object(Cake\ORM\Table))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(964): Cake\ORM\Table->query()
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Association\BelongsToMany.php(931): Cake\ORM\Table->find('list', Array)
+#7 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(85): Cake\ORM\Association\BelongsToMany->find('list')
+#8 [internal function]: App\Controller\BookmarksController->edit('1')
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#21 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#22 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#23 {main}
+
+
+2016-10-06 07:46:51 Error: Fatal Error (1): Call to a member function user() on boolean in [C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php, line 78]
+Request URL: /mojo/bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-06 07:46:51 Error: [Cake\Error\FatalErrorException] Call to a member function user() on boolean
+Request URL: /mojo/bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 78)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-06 07:52:51 Error: [RuntimeException] ExistsIn rule for 'user_id' is invalid. 'Users' is not associated with 'App\Model\Table\BookmarksTable'.
+Request URL: /bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RuleInvoker.php(115): Cake\ORM\Rule\ExistsIn->__invoke(Object(App\Model\Entity\Bookmark), Array)
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesChecker.php(298): Cake\Datasource\RuleInvoker->__invoke(Object(App\Model\Entity\Bookmark), Array)
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesChecker.php(268): Cake\Datasource\RulesChecker->_checkRules(Object(App\Model\Entity\Bookmark), Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesChecker.php(235): Cake\Datasource\RulesChecker->checkUpdate(Object(App\Model\Entity\Bookmark), Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesAwareTrait.php(66): Cake\Datasource\RulesChecker->check(Object(App\Model\Entity\Bookmark), 'update', Array)
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1538): Cake\ORM\Table->checkRules(Object(App\Model\Entity\Bookmark), 'update', Object(ArrayObject))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1492): Cake\ORM\Table->_processSave(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1493): Cake\Database\Connection->transactional(Object(Closure))
+#9 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(79): Cake\ORM\Table->save(Object(App\Model\Entity\Bookmark))
+#10 [internal function]: App\Controller\BookmarksController->edit('1')
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#21 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#22 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#23 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#24 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#25 {main}
+
+
+2016-10-06 07:53:17 Error: Fatal Error (1): Call to a member function check() on null in [C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesAwareTrait.php, line 66]
+Request URL: /mojo/bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Client IP: 127.0.0.1
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE\src\Error\BaseErrorHandler.php, line 216
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE\src\Error\BaseErrorHandler.php, line 98
+[main] - [internal], line ??
+
+
+
+2016-10-06 07:53:17 Error: [Cake\Error\FatalErrorException] Call to a member function check() on null
+Request URL: /mojo/bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Client IP: 127.0.0.1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\BaseErrorHandler.php(98): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to a membe...', 'C:\\xampp\\htdocs...', 66)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2016-10-06 07:54:52 Error: [RuntimeException] ExistsIn rule for 'Id' is invalid. 'Bookmarks' is not associated with 'App\Model\Table\BookmarksTable'.
+Request URL: /bookmarks/edit/1
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RuleInvoker.php(115): Cake\ORM\Rule\ExistsIn->__invoke(Object(App\Model\Entity\Bookmark), Array)
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesChecker.php(298): Cake\Datasource\RuleInvoker->__invoke(Object(App\Model\Entity\Bookmark), Array)
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesChecker.php(268): Cake\Datasource\RulesChecker->_checkRules(Object(App\Model\Entity\Bookmark), Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesChecker.php(235): Cake\Datasource\RulesChecker->checkUpdate(Object(App\Model\Entity\Bookmark), Array)
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Datasource\RulesAwareTrait.php(66): Cake\Datasource\RulesChecker->check(Object(App\Model\Entity\Bookmark), 'update', Array)
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1538): Cake\ORM\Table->checkRules(Object(App\Model\Entity\Bookmark), 'update', Object(ArrayObject))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1492): Cake\ORM\Table->_processSave(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1493): Cake\Database\Connection->transactional(Object(Closure))
+#9 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(79): Cake\ORM\Table->save(Object(App\Model\Entity\Bookmark))
+#10 [internal function]: App\Controller\BookmarksController->edit('1')
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#18 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#19 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#20 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#21 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#22 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#23 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#24 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#25 {main}
+
+
+2016-10-06 07:56:17 Error: [InvalidArgumentException] Deleting requires all primary key values.
+Request URL: /bookmarks/delete/1
+Referer URL: http://localhost:8080/mojo/bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1826): Cake\ORM\Table->_processDelete(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1831): Cake\Database\Connection->transactional(Object(Closure))
+#3 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(101): Cake\ORM\Table->delete(Object(App\Model\Entity\Bookmark))
+#4 [internal function]: App\Controller\BookmarksController->delete('1')
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#19 {main}
+
+
+2016-10-06 07:58:40 Error: [InvalidArgumentException] Deleting requires all primary key values.
+Request URL: /bookmarks/delete
+Referer URL: http://localhost:8080/mojo/bookmarks/edit/1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1826): Cake\ORM\Table->_processDelete(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1831): Cake\Database\Connection->transactional(Object(Closure))
+#3 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(101): Cake\ORM\Table->delete(Object(App\Model\Entity\Bookmark))
+#4 [internal function]: App\Controller\BookmarksController->delete()
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#19 {main}
+
+
+2016-10-06 07:58:56 Error: [InvalidArgumentException] Deleting requires all primary key values.
+Request URL: /bookmarks/delete/1
+Referer URL: http://localhost:8080/mojo/bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1826): Cake\ORM\Table->_processDelete(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1831): Cake\Database\Connection->transactional(Object(Closure))
+#3 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(101): Cake\ORM\Table->delete(Object(App\Model\Entity\Bookmark))
+#4 [internal function]: App\Controller\BookmarksController->delete('1')
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#19 {main}
+
+
+2016-10-06 07:59:51 Error: [InvalidArgumentException] Deleting requires all primary key values.
+Request URL: /bookmarks/delete/1
+Referer URL: http://localhost:8080/mojo/bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1826): Cake\ORM\Table->_processDelete(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1831): Cake\Database\Connection->transactional(Object(Closure))
+#3 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(102): Cake\ORM\Table->delete(Object(App\Model\Entity\Bookmark))
+#4 [internal function]: App\Controller\BookmarksController->delete('1')
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#19 {main}
+
+
+2016-10-06 08:00:08 Error: [InvalidArgumentException] Deleting requires all primary key values.
+Request URL: /bookmarks/delete/1
+Referer URL: http://localhost:8080/mojo/bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1826): Cake\ORM\Table->_processDelete(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1831): Cake\Database\Connection->transactional(Object(Closure))
+#3 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(102): Cake\ORM\Table->delete(Object(App\Model\Entity\Bookmark))
+#4 [internal function]: App\Controller\BookmarksController->delete('1')
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#19 {main}
+
+
+2016-10-06 08:02:40 Error: [Cake\Network\Exception\MethodNotAllowedException] Method Not Allowed
+Request URL: /bookmarks/delete/1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(100): Cake\Network\Request->allowMethod(Array)
+#1 [internal function]: App\Controller\BookmarksController->delete('1')
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#16 {main}
+
+
+2016-10-06 08:02:43 Error: [Cake\Network\Exception\MethodNotAllowedException] Method Not Allowed
+Request URL: /bookmarks/delete/1
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(100): Cake\Network\Request->allowMethod(Array)
+#1 [internal function]: App\Controller\BookmarksController->delete('1')
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#3 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#4 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#16 {main}
+
+
+2016-10-06 08:03:18 Error: [InvalidArgumentException] Deleting requires all primary key values.
+Request URL: /bookmarks/delete/1
+Referer URL: http://localhost:8080/mojo/bookmarks
+Stack Trace:
+#0 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1826): Cake\ORM\Table->_processDelete(Object(App\Model\Entity\Bookmark), Object(ArrayObject))
+#1 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Database\Connection.php(570): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#2 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\ORM\Table.php(1831): Cake\Database\Connection->transactional(Object(Closure))
+#3 C:\xampp\htdocs\mojo\src\Controller\BookmarksController.php(102): Cake\ORM\Table->delete(Object(App\Model\Entity\Bookmark))
+#4 [internal function]: App\Controller\BookmarksController->delete('1')
+#5 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Controller\Controller.php(435): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(122): Cake\Controller\Controller->invokeAction()
+#7 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\ActionDispatcher.php(96): Cake\Http\ActionDispatcher->_invoke(Object(App\Controller\BookmarksController))
+#8 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\BaseApplication.php(83): Cake\Http\ActionDispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#9 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Http\BaseApplication->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#10 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\RoutingMiddleware.php(53): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#11 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\RoutingMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#12 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Routing\Middleware\AssetMiddleware.php(88): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#13 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Routing\Middleware\AssetMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#14 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Error\Middleware\ErrorHandlerMiddleware.php(81): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#15 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(65): Cake\Error\Middleware\ErrorHandlerMiddleware->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response), Object(Cake\Http\Runner))
+#16 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Runner.php(51): Cake\Http\Runner->__invoke(Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#17 C:\xampp\htdocs\mojo\vendor\cakephp\cakephp\src\Http\Server.php(92): Cake\Http\Runner->run(Object(Cake\Http\MiddlewareQueue), Object(Zend\Diactoros\ServerRequest), Object(Zend\Diactoros\Response))
+#18 C:\xampp\htdocs\mojo\webroot\index.php(37): Cake\Http\Server->run()
+#19 {main}
+
+
