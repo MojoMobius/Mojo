@@ -244,6 +244,7 @@ define("ReadyforQCReworkIdentifier",'ReadyforQCRework');
 define("ReadyforReworkIdentifier",'ReadyforRework');
 define("INPUTPATH", 'C:\YP');
 
+
 define("PHPGRID_DBTYPE","mssqlnative"); // mysql,oci8(for oracle),mssql,postgres,sybase
 define("PHPGRID_DBHOST","MOB-PERLZ-SR218\SQLEXPRESS");
 //define("PHPGRID_DBHOST","10.101.11.209");
