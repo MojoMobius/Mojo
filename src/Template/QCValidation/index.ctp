@@ -407,6 +407,59 @@ if ($NoNewJob == 'NoNewJob') {
     /* Track */ ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); -webkit-border-radius: 10px; border-radius: 10px; }
     /* Handle */ ::-webkit-scrollbar-thumb { -webkit-border-radius: 5px; border-radius: 5px;
                                              background: rgba(128, 128, 128,0.46);}
+
+/*rahamath code*/
+.hot table{
+width:100%;
+}
+.modal-content{
+   background:#fff!important; 
+    height: 100%;
+	}
+.modal-body{
+   background:#fff!important; 
+    height: 100%;    
+    width:100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+.modal-backdrop {
+    visibility: hidden !important;
+}
+#exampleFillPopup .modal.in {
+   /* background-color: rgba(0,0,0,0.5);*/
+}
+.modal-content{
+    background-color:#fff;
+}
+#exampleFillPopup .modal-dialog { 
+    z-index: 1; /* Sit on top */
+    padding: 100px; /* Location of the box */
+    min-height:100px;
+    left: 0;
+    top: 0;
+    overflow: visible; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ 
+     } 
+.modal-header {
+ 
+    background-color: #337AB7;
+    width:100%;
+ 
+    padding:16px 16px;
+ 
+    color:#FFF;
+ 
+    border-bottom:2px dashed #337AB7;
+ 
+ }
+ .qcComments_accept{background:url("img/test-pass-icon.png") no-repeat left top;width:17px;height:16px; }
+ .qcComments_reject{background:url("img/delete.png") no-repeat left top;width:17px;height:16px; }
+
     </style>
 
     <body class="animsition site-navbar-small app-work">
@@ -443,6 +496,7 @@ if ($NoNewJob == 'NoNewJob') {
                                     </div>
                                 </span>
     <?php echo $this->Form->input('', array('type' => 'hidden', 'id' => 'TimeTaken', 'name' => 'TimeTaken', 'value' => $hrms[0])); ?>
+    <?php echo $this->Form->input('', array('type' => 'hidden', 'id' => 'getreworkjob', 'name' => 'getreworkjob', 'value' => $QCStatus_find)); ?>
                             </label>
                         </h3>
                     </div>
@@ -456,6 +510,7 @@ if ($NoNewJob == 'NoNewJob') {
         <div class="panel m-l-30 m-r-30">
             <div class="panel-body">
                 <div id="splitter">
+				
                     <span style="visibility: hidden;">a</span>
 <!--			<div style="float: right;">
                             <input type="checkbox" class="chk-wid-Url float-right" onclick="ShowUnVerifiedAtt()" id="chk-wid-Url2" value="2"> Hide Completed Fields 
@@ -513,17 +568,19 @@ if ($NoNewJob == 'NoNewJob') {
                                 <input class="UpdateFields" type="hidden" name="ProjectId" id="ProjectId" value="<?php echo $productionjob['ProjectId']; ?>">
                                 <input class="UpdateFields" type="hidden" name="InputEntityId" id="InputEntityId" value="<?php echo $InputEntityId; ?>">
 
+                                <input  type="hidden" name="qc_rework_nexeId" id="qc_rework_nexeId" value="<?php echo $QCrework_next_id; ?>">
+
                                 <input type="hidden" name="attrGroupId" id="attrGroupId">
                                 <input type="hidden" name="attrSubGroupId" id="attrSubGroupId">
                                 <input type="hidden" name="attrId" id="attrId">
                                 <input type="hidden" name="ProjattrId" id="ProjattrId">
                                 <input type="hidden" name="seq" id="seq">
                                 <input type="hidden" name="refUrl" id="refUrl">
-
                                 <div class="panel-group panel-group-continuous" id="exampleAccordionContinuous" aria-multiselectable="true" role="tablist">
                                     
                                             <?php
                                             $i = 0;
+										//	pr($AttributeGroupMaster);
 										foreach ($AttributeGroupMaster as $key => $GroupName) {
                                                 if ($i < 0) {
                                                     $ariaexpanded = 'aria-expanded="true"';
@@ -563,6 +620,8 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 $isDistinct = array_search($keysub, $distinct);
                                                                 ?>
                                                 <div class="col-md-12 row-title" style="padding:0px;">
+						    
+						    
                                                 <div class="col-md-6 row-title" style="padding:0px;">
                                                 <label class="form-control-label font-weight-400"> <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?></label> 
                                                 </div>
@@ -585,7 +644,9 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 ?>
                                                 <i id= "next_<?php echo $keysub; ?>" class="fa fa-angle-double-right pull-right m-r-5" style="color:#4397e6"  onclick="Paginate('next', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i> 
                                                 <i id="previous_<?php echo $keysub; ?>" class="fa fa-angle-double-left pull-right" onclick="Paginate('previous', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i>
-                                                <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
+                                              
+					           <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>',' <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
+
                                                                     <?php
                                                                 }
                                                                 ?>
@@ -752,7 +813,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <?php } ?>
                
                                                             <?php if ($totalSeqCnt > 1) { ?>
-                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
+                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                 <i class="fa fa-angle-double-left " onclick="loadMultiField('previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
                                                                 <i class="fa fa-angle-double-right m-r-5" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
@@ -761,22 +822,50 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <img src="img/comments.jpg" />
                                                             </div>-->
                                                                        <?php 
-                                    if (isset($OldDataresultError[$valprodFields['AttributeMasterId']]['seq'][$tempSq]) && !empty($tempSq) && !empty($OldDataresultError[$valprodFields['AttributeMasterId']]['seq'][$tempSq]) ) {?>
 
-                            <div class='qcGreen_popuptitle' id='Error_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer; margin-bottom: -9px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $tempSq;?>', '<?php echo $valprodFields['ControlName'];?>');">  </div>
-                                        <?php }
+									    $QcCommentStatus = $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_status'];  
+									    $QcCommentId = $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_id'];         
+									    $QcCommentErrorcat= $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_errorcat'];  
+									    $QcCommentErrorsub = $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_errorsub'];   
+										$errorcat=$CategoryName[$QcCommentErrorcat];
+										$errorsub=$CategoryName[$QcCommentErrorsub];
+										if($QcCommentStatus==8){
+											$StatusInfo="Accepted";
+										}
+										else if($QcCommentStatus==9){											
+											$StatusInfo="Rejected";
+										}
+										else{
+											$StatusInfo="";
+										}
                                         
-                                        else if(isset($OldDataresultError[$valprodFields['AttributeMasterId']]['seq']) && !empty($tempSq) && in_array($tempSq, $OldDataresultError[$valprodFields['AttributeMasterId']]['seq'])) {?>
 
-                            <div class='qcRed_popuptitle' id='Error_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer; margin-bottom: -9px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $tempSq;?>', '<?php echo $valprodFields['ControlName'];?>');">  </div>
+										if($QcCommentStatus !='6' && $QcCommentStatus !='8' && $QcCommentStatus !='9'){										
+																	   
+                                    if($OldDataresultError[$valprodFields['AttributeMasterId']]['OldDataCount'] > 0 ) {?>
+
+                            <div class='qcGreen_popuptitle' id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="cursor: pointer; margin-bottom: -9px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');">  </div>
+                                        <?php }
+                                        else if($OldDataresultRebutal[$valprodFields['AttributeMasterId']]['OldDataCount'] > 0) {?>
+
+                            <div class='qcRed_popuptitle' id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="cursor: pointer; margin-bottom: -9px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');">  </div>
                                         <?php }
                                         else
                                            {
                                              
                                            ?>
-                            <div class='qc_popuptitle' id='Error_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer; margin-bottom: -9px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $tempSq;?>', '<?php echo $valprodFields['ControlName'];?>');">  </div>
+                            <div class='qc_popuptitle' id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="cursor: pointer; margin-bottom: -9px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');">  </div>
                                            <?php
                                            }
+										}
+										else{
+										
+                                         ?>
+										<div class='qcComments_accept' id='QcCommentsAccept_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="qcCommentsAccept('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $thisseq;?>');">  </div>
+                                        <div class='qcComments_reject' id='QcCommentsReject_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="QcCommentsReject('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>','<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', <?php echo "'".$errorcat."'";?>, <?php echo "'".$errorsub."'";?>);">  </div>
+                             	         <div class="qcstatusinfo<?php echo $valprodFields['AttributeMasterId'];?>"> <?php echo $StatusInfo;?></div>
+										<?php	
+										}
                                          ?>
                                                                      <?php if ($isDistinct === false) {
                                                                             if($valprodFields['IsDistinct']==1) {
@@ -845,7 +934,7 @@ if ($NoNewJob == 'NoNewJob') {
             </div>
             <div class="col-lg-6 pull-right m-t-5 m-b-5">		
                 <!--                <button type="button" class="btn btn-primary pull-right">Submit</button>-->
-                <button type="submit" name='Submit' value="Submit" class="btn btn-primary pull-right" onclick="return formSubmit();"> Submit </button>
+                <button type="button" name='Submit' value="Submit" class="btn btn-primary pull-right" onclick="return formSubmit();"> Submit </button>
                 <!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
                                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
 
@@ -994,6 +1083,40 @@ if ($NoNewJob == 'NoNewJob') {
         </div>
         <!-- Handson Modal -->
 
+		 <!-- Popup new Modal -->
+<div class="modal fade modal-fill-in" id="exampleFillPopup" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="example" class="container-fluid" style="margin-bottom:-10px;">
+                            <div id="vertical">
+                                <div id="top-pane">
+                                    <div id="horizontal" style="height: 100%; width: 100%;">
+                                        <div id="right-pane">
+<div id="example1" class="hot handsontable htColumnHeaders">
+
+
+
+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!-- Popup new Modal -->
+
+
         <!-- Modal -->
         <div class="modal fade" id="querymodal" aria-hidden="true" aria-labelledby="querymodal" role="dialog" tabindex="-1">
             <div class="modal-dialog">
@@ -1093,7 +1216,7 @@ if ($NoNewJob == 'NoNewJob') {
             ?>
                 <label class="col-sm-4 control-label"><b>Attribute</b></label>
                 <div class="col-sm-7">
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='Attribute'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='Attributeinfo'>-</pre>
                 </div>
                 <label hidden class="col-sm-4 control-label"><b>AttributeMasterId</b></label>
                 <div hidden class="col-sm-7">
@@ -1103,35 +1226,39 @@ if ($NoNewJob == 'NoNewJob') {
                 <div hidden class="col-sm-7">
                     <pre class="" style='background-color:white;border:0px;padding:0px;' id='ProjectAttributeMasterId'>-</pre>
                 </div>
-                <div id='puVEF' style='dispaly:block;'>
-                    <label class="col-sm-4 control-label"><b>PU Value</b></label>
+                <label class="col-sm-4 control-label"><b>QC Value</b></label>
                     <div class="col-sm-7">
-                        <pre class="" style='background-color:white;border:0px;padding:0px;' id='PUvalue'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='qcvalueinfo'>-</pre>
                     </div>
-                </div>
                 <label class="col-sm-4 control-label"><b>Comments</b></label>
                 <div class="col-sm-7">
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='PUcomments'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='commentsinfo'>-</pre>
                 </div>
                 <label class="col-sm-4 control-label"><b>Disposition</b></label>
                 <div class="col-sm-7">
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='disposition'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='dispositioninfo'>-</pre>
                 </div>
                 <label class="col-sm-4 control-label"><b>Error Category&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7">
+				
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='CategoryName'>-</pre>
                 <?php 
-                    echo $this->Form->input('',array('options' => $CategoryName,'default' => '0','name'=>'CategoryName','id'=>'CategoryName','style'=>'width:177px !important;','class'=>'form-control','onchange' => 'getCategory(this.value);')); 
+				
+                   // echo $this->Form->input('',array('options' => $CategoryName,'default' => '0','name'=>'CategoryName','id'=>'CategoryName','style'=>'width:177px !important;','class'=>'form-control','onchange' => 'getCategory(this.value);')); 
                 ?>
                     <br/>
                 </div>
                 
                 <label style="margin-top:16px;" class="col-sm-4 control-label"><b>Error Sub Category&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7">
-                <?php 
+				
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='SubCategory'>-</pre>
+                <?php /*
                         $SubCategory = array(0 => '-- Select --');
                         echo '<div id="LoadSubCategory">';
                         echo $this->Form->input('', array('options' => $SubCategory, 'id' => 'SubCategory', 'name' => 'SubCategory','style'=>'width:177px !important;', 'class' => 'form-control','value' => $SubCategory));
                         echo '</div>';
+						*/
                 ?>
                     &nbsp;
                 </div>
@@ -1163,16 +1290,20 @@ if ($NoNewJob == 'NoNewJob') {
 
                 <label class="col-sm-4 control-label"><b>QC Comments</b></label>
                 <div class="col-sm-7" id="QcCmnd">
-                <?php echo $this->Form->textarea('', array( 'type'=>'text','id' => 'QCComments', 'name' => 'QCComments','style'=>'margin-bottom:8px;')); ?>
+                <?php 
+				echo $this->Form->textarea('', array( 'type'=>'text','id' => 'QCComments', 'name' => 'QCComments','style'=>'margin-bottom:8px;'));
+			    echo $this->Form->input('', array( 'type'=>'hidden','id' => 'Id', 'name' => 'Id','value' => '','style'=>'margin-bottom:8px;margin-top:10px;')); 
+ 			    echo $this->Form->input('', array( 'type'=>'hidden','id' => 'AttributeId', 'name' => 'AttributeId','value' => '','style'=>'margin-bottom:8px;margin-top:10px;')); 
+ 			    ?>
                 </div>
 
                 <div  class="col-sm-10" id='oldData' ></div>
 
                 <div class="col-sm-12" style="text-align:center;margin-top: 7px;">
                 <?php
-                  echo $this->Form->button('Mark Error', array( 'id' => 'QuerySubmit', 'name' => 'QuerySubmit', 'value' => 'QuerySubmit','class'=>'btn btn-primary btn-sm','onclick'=>"return valicateQueryInsert();",'type'=>'button')).' '; 
+                  echo $this->Form->button('QC Rebutal', array( 'id' => 'QuerySubmit', 'name' => 'QuerySubmit', 'value' => 'QuerySubmit','class'=>'btn btn-primary btn-sm','onclick'=>"return valicateQcrebutal();",'type'=>'button')).' '; 
                  echo $this->Form->button('Close', array( 'type'=>'button','id' => 'Cancel', 'name' => 'Cancel', 'value' => 'Cancel','class'=>'btn btn-primary btn-sm','onclick'=>"document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none';cleartext();")).' '; 
-                    echo $this->Form->button('Delete', array( 'type'=>'button','id' => 'Delete', 'name' => 'Delete', 'value' => 'Delete','class'=>'btn btn-primary btn-sm','onclick'=>"cleartext();return DeleteQuery();")); ?>   
+                   ?>   
                 </div>   
                 &nbsp;
                 &nbsp; 
@@ -2295,7 +2426,7 @@ $('.more').each(function() {
             }
         }
 
-        function formSubmit() {
+        function formSubmitold() {
             <?php /*if(isset($Mandatory)) {
                     $js_array = json_encode($Mandatory);
                     echo "var mandatoryArr = ". $js_array . ";\n";
@@ -3576,6 +3707,10 @@ echo "var mandatoryArr = ". $js_array . ";\n";
         height: 750px;
         margin: 0 auto;
     }
+    #exampleFillPopup #vertical {
+        height: 400px;
+        margin: 0 auto;
+    }
     #left-pane,#right-pane  { background-color: rgba(60, 70, 80, 0.05); }
     .pane-content {
         padding: 0 10px;
@@ -3937,305 +4072,144 @@ if ($this->request->query['continue'] == 'yes') {
         example1.style.height = availableHeight + 'px';
 
     }
-    function loadhandsondatafinal(id, idval, key, keysub) {
+    
+    	
+    
+    function loadhandsondatafinal(id, idval, key, keysub, submenu) {
         var ProductionEntityId = $("#ProductionEntity").val();
         $.ajax({
             url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxgetdatahand')); ?>',
-            dataType: 'json',
+            dataType: 'text',
             type: 'POST',
-            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id},
+            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id, title:submenu},
             success: function (res) {
-                //alert(res);
-                var data = [], row;
-                var j = 0;
-
-                for (var i = 0, ilen = res.handson.length; i < ilen; i++) {
-                    row = [];
-//                    row[0] = res.handson[i].DataId;
-//                    row[1] = res.handson[i].AfterNormalized;
-//                    row[2] = res.handson[i].Comments;
-//                    row[3] = res.handson[i].AfterDisposition;
-                    
-                    row[0] = res.handson[i].AfterNormalized;
-                    row[1] = res.handson[i].Comments;
-                    row[2] = res.handson[i].AfterDisposition;
-//                row[0] = res.handson[i].Id;
-//                row[0] = res.handson[i].AttributeValue;
-
-                    data[res.handson[i].Id] = row;
-
-                    j++;
+                $(".hot").html(res);
                 }
-                //alert(data);
-                hot.loadData(data);
-            }
         });
-        //alert(id);
-        var attrsub = $("#attrsub" + idval + '_' + key + '_' + keysub).val();
-        var attrdisp = $("#attrdisp" + id + '_' + idval + '_' + key + '_' + keysub).val();
-        if (typeof attrsub === 'undefined' || typeof attrsub === '') {
-            $("#exampleFillInHandsonModalTitle").text(attrdisp);
-        } else {
-            $("#exampleFillInHandsonModalTitle").text(attrsub);
         }
-        var
-                $container = $("#example1"),
-                myattrid = id,
-                $console = $("#exampleConsole"),
-                $parent = $container.parent(),
-                autosaveNotification,
-                container3 = document.getElementById('example1'),
-                hot;
-        hot = new Handsontable($container[0], {
-            colWidths: 300,
-            height: 520,
-            minSpareCols: 0,
-            minSpareRows: 0,
-            columnSorting: true,
-            sortIndicator: true,
-            manualColumnMove: true,
-            stretchH: 'all',
-            rowHeaders: true,
-            manualRowResize: true,
-            manualColumnResize: true,
-            comments: false,
-            contextMenu: ['undo', 'redo', 'make_read_only', 'alignment', 'remove_row'],
-            colHeaders: ['After Normalized', 'Comments','After Disposition'],
-            columns: [
-                {readOnly: true},{readOnly: true},{readOnly: true}
-//                {type:'text' },{type:'text' },{ type: 'dropdown',source: ['A', 'D', 'M', 'V']}
 
 
-            ],
-            afterValidate: function (isValid, value, row, prop) {
-                if (!isValid) {
-                    $("#SubmitForm").hide();
-                    alert("Data Entered is Invalid!");
-                } else {
-                    $("#SubmitForm").show();
-                }
-                if (value === '') {
-                    $("#SubmitForm").show();
-                }
-            },
-            beforeRemoveRow: function (change, source) {
-                $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxremoverow')); ?>',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: {changes: change, data: hot.getData()}, // contains changed cells' data
-                    success: function (result) {
 
-                    }
-                });
-            },
-            afterChange: function (change, source) {
-                var data;
-                if (source === 'loadData' || !$parent.find('input[name=autosave]').is(':checked')) {
-                    return;
-                }
-                data = change[0];
-                data[0] = hot.sortIndex[data[0]] ? hot.sortIndex[data[0]][0] : data[0];
-                clearTimeout(autosaveNotification);
-                $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxsavedatahand')); ?>',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: {changes: change, data: hot.getData()}, // contains changed cells' data
-                    success: function (result) {
 
-                    }
-                });
-                //onChange(change, source);
-            },
-        });
-
-        hot.addHook('afterChange', function (changes, source) {
-            if (!changes) {
-                return;
-
-            }
-            var changed = changes.toString().split(",");
-            var keyval = changed[1] - 1;
-
+function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
+ var ProductionEntityId = $("#ProductionEntity").val();
 
             $.ajax({
-                url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxsavehandson')); ?>',
-                dataType: 'json',
-                type: 'POST',
-                data: {keyval: keyval, changed: changes,ProductionEntityId:ProductionEntityId,data: hot.getData()}, // contains changed cells' data
-                success: function (result) {
-                    if (result) {
-                        // alert(result);
-                        hot.updateSettings({
-                            cells: function (row, col, prop) {
-                                if (row == changed[0] && col == result[1]) {
-                                    var cellProperties = {};
-                                    cellProperties.source = result[0];
-                                    return cellProperties;
-                                }
-                            }
-
-                        });
-                    }
-                }
-            });
-
-
-
-        });
-
-
-
-    }
-
-function loadhandsondatafinal_all(id, idval, key, keysub) {
-        var ProductionEntityId = $("#ProductionEntity").val();
-        $.ajax({
             url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxgetdatahandalldata')); ?>',
-            dataType: 'json',
+            dataType: 'text',
             type: 'POST',
-            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub},
+            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu},
             success: function (res) {
-				var data = [];
-                var j = 0;
-				$.each(res.handson, function (key, val) {
-                    $handle=0;row=[];
-                    $.each(val, function (key2, val2) {
-                    row[$handle] = val2;
-                    $handle++;
-                    
-                });
-                data[j] = row;
-                    j++;
-                });
-
-                hot.loadData(data);
-            }
-        });
         
-        var attrsub = $("#attrsub" + idval + '_' + key + '_' + keysub).val();
-        var attrdisp = $("#attrdisp" + id + '_' + idval + '_' + key + '_' + keysub).val();
-        if (typeof attrsub === 'undefined' || typeof attrsub === '') {
-            $("#exampleFillInHandsonModalTitle").text(attrdisp);
-        } else {
-            $("#exampleFillInHandsonModalTitle").text(attrsub);
-        }
-        var
-                $container = $("#example1"),
-                myattrid = id,
-                $console = $("#exampleConsole"),
-                $parent = $container.parent(),
-                autosaveNotification,
-                container3 = document.getElementById('example1'),
-                hot;
                 
-            var subGrpArr='<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
-            var subGrpAtt = JSON.parse(subGrpArr);
-            var subGrpAttArr = subGrpAtt[key][keysub];
-            var j=0; var header=[]; var noofcolumn=[];
-			//alert(JSON.stringify(subGrpAttArr));
-            $.each( subGrpAttArr, function( key, value ) {
-              //  alert(value['DisplayAttributeName'])
-            header[j]=value['DisplayAttributeName'];
-				noofcolumn[j]='{readOnly: true}';
-            j++;
-            });
-          // alert(noofcolumn);
-            
-        hot = new Handsontable($container[0], {
-            colWidths: 300,
-            height: 520,
-            minSpareCols: 0,
-            minSpareRows: 0,
-            columnSorting: true,
-            sortIndicator: true,
-            manualColumnMove: true,
-            stretchH: 'all',
-            rowHeaders: true,
-            manualRowResize: true,
-            manualColumnResize: true,
-            comments: false,
-            contextMenu: ['undo', 'redo', 'make_read_only', 'alignment', 'remove_row'],
-            colHeaders: header,
-            columns: noofcolumn,
-			
-            afterValidate: function (isValid, value, row, prop) {
-                if (!isValid) {
-                    $("#SubmitForm").hide();
-                    alert("Data Entered is Invalid!");
-                } else {
-                    $("#SubmitForm").show();
+	     $(".hot").html(res);
                 }
-                if (value === '') {
-                    $("#SubmitForm").show();
-                }
-            },
-            beforeRemoveRow: function (change, source) {
-                $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxremoverow')); ?>',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: {changes: change, data: hot.getData()}, // contains changed cells' data
-                    success: function (result) {
-
-                    }
                 });
-            },
-            afterChange: function (change, source) {
-                var data;
-                if (source === 'loadData' || !$parent.find('input[name=autosave]').is(':checked')) {
-                    return;
-                }
-                data = change[0];
-                data[0] = hot.sortIndex[data[0]] ? hot.sortIndex[data[0]][0] : data[0];
-                clearTimeout(autosaveNotification);
-                $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxsavedatahand')); ?>',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: {changes: change, data: hot.getData()}, // contains changed cells' data
-                    success: function (result) {
-
-                    }
-                });
-                //onChange(change, source);
-            },
-        });
-
-        hot.addHook('afterChange', function (changes, source) {
-            if (!changes) {
-                return;
 
             }
-            var changed = changes.toString().split(",");
-            var keyval = changed[1] - 1;
 
-
-            $.ajax({
-                url: '<?php echo Router::url(array('controller' => 'QCValidation', 'action' => 'ajaxsavehandson')); ?>',
-                dataType: 'json',
-                type: 'POST',
-                data: {keyval: keyval, changed: changes,ProductionEntityId:ProductionEntityId,data: hot.getData()}, // contains changed cells' data
-                success: function (result) {
-                    if (result) {
-                        // alert(result);
-                        hot.updateSettings({
-                            cells: function (row, col, prop) {
-                                if (row == changed[0] && col == result[1]) {
-                                    var cellProperties = {};
-                                    cellProperties.source = result[0];
-                                    return cellProperties;
-                                }
-                            }
-
-                        });
-                    }
-                }
-            });
-
+    //pu rework code
+    function qcCommentsAccept(Id,AttributeMasterId, ProjectAttributeMasterId,seq){ 
+        var result = new Array();
+		$('.qcstatusinfo'+AttributeMasterId).text('Accepted');     
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxupdateacceptstatus'));?>",
+            data: ({Id: Id}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {          
+            }
         });
+    }
+     
+	function QcCommentsReject(Id,AttributeMasterId,AttributeName,Attributeval,Comments,disposition,errorcat,errorsubcat){
 
-    }    
+      document.getElementById('light').style.display = 'block';
+        document.getElementById('fade').style.display = 'block';
+        if(AttributeName==""){
+			AttributeName="-";
+		} 
+		if(Comments==""){
+			Comments="-";
+		} 
+		if(Attributeval==""){
+			Attributeval="-";
+		} 
+		if(disposition==""){
+			disposition="-";
+		} 
+		if(errorcat==""){
+			errorcat="-";
+		}
+		if(errorsubcat==""){
+			errorsubcat="-";
+		}
+        $('#Attributeinfo').text(AttributeName);
+        $('#commentsinfo').text(Comments);
+        $('#qcvalueinfo').text(Attributeval);
+        $('#dispositioninfo').text(disposition);		
+        $('#CategoryName').text(errorcat);		
+        $('#SubCategory').text(errorsubcat);
+        $('#Id').val(Id);
+        $('#AttributeId').val(AttributeMasterId);
+		
+		
+		
+       
+	}
+
+function valicateQcrebutal(){		
+		    var AttributeId = $('#AttributeId').val();
+          $('.qcstatusinfo'+AttributeId).text('Rejected');  
+        var commentstype = $('#QCComments').val();	
+        var Id = $('#Id').val();
+		 var result = new Array();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxupdaterejectstatus'));?>",
+            data: ({Id: Id, comment: commentstype}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+              
+            }
+        });
+		document.getElementById('light').style.display = 'none';
+		document.getElementById('fade').style.display = 'none';
+		cleartext();
+			return true;
+}
+ function formSubmit() {
+   
+        var QCrework  = $('#getreworkjob').val();	
+        var QCrework_next_id  = $('#qc_rework_nexeId').val();	
+        var project  = $('#ProjectId').val();	
+        var entity  = $('#InputEntityId').val();	
+		 var result = new Array();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxformsubmit'));?>",
+            data: ({rework: QCrework, projectId: project, entityId: entity , nextId: QCrework_next_id}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+              if(result > 0){
+				 $( "#ProductionArea" ).submit();              		 
+			  }
+			  else{
+				  /*
+				   $('#submitinfo').show();
+				   setTimeout(function() { $("#submitinfo").hide(); }, 5000);*/
+				   alert("One or more QC Rework not verified!");
+				   
+				 return false;
+                 				 
+			  }
+            }
+        });
+		
+        }
+    
     
 </script>
