@@ -62,6 +62,16 @@ use Cake\Routing\Router; ?>
                     alert("Only Numbers are Allowed in Quality limit");
                     $('#quality_limit').focus();
                     return false;
+                } else if ($('#monthly_target').val() == 0)
+                {
+                    alert('Monthly target is Mandatory');
+                    $('#monthly_target').focus();
+                    return false;
+                } else if (!/^[0-9]+$/.test($('#monthly_target').val())) {
+                    //var isValid = $('#default_dashboard_count').val();
+                    alert("Only Numbers are Allowed in Monthly target");
+                    $('#monthly_target').focus();
+                    return false;
                 }
 //                else if ($('#quality_limit').val() != '')
 //                {
@@ -227,6 +237,14 @@ use Cake\Routing\Router; ?>
                     <div class="col-sm-2" style="margin-top: -5px;"><input <?php echo $selectedCengageyes; ?> type="radio" class="form-control" id="cengage_project__yes" name="CengageProject" value="1"></div>
                     <div class="col-sm-2" style="margin-top: 3px;">No</div>
                     <div class="col-sm-2" style="margin-top: -5px;"><input <?php echo $selectedCengageno; ?> type="radio" class="form-control" id="cengage_project__no" name="CengageProject" value="0"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">Monthly Target</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="monthly_target" name="monthly_target" value="<?php echo trim($monthlytargetEdit); ?>">
                 </div>
             </div>
         </div>

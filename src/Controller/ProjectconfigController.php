@@ -51,6 +51,7 @@ class ProjectconfigController extends AppController {
             $default_prod_view = $this->request->data('default_prod_view');
             $default_dashboard_count = $this->request->data('default_dashboard_count');
             $quality_limit = $this->request->data('quality_limit');
+            $monthly_target = $this->request->data('monthly_target');
             $input_mandatory = $this->request->data('input_mandatory');
             $is_bulk = $this->request->data('is_bulk');
             $hygine_check = $this->request->data('hygine_check');
@@ -78,6 +79,7 @@ class ProjectconfigController extends AppController {
                 $Projectconfigmaster->ProdDB_PageLimit = $default_dashboard_count;
                 $Projectconfigmaster->ProductionView = $default_prod_view;
                 $Projectconfigmaster->QualityLimit = $quality_limit;
+                $Projectconfigmaster->MonthlyTarget = $monthly_target;
                 $Projectconfigmaster->InputCheck = $input_mandatory;
                 $Projectconfigmaster->isBulk = $is_bulk;
                 $Projectconfigmaster->HygineCheck = $hygine_check;
@@ -101,6 +103,7 @@ class ProjectconfigController extends AppController {
         $selectedCengage = '';
         $default_dashboard_count_edit = '';
         $QualityLimitEdit = '';
+        $monthlytargetEdit = '';
         $selectedyes = '';
         $selectedno = '';
         $selectedbulkyes = '';
@@ -171,6 +174,7 @@ class ProjectconfigController extends AppController {
         $this->set(compact('selectedCengageno'));
         $this->set(compact('default_dashboard_count_edit'));
         $this->set(compact('QualityLimitEdit'));
+        $this->set(compact('monthlytargetEdit'));
         $ProjectMaster = TableRegistry::get('Projectmaster');
         $ProList = $ProjectMaster->find();
         $ProList->where(['RecordStatus' => 1]);
