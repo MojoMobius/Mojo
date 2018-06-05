@@ -755,14 +755,24 @@ class GetjobcoreController extends AppController {
           
             if (empty($InprogressProductionjob)) {
                 $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') AND ProjectId=' . $ProjectId.' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
-                $FirstStatusId =  $productionjob[0]['StatusId'];
-                $NextStatusId = $JsonArray['ModuleStatus_Navigation'][$FirstStatusId][1];
+                $FirstStatusId[] =  $productionjob[0]['StatusId'];
+                $FirstStatus =  $productionjob[0]['StatusId'];
+                $NextStatusId = $JsonArray['ModuleStatus_Navigation'][$FirstStatus][1];
+                
+                $ProductionEntityStatus=array_intersect($FirstStatusId,$PuFirst_Status_id);
+                
                 if (empty($productionjob)) {
                     $this->set('NoNewJob', 'NoNewJob');
                 } else {
-                    if ($productionjob[0]['StatusId'] == $FirstStatusId && ($newJob == 'NewJob' || $newJob == 'newjob')) {
+                    if ($productionjob[0]['StatusId'] == $FirstStatus && ($newJob == 'NewJob' || $newJob == 'newjob')) {
                         $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $NextStatusId . ",UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
-                        $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
+                            if(empty($ProductionEntityStatus)){
+                            $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
+                            }
+                            else{
+                            $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . " WHERE ID=" . $productionjob[0]['ProductionEntity']);
+                            }                  
+//      $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
                         $productiontimemetricMain = $connection->execute("UPDATE ME_Production_TimeMetric SET StatusId=" . $NextStatusId . ",UserId=" . $user_id . ",Start_Date='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntityID=" . $productionjob[0]['ProductionEntity'] . " AND Module_Id=" . $moduleId);
                         $productionjob[0]['StatusId'] = $NextStatusId;
                         $productionjob[0]['StatusId'] = 'Production In Progress';
@@ -902,15 +912,15 @@ class GetjobcoreController extends AppController {
                 $DependancyId = $DependentMasterIds['InputValue'];
                  $getDomainUrlVal = $finalprodValue[$domainUrl][1][$DependancyId];
                // $SelDomainUrl = $getDomainUrlVal[0]['AttributeValue'];
-$getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-biggest-winner-in-a-5g-world';
+//$getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-biggest-winner-in-a-5g-world';
                 $html = strpos($getDomainUrlVal, '.html');
                 if (empty($html)){
-                    echo $pos = strpos($getDomainUrlVal, 'http');
+                  $pos = strpos($getDomainUrlVal, 'http');
                     if ($pos === false) {
-                        echo $SelDomainUrl = "http://" . $getDomainUrlVal;
+                        $SelDomainUrl = "http://" . $getDomainUrlVal;
                     }
                 }else{
-                    echo 'coming';
+                   // echo 'coming';
                     $SelDomainUrl = "";
                 }
                 //echo $SelDomainUrl; exit;
@@ -955,7 +965,11 @@ $getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-
             $ProductionEntity = $this->request->data['ProductionEntityID']; 
             $productionjobStatusId = $this->request->data['StatusId'];
             $CompletionStatusId = $productionjobNew[0]['StatusId'];
+            
+            $CompletionStatusEntity[] = $productionjobNew[0]['StatusId'];
          
+            $ProductionEntityStatusCompleted=array_intersect($CompletionStatusEntity,$PuNextStatusId);
+           
             $QcbatchId = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
             $QcbatchId = $QcbatchId[0]['Qc_Batch_Id'];
             
@@ -964,13 +978,16 @@ $getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-
             $QcCompletedCount = $QcCompletedCount[0]['QCCompletedCount'];
             $QcCompletedCount = $QcCompletedCount + 1;  
             }
-            
+           
             if (isset($this->request->data['Submit'])) {
+              
                 $queryStatus = $connection->execute("SELECT count(1) as cnt FROM ME_UserQuery WITH (NOLOCK) WHERE  StatusID=1 AND ProjectId=" . $ProjectId . " AND  ProductionEntityId='" . $productionjobNew[0]['ProductionEntity'] . "'")->fetchAll('assoc');
                 
-                $cnt_InputEntity_AcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=2 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
-                
                 $cnt_InputEntity_RejectError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=3 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                
+                $cnt_InputEntity_TLAcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=4 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                
+                $cnt_InputEntity_AcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=2 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
                 
                 if ($queryStatus[0]['cnt'] > 0) {
 //                    $completion_status = $queryStatusId;
@@ -980,6 +997,11 @@ $getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-
                 else if($cnt_InputEntity_RejectError[0]['cnt'] != 0){
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][2][1];
                     $submitType = 'Rework Reject';
+                }
+                else if($cnt_InputEntity_TLAcceptError[0]['cnt'] != 0){
+                    $CompletionStatus = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][2][1];
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatus][1];
+                    $submitType = 'Rework Reject by TL';
                 }
                 else if($cnt_InputEntity_AcceptError[0]['cnt'] != 0){
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
@@ -993,7 +1015,13 @@ $getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-
 			
                 //$Dynamicproductionjob = $connection->execute("UPDATE  $stagingTable  SET TimeTaken='" . $this->request->data['TimeTaken'] . "' where ProductionEntity= ".$ProductionEntity);
                 $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completion_status . ",ActEnddate='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntity=" . $ProductionEntity);
-                $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
+                            if(empty($ProductionEntityStatusCompleted)){
+                            $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
+                            }
+                            else{
+                            $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . " WHERE ID=" . $ProductionEntity);
+                            } 
+              //  $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
                 $productiontimemetricMain = $connection->execute("UPDATE ME_Production_TimeMetric SET StatusId=" . $completion_status . ",End_Date='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntityID=" . $ProductionEntity . " AND Module_Id=" . $moduleId);
 
 
@@ -2686,8 +2714,12 @@ $getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-       $reworkCount =  $connection->execute("Select UserReputedComments from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1 and StatusId=3")->fetchAll('assoc');
-        echo $reworkCount[0]['UserReputedComments'];
+       $reworkCount =  $connection->execute("Select UserReputedComments,TLReputedComments from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1 and StatusId=3")->fetchAll('assoc');
+      
+       $getdata['UserReputedComments'] = $reworkCount[0]['UserReputedComments'];
+        $getdata['TLReputedComments'] = $reworkCount[0]['TLReputedComments'];
+     
+        echo json_encode($getdata);
         exit; 
  }
 }

@@ -35,7 +35,9 @@ class ProjecttargetController extends AppController {
     public function initialize() {
         parent::initialize();
         $this->loadModel('QCBatchMaster');
+
         $this->loadModel('Projecttarget');
+
         $this->loadModel('GetJob');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');

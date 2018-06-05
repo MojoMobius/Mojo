@@ -409,6 +409,13 @@ if ($NoNewJob == 'NoNewJob') {
     /* Handle */ ::-webkit-scrollbar-thumb { -webkit-border-radius: 5px; border-radius: 5px;
                                              background: rgba(128, 128, 128,0.46);}
     
+  .validationerrorcnt{
+        display: block;
+        text-align: right;
+        color: red;
+        padding: 1px 51px 7px 7px;
+        font-size: 16px;
+    }   
     
   .validationloader {
   border: 8px solid #f3f3f3;
@@ -512,7 +519,6 @@ if ($NoNewJob == 'NoNewJob') {
                                     </ul>
                                     <div class="tab-content" id="leftpane">
                                         <div class="tab-pane active" id="exampleTabsOne" role="tabpanel" style="display:none !important;">
-                                            <object width="400" height="400" style="border:1px solid red;" data="http://php.net" type="application/html" archive="http://php.net">
                                             <object width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" data="" width="auto" height="auto"></object>
 
                                         </div>
@@ -554,6 +560,9 @@ if ($NoNewJob == 'NoNewJob') {
 
                                 <div class="panel-group panel-group-continuous" id="exampleAccordionContinuous" aria-multiselectable="true" role="tablist">
                                       <div class="validationloader" style="display:none;"></div>
+                                      <div class="validationerrorcnt" style="display:none;">
+                                         Error's count : <span id="validationerrorcnt"></span>
+                                      </div>
                                             <?php
                                             $i = 0;
                                             foreach ($AttributeGroupMaster as $key => $GroupName) {
@@ -1255,6 +1264,7 @@ $(".formsubmit_validation_endisable").show();
 	   return true; 
             $(".validationloader").show();
             $(".validation_error").hide();
+             $(".validationerrorcnt").hide();
             $(".validation_error_pagination").css("color", "#4397e6");
             $(".panel-group").css("opacity",0.5);
          
@@ -1302,7 +1312,8 @@ $(".formsubmit_validation_endisable").show();
                         resultarray = JSON.parse(result);
                         listerror = resultarray['Validation Output'];
                         error_count = resultarray['Errors Count'];
-       
+                       $("#validationerrorcnt").html(error_count);
+                       $(".validationerrorcnt").show();
                        if(error_count > 0){
                              $.each( listerror, function( key, val ) {
                             $.each( val, function( skey, sval ) {
@@ -1312,9 +1323,11 @@ $(".formsubmit_validation_endisable").show();
                                           if(strArray[i] > 1){
                                               $("."+ssval.pagination_key).css("color", "red");
                                           }
-                                           //  console.log(ssval[strArray[i]]["error_txt"]);
+                                        
+                                        if(strArray[i].length > 0){
                                           $("#"+ssval.key+'_'+strArray[i]+"_error").html(ssval[strArray[i]]["error_txt"]);
                                           $("#"+ssval.key+'_'+strArray[i]+"_error").show();
+                                    }
                                     }
                                 });
 
@@ -3416,7 +3429,7 @@ $(document).keydown(function(e) {
         }, 1000);
     };
 
-    UrlRegexp = /^(www.\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    UrlRegexp = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
     urlValidator = function (value, callback) {
         setTimeout(function () {
             if (UrlRegexp.test(value)) {

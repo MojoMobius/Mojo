@@ -87,12 +87,14 @@ class GetjobcoreTable extends Table {
      function ajax_GetQcComments_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
         $connection = ConnectionManager::get('default');
 
-        $cmdOldData = $connection->execute("select mvc.QCComments,mvc.StatusID, mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (1,2,3,5) order by mvc.SequenceNumber")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select mvc.QCComments,mvc.StatusID,mvc.TLReputedComments,mvc.UserReputedComments,mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (1,2,3,4,5) order by mvc.SequenceNumber")->fetchAll('assoc');
         if(!empty($cmdOldData)){
       // $cmdOldData = array_column($cmdOldData, 'QCComments');
        $i=1;
        foreach($cmdOldData as $key => $val) {
             $new_cmdOldData['QCComments'][$i]=$val['QCComments'];
+            $new_cmdOldData['TLReputedComments'][$i]=$val['TLReputedComments'];
+            $new_cmdOldData['UserReputedComments'][$i]=$val['UserReputedComments'];
             $new_cmdOldData['ErrorCategoryName'][$i]=$val['ErrorCategoryName'];
             $new_cmdOldData['StatusID'][$i]=$val['StatusID'];
             $i++;

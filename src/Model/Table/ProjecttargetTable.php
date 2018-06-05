@@ -20,11 +20,12 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
 class ProjecttargetTable extends Table {
+
    /* public function initialize(array $config) {
         $this->table('MV_QC_BatchMaster');
         $this->primaryKey('Id');
         $this->addBehavior('Timestamp');
     }*/
 
-   
+  
 }
