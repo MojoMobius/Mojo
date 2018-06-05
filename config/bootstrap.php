@@ -235,14 +235,16 @@ if (Configure::read('debug')) {
 }
 
 Plugin::load('Migrations');
-define("JSONPATH", 'C:\xampp\htdocs\mojo_V2\JsonReferance');
+define("JSONPATH", 'D:\xampp\htdocs\mojo_git\JsonReferance');
 define("ProjectStatusProduction",'Production');
 define("ProjectStatusQC",'Validation');
 define("ReadyForQCIdentifier",'ReadyforQC');
-define("QCCompletedIdentifier",'QCCompleted');
-define("ReadyforQCReworkIdentifier",'ReadyforQCRework');
-define("ReadyforReworkIdentifier",'ReadyforRework');
-define("INPUTPATH", 'C:\YP');
+define("ReadyForQCreworkIdentifier",'ReadyforQCRework');
+define("ReadyForQCcompleted",'QCcompleted');
+define("QareviewSLA",'97');
+define("ReadyforPUReworkIdentifier",'ReadyforPURework');
+//define("ReadyforReworkIdentifier",'ReadyforRework');
+define("INPUTPATH", 'D:\YP');
 
 
 define("PHPGRID_DBTYPE","mssqlnative"); // mysql,oci8(for oracle),mssql,postgres,sybase
@@ -260,7 +262,7 @@ define("URL_FILE_PATH", 'https://s3.ap-south-1.amazonaws.com/mojodevelopment/Url
 
 // Basepath for lib
 //echo dirname(__FILE__).DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR;
-define("PHPGRID_LIBPATH",'C:\xampp\htdocs\mojo_V2\vendor\PHPGrid');
+define("PHPGRID_LIBPATH",'D:\xampp\htdocs\mojo_git\vendor\PHPGrid');
 
 define('SHOWDETAILEDERROR', 'YES'); // YES - to show, NO - don't show
 define("AfterRefURL",'AfterReferenceURL');
