@@ -816,14 +816,14 @@ width:100%;
                                                                 <div class="form-group">
                                                                                     <?php
                                                                                     $highlightRework=array();
-                                                                                    if (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '1') {
+                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '1') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '5')){
                                                                                        $highlightRework[] = 'style="border-color: red;"'; 
                                                                                     }
                                                                                     $highlightRework = $highlightRework[0];
 
                                                                                     $readonlyRework=array();
                                                                                     $disabledRework=array();
-                                                                                    if (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '2') {
+                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '2') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '4')){
                                                                                        $readonlyRework[] = 'readonly="readonly"'; 
                                                                                        $disabledRework[] = 'disabled="disabled"';
                                                                                     }
@@ -906,7 +906,9 @@ width:100%;
                                     if (isset($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCComments'][$tempSq]) && !empty($tempSq) && !empty($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCComments'][$tempSq]) ) { 
                                   ?>
                                                                     <div class="QcErrorReport_<?php echo $key; ?>">
-                                                                    <span style="color:red;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCComments'][$tempSq]; ?></span>
+                                                                        <span style="color:#FF0000;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['ErrorCategoryName'][$tempSq]; ?></span>
+                                                                   : <span style="color:#FF0000;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCComments'][$tempSq]; ?></span><br/>
+                                                                   <span style="color:#8B0000;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['TLReputedComments'][$tempSq]; ?></span>
                                                                     </div>
                               <?php      }   
                                          ?>  
@@ -1356,6 +1358,10 @@ if(!empty($attr_array)){
                         <pre class="" style='background-color:white;border:0px;padding:0px;' id='QCComments'>-</pre>
                     </div>
                 </div>
+<!--                <label class="col-sm-4 control-label"><b>TL Comments</b></label>
+                <div class="col-sm-7">
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' name='TLComments' id='TLComments'>-</pre>
+                </div>-->
                 <label class="col-sm-4 control-label"><b>PU Comments</b></label>
                 <div class="col-sm-7">
                 <?php echo $this->Form->textarea('', array( 'type'=>'text','id' => 'PUComments', 'name' => 'PUComments')); ?>
@@ -2953,7 +2959,6 @@ $(document).keydown(function(e) {
         }
 
         function formSubmit() {
-
             
 		 ProjectId = $("#ProjectId").val();
             RegionId = $("#RegionId").val();	 
@@ -3084,7 +3089,7 @@ $(document).keydown(function(e) {
           //  var countDone = $('.CampaignWiseSelDone_' + mainGrpId).filter(function () {
      //     var countDone = $('.attributeWiseQcErrorCount_' + mainGrpId).val();
            var countDone = $('.attributeWiseQcErrorCount_' + mainGrpId).filter(function () {
-                if (($(this).val() == 2) || ($(this).val() == 3))
+                if (($(this).val() == 2) || ($(this).val() == 3) || ($(this).val() == 4))
                     return $(this).val();
             }).length;
 
@@ -3913,12 +3918,14 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
       document.getElementById('light').style.display = 'block';
         document.getElementById('fade').style.display = 'block';
         
+//         $('#TLComments').hide();
+        $('#PUComments').val('');
         $('#QCError').text(QcError);
         $('#QCComments').text(QcComments);
         $('#seq').val(seq);
         $('#attrId').val(AttributeMasterId);
         $('#ProjattrId').val(ProjectAttributeMasterId);
-         
+        
         var ProjectId = "<?php echo $productionjob['ProjectId'];?>";
         var RegionId = "<?php echo $productionjob['RegionId'];?>";
         var InputEntityId = "<?php echo $productionjob['InputEntityId'];?>";
@@ -3929,18 +3936,6 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
         var AttributeMasterId = $("#attrId").val();
         var ProjectAttributeMasterId = $("#ProjattrId").val();
        
-        var result = new Array();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxupdaterejectstatus'));?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,UserId: UserId,SequenceNumber: SequenceNumber}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-               
-            }
-        });
-        
         showRebuttedData(ProjectId,RegionId,InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, SequenceNumber);
      }
      
@@ -3953,7 +3948,12 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
             dataType: 'text',
             async: false,
             success: function (result) {
-               document.getElementById('PUComments').value = result;
+                 var obj = JSON.parse(result);
+               document.getElementById('PUComments').value = obj['UserReputedComments'];
+//               if(obj['TLReputedComments'] != ''){
+//                   $('#TLComments').show();
+//               $('#TLComments').text(obj['TLReputedComments']);
+//           }
             }
         });
     }
@@ -3974,6 +3974,18 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
             $("#PUComments").focus();
             return false;
         }
+        
+        var result = new Array();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxupdaterejectstatus'));?>",
+            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,UserId: UserId,SequenceNumber: SequenceNumber}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+               
+            }
+        });
         
         var result = new Array();
         $.ajax({
