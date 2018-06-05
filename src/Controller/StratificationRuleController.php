@@ -88,6 +88,11 @@ class StratificationRuleController extends AppController {
             $Resource_sample = $this->request->data('Resource_sample');
             $Resource_value = $this->request->data('Resource_value');
             $StratificationRuleId = $this->request->data('StratificationRuleId');
+            
+             $session = $this->request->session();
+        $userid = $session->read('user_id');
+        $moduleId = $session->read("moduleId");
+        
             if(isset($this->request->data['Resource_stratification'])){
                 $Resource_stratification=1;
             }else{
@@ -136,6 +141,11 @@ class StratificationRuleController extends AppController {
             $MinimumSample = $this->request->data('MinimumSample');
             $LoadAttribute = $this->request->data('LoadAttributeids');
             $SampleType = $this->request->data('Rule_sample');
+            
+             $session = $this->request->session();
+        $userid = $session->read('user_id');
+        $moduleId = $session->read("moduleId");
+        
             if($SampleType ==''){
                     $SampleType=0;
             }
@@ -209,8 +219,12 @@ class StratificationRuleController extends AppController {
         $SampleValueEdit = '';
         $StratificationRuleId = '';
         
+         $session = $this->request->session();
+        $userid = $session->read('user_id');
+        $moduleId = $session->read("moduleId"); 
+        
         if ($Id != '') {
-            $EditRuleList = $connection->execute("SELECT * FROM MV_QC_StratificationRules  WHERE Id=$Id and RecordStatus=1")->fetchAll('assoc');
+            $EditRuleList = $connection->execute("SELECT * FROM MV_QC_StratificationRules  WHERE Id=$Id and QC_Module_Id=$moduleId and RecordStatus=1")->fetchAll('assoc');
           $finalArr=array();
             foreach ($EditRuleList as $key => $query):
                 $EditId = $query['Id'];

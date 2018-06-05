@@ -276,17 +276,8 @@ class QCBatchMasterTable extends Table {
         $Queriesresult = array_map('current', $queries);
         $UserList = implode(",", $Queriesresult);
         
-        $ModuleidTimemetric = $connection->execute("select Top 1 QC_Module_Id FROM ME_Production_TimeMetric where ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1 and QC_Module_Id=$QcModuleId")->fetchAll('assoc');
-        $QCModuleidTimemetric = $ModuleidTimemetric[0]['QC_Module_Id'];
-        
-        if(!empty($ModuleidTimemetric)){
-                $QcmoduleId = $QCModuleidTimemetric;
-                $CompletedRecords = $connection->execute("SELECT distinct(CONVERT(varchar(10), Start_Date, 105)) as StartDate FROM ME_Production_TimeMetric where ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1 and QC_Module_Id=$QcmoduleId")->fetchAll('assoc');
-        }
-        else{
-          $CompletedRecords = $connection->execute("SELECT distinct(CONVERT(varchar(10), Start_Date, 105)) as StartDate FROM ME_Production_TimeMetric where ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1")->fetchAll('assoc');
-        }
-        
+                $CompletedRecords = $connection->execute("SELECT distinct(CONVERT(varchar(10), Start_Date, 105)) as StartDate FROM ME_Production_TimeMetric where ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1 and QC_Module_Id=$QcModuleId")->fetchAll('assoc');
+      
         $Completedresult = array_map('current', $CompletedRecords);
         $StartDate = implode("   ,   ", $Completedresult);  
         
@@ -373,19 +364,9 @@ class QCBatchMasterTable extends Table {
         $Queriesresult = array_map('current', $queries);
         $UserList = implode(",", $Queriesresult);
 //echo "SELECT InputEntityId FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QcStatusId=$ReadyForQCBatch";
-        
-        $ModuleidTimemetric = $connection->execute("select Top 1 QC_Module_Id FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QC_Module_Id=$QcmoduleId and QcStatusId=$ReadyForQCBatch order by Start_Date")->fetchAll('assoc');
-        $QCModuleidTimemetric = $ModuleidTimemetric[0]['QC_Module_Id'];
-        
-        if(!empty($ModuleidTimemetric)){
-                $QcmoduleId = $QCModuleidTimemetric;
-                $CompletedRecords = $connection->execute("SELECT InputEntityId,UserId FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QC_Module_Id=$QcmoduleId and QcStatusId=$ReadyForQCBatch order by Start_Date")->fetchAll('assoc');
-        }
-        else{
-          $CompletedRecords = $connection->execute("SELECT InputEntityId,UserId FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QcStatusId=$ReadyForQCBatch order by Start_Date")->fetchAll('assoc');
-        }
-        
-        
+       
+                $CompletedRecords = $connection->execute("SELECT InputEntityId,UserId FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QC_Module_Id=$QcModuleId and QcStatusId=$ReadyForQCBatch order by Start_Date")->fetchAll('assoc');
+       
         $Completedresult = array_map('current', $CompletedRecords);
         //$inputEntity = implode("   ,   ", $Completedresult);
         $inputEntity=array();

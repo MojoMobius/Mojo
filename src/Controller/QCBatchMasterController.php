@@ -50,7 +50,7 @@ class QCBatchMasterController extends AppController {
         $session = $this->request->session();
         $userid = $session->read('user_id');
         $moduleId = $session->read("moduleId");
-        
+       
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
         $ProList = $this->QCBatchMaster->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
@@ -149,16 +149,8 @@ class QCBatchMasterController extends AppController {
 
             //$selectRecords = $connection->execute("select * from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ")")->fetchAll('assoc');
 
-            $ModuleidTimemetric = $connection->execute("select Top 1 QC_Module_Id from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = $ReadyForQCBatch and QC_Module_Id=$moduleId")->fetchAll('assoc');
-            $QCModuleidTimemetric = $ModuleidTimemetric[0]['QC_Module_Id'];
-          
-            if(!empty($ModuleidTimemetric)){
-                $QcmoduleId = $QCModuleidTimemetric;
-                $CompletedRecords = $connection->execute("select distinct (InputEntityId) from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = $ReadyForQCBatch and QC_Module_Id=$QcmoduleId")->fetchAll('assoc');
-        }
-        else{
-            $CompletedRecords = $connection->execute("select distinct (InputEntityId) from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = $ReadyForQCBatch")->fetchAll('assoc');
-        }
+                $CompletedRecords = $connection->execute("select distinct (InputEntityId) from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = $ReadyForQCBatch and QC_Module_Id=$moduleId")->fetchAll('assoc');
+
 
             $totalSelectedRecords = count($selectRecords);
             $totalCompletedRecords = count($CompletedRecords);
@@ -321,17 +313,8 @@ class QCBatchMasterController extends AppController {
         }
 
         $selectRecords = $connection->execute("select * from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ")")->fetchAll('assoc');
-        
-        $ModuleidTimemetric = $connection->execute("select Top 1 QC_Module_Id from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1 and QC_Module_Id=$moduleId")->fetchAll('assoc');
-            $QCModuleidTimemetric = $ModuleidTimemetric[0]['QC_Module_Id'];
-          
-            if(!empty($ModuleidTimemetric)){
-                $QcmoduleId = $QCModuleidTimemetric;
-                $CompletedRecords = $connection->execute("select distinct (InputEntityId) from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1 and QC_Module_Id=$QcmoduleId")->fetchAll('assoc');
-        }
-        else{
-            $CompletedRecords = $connection->execute("select distinct (InputEntityId) from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1")->fetchAll('assoc');
-        }
+       
+                $CompletedRecords = $connection->execute("select distinct (InputEntityId) from ME_Production_TimeMetric where $conditions and ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and QcStatusId = 1 and QC_Module_Id=$moduleId")->fetchAll('assoc');
         
         $totalSelectedRecords = count($selectRecords);
         $totalCompletedRecords = count($CompletedRecords);
