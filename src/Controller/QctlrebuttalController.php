@@ -49,7 +49,6 @@ class QctlrebuttalController extends AppController {
         $role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
-
         
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
@@ -184,13 +183,13 @@ class QctlrebuttalController extends AppController {
             }
 
             if ($QueryDateFrom != '' && $QueryDateTo != '') {
-                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionEndDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
+                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
             }
             if ($QueryDateFrom != '' && $QueryDateTo == '') {
-                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionEndDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
+                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
             }
             if ($QueryDateFrom == '' && $QueryDateTo != '') {
-                $conditions .= "  AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND prdem.ProductionEndDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
+                $conditions .= "  AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
             }
 
 
