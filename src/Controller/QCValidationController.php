@@ -35,12 +35,17 @@ class QCValidationController extends AppController {
 
     public function index() {
 
-        $connection = ConnectionManager::get('d2k');
+
+        $connectiond2k = ConnectionManager::get('d2k');
         $statusIdentifier = ReadyForQCIdentifier;
+        $statusreworkIdentifier = ReadyForQCreworkIdentifier;
         $session = $this->request->session();
         $moduleId = $session->read("moduleId");
        
-        $QcFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
+        /////////////QC ///////////////////////////////////////
+       
+        $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
+        
         $QcFirstStatus = array_map(current, $QcFirstStatus);
         $first_Status_name = $QcFirstStatus[0];
         
@@ -50,12 +55,32 @@ class QCValidationController extends AppController {
         $ProjectId = $session->read("ProjectId");
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+        //echo "<pre>";print_r($JsonArray);exit;
         
         $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
         $next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
         $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
         
+        
+        /////////////QC end ///////////////////////////////////////
+        
+        /////////////QC Rework ///////////////////////////////////////
+       
+        $QcFirstStatusRW = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusreworkIdentifier' AND RecordStatus=1")->fetchAll('assoc');
+        
+        $QcFirstStatusRW = array_map(current, $QcFirstStatusRW);
+        $first_Status_name_rw = $QcFirstStatusRW[0];///Ready for QC Rework
+        
+        $first_Status_id_rw = array_search($first_Status_name_rw, $JsonArray['ProjectStatus']);
+        $next_status_name_rw = $JsonArray['ModuleStatus_Navigation'][$first_Status_id_rw][0];
+        $next_status_id_rw = $JsonArray['ModuleStatus_Navigation'][$first_Status_id_rw][1];
+        
+        
+        
+        /////////////QC Rework end ///////////////////////////////////////
+        
+       
 //        $queryStatus = $JsonArray['ModuleStatusList'][$moduleId];
 //        // pr($queryStatus);
 //        $pos = array_search('Query', $queryStatus);
@@ -992,19 +1017,19 @@ class QCValidationController extends AppController {
             $this->set('ADDNEW', $addnew);
             $this->set('next_status_id', $next_status_id);
            
-           $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId=' . $next_status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
+           $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId IN (' . $next_status_id_rw . ','.$next_status_id.') AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
+           //pr($InprogressProductionjob);exit;
             if (empty($InprogressProductionjob)) {
                  
-                $InprogressRebutaljob = $connection->execute('SELECT TOP 1 *  FROM MV_QC_TimeMetric where QcStatusId = 4 AND QCUSerID=' . $user_id . ' AND ProjectId=' . $ProjectId)->fetchAll('assoc');
+                  $Reworkjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WHERE StatusId=' . $first_Status_id_rw . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
+                     if (empty($Reworkjob)) {
 
-                if (empty($InprogressRebutaljob)) {
-                    $Rebutaljob = $connection->execute('SELECT TOP 1 * FROM MV_QC_TimeMetric where QcStatusId = 3 AND QCUSerID=' . $user_id . ' AND ProjectId=' . $ProjectId)->fetchAll('assoc');
 
-                    if (empty($Rebutaljob)) {
                         $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
                         if (empty($productionjob)) {
                             $this->set('NoNewJob', 'NoNewJob');
                         } else {
+                            
                             foreach ($productionjob as $val) {
                                 if ($val['StatusId'] == $first_Status_id && ($newJob == 'NewJob' || $newJob == 'newjob')) {
 //                        $updateUserGroupId = $connection->execute("SELECT UserGroupId FROM MV_UserGroupMapping where Projectid=$ProjectId and RegionId=".$productionjob[0]['RegionId']." and UserId=$user_id and RecordStatus=1");
@@ -1038,25 +1063,29 @@ class QCValidationController extends AppController {
                         }
                     } else {
 
-                        $Error_status = $Rebutaljob[0]['StatusId'];
-                        $InputEntityId = $Rebutaljob[0]['InputEntityId'];
-
-                        $productionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE InputEntityId=' . $InputEntityId . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
-                        if ($productionjob[0]['StatusId'] == $Error_status && ($newJob == 'NewJob' || $newJob == 'newjob')) {
-                            $ProjectId = $productionjob[0]['ProjectId'];
-                            $RegionId = $productionjob[0]['RegionId'];
-                            $InputEntityId = $productionjob[0]['InputEntityId'];
+                       foreach ($Reworkjob as $val) {
+                                if ($val['StatusId'] == $first_Status_id_rw && ($newJob == 'NewJob' || $newJob == 'newjob')) {
+//                        $updateUserGroupId = $connection->execute("SELECT UserGroupId FROM MV_UserGroupMapping where Projectid=$ProjectId and RegionId=".$productionjob[0]['RegionId']." and UserId=$user_id and RecordStatus=1");
+//                            foreach ($updateUserGroupId as $UserVal) {
+//                               $userGpId = $UserVal['UserGroupId']; 
+//                            }
+//                        $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $next_status_id . ",UserId=" . $user_id . ",UserGroupId=" . $userGpId .",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
+                                    $ProjectId = $Reworkjob[0]['ProjectId'];
+                                    $RegionId = $Reworkjob[0]['RegionId'];
+                                    $InputEntityId = $Reworkjob[0]['InputEntityId'];
 
                             $QcIterationInsert = $connection->execute("INSERT INTO MV_QC_Iteration (ProjectId,RegionId,InputEntityId,QCUserId,QcStartDate,RecordStatus,CreatedDate,CreatedBy) values($ProjectId,$RegionId,$InputEntityId,$user_id,'" . date('Y-m-d H:i:s') . "',1,'" . date('Y-m-d H:i:s') . "',$user_id)");
-                            $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET UserId=" . $user_id . ",ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id,ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
-                            $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id,ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
-                            $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET QcStatusId = 4,QCUSerID=" . $user_id . ",ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id,QCStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntityID=" . $productionjob[0]['ProductionEntity'] . " AND Module_Id=" . $moduleId);
-                            $productionjob[0]['StatusId'] = $Error_status;
-                            $productionjob[0]['StatusId'] = 'QC Error In Progress';
+                                    $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $next_status_id_rw . ",UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $val['ProductionEntity']);
+                                    $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $next_status_id_rw . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $val['ProductionEntity']);
+                                    $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET StatusId=" . $next_status_id_rw . ",QCUSerID=" . $user_id . ",QCStartDate='" . date('Y-m-d H:i:s') . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE ProductionEntityID=" . $val['ProductionEntity'] . " AND Module_Id=" . $moduleId);
+                                    $Reworkjob[0]['StatusId'] = $next_status_id_rw;
+                                    $Reworkjob[0]['StatusId'] = 'QC Rework In Progress';
                         }
-                        $productionjobNew = $productionjob[0];
-                        $this->set('productionjob', $productionjob[0]);
-                        $inputEntity = $productionjob[0]['InputEntityId'];
+                            }
+                            $productionjobNew = $Reworkjob[0];
+                            $this->set('productionjob', $Reworkjob[0]);
+                            $inputEntity = $Reworkjob[0]['InputEntityId'];
+//                            $BatchId = $connection->execute('SELECT Qc_Batch_Id, UserId FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE InputEntityId=' . $inputEntity)->fetchAll('assoc');
                         $BatchId = $connection->execute('SELECT Qc_Batch_Id, UserId FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE InputEntityId=' . $inputEntity . ' AND Qc_Batch_Id IS NOT NULL')->fetchAll('assoc');
                         $QcBatchId = $BatchId[0]['Qc_Batch_Id'];
                         $ProdUserId = $BatchId[0]['UserId'];
@@ -1066,8 +1095,19 @@ class QCValidationController extends AppController {
                         $this->set('ProdUserId', $ProdUserId);
                     }
                 } else {
+                    //echo $next_status_id."-first,".$next_status_id_rw."-rework".$InprogressProductionjob[0]['StatusId'];exit;
 
-                    $InputEntityId = $InprogressRebutaljob[0]['InputEntityId'];
+                    if($next_status_id_rw == $InprogressProductionjob[0]['StatusId']){
+                      $this->set('QCStatus_find', 'rework');
+                      $this->set('QCrework_next_id', $next_status_id_rw);
+                      $next_status_id= $next_status_id_rw;
+                    }
+                    else{
+                      $this->set('QCStatus_find', 'inprogress');
+                    }
+                    
+
+                    $InputEntityId = $InprogressProductionjob[0]['InputEntityId'];
                     $productionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE InputEntityId=' . $InputEntityId . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
                     $this->set('getNewJOb', '');
                     $this->set('productionjob', $productionjob[0]);
@@ -1081,23 +1121,11 @@ class QCValidationController extends AppController {
                     $this->set('QcBatchName', $QcBatchName);
                     $this->set('ProdUserId', $ProdUserId);
                 }
-            } else {
 
-                $this->set('getNewJOb', '');
-                $this->set('productionjob', $InprogressProductionjob[0]);
-                $productionjobNew = $InprogressProductionjob[0];
-                $inputEntity = $InprogressProductionjob[0]['InputEntityId'];
-                $BatchId = $connection->execute('SELECT Qc_Batch_Id, UserId FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE InputEntityId=' . $inputEntity . ' AND Qc_Batch_Id IS NOT NULL')->fetchAll('assoc');
-                $QcBatchId = $BatchId[0]['Qc_Batch_Id'];
-                $ProdUserId = $BatchId[0]['UserId'];
-                $BatchName = $connection->execute('SELECT BatchName FROM MV_QC_BatchMaster WITH (NOLOCK) WHERE Id=' . $QcBatchId)->fetchAll('assoc');
-                $QcBatchName = $BatchName[0]['BatchName'];
-                $this->set('QcBatchName', $QcBatchName);
-                $this->set('ProdUserId', $ProdUserId);
-            }
 //            $InprogressProductionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . 4 . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
 //            if (empty($InprogressProductionjob)) {
-//                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId)->fetchAll('assoc');
+//                
+//            $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId)->fetchAll('assoc');
 //                if (empty($productionjob)) {
 //                    $this->set('NoNewJob', 'NoNewJob');
 //                } else {
@@ -1126,11 +1154,14 @@ class QCValidationController extends AppController {
             $module = array_keys($module);
         
            $ProductionFields = array();
+           $StaticFields = array();
            foreach ($module as $key => $value) {
-          
+   $StaticFieldsarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['static'];   
    $ProductionFieldsarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['production'];  
    if(!empty($ProductionFieldsarr))
     $ProductionFields = array_merge($ProductionFields,$ProductionFieldsarr);
+    if(!empty($StaticFieldsarr))
+    $StaticFields = array_merge($StaticFields,$StaticFieldsarr);
  }
             $AttributeGroupMaster = $JsonArray['AttributeGroupMasterDirect'];
          //   $AttributeGroupMaster = $AttributeGroupMaster[$moduleId];
@@ -1249,6 +1280,23 @@ class QCValidationController extends AppController {
 
                 $finalprodValue = array();
                 foreach ($CengageProcessInputData as $key => $value) {
+                    ////qc comment status find/////////////////////
+                   // pr($value);
+                     $QcCommentVal = $connection->execute('SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' ')->fetchAll('assoc');
+                    if(!empty($QcCommentVal)){
+                       $qc_status= $QcCommentVal[0]['StatusId'];
+                    }
+                    else{
+                        $qc_status='';
+                    }
+                     $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']]['qccomment_status'] = $qc_status;
+                     $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']]['qccomment_id'] = $QcCommentVal[0]['Id'];
+                     $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']]['qccomment_errorcat'] = $QcCommentVal[0]['ErrorCategoryMasterId'];
+                     $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']]['qccomment_errorsub'] = $QcCommentVal[0]['SubErrorCategoryMasterId'];
+                
+                    ////qc comment status find end/////////////////////
+                    
+                    
                     $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = [$value['AttributeValue']];
                 }
                 foreach ($groupwisearray as $key => $subGrp) {
@@ -1291,23 +1339,32 @@ class QCValidationController extends AppController {
                 $this->set('HelpContantDetails', $HelpContId);
             }
             
- $InputEntityId = $productionjobNew['InputEntityId'];
+           $InputEntityId = $InprogressProductionjob[0]['InputEntityId'];
+            if (empty($InprogressProductionjob)) {
+                $InputEntityId = $productionjob[0]['InputEntityId'];
+            }
             
             $productionjobId = $this->request->data['ProductionId'];
             $ProductionEntity = $this->request->data['ProductionEntityID'];
             $productionjobStatusId = $this->request->data['StatusId'];
             // pr($this->request->data);
+
             if (isset($this->request->data['Submit'])) {
                  
-                $queryStatus = $connection->execute("SELECT count(1) as cnt FROM ME_QcUserQuery WITH (NOLOCK) WHERE  StatusID=1 AND ProjectId=" . $ProjectId . " AND  ProductionEntityId='" . $productionjobNew['ProductionEntity'] . "'")->fetchAll('assoc');
+            //////rework check/////////////////////////////
+            /*if($this->request->data['getreworkjob'] =="rework"){
                 
-                if ($queryStatus[0]['cnt'] > 0) {
-                    $Qc_Status_name = "QC Query";
-                    $Qc_Status_id = array_search($Qc_Status_name, $JsonArray['ProjectStatus']);
-                    $completion_status = $Qc_Status_id;
-                    $QcStatusId = 0;
-                    $submitType = 'query';
-                } else {    
+                $cnt_InputEntity = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=6")->fetchAll('assoc');
+               if($cnt_InputEntity[0]['cnt'] > 0){
+
+               }
+               else{
+
+               }
+            }*/
+            //////rework check end/////////////////////////////
+                
+               
                 if (count($DynamicFields) > 1) {
                     foreach ($DynamicFields as $val) {
                         $dymamicupdatetempFileds.="[" . $val['AttributeMasterId'] . "]='" . $this->request->data[$val['AttributeMasterId']] . "',";
@@ -1322,6 +1379,8 @@ class QCValidationController extends AppController {
                 $cnt_InputEntity_TLAcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=2 AND ProjectId=" . $ProjectId . " AND UserId=" . $user_id . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
 
                 $cnt_InputEntity_QcError_Deleted = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=0 AND RecordStatus =1 AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+
+               // $cnt_InputEntity_TL_rebutall = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=7 AND RecordStatus =1 AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
 
                 if ($cnt_InputEntity[0]['cnt'] != 0) {
 
@@ -1345,7 +1404,7 @@ class QCValidationController extends AppController {
                     $QcStatusId = 0;
                     $submitType = 'completed';
                 }
-            }
+              
                 if ($completion_status != '') {
                     $QcIterationUpdate = $connection->execute("UPDATE MV_QC_Iteration SET QcEndDate='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE CreatedDate IN (select MAX (createddate)from MV_QC_Iteration) and InputEntityId=" . $InputEntityId);
                     $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completion_status . ",ActEnddate='" . date('Y-m-d H:i:s') . "' ,TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntity=" . $ProductionEntity);
@@ -1572,13 +1631,20 @@ class QCValidationController extends AppController {
                     $ProductionFields[$key]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against_org . ');';
                 }
           
-                    $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetOldDatavalue_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
-             
-             
+            
+             if (empty($InprogressProductionjob)) {
+                    //     print_r($productionjob);
+                    $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetOldDatavalue($productionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+                    $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetRebutalvalue($productionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+                } else {
+                    //   print_r($InprogressProductionjob);
+                    $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetOldDatavalue($InprogressProductionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+                    $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetRebutalvalue($InprogressProductionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+                }
                 $j++;
             }
-          
             $this->set('OldDataresultError', $OldDataresultError);
+            $this->set('OldDataresultRebutal', $OldDataresultRebutal);
          
             $this->set('ProductionFields', $ProductionFields);
             $this->set('DynamicFields', $DynamicFields);
@@ -2734,5 +2800,83 @@ function ajaxgetafterreferenceurl() {
         }
         return null;
     }
+ 
+    
+   function ajaxupdateacceptstatus(){
+        $connection = ConnectionManager::get('default');
+        $Id = $_POST['Id'];
+        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 8 WHERE Id='".$Id."'");
+        
+}
+   
+    function ajaxupdaterejectstatus(){
+        $connection = ConnectionManager::get('default');
+        $Id = $_POST['Id'];
+        $Comments = $_POST['comment'];
+        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCTLRebuttedComments='".$Comments."' WHERE Id='".$Id."'");
+        
+   } 
+   function ajaxformsubmit(){
+       
+      
+        $connectiond2k = ConnectionManager::get('d2k');
+        $statusIdentifier = ReadyforPUReworkIdentifier;
+        $session = $this->request->session();
+        $moduleId = $session->read("moduleId");        
+        $user_id = $session->read("user_id");
+        $role_id = $session->read("RoleId");
+        $ProjectId = $session->read("ProjectId");
+        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+        //echo "<pre>";print_r($JsonArray);exit;        
+       
+        foreach($JsonArray['ModuleConfig'] as $key => $value){
+            if($value['IsModuleGroup'] == '1'){
+                $ProdModuleId= $key;
+            }
+        }
+        
+        /////////////d2k ///////////////////////////////////////
+       //echo "SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' and RecordStatus=1";exit;
+        $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ProdModuleId and ModuleStatusIdentifier='$statusIdentifier' and RecordStatus=1")->fetchAll('assoc');
+       
+        $QcFirstStatus = array_map(current, $QcFirstStatus);
+        $first_Status_name = $QcFirstStatus[0];        
+        $stagingTable = 'Staging_' . $moduleId . '_Data';
+        $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
+        
+        
+        /////////////d2k end ///////////////////////////////////////
+       
+        $connection = ConnectionManager::get('default');
+        $rework = $_POST['rework'];
+        $ProjectId = $_POST['projectId'];
+        $InputEntityId = $_POST['entityId'];
+        $nextId = $_POST['nextId'];
+        if($rework =="rework"){
+            $cnt_InputEntity = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments  WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=6")->fetchAll('assoc');
+            $cnt_InputEntityReject = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=9")->fetchAll('assoc');
+            
+             if($cnt_InputEntity[0]['cnt'] > 0){                   
+                $SubmitInfo=0;
+             }
+             elseif($cnt_InputEntityReject[0]['cnt'] > 0){
+                 
+                $UpdateStatus= $JsonArray['ModuleStatus_Navigation'][$nextId][1];
+                
+                $Updataquery = $connection->execute("UPDATE ".$stagingTable." SET StatusId=" . $UpdateStatus . "WHERE ProjectId=" . $ProjectId . " AND InputEntityId=" . $InputEntityId);
+                $SubmitInfo=1;
+             }             
+             else{
+                 $Updataquery = $connection->execute("UPDATE ".$stagingTable." SET StatusId=" . $first_Status_id . "WHERE ProjectId=" . $ProjectId . " AND InputEntityId=" . $InputEntityId);
+                 $SubmitInfo=1;
+             }
+        }
+        else{
+                $SubmitInfo=1;
+        }
+        
+        echo $SubmitInfo;
+        exit;
+   }
  
 }
