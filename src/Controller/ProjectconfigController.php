@@ -83,7 +83,7 @@ class ProjectconfigController extends AppController {
                 $Projectconfigmaster->InputCheck = $input_mandatory;
                 $Projectconfigmaster->isBulk = $is_bulk;
                 $Projectconfigmaster->HygineCheck = $hygine_check;
-				$Projectconfigmaster->CengageProject = $CengageProject_check;
+		$Projectconfigmaster->CengageProject = $CengageProject_check;
                 //$OptionMasterMap = $OptionMasterMaptable->patchEntity($OptionMasterMap, $data);
 
                 $Projectmastertable->save($Projectconfigmaster);
@@ -131,6 +131,7 @@ class ProjectconfigController extends AppController {
                 $default_dashboard_count_edit = $query->ProdDB_PageLimit;
                 //pr($default_dashboard_count_edit);
                 $QualityLimitEdit = $query->QualityLimit;
+                $monthlytargetEdit = $query->MonthlyTarget;
                 //pr($QualityLimitEdit);
                 $InputCheckEdit = $query->InputCheck;
                 if ($InputCheckEdit == 1) {

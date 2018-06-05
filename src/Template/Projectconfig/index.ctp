@@ -229,7 +229,7 @@ use Cake\Routing\Router; ?>
                 </div>
             </div>
         </div>
-		<div class="col-md-4">
+	<div class="col-md-4">
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-6 control-label">Is Cengage Project?</label>
                 <div class="col-sm-6">
