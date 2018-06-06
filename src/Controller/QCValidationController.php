@@ -38,12 +38,12 @@ class QCValidationController extends AppController {
 
         $connectiond2k = ConnectionManager::get('d2k');
         $statusIdentifier = ReadyForQCIdentifier;
-        $statusreworkIdentifier = ReadyForQCreworkIdentifier;
+        $statusreworkIdentifier = "ReadyforQCRework";
         $session = $this->request->session();
         $moduleId = $session->read("moduleId");
        
         /////////////QC ///////////////////////////////////////
-       
+        
         $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
         
         $QcFirstStatus = array_map(current, $QcFirstStatus);
@@ -983,7 +983,8 @@ class QCValidationController extends AppController {
             $this->set('session', $session);
             $dynamicData = $SequenceNumber[0];
             $this->set('dynamicData', $dynamicData);
-        } else {
+        } 
+		else {
            
 
             $distinct = $this->GetJob->find('getDistinct', ['ProjectId' => $ProjectId]);
@@ -1247,12 +1248,23 @@ class QCValidationController extends AppController {
 
                 $InputEntityId = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . $next_status_id . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
                 $DependencyTypeMaster = $connection->execute('SELECT Id,Type,FieldTypeName FROM MC_DependencyTypeMaster WHERE ProjectId=' . $ProjectId . ' AND DisplayInProdScreen=1 AND RecordStatus=1')->fetchAll('assoc');
+				foreach ($DependencyTypeMaster as $vals) {
+					if($vals['DisplayInProdScreen']==1)
+						$DependentMasterIds[$vals['Type']] = $vals['Id'];
+					
+					if($vals['Type']=="InputValue")
+						$staticDepenIds[] = $vals['Id'];
+					
+					if($vals['FieldTypeName']=="General")
+						$staticDepenIds[] = $vals['Id'];
+                }
                 if (!empty($InputEntityId)) {
                     $CengageProcessInputData = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')')->fetchAll('assoc');
                         $staticFields = array();
                     foreach ($StaticFields as $key => $value) {
                         $getDomainIdVal = $connection->execute('SELECT AttributeValue FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $value['AttributeMasterId'] . ') AND DependencyTypeMasterId in ('.implode(',',$staticDepenIds).')')->fetchAll('assoc');
                         $staticFields = array_merge($staticFields,$getDomainIdVal);
+						
                         }
 //                    if ($domainUrl) {
 //                        $getDomainUrlVal = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $domainUrl . ') AND ID=355729')->fetchAll('assoc');
@@ -1404,7 +1416,7 @@ class QCValidationController extends AppController {
                     $QcStatusId = 0;
                     $submitType = 'completed';
                 }
-              
+					
                 if ($completion_status != '') {
                     $QcIterationUpdate = $connection->execute("UPDATE MV_QC_Iteration SET QcEndDate='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE CreatedDate IN (select MAX (createddate)from MV_QC_Iteration) and InputEntityId=" . $InputEntityId);
                     $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completion_status . ",ActEnddate='" . date('Y-m-d H:i:s') . "' ,TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntity=" . $ProductionEntity);
@@ -1631,11 +1643,13 @@ class QCValidationController extends AppController {
                     $ProductionFields[$key]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against_org . ');';
                 }
           
-            
+             
              if (empty($InprogressProductionjob)) {
                     //     print_r($productionjob);
+					if($productionjob[0]['InputEntityId']){
                     $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetOldDatavalue($productionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
                     $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetRebutalvalue($productionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+					}
                 } else {
                     //   print_r($InprogressProductionjob);
                     $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']] = $this->QCValidation->ajax_GetOldDatavalue($InprogressProductionjob[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
@@ -2853,6 +2867,7 @@ function ajaxgetafterreferenceurl() {
         $InputEntityId = $_POST['entityId'];
         $nextId = $_POST['nextId'];
         if($rework =="rework"){
+		if($InputEntityId){
             $cnt_InputEntity = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments  WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=6")->fetchAll('assoc');
             $cnt_InputEntityReject = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=9")->fetchAll('assoc');
             
@@ -2870,6 +2885,7 @@ function ajaxgetafterreferenceurl() {
                  $Updataquery = $connection->execute("UPDATE ".$stagingTable." SET StatusId=" . $first_Status_id . "WHERE ProjectId=" . $ProjectId . " AND InputEntityId=" . $InputEntityId);
                  $SubmitInfo=1;
              }
+			 }
         }
         else{
                 $SubmitInfo=1;
