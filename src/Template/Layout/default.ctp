@@ -109,9 +109,9 @@ $cakeDescription = 'MOJO 2.0';
 
             // Function for Fade out the success & failure message.
             $(document).ready(function () {
-               
+                var today = new Date(); 
+                
                 $('#batch_from').Zebra_DatePicker({
-                    direction: false,
                     format: 'd-m-Y',
                     pair: $('#batch_to'),
                     onChange: function (view, elements) {
@@ -121,8 +121,26 @@ $cakeDescription = 'MOJO 2.0';
                 });
 
                 $('#batch_to').Zebra_DatePicker({
-                    direction: true,
+                    //direction: true,
+                     direction: [true, today.getDate() + '-' + ((today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1)) + '-' + today.getFullYear()],
                     format: 'd-m-Y'
+                });
+                
+                
+                
+                 $('#month_from').Zebra_DatePicker({
+                    format: 'm-Y',
+                    pair: $('#month_to'),
+                    onChange: function (view, elements) {
+                        $('#month_to').val('');
+
+                    }
+                });
+
+                $('#month_to').Zebra_DatePicker({
+                   // direction: true,
+                     direction: [true,  ((today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1)) + '-' + today.getFullYear()],
+                    format: 'm-Y'
                 });
 
                 $('#QueryDateFrom').Zebra_DatePicker({
@@ -134,9 +152,9 @@ $cakeDescription = 'MOJO 2.0';
                     }
                 });
 
-
+               
                 $('#QueryDateTo').Zebra_DatePicker({
-                    direction: true,
+                    direction: [true, today.getDate() + '-' + ((today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1)) + '-' + today.getFullYear()],
                     format: 'd-m-Y'
                 });
 
