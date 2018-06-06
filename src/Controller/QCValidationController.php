@@ -1397,22 +1397,22 @@ class QCValidationController extends AppController {
                 if ($cnt_InputEntity[0]['cnt'] != 0) {
 
                     if ($cnt_InputEntity_QcError[0]['cnt'] != 0) {
-                        $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][2][1];
+                        $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][1];
                         $QcStatusId = 1;
                         $submitType = 'completed';
                     } else if ($cnt_InputEntity_QcError_Deleted[0]['cnt'] != 0) {
                         if ($cnt_InputEntity_TLAcceptError[0]['cnt'] != 0) {
-                            $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][2][1];
+                            $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][1];
                             $QcStatusId = 5;
                         } else {
-                            $status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][2][1];
-                            $completion_status = $JsonArray['ModuleStatus_Navigation'][$status][2][1];
+                            $status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][1];
+                            $completion_status = $JsonArray['ModuleStatus_Navigation'][$status][1];
                             $QcStatusId = 7;
                             $submitType = 'completed';
                         }
                     }
                 } else {
-                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][1];
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][2][1];
                     $QcStatusId = 0;
                     $submitType = 'completed';
                 }
