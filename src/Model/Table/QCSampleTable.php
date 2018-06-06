@@ -35,10 +35,11 @@ class QCSampleTable extends Table {
         $RegionId = $options['RegionId'];
         $ModuleId = $options['ModuleId'];
         $UserGroupId = $options['UserGroupId'];
+        $QcModuleId = $option['QcModuleId'];
         
         $QcStatusDetails = $connection->execute("select Id,ProjectId,RegionId,ProcessId,BatchName,EntityCount,ProductionStartDate,"
                 . "ProductionEndDate,StatusId,RecordStatus,CreatedDate FROM MV_QC_BatchMaster WHERE StatusId IN ($QcStatusId) "
-                . "and ProjectId='" . $ProjectId . "' and RegionId='" . $RegionId . "' and ProcessId='" . $ModuleId . "' and UserGroupId='" . $UserGroupId . "' and RecordStatus=1 ORDER BY CreatedDate DESC");
+                . "and ProjectId='" . $ProjectId . "' and RegionId='" . $RegionId . "' and QC_Module_Id='".$QcModuleId."' and ProcessId='" . $ModuleId . "' and UserGroupId='" . $UserGroupId . "' and RecordStatus=1 ORDER BY CreatedDate DESC");
         $QcStatusDetails = $QcStatusDetails->fetchAll('assoc');
 
         return $QcStatusDetails;

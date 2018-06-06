@@ -89,8 +89,12 @@ class QCSampleController extends AppController {
             $ModuleId = $this->request->data('ModuleId');
             $UserGroupId = $this->request->data('UserGroupId');
             $QcStatusId = ('3');
+             $session = $this->request->session();
+        $userid = $session->read('user_id');
+        
+        $moduleId = $session->read("moduleId");
 
-            $SelectQCBatch = $this->QCSample->find('batches', ['QcStatusId' => $QcStatusId, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'ModuleId' => $ModuleId, 'UserGroupId' => $UserGroupId]);
+            $SelectQCBatch = $this->QCSample->find('batches', ['QcStatusId' => $QcStatusId, 'QcModuleId' => $moduleId, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'ModuleId' => $ModuleId, 'UserGroupId' => $UserGroupId]);
             
             if(!empty($SelectQCBatch)){
                 //$this->Flash->success(__('Sample Created Successfully'));
@@ -350,9 +354,12 @@ class QCSampleController extends AppController {
                 }
                 $samplecountArr=$samplecount+$samplecountArr;
             }
+            $session = $this->request->session();
+        $userid = $session->read('user_id');
+        $moduleId = $session->read("moduleId");
             $ModifiedDate = date("Y-m-d H:i:s");
-            $connection->execute("UPDATE ME_Production_TimeMetric SET QcStatusId=5, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Qc_Batch_Id=".$QCBatchId);
-            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,SampleCount=".$samplecountArr.", ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId);
+            $connection->execute("UPDATE ME_Production_TimeMetric SET QcStatusId=5, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Qc_Batch_Id=".$QCBatchId." and QC_Module_Id=$moduleId");
+            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,SampleCount=".$samplecountArr.", ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId." and QC_Module_Id=$moduleId");
             $this->Flash->success(__('Random Sampling Created Successfully!'));
             $this->redirect(['action' => 'index']);  
         }
@@ -405,9 +412,12 @@ class QCSampleController extends AppController {
                 }
                 $samplecountArr=$samplecount+$samplecountArr;
             }
+            $session = $this->request->session();
+        $userid = $session->read('user_id');
+        $moduleId = $session->read("moduleId");
             $ModifiedDate = date("Y-m-d H:i:s");
-            $connection->execute("UPDATE ME_Production_TimeMetric SET QcStatusId=5, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Qc_Batch_Id=".$QCBatchId);
-            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,SampleCount=$samplecountArr ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId);
+            $connection->execute("UPDATE ME_Production_TimeMetric SET QcStatusId=5, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Qc_Batch_Id=".$QCBatchId." and QC_Module_Id=$moduleId");
+            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,SampleCount=$samplecountArr ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId." and QC_Module_Id=$moduleId");
             $this->Flash->success(__('Stratified Sampling Created Successfully!'));
             $this->redirect(['action' => 'index']);  
         }
