@@ -50,7 +50,7 @@ table.dataTable tbody tr {
            
         <div class="col-md-4" >
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-6 control-label">Batch Created Date From</label>
+                <label for="inputPassword3" class="col-sm-6 control-label">From Date</label>
                 <div class="col-sm-6">
                     <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_from' id='month_from' value='<?php echo $fromdate;?>'>
                 </div>
@@ -60,7 +60,7 @@ table.dataTable tbody tr {
 
         <div class="col-md-3">
             <div class="form-group">
-                <label for="inputPassword4" class="col-sm-6 control-label">Batch Created Date To</label>
+                <label for="inputPassword4" class="col-sm-6 control-label">To Date</label>
                 <div class="col-sm-6">				
                     <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_to' id='month_to' value='<?php echo $todate;?>'>
                 </div>
@@ -93,21 +93,16 @@ table.dataTable tbody tr {
         <?php 
 if (!empty($monthtitle)) {
 ?>
-<div class="container-fluid">
+<div class="container-fluid"  >
     <div class="bs-example">
         <div id="vertical">
-            <div id="top-pane">			
-                <div id="horizontal" style="height: 100%; width: 100%;">
-                    <div id="left-pane" class="pa-lef-10 col-md-12">
+   
 					
-                            <div id="chartContainer" style="height: 300px; width: 100%;">
-                        </div>
-						
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                <div id="chartContainer" style="height: 200px; width: 100%;padding-bottom:10px;"></div>
+                        
+
+</div>
+</div>
 </div>
 		
 
@@ -128,9 +123,7 @@ if (!empty($monthtitle)) {
 										<?php foreach ($monthtitle as $val){ ?>
                                         <th class="Cell" width="10%"><?php echo $val;?></th> 
 										<?php } ?>
-										<?php foreach ($monthtitle as $val){ ?>
-                                        <th class="Cell" width="10%"><?php echo $val;?></th> 
-										<?php } ?>
+										
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -141,18 +134,14 @@ if (!empty($monthtitle)) {
 									<?php foreach ($target as $val){ ?>									
                                         <td><?php echo $val;?></td> 
 									<?php } ?>
-									<?php foreach ($target as $val){ ?>									
-                                        <td><?php echo $val;?></td> 
-									<?php } ?>
+									
 									</tr>
 									<tr>
 									 <td>Completed</td> 
 									<?php foreach ($completed as $val){ ?>									
                                      <td><?php echo $val;?></td> 
 									<?php } ?>
-									<?php foreach ($completed as $val){ ?>									
-                                     <td><?php echo $val;?></td> 
-									<?php } ?>
+									
 									</tr>
 										
 										
@@ -461,38 +450,18 @@ $('#example').find('tr').click( function(){
     var chart = new CanvasJS.Chart("chartContainer",
     {
       title:{
-        text: "A Multi-series Column Chart"      
+        text: "Monthly Delivered Chart"      
       },   
 	  axisX: {
 				
 			},
       data: [{        
         type: "column",
-        dataPoints: [
-        {label: "Jan" , x: 1, y: 171 },
-        {label: "Feb" , x: 2, y: 155 },
-        {label: "Mar" , x: 3, y: 150 },
-        {label: "Apr" , x: 4, y: 165 },
-        {label: "Italy" , x: 5, y: 195 },
-        {label: "Italy" , x: 6, y: 168 },
-        {label: "Italy" , x: 7, y: 128 },
-        {label: "Italy" , x: 8, y: 134 },
-        {label: "Italy" , x: 9, y: 114 }
-        ]
+        <?php echo $fchart;?>
       },
       {        
         type: "column",
-        dataPoints: [
-        {label: "Jan" , x: 1, y: 71 },
-        {label: "Feb" , x: 2, y: 55 },
-        {label: "Mar" , x: 3, y: 50 },
-        {label: "Apr" , x: 4, y: 65 },
-        {label: "Italy" , x: 5, y: 95 },
-        {label: "Italy" , x: 6, y: 68 },
-        {label: "Italy" , x: 7, y: 28 },
-        {label: "Italy" , x: 8, y: 34 },
-        {label: "Italy" , x: 9, y: 14}
-        ]
+        <?php echo $f2chart;?>
       }        
       ]
     });
