@@ -223,7 +223,7 @@ return [
             'driver' => 'Cake\Database\Driver\Sqlserver',
             'persistent' => false,
             //'host' => '172.198.11.18',
-            'host' => '10.101.11.209',
+            'host' => '34.206.95.78',//'10.101.11.209',
             /**
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
@@ -231,8 +231,8 @@ return [
              */
            // 'port' => '1433',
             'username' => 'mojouser',
-            'password' => 'Mojo@user201',
-            'database' => 'D2K_Mojo_Entity_Validation',
+            'password' => 'Mojo@user8690',//'Mojo@user201',
+            'database' => 'Demo_D2k_Mojo',//'D2K_Mojo_Entity_Validation',
             'encoding' => PDO::SQLSRV_ENCODING_UTF8,
             'timezone' => 'IST',
             'flags' => [],
@@ -265,10 +265,10 @@ return [
             'driver' => 'Cake\Database\Driver\Sqlserver',
             'persistent' => false,
             //'host' => '172.198.11.18',
-            'host' => '10.101.11.209',
-            'username' => 'd2kconfiguser',
-            'password' => 'D2k@user201',
-            'database' => 'D2K_V3_Config',
+            'host' => '34.206.95.78',//'10.101.11.209',
+            'username' => 'phpliveuser',//'d2kconfiguser',
+            'password' => 'Php@user456',//'D2k@user201',
+            'database' => 'Demo_D2k_V3_config',//'D2K_V3_Config',
             'encoding' => PDO::SQLSRV_ENCODING_UTF8,
             'timezone' => 'IST',
             'flags' => [],
