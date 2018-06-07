@@ -414,7 +414,7 @@ width:100%;
 }
 .modal-content{
    background:#fff!important; 
-    height: 100%;
+    height: 100%;    
 	}
 .modal-body{
    background:#fff!important; 
@@ -444,7 +444,7 @@ width:100%;
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
  
-     } 
+        }
 .modal-header {
  
     background-color: #337AB7;
@@ -977,7 +977,7 @@ width:100%;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">×</span>
                         </button>
                         <h4 class="modal-title" id="exampleFillInModalTitle">All Source Links</h4>
                     </div>
@@ -1034,13 +1034,13 @@ width:100%;
     <?php //foreach (){   ?>
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">Ã—</span>
+                                                    <span aria-hidden="true">×</span>
                                                 </button>
                                                 <h4 class="modal-title" id="HelpModelAttribute"></h4>
                                             </div>
                     <div class="modal-body">
                         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">×</span>
                         </button> -->
                         <div class="form-group">
                             <span id='HelpModelContent'>
@@ -1061,7 +1061,7 @@ width:100%;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">×</span>
                         </button>
                         <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
                     </div>
@@ -1089,7 +1089,7 @@ width:100%;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">x</span>
                         </button>
                         <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
                     </div>
@@ -1099,7 +1099,7 @@ width:100%;
                                 <div id="top-pane">
                                     <div id="horizontal" style="height: 100%; width: 100%;">
                                         <div id="right-pane">
-<div id="example1" class="hot handsontable htColumnHeaders">
+                                            <div id="example1" class="hot handsontable htColumnHeaders">
 
 
 
@@ -1128,7 +1128,7 @@ width:100%;
                     <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">×</span>
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Query</h4>
                     </div>
@@ -1154,7 +1154,7 @@ width:100%;
                     <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">×</span>
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Query</h4>
                     </div>
@@ -1177,7 +1177,7 @@ width:100%;
                     <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">×</span>
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Query</h4>
                     </div>
@@ -3957,9 +3957,9 @@ if ($this->request->query['continue'] == 'yes') {
             $('#QuerySubmit').show();
             $('#Cancel').show();
             $('#Delete').show();
-//            alert("Enter QC Comments");
-//            $("#QCComments").focus();
-//            return false;
+            alert("Enter QC Comments");
+            $("#QCComments").focus();
+            return false;
         }
 
 
@@ -4100,14 +4100,14 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
             type: 'POST',
             data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu},
             success: function (res) {
-        
-                
+                    
+
 	     $(".hot").html(res);
-                }
-                });
-
             }
-
+        });
+        
+        }
+                
     //pu rework code
     function qcCommentsAccept(Id,AttributeMasterId, ProjectAttributeMasterId,seq){ 
         var result = new Array();
@@ -4122,7 +4122,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
             }
         });
     }
-     
+            
 	function QcCommentsReject(Id,AttributeMasterId,AttributeName,Attributeval,Comments,disposition,errorcat,errorsubcat){
 
       document.getElementById('light').style.display = 'block';
