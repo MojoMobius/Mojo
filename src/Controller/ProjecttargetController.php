@@ -92,10 +92,13 @@ $Setyear=$Arrfdate[1];
 $Arrcompleted=array();
 $Arrtarget=array();
 $Arrmonthtitle=array();
+ $f_chart='dataPoints: [';
+ $f2_chart='dataPoints: [';
 
 				 $target_report = $connection->execute("SELECT MonthlyTarget as mon FROM ProjectMaster  WHERE ProjectId='".$ProjectId."'")->fetchAll('assoc');
 				  
 			 for($i=0;$i<=$countmonth;$i++){
+                             $j=$i+1;
 				 if($Setmonth == 13){
 					 $Setmonth=1;
 					 $Setyear=$Setyear +1;
@@ -105,12 +108,14 @@ $Arrmonthtitle=array();
 				 $strdate =$Setyear."-".$Setmonth."-01";
 				 $Arrmonthtitle[]=date('F Y', strtotime($strdate));
 				 $Arrtarget[]=$target_report[0]['mon'];
+                                 
 				 //end
 				 
 				  $Mnth="_".(int)$Setmonth."_".(int)$Setyear;
 				  $cnt_report = $connection->execute("SELECT count(1) as cnt FROM ProductionEntityMaster".$Mnth."  WHERE StatusId!='' GROUP BY  InputEntityId")->fetchAll('assoc');
 				  $Arrcompleted[]=count($cnt_report);
-				 
+				  $f_chart.='{label: "'.date('F Y', strtotime($strdate)).'" , x: '.$j.', y: '.$target_report[0]['mon'].' },';
+                                  $f2_chart.='{label: "'.date('F Y', strtotime($strdate)).'" , x: '.$j.', y: '.count($cnt_report).' },';
 				 /////Query end/////
 				 
 				 $Setmonth= $Setmonth + 1;
@@ -120,7 +125,39 @@ $Arrmonthtitle=array();
         $this->set('completed', $Arrcompleted); 
         $this->set('monthtitle', $Arrmonthtitle);
         $this->set('totmonth', $countmonth);
+        $f_chart.=']';
+        //echo $f_chart;exit;
+        $f2_chart.=']';
 			 
+       
+          /* $f_charts='dataPoints: [
+         
+        {label: "Jan" , x: 1, y: 171 },
+        {label: "Feb" , x: 2, y: 155 },
+        {label: "Mar" , x: 3, y: 150 },
+        {label: "Apr" , x: 4, y: 165 },
+        {label: "Italy" , x: 5, y: 195 },
+        {label: "Italy" , x: 6, y: 168 },
+        {label: "Italy" , x: 7, y: 128 },
+        {label: "Italy" , x: 8, y: 134 },
+        {label: "Italy" , x: 9, y: 114 }
+        ]';
+        $f2_charts='dataPoints: [
+        {label: "Jan" , x: 1, y: 171 },
+        {label: "Feb" , x: 2, y: 155 },
+        {label: "Mar" , x: 3, y: 150 },
+        {label: "Apr" , x: 4, y: 165 },
+        {label: "Italy" , x: 5, y: 195 },
+        {label: "Italy" , x: 6, y: 168 },
+        {label: "Italy" , x: 7, y: 128 },
+        {label: "Italy" , x: 8, y: 134 },
+        {label: "Italy" , x: 9, y: 114 }
+        ]';*/
+        
+        $this->set('fchart', $f_chart);
+        $this->set('f2chart', $f2_chart);
+        
+        
 			 //pr($Arrmonthtitle);
 			 //pr($Arrtarget);
 			 //exit;
