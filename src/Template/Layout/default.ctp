@@ -133,6 +133,7 @@ $cakeDescription = 'MOJO 2.0';
                  $('#month_from').Zebra_DatePicker({
                     format: 'm-Y',
                     pair: $('#month_to'),
+                    direction:false,
                     onChange: function (view, elements) {
                         $('#month_to').val('');
 

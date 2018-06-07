@@ -52,23 +52,42 @@ class ChartsQcbatchController extends AppController {
         $Chartreports = array();
         $connection = ConnectionManager::get('default');
         if (isset($this->request->data['ProjectId'])) {
-            
+
             $ProjectId = $this->request->data['ProjectId'];
 //            $ProjectId = 3346;
-            $sladefault = sladefault;
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
-            
+            $sladefault = QareviewSLA;
+            $batch_from = "";
+            $batch_to = "";
+            $ProductionStartDate = "";
+            $ProductionEndDate = "";
+
+            if (!empty($this->request->data('month_from'))) {
+                $batch_from = $this->request->data('month_from');
+            }
+
+            if (!empty($this->request->data('month_to'))) {
+                $batch_to = $this->request->data('month_to');
+            }
+
 //            $batch_from = '08-05-2018';
-//            $batch_to = '30-05-2018';
-            
-            $ProductionStartDate = date("Y-m-d 00:00:00", strtotime($batch_from));
-            $ProductionEndDate = date("Y-m-d 23:59:59", strtotime($batch_to));
+
+            if (!empty($batch_from) && !empty($batch_to)) {
+                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
+                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_to));
+            } elseif (!empty($batch_from) && empty($batch_to)) {
+                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
+                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_from));
+            } elseif (empty($batch_from) && !empty($batch_to)) {
+                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_to));
+                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_to));
+            }
+
+
             //and Date between '$ProductionStartDate' and '$ProductionEndDate'
 
             $getbatchavg = $connection->execute("SELECT avg(AOQ) as Accuracy,MONTH(Date) as month,YEAR(Date) as year, (SELECT TOP 1 AOQ from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Iteration = 1) as Firstpass,'$sladefault' as sla from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Date between '$ProductionStartDate' and '$ProductionEndDate' group by MONTH(Date),YEAR(Date) order by MONTH(Date) asc");
             $getbatchavgres = $getbatchavg->fetchAll('assoc');
-
+//print_r("SELECT avg(AOQ) as Accuracy,MONTH(Date) as month,YEAR(Date) as year, (SELECT TOP 1 AOQ from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Iteration = 1) as Firstpass,'$sladefault' as sla from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Date between '$ProductionStartDate' and '$ProductionEndDate' group by MONTH(Date),YEAR(Date) order by MONTH(Date) asc");exit;
             $dataformat = array();
             $dataformataccuracy = array();
             $dataformataccuracyres = array();
@@ -87,8 +106,8 @@ class ChartsQcbatchController extends AppController {
                     $daytext = date('M-Y', strtotime($value['year'] . '-' . $value['month'] . '-01'));
                     $dataformataccuracy['label'] = $daytext;
                     $dataformataccuracyres[] = $dataformataccuracy;
-                   
-                    
+
+
                     // sla
                     $dataformatsla['y'] = intval($sladefault);
                     $dataformatsla['label'] = $daytext;
@@ -97,36 +116,35 @@ class ChartsQcbatchController extends AppController {
                     $dataformatfirstpass['y'] = intval($value['Firstpass']);
                     $dataformatfirstpass['label'] = $daytext;
                     $dataformatfirstpassres[] = $dataformatfirstpass;
-                   
+
                     $getbatchavgres[$key]['monthTxt'] = $daytext;
-                    $getbatchavgres[$key]['FirstpassTxt'] = intval($value['Firstpass']).$percentage;
-                    $getbatchavgres[$key]['AccuracyTxt'] = intval($value['Accuracy']).$percentage;
+                    $getbatchavgres[$key]['FirstpassTxt'] = intval($value['Firstpass']) . $percentage;
+                    $getbatchavgres[$key]['AccuracyTxt'] = intval($value['Accuracy']) . $percentage;
                 }
             }
-             
-              
-            $dataformat[0]["type"] =  "line";
-            $dataformat[0]["legendText"] =  "Accuracy";
-            $dataformat[0]["showInLegend"] =  true;
+
+
+            $dataformat[0]["type"] = "line";
+            $dataformat[0]["legendText"] = "Accuracy";
+            $dataformat[0]["showInLegend"] = true;
             $dataformat[0]["dataPoints"] = $dataformataccuracyres;
-           
-            $dataformat[1]["type"] =  "line";
-            $dataformat[1]["showInLegend"] =  true;
-            $dataformat[1]["legendText"] =  "First Pass";
+
+            $dataformat[1]["type"] = "line";
+            $dataformat[1]["showInLegend"] = true;
+            $dataformat[1]["legendText"] = "First Pass";
             $dataformat[1]["dataPoints"] = $dataformatfirstpassres;
-            
-            $dataformat[2]["type"] =  "line";
-            $dataformat[2]["legendText"] =  "SLA";
-            $dataformat[2]["showInLegend"] =  true;
+
+            $dataformat[2]["type"] = "line";
+            $dataformat[2]["legendText"] = "SLA";
+            $dataformat[2]["showInLegend"] = true;
             $dataformat[2]["dataPoints"] = $dataformatslares;
-            
+
             $Chartreports['chartres'] = $dataformat;
             $Chartreports['total'] = count($getbatchavgres);
             $Chartreports['getbatchavgres'] = $getbatchavgres;
 //            echo "<pre>ss";
 //            print_r($getbatchavgres);
 //            exit;
-            
         }
         $Chartreports['status'] = 1;
         echo json_encode($Chartreports);
