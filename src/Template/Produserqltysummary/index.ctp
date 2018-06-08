@@ -4,10 +4,8 @@ use Cake\Routing\Router
 ?>
 <div class="container-fluid mt15">
     <div class="formcontent">
-        <h4>PU Rebuttal</h4>
+        <h4>PU Quality Summary</h4>
             <?php echo $this->Form->create('',array('class'=>'form-horizontal','id'=>'projectforms')); ?>
-
-
         <div class="col-md-3">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
@@ -383,7 +381,7 @@ function commentsQueryInsert(){
         
           $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller'=>'Purebuttal','action'=>'ajaxpurebutalcommentsinsert'));?>",
+            url: "<?php echo Router::url(array('controller'=>'Produserqltysummary','action'=>'ajaxpurebutalcommentsinsert'));?>",
             data: ({CommentsId: CommentsId,QCrebuttalTextbox:QCrebuttalTextbox,Status_id:Status_id,InputEntityId:InputEntityId,ProjectId:ProjectId,ModuleId:ModuleId }),
             dataType: 'text',
             async: false,
@@ -408,7 +406,7 @@ function valicateQueryInsert()
         var result = new Array();
         $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller'=>'Purebuttal','action'=>'purebuteajaxqueryinsert'));?>",
+            url: "<?php echo Router::url(array('controller'=>'Produserqltysummary','action'=>'purebuteajaxqueryinsert'));?>",
             data: ({ProjectId: ProjectId }),
             dataType: 'text',
             async: false,
@@ -449,7 +447,7 @@ function valicateQueryInsert()
 
         $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Purebuttal', 'action' => 'ajaxmodule')); ?>",
+            url: "<?php echo Router::url(array('controller' => 'Produserqltysummary', 'action' => 'ajaxmodule')); ?>",
             data: ({ProjectId: ProjectId, RegionId: RegionId}),
             dataType: 'text',
             async: false,

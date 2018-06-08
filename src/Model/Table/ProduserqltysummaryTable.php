@@ -41,7 +41,7 @@ use Cake\Datasource\ConnectionManager;
  *
  * @package       app.Model
  */
-class PurebuttalTable extends Table {
+class ProduserqltysummaryTable extends Table {
 
     public function initialize(array $config) {
         $this->table('ME_InputInitiation');

@@ -20,7 +20,7 @@ use Cake\Datasource\ConnectionManager;
  *
  * @property \App\Model\Table\ImportInitiates $ImportInitiates
  */
-class PurebuttalController extends AppController {
+class ProduserqltysummaryController extends AppController {
 
     /**
      * to initialize the model/utilities gonna to be used this page
@@ -136,7 +136,7 @@ class PurebuttalController extends AppController {
 
         if (isset($this->request->data['ProjectId']) || isset($this->request->data['ModuleId'])) {
             $this->set('ModuleId', $this->request->data['ModuleId']);
-            $Modules = $this->Purebuttal->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'ModuleId' => $this->request->data['ModuleId']]);
+            $Modules = $this->Produserqltysummary->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'ModuleId' => $this->request->data['ModuleId']]);
 
 //            $Modules = $this->Puquery->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'ModuleId' => $this->request->data['ModuleId']]);
             $this->set('ModuleIds', $Modules);
@@ -151,91 +151,97 @@ class PurebuttalController extends AppController {
 
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
 
-            $conditions_cengage = "";
-            $ProjectId = $this->request->data('ProjectId');
-            $RegionId = $this->request->data('RegionId');
-            $ModuleId = $this->request->data('ModuleId');
-            ////////
-            $connectiond2k = ConnectionManager::get('d2k');
-            $Readyforputlrebuttal = Readyforputlrebuttal;
-            $session = $this->request->session();
-            //$moduleId = $session->read("moduleId");
-
-            $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId and ModuleStatusIdentifier='$Readyforputlrebuttal' AND RecordStatus=1")->fetchAll('assoc');
-
-            $QcFirstStatus = array_map(current, $QcFirstStatus);
-            $first_Status_name = $QcFirstStatus[0];
-            $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-          
-          
-            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId=$ProjectId and FieldTypeName='General' ")->fetchAll('assoc');
-   
-            $DependencyTypeMasterId = $queryData[0]['Id'];
-            $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
-            $content = file_get_contents($path);
-            $contentArr = json_decode($content, true);
-
-            $user_id = $this->request->data('user_id');
-            $user_group_id = $this->request->data('UserGroupId');
-            $QueryDateTo = $this->request->data('QueryDateTo');
-            $QueryDateFrom = $this->request->data('QueryDateFrom');
-            $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
-            $this->set('User', $user_id_list);
-
-            if (empty($user_id)) {
-                $user_id = array_keys($user_id_list);
-            }
-
-            if ($QueryDateFrom != '' && $QueryDateTo != '') {
-                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-            }
-            if ($QueryDateFrom != '' && $QueryDateTo == '') {
-                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
-            }
-            if ($QueryDateFrom == '' && $QueryDateTo != '') {
-                $conditions .= "  AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-            }
-
-//            echo "<pre>ss";print_r($user_id);exit;
-            if ($user_id != '') {
-                $conditions_cengage .= "  AND ptm.UserID in (" . implode(',', $user_id) . ")";
-            }
-
-
-            $productionmasters = array();
-            $result = array();
-            $ReferanceId = "DomainId";
-			
-            $queryData = $connection->execute("SELECT uniq.AttributeMasterId,prdem.id as ProductionEntityMasterId,prdem.InputEntityId FROM MV_UniqueIdFields as uniq inner join ProductionEntityMaster as prdem on uniq.ProjectId = prdem.ProjectId where prdem.ProjectId='$ProjectId' and uniq.ReferanceId = '$ReferanceId' and prdem.StatusId ='$first_Status_id' $conditions")->fetchAll('assoc');
-           
             
-//             echo "<pre>s";print_r($queryData);
-//echo $ProjectId.'--'.$first_Status_name."--".$first_Status_id;exit;
             
-            if (!empty($queryData)) {
-
-                foreach ($queryData as $key => $val) {
-                    $ProductionEntityID = $val['ProductionEntityMasterId'];
-                    $InputEntityId = $val['InputEntityId'];
-                    $AttributeMasterId = $val['AttributeMasterId'];
-					// get fdrid  
-					
-                    $getresultfdrid = $connection->execute("SELECT cpid.AttributeValue FROM MC_CengageProcessInputData as cpid inner join ME_Production_TimeMetric as ptm on ptm.ProductionEntityID=cpid.ProductionEntityID where cpid.ProductionEntityID='$ProductionEntityID' and cpid.SequenceNumber=1 and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.AttributeMasterId='$AttributeMasterId' and cpid.AttributeValue!='' $conditions_cengage group by cpid.AttributeValue")->fetchAll('assoc');
-					
-                    // check fdrid not empty
-                    if (!empty($getresultfdrid)) {
-                        $fdrid = $getresultfdrid[0]['AttributeValue'];
-                        $queries = $connection->execute("SELECT qccmt.StatusId,qccmt.RegionId,qccmt.SequenceNumber,qccmt.ProjectAttributeMasterId,qccmt.Id,qccmt.ProjectId,qccmt.RegionId,qccmt.InputEntityId,qccmt.TLReputedComments,qccmt.UserReputedComments,qccmt.QCComments,qccmt.AttributeMasterId,qccmt.OldValue,qccat.ErrorCategoryName FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where qccmt.ProjectId = '$ProjectId' and qccmt.InputEntityId ='$InputEntityId' and qccmt.StatusId IN(3,4,5)")->fetchAll('assoc');
-
-                        foreach ($queries as $key => $val) {
-                            $queries[$key]['displayname'] = $contentArr['AttributeOrder'][$val['RegionId']][$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
-                        }
-
-                        $result[$fdrid]['list'] = $queries;
-                        $result[$fdrid]['ProductionEntityID'] = $ProductionEntityID;
-                    }
-                }
-            }
+            
+            
+            
+            
+            
+//            $conditions_cengage = "";
+//            $ProjectId = $this->request->data('ProjectId');
+//            $RegionId = $this->request->data('RegionId');
+//            $ModuleId = $this->request->data('ModuleId');
+//            ////////
+//            $connectiond2k = ConnectionManager::get('d2k');
+//            $Readyforputlrebuttal = Readyforputlrebuttal;
+//            $session = $this->request->session();
+//            //$moduleId = $session->read("moduleId");
+//
+//            $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId and ModuleStatusIdentifier='$Readyforputlrebuttal' AND RecordStatus=1")->fetchAll('assoc');
+//
+//            $QcFirstStatus = array_map(current, $QcFirstStatus);
+//            $first_Status_name = $QcFirstStatus[0];
+//            $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
+//          
+//          
+//            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId=$ProjectId and FieldTypeName='General' ")->fetchAll('assoc');
+//   
+//            $DependencyTypeMasterId = $queryData[0]['Id'];
+//            $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+//            $content = file_get_contents($path);
+//            $contentArr = json_decode($content, true);
+//
+//            $user_id = $this->request->data('user_id');
+//            $user_group_id = $this->request->data('UserGroupId');
+//            $QueryDateTo = $this->request->data('QueryDateTo');
+//            $QueryDateFrom = $this->request->data('QueryDateFrom');
+//            $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
+//            $this->set('User', $user_id_list);
+//
+//            if (empty($user_id)) {
+//                $user_id = array_keys($user_id_list);
+//            }
+//
+//            if ($QueryDateFrom != '' && $QueryDateTo != '') {
+//                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
+//            }
+//            if ($QueryDateFrom != '' && $QueryDateTo == '') {
+//                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
+//            }
+//            if ($QueryDateFrom == '' && $QueryDateTo != '') {
+//                $conditions .= "  AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
+//            }
+//
+////            echo "<pre>ss";print_r($user_id);exit;
+//            if ($user_id != '') {
+//                $conditions_cengage .= "  AND ptm.UserID in (" . implode(',', $user_id) . ")";
+//            }
+//
+//
+//            $productionmasters = array();
+//            $result = array();
+//            $ReferanceId = "DomainId";
+//			
+//            $queryData = $connection->execute("SELECT uniq.AttributeMasterId,prdem.id as ProductionEntityMasterId,prdem.InputEntityId FROM MV_UniqueIdFields as uniq inner join ProductionEntityMaster as prdem on uniq.ProjectId = prdem.ProjectId where prdem.ProjectId='$ProjectId' and uniq.ReferanceId = '$ReferanceId' and prdem.StatusId ='$first_Status_id' $conditions")->fetchAll('assoc');
+//           
+//            
+////             echo "<pre>s";print_r($queryData);
+//            
+//            if (!empty($queryData)) {
+//
+//                foreach ($queryData as $key => $val) {
+//                    $ProductionEntityID = $val['ProductionEntityMasterId'];
+//                    $InputEntityId = $val['InputEntityId'];
+//                    $AttributeMasterId = $val['AttributeMasterId'];
+//					// get fdrid  
+//					
+//                    $getresultfdrid = $connection->execute("SELECT cpid.AttributeValue FROM MC_CengageProcessInputData as cpid inner join ME_Production_TimeMetric as ptm on ptm.ProductionEntityID=cpid.ProductionEntityID where cpid.ProductionEntityID='$ProductionEntityID' and cpid.SequenceNumber=1 and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.AttributeMasterId='$AttributeMasterId' and cpid.AttributeValue!='' $conditions_cengage group by cpid.AttributeValue")->fetchAll('assoc');
+//					
+//                    // check fdrid not empty
+//                    if (!empty($getresultfdrid)) {
+//                        $fdrid = $getresultfdrid[0]['AttributeValue'];
+//                        $queries = $connection->execute("SELECT qccmt.StatusId,qccmt.RegionId,qccmt.SequenceNumber,qccmt.ProjectAttributeMasterId,qccmt.Id,qccmt.ProjectId,qccmt.RegionId,qccmt.InputEntityId,qccmt.TLReputedComments,qccmt.UserReputedComments,qccmt.QCComments,qccmt.AttributeMasterId,qccmt.OldValue,qccat.ErrorCategoryName FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where qccmt.ProjectId = '$ProjectId' and qccmt.InputEntityId ='$InputEntityId' and qccmt.StatusId IN(3,4,5)")->fetchAll('assoc');
+//
+//                        foreach ($queries as $key => $val) {
+//                            $queries[$key]['displayname'] = $contentArr['AttributeOrder'][$val['RegionId']][$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
+//                        }
+//
+//                        $result[$fdrid]['list'] = $queries;
+//                        $result[$fdrid]['ProductionEntityID'] = $ProductionEntityID;
+//                    }
+//                }
+//            }
 //echo "<pre>s";print_r($result);exit;
             $this->set('rebuttalResult', $result);
 
@@ -268,7 +274,7 @@ class PurebuttalController extends AppController {
     function ajaxmodule() {
 
 
-        echo $module = $this->Purebuttal->find('module', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'ModuleId' => $ModuleId]);
+        echo $module = $this->Produserqltysummary->find('module', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'ModuleId' => $ModuleId]);
         exit;
     }
 
