@@ -176,7 +176,7 @@ else{
     <?php
 }
 echo $this->Form->end();
-?>
+?><?php echo $this->Html->script('reportchart/canvasjs.min.js'); ?>
 
 <script type="text/javascript">
 
@@ -469,7 +469,8 @@ $('#example').find('tr').click( function(){
     chart.render();
   }
   </script>
-  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  
+  <!--<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
 <style>
     .overlay {
         position: absolute;

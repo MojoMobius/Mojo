@@ -37,6 +37,7 @@ class QAreviewController extends AppController {
         parent::initialize();
         $this->loadModel('QCBatchMaster');
         $this->loadModel('projectmasters');
+        $this->loadModel('QAreview');
         $this->loadModel('GetJob');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');
@@ -226,8 +227,11 @@ class QAreviewController extends AppController {
                     $this->set('SelectQCBatch', $QA_data);  
                     
                     if (isset($this->request->data['downloadFile'])) {
+						
                         $productionData = '';
+						if(!empty($QA_data)){							
                         $productionData = $this->QAreview->find('export', ['ProjectId' => $ProjectId, 'condition' => $QA_data]);
+						}
                         $this->layout = null;
                         if (headers_sent())
                             throw new Exception('Headers sent.');
