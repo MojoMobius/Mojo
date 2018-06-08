@@ -37,6 +37,7 @@ class QAreviewController extends AppController {
         parent::initialize();
         $this->loadModel('QCBatchMaster');
         $this->loadModel('projectmasters');
+        $this->loadModel('QAreview');
         $this->loadModel('GetJob');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');
@@ -228,7 +229,7 @@ class QAreviewController extends AppController {
                     if (isset($this->request->data['downloadFile'])) {
 						
                         $productionData = '';
-						if(!empty($QA_data)){
+						if(!empty($QA_data)){							
                         $productionData = $this->QAreview->find('export', ['ProjectId' => $ProjectId, 'condition' => $QA_data]);
 						}
                         $this->layout = null;
