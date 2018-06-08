@@ -85,6 +85,9 @@ $month1 = date('m', $ts1);
 $month2 = date('m', $ts2);
 $countmonth = (($year2 - $year1) * 12) + ($month2 - $month1);
 
+if($month1 == $month2 && $year1 == $year2){
+    $countmonth = 1;
+}
 //seperate count end	
 
 $Setmonth=$Arrfdate[0];
