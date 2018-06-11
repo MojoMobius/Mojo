@@ -816,14 +816,14 @@ width:100%;
                                                                 <div class="form-group">
                                                                                     <?php
                                                                                     $highlightRework=array();
-                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '1') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '5')){
+                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '1') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '5') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '9')){
                                                                                        $highlightRework[] = 'style="border-color: red;"'; 
                                                                                     }
                                                                                     $highlightRework = $highlightRework[0];
 
                                                                                     $readonlyRework=array();
                                                                                     $disabledRework=array();
-                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '2') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '4')){
+                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '2') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '4') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) != '8')){
                                                                                        $readonlyRework[] = 'readonly="readonly"'; 
                                                                                        $disabledRework[] = 'disabled="disabled"';
                                                                                     }
@@ -3089,7 +3089,7 @@ $(document).keydown(function(e) {
           //  var countDone = $('.CampaignWiseSelDone_' + mainGrpId).filter(function () {
      //     var countDone = $('.attributeWiseQcErrorCount_' + mainGrpId).val();
            var countDone = $('.attributeWiseQcErrorCount_' + mainGrpId).filter(function () {
-                if (($(this).val() == 2) || ($(this).val() == 3) || ($(this).val() == 4))
+                if (($(this).val() == 2) || ($(this).val() == 3) || ($(this).val() == 4) || ($(this).val() == 8))
                     return $(this).val();
             }).length;
 

@@ -87,7 +87,7 @@ class GetjobcoreTable extends Table {
      function ajax_GetQcComments_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
         $connection = ConnectionManager::get('default');
 
-        $cmdOldData = $connection->execute("select mvc.QCComments,mvc.StatusID,mvc.TLReputedComments,mvc.UserReputedComments,mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (1,2,3,4,5) order by mvc.SequenceNumber")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select mvc.QCComments,mvc.StatusID,mvc.TLReputedComments,mvc.UserReputedComments,mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (1,3,5,9) order by mvc.SequenceNumber")->fetchAll('assoc');
         if(!empty($cmdOldData)){
       // $cmdOldData = array_column($cmdOldData, 'QCComments');
        $i=1;
