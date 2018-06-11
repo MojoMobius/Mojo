@@ -1025,7 +1025,8 @@ class QCValidationController extends AppController {
                  
                   $Reworkjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WHERE StatusId=' . $first_Status_id_rw . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
                      if (empty($Reworkjob)) {
-
+						
+                      $CheckStatus="Inprogress";
 
                         $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
                         if (empty($productionjob)) {
@@ -1065,6 +1066,7 @@ class QCValidationController extends AppController {
                             $this->set('ProdUserId', $ProdUserId);
                         }
                     } else {
+						 $CheckStatus="Rework";
 
                        foreach ($Reworkjob as $val) {
                                 if ($val['StatusId'] == $first_Status_id_rw && ($newJob == 'NewJob' || $newJob == 'newjob')) {
@@ -1100,15 +1102,7 @@ class QCValidationController extends AppController {
                 } else {
                     //echo $next_status_id."-first,".$next_status_id_rw."-rework".$InprogressProductionjob[0]['StatusId'];exit;
 
-                    if($next_status_id_rw == $InprogressProductionjob[0]['StatusId']){
-                      $this->set('QCStatus_find', 'rework');
-                      $this->set('QCrework_next_id', $next_status_id_rw);
-					  $next_status_id_org=$next_status_id;
-                      $next_status_id= $next_status_id_rw;
-                    }
-                    else{
-                      $this->set('QCStatus_find', 'inprogress');
-                    }
+                   
                     
 
                     $InputEntityId = $InprogressProductionjob[0]['InputEntityId'];
@@ -1124,6 +1118,14 @@ class QCValidationController extends AppController {
                     $QcBatchName = $BatchName[0]['BatchName'];
                     $this->set('QcBatchName', $QcBatchName);
                     $this->set('ProdUserId', $ProdUserId);
+                }
+				
+				 if($InprogressProductionjob[0]['StatusId']==$next_status_id_rw || $CheckStatus =="Rework" ){
+                      $this->set('QCStatus_find', 'rework');
+                      $this->set('QCrework_next_id', $next_status_id_rw);
+                      $next_status_id= $next_status_id_rw;
+                }else{
+                      $this->set('QCStatus_find', 'inprogress');
                 }
 
 //            $InprogressProductionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . 4 . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
@@ -1652,6 +1654,8 @@ class QCValidationController extends AppController {
           
                     $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetOldDatavalue_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
              $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetRebutalvalue($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+			 
+			  $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetQcComments_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
 //             if (empty($InprogressProductionjob)) {
 //                    //     print_r($productionjob);
 //					if($productionjob[0]['InputEntityId']){
@@ -1665,6 +1669,8 @@ class QCValidationController extends AppController {
 //                }
                 $j++;
             }
+			
+            $this->set('QcErrorComments', $QcErrorComments);
             $this->set('OldDataresultError', $OldDataresultError);
             $this->set('OldDataresultRebutal', $OldDataresultRebutal);
          
@@ -2838,6 +2844,10 @@ function ajaxgetafterreferenceurl() {
         $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCTLRebuttedComments='".$Comments."' WHERE Id='".$Id."'");
         
    } 
+   function Checkcomment(){
+	   echo "hello";
+   }
+   
    function ajaxformsubmit(){
        
       
@@ -2902,5 +2912,6 @@ function ajaxgetafterreferenceurl() {
         echo $SubmitInfo;
         exit;
    }
+  
  
 }

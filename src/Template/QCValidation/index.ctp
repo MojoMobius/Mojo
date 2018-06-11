@@ -733,18 +733,29 @@ width:100%;
                                                                 <div class="col-md-2 form-title">
                                                             <div class="form-group" style=""><p><?php echo $valprodFields['DisplayAttributeName'] ?></p>
                                                                 <input type="hidden" value="<?php echo $valprodFields['DisplayAttributeName'] ?>" id="attrdisp<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $i; ?>_<?php echo $key; ?>_<?php echo $keysub; ?>">
+																
                                                             </div>	
                                                                 </div>
                                                                 <div class="col-md-3 form-text">
                                                             <div class="form-group">
 																<?php 
+																					$highlightRework=array();
+																					$highlightReworkstyle=array();
+                                                                                    if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '6') ){
+                                                                                       $highlightRework[] = 'style="border-color: red"'; 
+                                                                                       $highlightReworkstyle[] = 'border-color: red'; 
+                                                                                    }
+                                                                                    $highlightRework = $highlightRework[0];
+                                                                                    $highlightReworkstyle = $highlightReworkstyle[0];
+																
+																
                                                                                     if ($inpuControlType == "TextBox") {
-                                                                    echo '<input data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'" readonly="" data-toggle="tooltip" type="text" ' . $inpClass . $inpId . $inpName . $inpValue . $inpOnClick . $titleValue . '>';
+                                                                    echo '<input data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'" readonly="" data-toggle="tooltip" type="text" ' . $inpClass . $inpId . $inpName . $inpValue . $inpOnClick . $titleValue .$highlightRework. '>';
                                                                                     } else if ($inpuControlType == "CheckBox") {
-                                                                                        echo '<input data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'" readonly="" type="checkbox" ' . $inpClass . $inpId . $inpName . $inpValue . $inpOnClick . '>';
+                                                                                        echo '<input data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'" readonly="" type="checkbox" ' . $inpClass . $inpId . $inpName . $inpValue . $inpOnClick .$highlightRework. '>';
                                                                 } else if ($inpuControlType == "MultiTextBox") {
                                                                 
-                                                                    echo '<textarea data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'"  style="resize:both;" readonly="" ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur .'>'.$ProdFieldsValue.'</textarea>';
+                                                                    echo '<textarea data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'"  style="resize:both;" readonly="" ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur .$highlightReworkstyle.'>'.$ProdFieldsValue.'</textarea>';
                                                                 
                                                                 }else if ($inpuControlType == "RadioButton") {
                                                                                        if (strtolower($ProdFieldsValue) == "yes")
@@ -754,7 +765,7 @@ width:100%;
                                                                                         echo '<input data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'" readonly="" disabled="disabled" value="Yes" type="radio" style="position:static"' . $inpClass . $inpId . $inpName . $inpOnClick . $yesSel . '> Yes  
 																	<input data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'"  value="No" disabled="disabled" type="radio" style="position:static" ' . $inpClass . $inpId . $inpName . $inpOnClick . $noSel . '> No';
                                                                 } else if ($inpuControlType == "DropDownList") {
-                                                                    echo '<select data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'"  disabled="disabled" ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur .'><option value="">--Select--</option>';
+                                                                    echo '<select data-disposition="'.$DispositionFieldsValue.'" data-cmd="'.$CommentsFieldsValue.'" data-seq="'.$thisseq.'" data-disp="'.$valprodFields['DisplayAttributeName'].'" data-projectatt="'.$valprodFields['ProjectAttributeMasterId'].'"  disabled="disabled" ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur .$highlightRework .'><option value="">--Select--</option>';
                                                                     if(!empty($valprodFields['Options'])){
                                                                     foreach ($valprodFields['Options'] as $ke => $va) {
 																							$sele = "";
@@ -770,16 +781,18 @@ width:100%;
 																						echo '</select>';
                                                                 } ?>
                                                                 <span class="lighttext more" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span>
+																
+																<p style="color:#FF0000;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCTLRebuttedComments'][$tempSq]; ?></p>
                                                             </div>
                                                                 </div>
                                                                 <div class="col-md-3 form-text">
                                                             <div class="form-group comments">
-                                                                    <textarea readonly="" rows="1" cols="50" class="form-control <?php echo $dbClassName; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>
+                                                                    <textarea readonly="" rows="1" cols="50" class="form-control <?php echo $dbClassName; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);" <?php echo $highlightRework;?>><?php echo $CommentsFieldsValue; ?></textarea>
                                                             </div>
                                                                 </div>
                                                                 <div class="col-md-4 form-status">
                                                             <div class="form-group status">
-                                                                <select disabled="disabled" id="" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect">
+                                                                <select disabled="disabled" id="" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect" <?php echo $highlightRework;?>>
                                                                     <option value="">--</option>
                                                                         <option value="A" <?php
                                                                     if ($DispositionFieldsValue == "A") {
