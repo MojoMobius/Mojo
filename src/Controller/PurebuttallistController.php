@@ -198,18 +198,31 @@ class PurebuttallistController extends AppController {
 
 
         if (isset($productionjobNew)) {
-            $DependentMasterIdsQuery = $connection->execute('SELECT Id,Type FROM MC_DependencyTypeMaster where ProjectId=' . $ProjectId . ' AND DisplayInProdScreen=1')->fetchAll('assoc');
-            $DependentMasterIds = array();
-            foreach ($DependentMasterIdsQuery as $vals) {
-                $DependentMasterIds[$vals['Type']] = $vals['Id'];
-            }
+		 $DependentMasterIdsQuery = $connection->execute('SELECT Id,Type FROM MC_DependencyTypeMaster where ProjectId=' . $ProjectId . ' AND DisplayInProdScreen=1')->fetchAll('assoc');
+                $DependentMasterIds = array();
+                foreach ($DependentMasterIdsQuery as $vals) {
+                    $DependentMasterIds[$vals['Type']] = $vals['Id'];
+                }
+
+//                $InputEntityId = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . $next_status_id . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
+            $DependencyTypeMaster = $connection->execute("SELECT Id,Type,FieldTypeName FROM MC_DependencyTypeMaster WHERE ProjectId=" . $ProjectId . " AND (DisplayInProdScreen=1 or FieldTypeName='General') AND RecordStatus=1")->fetchAll('assoc');
+				foreach ($DependencyTypeMaster as $vals) {
+					if($vals['DisplayInProdScreen']==1)
+						$DependentMasterIds[$vals['Type']] = $vals['Id'];
+					
+					if($vals['Type']=="InputValue")
+						$staticDepenIds[] = $vals['Id'];
+					
+					if($vals['FieldTypeName']=="General")
+						$staticDepenIds[] = $vals['Id'];
+                }
 
             $DependencyTypeMaster = $connection->execute('SELECT Id,Type,FieldTypeName FROM MC_DependencyTypeMaster WHERE ProjectId=' . $ProjectId . ' AND DisplayInProdScreen=1 AND RecordStatus=1')->fetchAll('assoc');
             if (!empty($InputEntityId)) {
                 $CengageProcessInputData = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')')->fetchAll('assoc');
                 $staticFields = array();
                 foreach ($StaticFields as $key => $value) {
-                    $getDomainIdVal = $connection->execute('SELECT AttributeValue FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $value['AttributeMasterId'] . ')')->fetchAll('assoc');
+                    $getDomainIdVal = $connection->execute('SELECT AttributeValue FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $value['AttributeMasterId']. ') AND DependencyTypeMasterId in ('.implode(',',$staticDepenIds).')')->fetchAll('assoc');
                     $staticFields = array_merge($staticFields, $getDomainIdVal);
                 }
             }

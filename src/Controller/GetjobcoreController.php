@@ -970,9 +970,9 @@ class GetjobcoreController extends AppController {
          
             $ProductionEntityStatusCompleted=array_intersect($CompletionStatusEntity,$PuNextStatusId);
            
-            $QcbatchId = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+            $QcbatchId = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE  InputEntityId='" . $InputEntityId . "' and Qc_Batch_Id!=''")->fetchAll('assoc');
             $QcbatchId = $QcbatchId[0]['Qc_Batch_Id'];
-            
+
             if(!empty($QcbatchId)){
             $QcCompletedCount = $connection->execute("SELECT QCCompletedCount FROM MV_QC_BatchMaster WITH (NOLOCK) WHERE  Id='" . $QcbatchId . "'")->fetchAll('assoc');
             $QcCompletedCount = $QcCompletedCount[0]['QCCompletedCount'];

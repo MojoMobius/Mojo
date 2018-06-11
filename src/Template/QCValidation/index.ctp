@@ -836,10 +836,10 @@ width:100%;
                                                             </div>-->
                                                                        <?php 
 
-									    $QcCommentStatus = $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_status'];  
-									    $QcCommentId = $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_id'];         
-									    $QcCommentErrorcat= $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_errorcat'];  
-									    $QcCommentErrorsub = $processinputdata[$valprodFields['AttributeMasterId']][$thisseq]['qccomment_errorsub'];   
+									    $QcCommentStatus = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_status'];  
+									    $QcCommentId = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_id'];         
+									    $QcCommentErrorcat= $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_errorcat'];  
+									    $QcCommentErrorsub = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_errorsub'];   
 										$errorcat=$CategoryName[$QcCommentErrorcat];
 										$errorsub=$CategoryName[$QcCommentErrorsub];
 										if($QcCommentStatus==8){
