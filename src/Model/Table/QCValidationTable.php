@@ -133,9 +133,16 @@ function ajax_GetOldDatavalue_seq($InputEntyId, $AttributeMasterId, $ProjectAttr
 
     function ajax_GetRebutalvalue($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
         $connection = ConnectionManager::get('default');
-        $cmdOldData = $connection->execute("select count(*) OldDataCount from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and SequenceNumber = $SequenceNumber and StatusID=3")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select SequenceNumber from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and StatusID=3")->fetchAll('assoc');
+if(!empty($cmdOldData)){
+       $cmdOldData = array_column($cmdOldData, 'SequenceNumber');
+       foreach($cmdOldData as $key => $val) {
+            $new_cmdOldData[$val]=$val;
+        }
 
-        return $cmdOldData[0];
+    }
+
+     return $new_cmdOldData;
     }
 
     public function findGetolddata(Query $query, array $options) {
