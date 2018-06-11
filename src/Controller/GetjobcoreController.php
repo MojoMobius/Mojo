@@ -2714,7 +2714,7 @@ class GetjobcoreController extends AppController {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-       $reworkCount =  $connection->execute("Select UserReputedComments,TLReputedComments from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1 and StatusId=3")->fetchAll('assoc');
+       $reworkCount =  $connection->execute("Select UserReputedComments,TLReputedComments from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1")->fetchAll('assoc');
       
        $getdata['UserReputedComments'] = $reworkCount[0]['UserReputedComments'];
         $getdata['TLReputedComments'] = $reworkCount[0]['TLReputedComments'];
