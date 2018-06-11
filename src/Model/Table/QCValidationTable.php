@@ -133,9 +133,16 @@ function ajax_GetOldDatavalue_seq($InputEntyId, $AttributeMasterId, $ProjectAttr
 
     function ajax_GetRebutalvalue($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
         $connection = ConnectionManager::get('default');
-        $cmdOldData = $connection->execute("select count(*) OldDataCount from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and SequenceNumber = $SequenceNumber and StatusID=3")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select SequenceNumber from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and StatusID=3")->fetchAll('assoc');
+if(!empty($cmdOldData)){
+       $cmdOldData = array_column($cmdOldData, 'SequenceNumber');
+       foreach($cmdOldData as $key => $val) {
+            $new_cmdOldData[$val]=$val;
+        }
 
-        return $cmdOldData[0];
+    }
+
+     return $new_cmdOldData;
     }
 
     public function findGetolddata(Query $query, array $options) {
@@ -169,5 +176,25 @@ public function findAjaxgroup(Query $query, array $options) {
         $Content = $connection->execute("SELECT AttributeMasterId,HelpContent FROM MC_CengageHelp WHERE ProjectId = '".$options['ProjectId']."' AND RegionId = '".$options['RegionId']."' AND AttributeMasterId = '".$options['AttributeId']."' AND RecordStatus=1")->fetchAll('assoc');
         return $Content[0]['HelpContent'];
 }
+    
+	function ajax_GetQcComments_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
+        $connection = ConnectionManager::get('default');
+
+        $cmdOldData = $connection->execute("select mvc.QCComments,mvc.StatusID,mvc.QCTLRebuttedComments,mvc.UserReputedComments,mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (6,8,9) order by mvc.SequenceNumber")->fetchAll('assoc');
+        if(!empty($cmdOldData)){
+      // $cmdOldData = array_column($cmdOldData, 'QCComments');
+       $i=1;
+       foreach($cmdOldData as $key => $val) {
+            $new_cmdOldData['QCComments'][$i]=$val['QCComments'];
+            $new_cmdOldData['QCTLRebuttedComments'][$i]=$val['QCTLRebuttedComments'];
+            $new_cmdOldData['UserReputedComments'][$i]=$val['UserReputedComments'];
+            $new_cmdOldData['ErrorCategoryName'][$i]=$val['ErrorCategoryName'];
+            $new_cmdOldData['StatusID'][$i]=$val['StatusID'];
+            $i++;
+        }
+       
+    }
+     return $new_cmdOldData;
+    }
 
 }

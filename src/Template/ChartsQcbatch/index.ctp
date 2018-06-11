@@ -20,30 +20,30 @@ use Cake\Routing\Router;
 
         <div class="col-md-3">
             <div class="form-group">
-                
-                 <label for="inputPassword3" class="col-sm-6 control-label">From</label>
+
+                <label for="inputPassword3" class="col-sm-6 control-label">From</label>
                 <div class="col-sm-6">
-                    <input readonly='readonly' placeholder='DD-MM-YYYY' type='text' name='batch_from' id='batch_from'>
-                  
+                    <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_from' id='month_from'>
+
                 </div>
-                
+
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
-               
+
                 <div class="col-sm-6">
                     <label for="inputPassword3" class="col-sm-6 control-label">To</label>
-                <div class="col-sm-6">
-                    <input readonly='readonly' placeholder='DD-MM-YYYY' type='text' name='batch_to' id='batch_to'>
-                    
+                    <div class="col-sm-6">
+                        <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_to' id='month_to'>
+
+                    </div>
+
                 </div>
-                  
-                </div>
-                
+
             </div>
         </div>
-        
+
 
 
         <div class="form-group" style="text-align:center;">
@@ -58,33 +58,37 @@ use Cake\Routing\Router;
             </div>
         </div>
 
-         
+
     </div>
 </div>
         <?php 
 if (count($Chartreports) >= 0) {
 ?>
+<div class="validationloader" style="display:none;"></div>
 <div class="container-fluid">
     <div class="bs-example">
         <div id="vertical">
             <div id="top-pane">
+
                 <div id="horizontal" style="height: 100%; width: 100%;">
+
+
                     <div id="left-pane" class="pa-lef-10" style="display: none;">
                         <div class="pane-content" >
                             <div id="no-results-found" style="display:none;" >
                                 No Results found
                             </div>
-                            
+
                             <div style="height: 100%;width: 100%;display:none;" id="chart-results">
-                                 <div style="height: 100%;width: 33%;float: left;" id="charttable">
-        <table class="table table-striped table-center">
-        </table>
+                                <div style="height: 100%;width: 33%;float: left;" id="charttable">
+                                    <table class="table table-striped table-center">
+                                    </table>
                                 </div>
                                 <div id="chartContainer" style="height: 100%;width: 67%; margin: 0px auto;float: right;"></div>
-                               
+
                             </div>
-                          
-                          
+
+
                         </div>
                     </div>
                 </div>
@@ -101,7 +105,7 @@ echo $this->Form->end();
 <?php echo $this->Html->script('reportchart/canvasjs.min.js'); ?>
 
 <script type="text/javascript">
-var chart_reports = "<?php //echo json_encode($Chartreports); ?>";
+    var chart_reports = "<?php //echo json_encode($Chartreports); ?>";
 </script>
 
 
@@ -137,44 +141,70 @@ var chart_reports = "<?php //echo json_encode($Chartreports); ?>";
         padding: 0 10px;
     }
     .lastrow label{position:relative !important;}
+    .validationloader {
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        margin: 59px 0px 6px 630px;
+        z-index: 9999;
+        position: absolute;
+    }
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 
 <script>
-    
-function Chartreports(chartres) {
-    
-var chart = new CanvasJS.Chart("chartContainer", {
-	title: {
-		text: "Accuracy Trend"
-	},
-	axisY: {
-		title: "Data"
-	},
-        data:chartres
 
-});
-    
-chart.render();
+    function Chartreports(chartres) {
 
-         
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                text: "Accuracy Trend"
+            },
+            axisY: {
+                title: "Data"
+            },
+            data: chartres
+
+        });
+
+        chart.render();
+
+
     }
-    
+
 
 </script>
 
 <script type="text/javascript">
-               
+
     function ClearFields()
     {
         $('#ProjectId').val('0');
-        $('#batch_from').val('');
-        $('#batch_to').val('');
+        $('#month_from').val('');
+        $('#month_to').val('');
 
     }
 
+
+
+
+
     function Mandatory()
     {
-        
+        $("#chart-results").hide();
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
@@ -220,119 +250,88 @@ chart.render();
             $('#ProjectId').focus();
             return false;
         }
-        
 
-        if (($('#batch_from').val() == ''))
+
+        if (($('#month_from').val() == ''))
         {
             alert('Select From date!');
-            $('#batch_from').focus();
+            $('#month_from').focus();
             return false;
         }
-        if($('#batch_to').val() == '')
-        {
-            alert('Select To date!');
-            $('#batch_from').focus();
-            return false;
-        }
-        
-        if (($('#batch_from').val() == '') && ($('#batch_to').val() != ''))
+
+        if (($('#month_from').val() == '') && ($('#month_to').val() != ''))
         {
             alert('Select From date!');
-            $('#batch_from').focus();
+            $('#month_from').focus();
             return false;
         }
 
-        var date = $('#batch_from').val();
+        var date = $('#month_from').val();
         var datearray = date.split("-");
-        var batch_from = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+        var month_from = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
 
-        var date = $('#batch_to').val();
-        var datearray = date.split("-");
-        var batch_to = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+//        var date = $('#month_to').val();
+//        var datearray = date.split("-");
+//        var month_to = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
 
-
-        if (batch_from > todaydate) {
-            alert("Future Date is not Allowed!");
-            $('#batch_from').focus();
-            return false;
-        }
-        if ((batch_from >= todaydate) && ($('#FromTime').val() > time)) {
-            alert("Start Time must be lesser than or equal to current Time!");
-            $('#FromTime').focus();
-            return false;
-        }
-        if (($('#batch_from').val() != '') && ($('#batch_to').val() == ''))
-        {
-            alert('Select To date!');
-            $('#batch_to').focus();
-            return false;
-        }
-
-        if (batch_to > todaydate) {
-            alert("Future Date is not Allowed!");
-            $('#batch_to').focus();
-            return false;
-        }
-        if ((batch_to >= todaydate) && ($('#ToTime').val() > time)) {
-            alert("End Time must be lesser than or equal to current Time!");
-            $('#ToTime').focus();
-            return false;
-        }
-        var start = $('#FromTime').val();
-        var end = $('#ToTime').val();
-        if ((batch_from == batch_to)) {
-            if(end != ''){
-            if (start > end) {
-                alert("End Time must be greater than or equal to start Time!");
-                $('#ToTime').focus();
-                return false;
-            }
-        }
-        }
-      
-        var ProjectId = $('#ProjectId').val();
-        var batch_from = $('#batch_from').val();
-        var batch_to = $('#batch_to').val();
-        var txt_td = "";
+//        var start = $('#FromTime').val();
+//        var end = $('#ToTime').val();
         $("#left-pane").show();
-      
-          $.ajax({
-                type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Chartsqcbatch', 'action' => 'getChartreports')); ?>",
-                data: ({ProjectId: ProjectId, batch_from:batch_from,batch_to:batch_to}),
-                dataType: 'text',
-                async: false,
-                success: function (result) {
-              
-                       var results = JSON.parse(result);
-                       if(results.total > 0){
-                      
-                           if(results.getbatchavgres.length > 0){
-                             $("#charttable > table").html("");
-                             $("#chart-results").show();
-                              $("#no-results-found").hide();
-                               Chartreports(results.chartres);
-                             
-                            txt_td ="<thead><tr><th>Month</th><th>Accuracy%</th><th>First Pass%</th><th>SLA%</th></tr></thead>";
-                             $("#charttable > table").append(txt_td);
-                             $.each(results.getbatchavgres, function( key, val ) {
-                                txt_td = "<tr><td>"+val.monthTxt+"</td><td>"+val.AccuracyTxt+"</td><td>"+val.FirstpassTxt+"</td><td>"+val.sla+"</td></tr>";
-                                $("#charttable > table").append(txt_td);
-                           });
-//                             $("#charttable > table").append(txt_td);
-                        }
-                     
-                       }else{
-                         $("#chart-results").hide();
-                         $("#no-results-found").show();
-                         $("#left-pane").show();
-                         $("#charttable > table").html("");
-                       }
-                
-                }
-            });
+        $(".validationloader").show();
+       $(".container-fluid").css("opacity",0.5);
+       
+        setTimeout(function(){
+                AjaxValidationstart(); 
+            }, 500);
+            
+       
         return false;
     }
+    
+    function AjaxValidationstart(){
+        
+        var ProjectId = $('#ProjectId').val();
+        var month_from = $('#month_from').val();
+        var month_to = $('#month_to').val();
+        var txt_td = "";
+        
+     $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'Chartsqcbatch', 'action' => 'getChartreports')); ?>",
+            data: ({ProjectId: ProjectId, month_from: month_from, month_to: month_to}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+
+                var results = JSON.parse(result);
+                if (results.total > 0) {
+
+                    if (results.getbatchavgres.length > 0) {
+                        $("#charttable > table").html("");
+                        $("#chart-results").show();
+                        $("#no-results-found").hide();
+                        Chartreports(results.chartres);
+
+                        txt_td = "<thead><tr><th>Month</th><th>Accuracy%</th><th>First Pass%</th><th>SLA%</th></tr></thead>";
+                        $("#charttable > table").append(txt_td);
+                        $.each(results.getbatchavgres, function (key, val) {
+                            txt_td = "<tr><td>" + val.monthTxt + "</td><td>" + val.AccuracyTxt + "</td><td>" + val.FirstpassTxt + "</td><td>" + val.sla + "</td></tr>";
+                            $("#charttable > table").append(txt_td);
+                        });
+                    }
+
+                } else {
+                    $("#chart-results").hide();
+                    $("#no-results-found").show();
+                    $("#left-pane").show();
+                    $("#charttable > table").html("");
+                }
+                $(".validationloader").hide();
+                 $(".container-fluid").css("opacity",'');
+            }
+        });
+    }
+    
     function isNumberKey(evt)
     {
         var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -376,7 +375,7 @@ chart.render();
                     $("#" + str).val(actDate);
             }
         }
-        
+
     }
 
     function isToDate(str)
@@ -411,7 +410,7 @@ chart.render();
                     $("#" + str).val(actDate);
             }
         }
-      
+
     }
 </script>
 <style>
