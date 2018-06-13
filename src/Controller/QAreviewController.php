@@ -226,7 +226,6 @@ class QAreviewController extends AppController {
                 $productionData = '';
                 if (!empty($QA_data)) {
                     $productionData = $this->QAreview->find('export', ['ProjectId' => $ProjectId, 'condition' => $QA_data]);
-                }
                 $this->layout = null;
                 if (headers_sent())
                     throw new Exception('Headers sent.');
@@ -237,10 +236,11 @@ class QAreviewController extends AppController {
                 header("Content-Disposition:attachment;filename=QAreviewreport.xls");
                 echo $productionData;
                 exit;
+                }
+               
             }
-
             if (empty($QA_data)) {
-                //$this->Flash->error(__('No Record found for this combination!'));
+                $this->Flash->error(__('No Record found for this combination!'));
             }
 
             // $this->set('QAreview', $QA_data);

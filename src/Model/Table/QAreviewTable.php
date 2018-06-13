@@ -106,7 +106,6 @@ class QAreviewTable extends Table {
     function findExport(Query $query, array $options) {
         // pr($options); 
         $ProjectId = $options['ProjectId'];
-        foreach ($options['condition'] as $inputVal => $input):
             $path = JSONPATH . '\\ProjectConfig_' . $input['ProjectId'] . '.json';
             $content = file_get_contents($path);
             $contentArr = json_decode($content, true);
@@ -117,7 +116,6 @@ class QAreviewTable extends Table {
             $tableData = '<table border=1>  <thead>';
             $tableData.='<tr class="Heading"><th>Date</th><th>Project</th><th>Batch Name</th><th>Status</th><th>Batch Size</th><th>Sample Size</th><th>QC Completed</th><th>Pending</th><th>Final AOQ</th>';
             
-        endforeach;
         $tableData.= '</tr>';
         $tableData.='</thead>';
 
