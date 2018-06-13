@@ -38,7 +38,6 @@ class QCSampleController extends AppController {
         $userid = $session->read('user_id');
         
         $moduleId = $session->read("moduleId");
-        
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
