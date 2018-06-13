@@ -1650,10 +1650,10 @@ $(document).keydown(function(e) {
                     toappendData +='<span class="lighttext" data-toggle="tooltip" title=""></span>' +
                     '</div></div>' +
                     '<div class="col-md-2 form-text"><div class="form-group comments">' +
-                    '<textarea rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
+                    '<textarea '+inpOnBlur+' rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
                     '</div></div>' +
                     '<div class="col-md-3 form-status"><div class="form-group status">' +
-                    '<select id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
+                    '<select '+inpOnBlur+' id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
                     '<option value="">--</option>' +
                     '<option value="A">A</option>' +
                     '<option value="D">D</option>' +
@@ -1785,10 +1785,10 @@ $(document).keydown(function(e) {
                         toappendData +='<span class="lighttext" data-toggle="tooltip" title=""></span>' +
                         '</div></div>' +
                         '<div class="col-md-2 form-text"><div class="form-group comments">' +
-                        '<textarea rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
+                        '<textarea '+inpOnBlur+' rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
                         '</div></div>' +
                         '<div class="col-md-3 form-status"><div class="form-group status">' +
-                        '<select id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
+                        '<select '+inpOnBlur+' id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
                         '<option value="">--</option>' +
                         '<option value="A">A</option>' +
                         '<option value="D">D</option>' +
@@ -2976,7 +2976,7 @@ $(document).keydown(function(e) {
         }
             
         if (spaninpuval == "" && thisinpuval == "") {
-            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('');
+            thisObj.parent().parent().parent().find(".dispositionSelect").val('');
         }
         //}
     }
@@ -3199,10 +3199,10 @@ $(document).keydown(function(e) {
             toappendData +='<span class="lighttext" data-toggle="tooltip" title=""></span>' +
                     '</div></div>' +
                     '<div class="col-md-2 form-text"><div class="form-group comments">' +
-                    '<textarea rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
+                    '<textarea '+inpOnBlur+' rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
                     '</div></div>' + 
                     '<div class="col-md-3 form-status"><div class="form-group status">' +
-                    '<select id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
+                    '<select '+inpOnBlur+' id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
                     '<option value="">--</option>' +
                     '<option value="A">A</option>' +
                     '<option value="D">D</option>' +
@@ -3343,10 +3343,10 @@ $(document).keydown(function(e) {
                         toappendData +='<span class="lighttext" data-toggle="tooltip" title=""></span>' +
                         '</div></div>' +
                         '<div class="col-md-2 form-text"><div class="form-group comments">' +
-                        '<textarea rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
+                        '<textarea '+inpOnBlur+' rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
                         '</div></div>' +
                         '<div class="col-md-3 form-status"><div class="form-group status">' +
-                        '<select id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
+                        '<select '+inpOnBlur+' id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
                         '<option value="">--</option>' +
                         '<option value="A">A</option>' +
                         '<option value="D">D</option>' +
