@@ -109,6 +109,7 @@ table.dataTable tbody tr {
                 <?php
             echo $this->Form->button('Create Report', array('id' => 'check_submit', 'name' => 'check_submit', 'value' => 'Search',  'class' => 'btn btn-primary btn-sm', 'onclick' => 'return Mandatory()','type' => 'submit'));
 	        echo $this->Form->button('Clear', array('id' => 'Clear', 'name' => 'Clear', 'value' => 'Clear', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return ClearFields()', 'type' => 'button'));
+                 echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return Mandatory()', 'type' => 'submit'));
              
         echo $this->Form->end();
         ?>
@@ -152,13 +153,9 @@ if (!empty($v_project)) {
                                     
                                 </thead> 
                                 <tbody>
-                        <?php                        
-$counts = array_count_values($listerror);
+                        <?php              
 $totcount= count($v_project);
   for($i=0;$i < $totcount;$i++){
-$ErrorCount=0;
-$error=$v_error[$i];
-$ErrorCount=$counts[$error];
                             
                             ?>            
 				<tr>
@@ -168,7 +165,7 @@ $ErrorCount=$counts[$error];
                                     <td><?php echo $v_empname[$i];?></td>
                                     <td><?php echo $v_campaign[$i];?></td>
                                     <td><?php echo $v_error[$i]." ".$v_attrname[$i];?></td>
-                                    <td><?php echo $ErrorCount; ?>
+                                    <td><?php echo $v_totalcount[$i]; ?>
                                     </td>
                                     <td><?php echo $v_percentage[$i];?></td>                                
                                 </tr>	
