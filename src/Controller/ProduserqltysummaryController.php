@@ -243,7 +243,7 @@ class ProduserqltysummaryController extends AppController {
                     } else {
                         $resqueryData[$key]['displayerrname'] = $displayerrname;
                     }
-                    
+
                     $mnt_tbl_cen = "";
                     if ($mnt_tbl != date("_n_Y")) {
                         $mnt_tbl_cen = $mnt_tbl;
@@ -284,13 +284,30 @@ class ProduserqltysummaryController extends AppController {
             }
 
 //          echo "<pre>ss";print_r($result);exit;  
+            $this->set('result', $result);
+
+            if (isset($this->request->data['downloadFile'])) {
+
+                $productionData = '';
+                if (!empty($result)) {
+                    $productionData = $this->Produserqltysummary->find('export', ['ProjectId' => $ProjectId, 'condition' => $result]);
+                    $this->layout = null;
+                    if (headers_sent())
+                        throw new Exception('Headers sent.');
+                    while (ob_get_level() && ob_end_clean());
+                    if (ob_get_level())
+                        throw new Exception('Buffering is still active.');
+                    header("Content-type: application/vnd.ms-excel");
+                    header("Content-Disposition:attachment;filename=QAreviewreport.xls");
+                    echo $productionData;
+                    exit;
+                }
+            }
 
             if (empty($result)) {
                 $this->Flash->error(__('No Record found for this combination!'));
             }
         }
-
-        $this->set('result', $result);
     }
 
     public function getmonthlist($date1, $date2) {

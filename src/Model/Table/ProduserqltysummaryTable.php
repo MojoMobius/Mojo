@@ -104,5 +104,37 @@ class ProduserqltysummaryTable extends Table {
         }
     }
     
+    function findExport(Query $query, array $options) {
+//      echo "<pre>sd";   print_r($options); 
+//      exit;
+        $ProjectId = $options['ProjectId'];
+      
+          $tableData = '<table border=1>  <thead>';
+            $tableData.='<tr class="Heading"><th>Production Date</th><th>Emp name</th><th>FDRID</th><th>Errors</th><th>Total Attributes Filled</th><th>Attributes Missed</th><th>Weightage</th><th>Accuracy</th>';
+        $tableData.= '</tr>';
+        $tableData.='</thead>';
+
+        foreach ($options['condition'] as $inputVal => $input):
+	    //pr($input);exit;
+            $tableData .= '<tbody>';
+                $tableData.='<tr><td>' . $input['ProductionStartDate'] . '</td>';
+                $tableData.='<td>' . $input['Emp_name'] . '</td>';
+                $tableData.='<td>' . $input['fdrid'] . '</td>';
+                $tableData.='<td>' . $input['displayerrname'] . '</td>';
+                $tableData.='<td>' . $input['totAttrFilled'] . '</td>';
+				$tableData.='<td>' . $input['totAttrMissed'] . '</td>';
+				$tableData.='<td>' . $input['totweight'] . '</td>';
+				$tableData.='<td>' . $input['AOQ_Calc'] . '</td>';
+                
+                $tableData.='</tr>';
+        
+            $i++;
+        endforeach;
+        $tableData.='</tbody></table>';
+    
+        return $tableData;
+    }
+    
+    
     
 }

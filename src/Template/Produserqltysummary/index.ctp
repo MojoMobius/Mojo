@@ -114,6 +114,8 @@ use Cake\Routing\Router
                 <input type="hidden" name='formSubmit'>
                 <button type="submit" name = 'check_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Submit</button>
                 <button type="button" name = 'clear'class="btn btn-primary btn-sm" onclick="return ClearFields();">Clear</button>
+                  <?php  echo $this->Form->button('Export', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return Mandatory()', 'type' => 'submit'));
+                    ?>
             </div>
         </div>
     </div>
