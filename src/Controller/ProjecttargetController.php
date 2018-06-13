@@ -102,10 +102,7 @@ $Arrmonthtitle=array();
 				  
 			 for($i=0;$i<=$countmonth;$i++){
                              $j=$i+1;
-				 if($Setmonth == 13){
-					 $Setmonth=1;
-					 $Setyear=$Setyear +1;
-				 }
+				 
 				 /////Query start/////
 				 //targete
 				 $strdate =$Setyear."-".$Setmonth."-01";
