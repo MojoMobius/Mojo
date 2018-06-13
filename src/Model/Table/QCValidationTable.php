@@ -108,10 +108,10 @@ class QCValidationTable extends Table {
 //            return $template;
 //        }
 //    }
-function ajax_GetOldDatavalue_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
+function ajax_GetOldDatavalue_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber,$ModuleId) {
         $connection = ConnectionManager::get('default');
 
-        $cmdOldData = $connection->execute("select SequenceNumber from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and StatusID IN (1)")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select SequenceNumber from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and StatusID IN (1) and ModuleId=$ModuleId")->fetchAll('assoc');
 
     if(!empty($cmdOldData)){
        $cmdOldData = array_column($cmdOldData, 'SequenceNumber');
@@ -124,16 +124,16 @@ function ajax_GetOldDatavalue_seq($InputEntyId, $AttributeMasterId, $ProjectAttr
      return $new_cmdOldData;
     }
     
-    function ajax_GetOldDatavalue($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
+    function ajax_GetOldDatavalue($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber,$ModuleId) {
         $connection = ConnectionManager::get('default');
-        $cmdOldData = $connection->execute("select count(*) OldDataCount from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and SequenceNumber = $SequenceNumber and StatusID IN (1,2)")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select count(*) OldDataCount from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and SequenceNumber = $SequenceNumber and StatusID IN (1,2) and ModuleId=$ModuleId")->fetchAll('assoc');
 
         return $cmdOldData[0];
     }
 
-    function ajax_GetRebutalvalue($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
+    function ajax_GetRebutalvalue($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber,$ModuleId) {
         $connection = ConnectionManager::get('default');
-        $cmdOldData = $connection->execute("select SequenceNumber from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and StatusID=3")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select SequenceNumber from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId=$ProjectAttributeMasterId and InputEntityId=$InputEntyId and StatusID=3 and ModuleId=$ModuleId")->fetchAll('assoc');
 if(!empty($cmdOldData)){
        $cmdOldData = array_column($cmdOldData, 'SequenceNumber');
        foreach($cmdOldData as $key => $val) {
@@ -152,7 +152,7 @@ if(!empty($cmdOldData)){
         $ProjectAttributeMasterId = $options[0]['ProjectAttributeMasterId'];
         $InputEntityId = $options[0]['InputEntyId'];
         $SequenceNumber = $options[0]['SequenceNumber'];
-        $cmdOldData = $connection->execute("select * from MV_QC_Comments where AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId= $ProjectAttributeMasterId and InputEntityId= $InputEntityId and RecordStatus = 1 and SequenceNumber=$SequenceNumber and StatusID IN (1,2,3)")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select * from MV_QC_Comments where ModuleId= ".$options[0]['moduleId']." AND AttributeMasterId = $AttributeMasterId and ProjectAttributeMasterId= $ProjectAttributeMasterId and InputEntityId= $InputEntityId and RecordStatus = 1 and SequenceNumber=$SequenceNumber and StatusID IN (1,2,3)")->fetchAll('assoc');
         return $cmdOldData[0];
     }
 public function findAjaxgroup(Query $query, array $options) {
@@ -177,10 +177,10 @@ public function findAjaxgroup(Query $query, array $options) {
         return $Content[0]['HelpContent'];
 }
     
-	function ajax_GetQcComments_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
+	function ajax_GetQcComments_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber,$ModuleId) {
         $connection = ConnectionManager::get('default');
 
-        $cmdOldData = $connection->execute("select mvc.SequenceNumber,mvc.QCComments,mvc.StatusID,mvc.QCTLRebuttedComments,mvc.UserReputedComments,mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (6,8,9) order by mvc.SequenceNumber")->fetchAll('assoc');
+        $cmdOldData = $connection->execute("select mvc.SequenceNumber,mvc.QCComments,mvc.StatusID,mvc.QCTLRebuttedComments,mvc.UserReputedComments,mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (6,8,9) and mvc.ModuleId=$ModuleId order by mvc.SequenceNumber")->fetchAll('assoc');
         if(!empty($cmdOldData)){
       // $cmdOldData = array_column($cmdOldData, 'QCComments');
 
