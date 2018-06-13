@@ -50,6 +50,22 @@ class ProduserqltysummaryTable extends Table {
     }
 
 
+    public function findfirstqry(Query $query, array $options) {
+        
+        $connection = ConnectionManager::get('default');
+        $qry = $options['query'];
+        $display = $options['display'];
+        $result = $connection->execute($qry)->fetchAll('assoc');
+         if(!empty($result)){
+             if($display == 2){
+                return $result;
+             }
+             return $result[0];
+         }
+         
+         return array();
+    }
+
     public function findModule(Query $query, array $options) {
 
         $ProjectId = $options['ProjectId'];
