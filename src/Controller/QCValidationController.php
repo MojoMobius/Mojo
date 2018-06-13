@@ -70,10 +70,11 @@ class QCValidationController extends AppController {
         $QcFirstStatusRW = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusreworkIdentifier' AND RecordStatus=1")->fetchAll('assoc');
         
         $QcFirstStatusRW = array_map(current, $QcFirstStatusRW);
-        $first_Status_name_rw = $QcFirstStatusRW[0];///Ready for QC Rework
+         $first_Status_name_rw = $QcFirstStatusRW[0];///Ready for QC Rework
         
-        $first_Status_id_rw = array_search($first_Status_name_rw, $JsonArray['ProjectStatus']);
-        $next_status_name_rw = $JsonArray['ModuleStatus_Navigation'][$first_Status_id_rw][0];
+         $first_Status_id_rw = array_search($first_Status_name_rw, $JsonArray['ProjectStatus']);
+         $next_status_name_rw = $JsonArray['ModuleStatus_Navigation'][$first_Status_id_rw][0];
+       
         $next_status_id_rw = $JsonArray['ModuleStatus_Navigation'][$first_Status_id_rw][1];
         
         
@@ -1302,7 +1303,7 @@ class QCValidationController extends AppController {
                 foreach ($CengageProcessInputData as $key => $value) {
                     ////qc comment status find/////////////////////
                    // pr($value);
-                     $QcCommentVal = $connection->execute('SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' ')->fetchAll('assoc');
+                     $QcCommentVal = $connection->execute('SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' and ModuleId='.$moduleId )->fetchAll('assoc');
                     if(!empty($QcCommentVal)){
                        $qc_status= $QcCommentVal[0]['StatusId'];
                     }
@@ -1391,7 +1392,7 @@ class QCValidationController extends AppController {
                     $dymamicupdatetempFileds.="TimeTaken='" . $this->request->data['TimeTaken'] . "'";
                     $Dynamicproductionjob = $connection->execute('UPDATE ' . $stagingTable . ' SET ' . $dymamicupdatetempFileds . 'where ProductionEntity=' . $ProductionEntity);
                 }
-                $cnt_InputEntity = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                $cnt_InputEntity = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND ModuleId=$moduleId")->fetchAll('assoc');
 				//echo "SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID in (1,9) AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'";
 				
                 $cnt_InputEntity_QcError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID in (1,9) AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
@@ -1664,10 +1665,10 @@ class QCValidationController extends AppController {
                     $ProductionFields[$key]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against_org . ');';
                 }
           
-                    $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetOldDatavalue_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
-             $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetRebutalvalue($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+                    $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetOldDatavalue_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
+             $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetRebutalvalue($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
 			 
-			  $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetQcComments_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+			  $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetQcComments_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
 //             if (empty($InprogressProductionjob)) {
 //                    //     print_r($productionjob);
 //					if($productionjob[0]['InputEntityId']){
@@ -1681,7 +1682,7 @@ class QCValidationController extends AppController {
 //                }
                 $j++;
             }
-			
+			//pr($OldDataresultError);
             $this->set('QcErrorComments', $QcErrorComments);
             $this->set('OldDataresultError', $OldDataresultError);
             $this->set('OldDataresultRebutal', $OldDataresultRebutal);
@@ -2067,16 +2068,16 @@ function ajaxgetafterreferenceurl() {
             $connection = ConnectionManager::get('default');
            // $productionjobNew = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE ProductionEntity=' . $_POST['ProductionEntity'] . ' AND SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
 
-            $cmdOldData = $connection->execute('select AttributeMasterId from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . ' and StatusID IN (1,2) AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' And SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
+            $cmdOldData = $connection->execute('select AttributeMasterId from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . ' and StatusID IN (1,2) AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' AND ModuleId = '.$moduleId.' And SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
             $oldDataAttr = array_map(current, $cmdOldData);
 
-            $OldDataId = $connection->execute('select Id from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . 'AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' AND SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
+            $OldDataId = $connection->execute('select Id from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . 'AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' AND ModuleId = '.$moduleId.' AND SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
             $oldDataAttrId = array_map(current, $OldDataId);
 
-            $TLAcceptError = $connection->execute('select Id from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . 'AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' And StatusID=2 AND SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
+            $TLAcceptError = $connection->execute('select Id from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . 'AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' AND ModuleId = '.$moduleId.'  And StatusID=2 AND SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
             $TLAccept = array_map(current, $TLAcceptError);
 
-            $cmdOldDataRebutal = $connection->execute('select AttributeMasterId from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . ' and StatusID=3 AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' And SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
+            $cmdOldDataRebutal = $connection->execute('select AttributeMasterId from MV_QC_Comments where InputEntityId=' . $_POST['InputEntyId'] . ' and StatusID=3 AND AttributeMasterId=' . $_POST['AttributeMasterId'] . ' AND ProjectAttributeMasterId=' . $_POST['ProjectAttributeMasterId'] . ' AND ModuleId = '.$moduleId.' And SequenceNumber=' . $_POST['page'])->fetchAll('assoc');
             $oldDataAttrRebutal = array_map(current, $cmdOldDataRebutal);
 
          //   $getOldData['attrval'] = $productionjobNew[0];
@@ -2748,7 +2749,9 @@ function ajaxgetafterreferenceurl() {
     }
 
     function ajaxgetolddata() {
-
+ $session = $this->request->session();
+        $moduleId = $session->read("moduleId");
+        $_POST['moduleId']=$moduleId;
         $result = $this->QCValidation->find('getolddata', [$_POST]);
         echo $old_data = json_encode($result);
         exit;
@@ -2757,9 +2760,11 @@ function ajaxgetafterreferenceurl() {
     function ajaxgetrebutaldata() {
         $session = $this->request->session();
         $user_id = $session->read('user_id');
+        
+        $moduleId = $session->read("moduleId");
         $connection = ConnectionManager::get('default');
 
-        $result = $connection->execute("Select TLReputedComments FROM MV_QC_Comments where StatusId = 3 and InputEntityId = " . $_POST['InputEntyId'] . " and AttributeMasterId=" . $_POST['AttributeMasterId'] . " and ProjectAttributeMasterId=" . $_POST['ProjectAttributeMasterId'] . " and SequenceNumber=" . $_POST['page'] . " and UserId=" . $user_id . "")->fetchAll('assoc');
+        $result = $connection->execute("Select TLReputedComments FROM MV_QC_Comments where StatusId = 3 and InputEntityId = " . $_POST['InputEntyId'] . " and AttributeMasterId=" . $_POST['AttributeMasterId'] . " and ProjectAttributeMasterId=" . $_POST['ProjectAttributeMasterId'] . " and ModuleId=$moduleId$moduleId and SequenceNumber=" . $_POST['page'] . " and UserId=" . $user_id . "")->fetchAll('assoc');
         $Comments = $result[0]['TLReputedComments'];
         $TlComments = '';
         if (!empty($Comments)) {
