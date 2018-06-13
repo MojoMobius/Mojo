@@ -124,180 +124,147 @@ use Cake\Routing\Router
 
 <?php
 
-if(!empty($rebuttalResult)){ ?>
-<div id="detail" class="col-sm-12">
-  
-    <div style="margin:5px;" class="col-sm-12">
-        <!-- Second option in collapse-->
-     <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4> Production TL Rebuttal </h4>
-                
-            </div>
-                    
-            <div id="collapse0" class="panel-collapse collapse in">
-                <div class="panel-body">
-                                        <!-- Second Inner Collpse Starts-->
-        <?php 
-            foreach($rebuttalResult as $key=>$data){
-        ?>     
-              <div class="panel panel-default">
-                        <div class="panel-heading">
-                           <h4>
-                               <div style="float: left;">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $key;?>" class="" aria-expanded="true"><img src="img/insert-object.png" style="margin-bottom:3px;"> 
-                                    <label class="comments"><b>FDRID:</b></label>
-                                    <label class="comments"><span style="text-align:left"><?php echo $key;?></span></label>
-                                </a>
-                                   </div>
-                               <div class="clickview"><a target="_blank" href="<?php echo Router::url(array('controller'=>'purebuttallist','action'=>'index','PEid' => $data['ProductionEntityID'],'ModuleId'=>$ModuleId));?>" >Click to view</a></div>
-                            </h4>
-                            
-                        </div>
+if(!empty($result)){
+    
+    ?>
 
-                        <div id="collapse<?php echo $key;?>" class="panel-collapse collapse in" aria-expanded="true" style="">
-                            
-     <table style="width: 98%;" class="table table-striped table-center dataTable no-footer" id="example" aria-describedby="example_info">                                                                 
-    <tr><th>Attribute Name</th><th>Attribute Value</th><th>QC Error</th><th>QC Comments</th><th>PU Rebuttal Comments</th><th>Action</th></tr>
-             
-        <?php 
-            foreach($data['list'] as $key1=>$data1){
-//                echo "<pre>ss";print_r($data1);exit;
-        ?>
-         <tr>
-             <td><?php echo $data1['displayname'];?></td>
-             <td><?php echo $data1['OldValue'];?></td>
-             <td><?php echo $data1['ErrorCategoryName'];?> </td>
-             <td><?php echo $data1['QCComments'];?></td>
-             <td><?php echo $data1['UserReputedComments'];?></td>
-             
-             <td><div id="button_data_submit_<?php echo $data1['Id'];?>">
-             <?php if(($data1['StatusId'] == 4)){ ?>
-                <button name="frmsubmit" type="button" onclick="return query('<?php echo $data1['Id'];?>','4','D','<?php echo $data1['TLReputedComments'];?>','<?php echo $data1['QCComments'];?>','<?php echo $data1['UserReputedComments'];?>','<?php echo $data1['InputEntityId'];?>','<?php echo $data1['ProjectId'];?>','<?php echo $ModuleId;?>');" class="btn btn-default btn-sm added-commnt">Rebute</button>
-             <?php }elseif($data1['StatusId'] == 5){?>     
-             <button name="frmsubmit" type="button" onclick="return query('<?php echo $data1['Id'];?>','5','D','<?php echo $data1['TLReputedComments'];?>','<?php echo $data1['QCComments'];?>','<?php echo $data1['UserReputedComments'];?>','<?php echo $data1['InputEntityId'];?>','<?php echo $data1['ProjectId'];?>','<?php echo $ModuleId;?>');" class="btn btn-default btn-sm added-commnt">Reject</button>
-             
-              <?php }else{ ?>
-                  <button name="frmsubmit" type="button" onclick="return query('<?php echo $data1['Id'];?>','4','E','<?php echo $data1['TLReputedComments'];?>','<?php echo $data1['QCComments'];?>','<?php echo $data1['UserReputedComments'];?>','<?php echo $data1['InputEntityId'];?>','<?php echo $data1['ProjectId'];?>','<?php echo $ModuleId;?>');" class="btn btn-default btn-sm">Rebute</button>
-             <button name="frmsubmit" type="button" onclick="return query('<?php echo $data1['Id'];?>','5','E','<?php echo $data1['TLReputedComments'];?>','<?php echo $data1['QCComments'];?>','<?php echo $data1['UserReputedComments'];?>','<?php echo $data1['InputEntityId'];?>','<?php echo $data1['ProjectId'];?>','<?php echo $ModuleId;?>');" class="btn btn-default btn-sm">Reject</button>
-                  
-              <?php } ?>
-             </div></td>
-             
-             
-             
-         </tr>
-                                                            
-         <?php 
-            }
-        ?> 
-                        </table>           
-                          
+<div class="container-fluid">
+    <div class="bs-example">
+        <div id="vertical">
+            <div id="top-pane">
+                <div id="horizontal" style="height: 100%; width: 100%;">
+                    <div id="left-pane" class="pa-lef-10">
+                        <div class="pane-content" id="ajxload_data" >
+                            <input type="hidden" name="UpdateId" id="UpdateId">
+                            <button style="float:right; height:18px; visibility: hidden; margin-right:15px;" type='hidden' name='downloadFile' id='downloadFile' value='downloadFile'></button>
+                            <table style='width:100%;' class="table table-striped table-center table-hover" id='example'>
+                                <thead>
+                                    <tr>
+                                        <th style="display:none">Id</th>
+                                        <th class="Cell" width="10%">Production Date</th> 
+                                        <th class="Cell" width="10%">Emp name</th> 
+                                        <th class="Cell" width="10%">FDRID</th>
+                                        <th class="Cell" width="10%">ERRORS</th>
+                                        <th class="Cell" width="10%">TOTAL ATTRIBUTES FILLED</th>
+                                        <th class="Cell" width="10%">ATTRIBUTES MISSED</th>
+                                        <th class="Cell" width="10%">WEIGHTAGE</th>
+                                        <th class="Cell" width="10%">ACCURACY</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $i = 0;
+                                    foreach ($result as $inputVal => $input):
+                                            ?>
+                                    <!--<tr  data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal" >-->
+                                    <tr>
+                                        <td style="display:none"><?php echo $input['Id'];?></td>
+                                        <td><?php echo $input['ProductionStartDate']; ?></td>
+                                        <td><?php echo $input['Emp_name']; ?></td>
+                                        <td><?php echo $input['fdrid']; ?></td>
+                                        <td><?php echo $input['displayerrname']; ?></td>
+                                        <td><?php echo $input['totAttrFilled']; ?></td>
+                                        <td><?php echo $input['totAttrMissed']; ?></td>
+                                        <td><?php echo $input['totweight']; ?></td>
+                                        <td><?php echo $input['AOQ_Calc']; ?></td>
+                                    </tr>
+                                    <?php
+                                    $i++;
+                                    endforeach;
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                                        
-        <?php 
-            }
-        ?>     
-                                        
-               
-                    <!-- Second Inner collapse  ends here --> 
-                                    </div>
+                </div>
             </div>
         </div>
-        <!-- Second option in collapse  ends here --> 
-         
-        
-        
     </div>
-    
-    
-
-    <!-- Code for collaps ends -->
-    <input type='hidden' name='successmsg' id='successmsg' value='successmsg'>
-<?php echo $this->Form->end(); ?>
 </div>
+
 <?php } ?>
 <style type='text/css'>
     .comments{top:0 !important;left:0 !important;position:relative !important;color:black !important;}
     .frmgrp_align{margin-left: 15px !important;margin-right: 0px !important;}
 
-.panel-default>.panel-heading {
-    color: #333;
-    border-color: #ddd;
-    height: 47px;
-}
-.clickview{
-    font-weight: bold;
-    color: red;
-    float: right;
-    font-size: 12px;
-    cursor: pointer;
-}
-.added-commnt{
-    border-color:#ccc;
-    background-color:#ccc;
-}
-.pu_cmts_seq{
-    color:red;
-}
+    .panel-default>.panel-heading {
+        color: #333;
+        border-color: #ddd;
+        height: 47px;
+    }
+    .clickview{
+        font-weight: bold;
+        color: red;
+        float: right;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .added-commnt{
+        border-color:#ccc;
+        background-color:#ccc;
+    }
+    .pu_cmts_seq{
+        color:red;
+    }
 </style>
 
 <div id="light" class="white_content" style="position:fixed;">
-        <div class="query_popuptitle"><div style='float:left;width:40%'><b><span class="rebuttal_id_txt"></span> Comments</b></div><div align='right'> <b><a onclick="document.getElementById('light').style.display = 'none';document.getElementById('fade').style.display = 'none';cleartext();"><?php echo $this->Html->image('cancel.png', array('width'=>'20px','height'=>'20px','alt' => 'Close'));?></a></b></div></div>
-        <div class="query_innerbdr">
-            <div class="query_outerbdr" style='height:315px;overflow:auto;'>
-                <div id='QcsuccessMessage' align='center' style='display:none;color:green;'><b>Comments Successfully Posted!</b></div>
-                <div id='QcDeletedMessage' align='center' style='display:none;color:green;'><b>Comments Deleted Successfully!</b></div>
-                
-                
-                <input type='hidden' name='CommentsId' Id ='CommentsId' value=''>
-                <input type='hidden' name='Status_id' Id ='Status_id' value=''>
-                <input type='hidden' name='queryProjectId' Id ='queryProjectId' value=''>
-                <input type='hidden' name='InputEntityId' Id ='InputEntityId' value=''>
-                <input type='hidden' name='queryModuleId' Id ='queryModuleId' value=''>
-                
+    <div class="query_popuptitle"><div style='float:left;width:40%'><b><span class="rebuttal_id_txt"></span> Comments</b></div><div align='right'> <b><a onclick="document.getElementById('light').style.display = 'none';
+            document.getElementById('fade').style.display = 'none';
+            cleartext();"><?php echo $this->Html->image('cancel.png', array('width'=>'20px','height'=>'20px','alt' => 'Close'));?></a></b></div></div>
+    <div class="query_innerbdr">
+        <div class="query_outerbdr" style='height:315px;overflow:auto;'>
+            <div id='QcsuccessMessage' align='center' style='display:none;color:green;'><b>Comments Successfully Posted!</b></div>
+            <div id='QcDeletedMessage' align='center' style='display:none;color:green;'><b>Comments Deleted Successfully!</b></div>
+
+
+            <input type='hidden' name='CommentsId' Id ='CommentsId' value=''>
+            <input type='hidden' name='Status_id' Id ='Status_id' value=''>
+            <input type='hidden' name='queryProjectId' Id ='queryProjectId' value=''>
+            <input type='hidden' name='InputEntityId' Id ='InputEntityId' value=''>
+            <input type='hidden' name='queryModuleId' Id ='queryModuleId' value=''>
+
             <?php
                 echo $this->Form->input('', array( 'type'=>'hidden','id' => 'inspectionId', 'name' => 'inspectionId')); 
             ?>
-               
-                <label class="col-sm-4 control-label"><b>QcError Comments</b></label>
-                <div class="col-sm-7">
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='qcerrortxt'></pre>
-                </div>
-                
-                <label class="col-sm-4 control-label"><b>PUError Comments</b></label>
-                <div class="col-sm-7">
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='puerrortxt'>-</pre>
-                </div>
-                
-                <label class="col-sm-4 control-label"><b><span class="rebuttal_id_txt"></span> Comments</b></b></label>
-                <div class="col-sm-7">
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='QCValueMultiTextboxtxt'></pre>
-                    
+
+            <label class="col-sm-4 control-label"><b>QcError Comments</b></label>
+            <div class="col-sm-7">
+                <pre class="" style='background-color:white;border:0px;padding:0px;' id='qcerrortxt'></pre>
+            </div>
+
+            <label class="col-sm-4 control-label"><b>PUError Comments</b></label>
+            <div class="col-sm-7">
+                <pre class="" style='background-color:white;border:0px;padding:0px;' id='puerrortxt'>-</pre>
+            </div>
+
+            <label class="col-sm-4 control-label"><b><span class="rebuttal_id_txt"></span> Comments</b></b></label>
+            <div class="col-sm-7">
+                <pre class="" style='background-color:white;border:0px;padding:0px;' id='QCValueMultiTextboxtxt'></pre>
+
                     <?php 
                 echo $this->Form->textarea('', array( 'type'=>'text','id' => 'QCValueMultiTextbox', 'name' => 'QCValueMultiTextbox','style'=>'margin-bottom:8px;')); ?>
-                </div>
-               
-                
-                <div  class="col-sm-10" id='oldData' ></div>
+            </div>
 
-                <div class="col-sm-11">
-                    <div class="col-sm-4" style="text-align:center;margin-top: 7px;"></div>
-                    <div class="col-sm-7" style="text-align:left;margin-top: 7px;margin-left: 11px;">
+
+            <div  class="col-sm-10" id='oldData' ></div>
+
+            <div class="col-sm-11">
+                <div class="col-sm-4" style="text-align:center;margin-top: 7px;"></div>
+                <div class="col-sm-7" style="text-align:left;margin-top: 7px;margin-left: 11px;">
                 <?php
                   echo $this->Form->button('Rebute', array( 'id' => 'QuerySubmit', 'name' => 'QuerySubmit', 'value' => 'QuerySubmit','class'=>'btn btn-primary btn-sm','onclick'=>"return commentsQueryInsert();",'type'=>'button')).' '; 
                  echo $this->Form->button('Close', array( 'type'=>'button','id' => 'Cancel', 'name' => 'Cancel', 'value' => 'Cancel','class'=>'btn btn-primary btn-sm','onclick'=>"document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none';cleartext();")).' '; 
                    ?>   
-                        </div>
                 </div>
-                &nbsp;
-                &nbsp; 
             </div>
-
-
+            &nbsp;
+            &nbsp; 
         </div>
+
+
     </div>
+</div>
 
 
 <style>
@@ -317,9 +284,25 @@ if(!empty($rebuttalResult)){ ?>
 
 <script type="text/javascript">
 
- function query(CommentsId,Status_id,active,tlrebutetxt,qctxt,putxt,InputEntityId,ProjectId,ModuleId)
+ $(document).ready(function (projectId) {
+     tables = $('#example').DataTable({
+           
+            "sPaginationType": "full_numbers",
+            "sDom": 'Rlifprtlip',
+            "bStateSave": true,
+            "bFilter": true,
+            //"scrollY": 300,
+            //            "scrollX": true,
+            "aoColumnDefs": [
+                {"bSearchable": false, "aTargets": [6]}
+            ]
+        });
+ });
+ 
+    
+    function query(CommentsId, Status_id, active, tlrebutetxt, qctxt, putxt, InputEntityId, ProjectId, ModuleId)
     {
-        
+
         document.getElementById('light').style.display = 'block';
         document.getElementById('fade').style.display = 'block';
         $('#CommentsId').val(CommentsId);
@@ -327,78 +310,84 @@ if(!empty($rebuttalResult)){ ?>
         $('#InputEntityId').val(InputEntityId);
         $('#queryProjectId').val(ProjectId);
         $('#queryModuleId').val(ModuleId);
-       
-       var comment_txt_title = "";
-       
-       if(Status_id == 4){
+
+        var comment_txt_title = "";
+
+        if (Status_id == 4) {
             comment_txt_title = "Rebute ";
-       }else if(Status_id == 5){
+        } else if (Status_id == 5) {
             comment_txt_title = "Reject ";
-       }
-       
-       $('.rebuttal_id_txt').text(comment_txt_title);
-       $('#QuerySubmit').text(comment_txt_title);
-       
-        if(putxt ==''){putxt = '-';}
-        if(qctxt ==''){qctxt = '-';}
-        if(tlrebutetxt ==''){tlrebutetxt = '';}
+        }
+
+        $('.rebuttal_id_txt').text(comment_txt_title);
+        $('#QuerySubmit').text(comment_txt_title);
+
+        if (putxt == '') {
+            putxt = '-';
+        }
+        if (qctxt == '') {
+            qctxt = '-';
+        }
+        if (tlrebutetxt == '') {
+            tlrebutetxt = '';
+        }
         $('#QCValueMultiTextbox').val(tlrebutetxt);
         $('#qcerrortxt').text(qctxt);
         $('#puerrortxt').text(putxt);
-        
-        if(active == 'D'){
+
+        if (active == 'D') {
             $('#QuerySubmit').hide();
             $('#Cancel').hide();
             $('#QCValueMultiTextboxtxt').text(tlrebutetxt);
             $('#QCValueMultiTextboxtxt').show();
-             $('#QCValueMultiTextbox').hide();
-        }else{
+            $('#QCValueMultiTextbox').hide();
+        } else {
             $('#QuerySubmit').show();
             $('#Cancel').show();
             $('#QCValueMultiTextboxtxt').hide();
             $('#QCValueMultiTextbox').show();
         }
-       
-       
+
+
     }
-    
-function commentsQueryInsert(){
-        
-        
+
+    function commentsQueryInsert() {
+
+
         var CommentsId = $('#CommentsId').val();
         var InputEntityId = $('#InputEntityId').val();
         var ProjectId = $('#queryProjectId').val();
         var ModuleId = $('#queryModuleId').val();
-        
+
         var QCrebuttalTextbox = $('#QCValueMultiTextbox').val();
         var Status_id = $('#Status_id').val();
-        
-         if ($('#QCValueMultiTextbox').val() == '') {
+
+        if ($('#QCValueMultiTextbox').val() == '') {
             alert('Enter your comments ');
             $('#QCValueMultiTextbox').focus();
             return false;
         }
-        
-          $.ajax({
+
+        $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'Produserqltysummary','action'=>'ajaxpurebutalcommentsinsert'));?>",
-            data: ({CommentsId: CommentsId,QCrebuttalTextbox:QCrebuttalTextbox,Status_id:Status_id,InputEntityId:InputEntityId,ProjectId:ProjectId,ModuleId:ModuleId }),
+            data: ({CommentsId: CommentsId, QCrebuttalTextbox: QCrebuttalTextbox, Status_id: Status_id, InputEntityId: InputEntityId, ProjectId: ProjectId, ModuleId: ModuleId}),
             dataType: 'text',
             async: false,
             success: function (result) {
-                 $('#button_data_submit_'+CommentsId).html(result);
-                 document.getElementById('light').style.display = 'none';
-                 document.getElementById('fade').style.display = 'none';
+                $('#button_data_submit_' + CommentsId).html(result);
+                document.getElementById('light').style.display = 'none';
+                document.getElementById('fade').style.display = 'none';
             }
 
         });
     }
-    
-function valicateQueryInsert()
+
+    function valicateQueryInsert()
     {
         var ProjectId = "<?php echo $productionjob['ProjectId'];?>";
         var RegionId = "<?php echo $productionjob['RegionId'];?>";
-     
+
         var SequenceNumber = $('#seq').val();
         var AttributeStatus = $("#AttributeStatus").val();
 
@@ -407,18 +396,18 @@ function valicateQueryInsert()
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'Produserqltysummary','action'=>'purebuteajaxqueryinsert'));?>",
-            data: ({ProjectId: ProjectId }),
+            data: ({ProjectId: ProjectId}),
             dataType: 'text',
             async: false,
             success: function (result) {
-                
-             
-                
+
+
+
             }
 
         });
-      
-     
+
+
     }
 
     function getRegion(projectId) {
@@ -550,13 +539,13 @@ function valicateQueryInsert()
 //            alert('Select To Date');
 //            return false;
 //        }
-        
-        if ($('#user_id').val() == '') {
-            alert('Select Resource');
-            return false;
-        }
-        
-        
+
+//        if ($('#user_id').val() == '') {
+//            alert('Select Resource');
+//            return false;
+//        }
+
+
     }
 
     function ClearFields() {
@@ -574,7 +563,7 @@ function valicateQueryInsert()
 
     <?php
 
-if ($CallUserGroupFunctions == 'yes') { 
+if ($CallUserGroupFunctions == 'yes') {
     ?>
 <script>
     $(window).bind("load", function () {

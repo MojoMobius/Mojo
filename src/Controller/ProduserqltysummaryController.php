@@ -37,6 +37,7 @@ class ProduserqltysummaryController extends AppController {
         $this->loadModel('projectmasters');
         $this->loadModel('importinitiates');
         $this->loadModel('Puquery');
+        $this->loadModel('GetJob');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');
     }
@@ -46,7 +47,7 @@ class ProduserqltysummaryController extends AppController {
         $session = $this->request->session();
         $user_id = $session->read("user_id");
         $role_id = $session->read("RoleId");
-        $ProjectId = $session->read("ProjectId");
+//        $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
 
         $MojoProjectIds = $this->projectmasters->find('Projects');
@@ -57,10 +58,10 @@ class ProduserqltysummaryController extends AppController {
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
         endforeach;
-   
-        
+
+
         $this->set('Projects', $ProListFinal);
-        
+
         if (isset($this->request->data['ProjectId'])) {
             $this->set('ProjectId', $this->request->data['ProjectId']);
             $ProjectId = $this->request->data['ProjectId'];
@@ -68,10 +69,22 @@ class ProduserqltysummaryController extends AppController {
             $this->set('ProjectId', 0);
             $ProjectId = 0;
         }
-        
+
+        if (isset($this->request->data['RegionId'])) {
+            $this->set('RegionId', $this->request->data['RegionId']);
+            $RegionId = $this->request->data['RegionId'];
+        } else {
+            $this->set('RegionId', 0);
+            $RegionId = 0;
+        }
+
+//        $ProjectId = "3346";
+//        $ProjectId = "3351";
+
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $resources = $JsonArray['UserList'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
+        $AttributeMasterId = $JsonArray['ProjectConfig']['DomainId'];
         $region = $regionMainList = $JsonArray['RegionList'];
         $modules = $JsonArray['Module'];
 
@@ -87,11 +100,9 @@ class ProduserqltysummaryController extends AppController {
         $this->set('resources', $resources);
         $this->set('modules', $modulesArr);
 
-        if (count($ProListFinal) == 2) {
-            $ProjectId = $this->request->data['ProjectId'] = array_keys($ProListFinal)[1];
-        }
-
-       
+//        if (count($ProListFinal) == 2) {
+//            $ProjectId = $this->request->data['ProjectId'] = array_keys($ProListFinal)[1];
+//        }
 
         if (isset($this->request->data['ProjectId']) || isset($this->request->data['RegionId'])) {
             $region = $this->Puquery->find('region', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'SetIfOneRow' => 'yes']);
@@ -100,10 +111,10 @@ class ProduserqltysummaryController extends AppController {
             $this->set('RegionId', 0);
         }
 
-        $this->set('CallUserGroupFunctions', '');
-        if (count($ProListFinal) == 2 && count($regionMainList) == 1 && !isset($this->request->data['RegionId'])) {
-            $this->set('CallUserGroupFunctions', 'yes');
-        }
+//        $this->set('CallUserGroupFunctions', '');
+//        if (count($ProListFinal) == 2 && count($regionMainList) == 1 && !isset($this->request->data['RegionId'])) {
+//            $this->set('CallUserGroupFunctions', 'yes');
+//        }
 
         if (isset($this->request->data['UserGroupId'])) {
             $UserGroup = $this->Puquery->find('usergroupdetails', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
@@ -113,6 +124,7 @@ class ProduserqltysummaryController extends AppController {
             $UserGroupId = '';
             $this->set('UserGroupId', '');
         }
+
 
         if (isset($this->request->data['QueryDateFrom']))
             $this->set('QueryDateFrom', $this->request->data['QueryDateFrom']);
@@ -124,21 +136,31 @@ class ProduserqltysummaryController extends AppController {
         else
             $this->set('QueryDateTo', '');
 
-        if (isset($this->request->data['UserId']))
-            $this->set('UserId', $this->request->data['UserId']);
-        else
-            $this->set('UserId', '');
+//        if (isset($this->request->data['UserId']))
+//            $this->set('UserId', $this->request->data['UserId']);
+//        else
+//            $this->set('UserId', '');
 
-        if (isset($this->request->data['user_id']))
+
+        if (isset($this->request->data['user_id'])) {
             $this->set('postuser_id', $this->request->data['user_id']);
-        else
+            $user_id = $this->request->data['user_id'];
+        } else {
             $this->set('postuser_id', '');
+            $user_id = "";
+        }
+
+        if (isset($this->request->data['ProjectId'])) {
+            $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
+            $this->set('User', $user_id_list);
+            if (empty($user_id)) {
+                $user_id = array_keys($user_id_list);
+            }
+        }
 
         if (isset($this->request->data['ProjectId']) || isset($this->request->data['ModuleId'])) {
             $this->set('ModuleId', $this->request->data['ModuleId']);
             $Modules = $this->Produserqltysummary->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'ModuleId' => $this->request->data['ModuleId']]);
-
-//            $Modules = $this->Puquery->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'ModuleId' => $this->request->data['ModuleId']]);
             $this->set('ModuleIds', $Modules);
         } else {
             $this->set('ModuleIds', 0);
@@ -149,106 +171,148 @@ class ProduserqltysummaryController extends AppController {
         else
             $this->set('postbatch_UserGroupId', '');
 
+
+
+//production
+// $production_attr_id_str = "";
+// $production = $JsonArray['ModuleAttributes'][$RegionId][$ProdModuleId]['production'];
+// $production_attr_id = array_column($production, 'AttributeMasterId');
+//
+// if(!empty($production_attr_id)){
+//     $production_attr_id_str = "[".implode("],[", $production_attr_id)."]";
+// }
+
+
+        $resqueryData = array();
+        $result = array();
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
 
-            
-            
-            
-            
-            
-            
-            
-//            $conditions_cengage = "";
-//            $ProjectId = $this->request->data('ProjectId');
-//            $RegionId = $this->request->data('RegionId');
-//            $ModuleId = $this->request->data('ModuleId');
-//            ////////
-//            $connectiond2k = ConnectionManager::get('d2k');
-//            $Readyforputlrebuttal = Readyforputlrebuttal;
-//            $session = $this->request->session();
-//            //$moduleId = $session->read("moduleId");
-//
-//            $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId and ModuleStatusIdentifier='$Readyforputlrebuttal' AND RecordStatus=1")->fetchAll('assoc');
-//
-//            $QcFirstStatus = array_map(current, $QcFirstStatus);
-//            $first_Status_name = $QcFirstStatus[0];
-//            $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-//          
-//          
-//            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId=$ProjectId and FieldTypeName='General' ")->fetchAll('assoc');
-//   
-//            $DependencyTypeMasterId = $queryData[0]['Id'];
-//            $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
-//            $content = file_get_contents($path);
-//            $contentArr = json_decode($content, true);
-//
-//            $user_id = $this->request->data('user_id');
-//            $user_group_id = $this->request->data('UserGroupId');
-//            $QueryDateTo = $this->request->data('QueryDateTo');
-//            $QueryDateFrom = $this->request->data('QueryDateFrom');
-//            $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
-//            $this->set('User', $user_id_list);
-//
-//            if (empty($user_id)) {
-//                $user_id = array_keys($user_id_list);
-//            }
-//
-//            if ($QueryDateFrom != '' && $QueryDateTo != '') {
-//                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-//            }
-//            if ($QueryDateFrom != '' && $QueryDateTo == '') {
-//                $conditions .= "  AND prdem.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND prdem.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
-//            }
-//            if ($QueryDateFrom == '' && $QueryDateTo != '') {
-//                $conditions .= "  AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND prdem.ProductionStartDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-//            }
-//
-////            echo "<pre>ss";print_r($user_id);exit;
-//            if ($user_id != '') {
-//                $conditions_cengage .= "  AND ptm.UserID in (" . implode(',', $user_id) . ")";
-//            }
-//
-//
-//            $productionmasters = array();
-//            $result = array();
-//            $ReferanceId = "DomainId";
-//			
-//            $queryData = $connection->execute("SELECT uniq.AttributeMasterId,prdem.id as ProductionEntityMasterId,prdem.InputEntityId FROM MV_UniqueIdFields as uniq inner join ProductionEntityMaster as prdem on uniq.ProjectId = prdem.ProjectId where prdem.ProjectId='$ProjectId' and uniq.ReferanceId = '$ReferanceId' and prdem.StatusId ='$first_Status_id' $conditions")->fetchAll('assoc');
-//           
-//            
-////             echo "<pre>s";print_r($queryData);
-//            
-//            if (!empty($queryData)) {
-//
-//                foreach ($queryData as $key => $val) {
-//                    $ProductionEntityID = $val['ProductionEntityMasterId'];
-//                    $InputEntityId = $val['InputEntityId'];
-//                    $AttributeMasterId = $val['AttributeMasterId'];
-//					// get fdrid  
-//					
-//                    $getresultfdrid = $connection->execute("SELECT cpid.AttributeValue FROM MC_CengageProcessInputData as cpid inner join ME_Production_TimeMetric as ptm on ptm.ProductionEntityID=cpid.ProductionEntityID where cpid.ProductionEntityID='$ProductionEntityID' and cpid.SequenceNumber=1 and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.AttributeMasterId='$AttributeMasterId' and cpid.AttributeValue!='' $conditions_cengage group by cpid.AttributeValue")->fetchAll('assoc');
-//					
-//                    // check fdrid not empty
-//                    if (!empty($getresultfdrid)) {
-//                        $fdrid = $getresultfdrid[0]['AttributeValue'];
-//                        $queries = $connection->execute("SELECT qccmt.StatusId,qccmt.RegionId,qccmt.SequenceNumber,qccmt.ProjectAttributeMasterId,qccmt.Id,qccmt.ProjectId,qccmt.RegionId,qccmt.InputEntityId,qccmt.TLReputedComments,qccmt.UserReputedComments,qccmt.QCComments,qccmt.AttributeMasterId,qccmt.OldValue,qccat.ErrorCategoryName FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where qccmt.ProjectId = '$ProjectId' and qccmt.InputEntityId ='$InputEntityId' and qccmt.StatusId IN(3,4,5)")->fetchAll('assoc');
-//
-//                        foreach ($queries as $key => $val) {
-//                            $queries[$key]['displayname'] = $contentArr['AttributeOrder'][$val['RegionId']][$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
-//                        }
-//
-//                        $result[$fdrid]['list'] = $queries;
-//                        $result[$fdrid]['ProductionEntityID'] = $ProductionEntityID;
-//                    }
-//                }
-//            }
-//echo "<pre>s";print_r($result);exit;
-            $this->set('rebuttalResult', $result);
+            $QueryDateFrom = $this->request->data('QueryDateFrom');
+            $QueryDateTo = $this->request->data('QueryDateTo');
+
+            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
+            $DependencyTypeMasterId = $queryData[0]['Id'];
+
+            //$mnt_tbl = "_6_2018";
+
+            if ($QueryDateFrom != '' && $QueryDateTo != '') {
+                $months = $this->getmonthlist($QueryDateFrom, $QueryDateTo);
+            } elseif ($QueryDateFrom != '' && $QueryDateTo == '') {
+                $months = $this->getmonthlist($QueryDateFrom, $QueryDateFrom);
+            } elseif ($QueryDateFrom == '' && $QueryDateTo != '') {
+                $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
+            }
+
+            // get module id.
+            foreach ($JsonArray['ModuleConfig'] as $key => $value) {
+                if ($value['IsModuleGroup'] == '1') {
+                    $ProdModuleId = $key;
+                }
+            }
+
+            $conditions_userid = "";
+            if ($user_id != '') {
+                $conditions_userid .= "  AND rptm.[$ProdModuleId] in (" . implode(',', $user_id) . ")";
+            }
+
+//            echo "<pre>s";print_r($months);exit;
+
+            foreach ($months as $monkey => $mnt_tbl) {
+                $resqueryData = $connection->execute("SELECT rpem.Id, [$AttributeMasterId] as fdrid,rpem.ProductionEntityID,rpem.InputEntityId,[$ProdModuleId] as userid,rpem.ProductionStartDate FROM Report_ProductionEntityMaster$mnt_tbl as rpem inner join Report_ProductionTimeMetric$mnt_tbl as rptm on rptm.ProjectId=rpem.ProjectId and rptm.InputEntityId=rpem.InputEntityId  where rpem.ProjectId='$ProjectId' and rpem.DependencyTypeMasterId='$DependencyTypeMasterId' and rpem.SequenceNumber=1 $conditions_userid")->fetchAll('assoc');
+
+                $ErrorCatMasterIdsQuery = $this->Produserqltysummary->find('firstqry', ['query' => "SELECT Id FROM MV_QC_ErrorCategoryMaster where ErrorCategoryName='Missed' ", 'display' => '1']);
+                $ErrorcatId = $ErrorCatMasterIdsQuery['Id'];
+
+
+                foreach ($resqueryData as $key => $value) {
+
+                    $resqueryData[$key]['Emp_name'] = $JsonArray['UserList'][$value['userid']];
+                    // errors 
+                    $InputEntityId = $value['InputEntityId'];
+                    $geterror = $this->Produserqltysummary->find('firstqry', ['query' => "SELECT qccat.ErrorCategoryName,qccmt.ProjectAttributeMasterId,qccmt.RegionId FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where qccmt.ProjectId='$ProjectId' and qccmt.InputEntityId ='$InputEntityId' ", 'display' => '2']);
+
+                    $displayerrname = "";
+                    foreach ($geterror as $errkey => $errval) {
+                        $RegionId = $errval['RegionId'];
+                        $ProjectAttributeMasterId = $errval['ProjectAttributeMasterId'];
+                        $displayerrname .= $errval['ErrorCategoryName'] . "-" . $JsonArray['AttributeOrder'][$RegionId][$ProjectAttributeMasterId]['DisplayAttributeName'] . ";";
+                    }
+
+                    if (!empty($displayerrname)) {
+                        $resqueryData[$key]['displayerrname'] = rtrim($displayerrname, ";");
+                    } else {
+                        $resqueryData[$key]['displayerrname'] = $displayerrname;
+                    }
+                    
+                    $mnt_tbl_cen = "";
+                    if ($mnt_tbl != date("_n_Y")) {
+                        $mnt_tbl_cen = $mnt_tbl;
+                    }
+
+                    /////Attributes Filled
+                    $Selectaoqinput = $this->Produserqltysummary->find('firstqry', ['query' => "select COUNT(Id) as cnt from MC_CengageProcessInputData$mnt_tbl_cen where DependencyTypeMasterId='$DependencyTypeMasterId' AND InputEntityId='$InputEntityId' GROUP BY SequenceNumber,AttributeMasterId,DependencyTypeMasterId ", 'display' => '2']);
+
+
+                    $AttrFilled = array();
+                    foreach ($Selectaoqinput as $Inattr):
+                        $AttrFilled[] = $Inattr['cnt'];
+                    endforeach;
+                    $totAttrFilled = array_sum($AttrFilled);
+
+                    /////Attributes Missed 
+                    $Selectaoqqc = $this->Produserqltysummary->find('firstqry', ['query' => "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='$ErrorcatId' AND InputEntityId='$InputEntityId' ", 'display' => '1']);
+                    $totAttrMissed = $Selectaoqqc['cnt'];
+
+                    ///error weightage//////////
+                    $Selectaoqweight = $this->Produserqltysummary->find('firstqry', ['query' => "select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm inner JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory  where InputEntityId='$InputEntityId' GROUP BY cm.InputEntityId", 'display' => '1']);
+                    $totweight = $Selectaoqweight['weightage'];
+
+                    ///////end/////////////////
+                    $totAttributes = $totAttrFilled + $totAttrMissed;
+                    $AOQ_Calc = 100 - ($totweight / $totAttributes);
+                    $AOQ_Calc = bcdiv($AOQ_Calc, 1, 2);  // 2.56
+                    if (floor($AOQ_Calc) == $AOQ_Calc) {
+                        $AOQ_Calc = round($AOQ_Calc);
+                    }
+                    $resqueryData[$key]['totAttrFilled'] = $totAttrFilled;
+                    $resqueryData[$key]['totAttrMissed'] = $totAttrMissed;
+                    $resqueryData[$key]['totweight'] = $totweight;
+                    $resqueryData[$key]['AOQ_Calc'] = $AOQ_Calc;
+                }
+
+                $result = array_merge($result, $resqueryData);
+            }
+
+//          echo "<pre>ss";print_r($result);exit;  
 
             if (empty($result)) {
                 $this->Flash->error(__('No Record found for this combination!'));
             }
         }
+
+        $this->set('result', $result);
+    }
+
+    public function getmonthlist($date1, $date2) {
+
+        $ts1 = strtotime($date1);
+        $ts2 = strtotime($date2);
+
+        $year1 = date('Y', $ts1);
+        $year2 = date('Y', $ts2);
+
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2);
+
+        $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+        if ($diff > 0) {
+            for ($i = 0; $i <= $diff; $i++) {
+                $months[] = date('_n_Y', strtotime("$date1 +$i month"));
+            }
+        } else {
+            $months[] = date('_n_Y', strtotime($date1));
+        }
+        return $months;
     }
 
     public function purebuteajaxqueryinsert() {
@@ -323,21 +387,21 @@ class ProduserqltysummaryController extends AppController {
 
         $RegionId = $queries[0]['RegionId'];
 
-          // pu user rework -> status update when atleast one reject from pu-tl   
+        // pu user rework -> status update when atleast one reject from pu-tl   
         $pucmtcntfindqueries = $connection->execute("SELECT count(Id) as pucmtcnt FROM MV_QC_Comments where StatusId = '3' and InputEntityId='$InputEntityId' and ProjectId='$ProjectId'")->fetchAll('assoc');
-        
+
         if (!empty($pucmtcntfindqueries)) {
-            
-        $connectiond2k = ConnectionManager::get('d2k');
-        $Readyforputlrebuttal = Readyforputlrebuttal;
-        $ReadyforPURework = ReadyforPUReworkIdentifier;
-        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-        
-        // get production main-status id 
-        $PutlFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId and ModuleStatusIdentifier='$Readyforputlrebuttal' AND RecordStatus=1")->fetchAll('assoc');
-        $PutlFirstStatus = array_map(current, $PutlFirstStatus);
-        $Putlfirst_Status_name = $PutlFirstStatus[0];
-        $Putlfirst_Status_id = array_search($Putlfirst_Status_name, $JsonArray['ProjectStatus']);
+
+            $connectiond2k = ConnectionManager::get('d2k');
+            $Readyforputlrebuttal = Readyforputlrebuttal;
+            $ReadyforPURework = ReadyforPUReworkIdentifier;
+            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+
+            // get production main-status id 
+            $PutlFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId and ModuleStatusIdentifier='$Readyforputlrebuttal' AND RecordStatus=1")->fetchAll('assoc');
+            $PutlFirstStatus = array_map(current, $PutlFirstStatus);
+            $Putlfirst_Status_name = $PutlFirstStatus[0];
+            $Putlfirst_Status_id = array_search($Putlfirst_Status_name, $JsonArray['ProjectStatus']);
 
             $pucmtcnt = array_map(current, $pucmtcntfindqueries);
             $cnt = $pucmtcnt[0];
@@ -345,7 +409,7 @@ class ProduserqltysummaryController extends AppController {
                 $purejectcmtcntfindqueries = $connection->execute("SELECT count(Id) as pucmtcnt FROM MV_QC_Comments where StatusId = '5' and InputEntityId='$InputEntityId' and ProjectId='$ProjectId'")->fetchAll('assoc');
                 $purejcmtcnt = array_map(current, $purejectcmtcntfindqueries);
                 $purejcnt = $purejcmtcnt[0];
-                
+
                 if ($purejcnt > 0) { // check its having any rejected status
                     $getreworkFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId='$ModuleId' and ModuleStatusIdentifier='$ReadyforPURework' AND RecordStatus=1")->fetchAll('assoc');
                     $pureworkfirstStatus = array_map(current, $getreworkFirstStatus);
@@ -355,30 +419,27 @@ class ProduserqltysummaryController extends AppController {
                     $UpdateQryStatus = "update ProductionEntityMaster set StatusId='$purework_Status_id' where ProjectId='$ProjectId'  AND InputEntityId=$InputEntityId ";
                     $QryStatus = $connection->execute($UpdateQryStatus);
                 } else { // pu rebuttal comments done without any reject
-					
                     $putlcompletedstatus_id = $JsonArray['ModuleStatus_Navigation'][$Putlfirst_Status_id][1];
                     $UpdateQryStatus = "update ProductionEntityMaster set  StatusId='$putlcompletedstatus_id' where ProjectId='$ProjectId' AND InputEntityId=$InputEntityId";
                     $QryStatus = $connection->execute($UpdateQryStatus);
-					//Staging table updation
-					$module = $JsonArray['Module'];
-					$module = array_keys($module);
-					$ProductionFields = array();
-					foreach ($module as $key => $value) {
-						$StaticFieldssarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['production'];
-							if (!empty($StaticFieldssarr)) {
-							$moduleId = $value;
-							}
-					}
-                                        
-					$stagingTable = 'Staging_' . $moduleId . '_Data';
-					$UpdateQryStatus = "update $stagingTable set  StatusId='$putlcompletedstatus_id' where ProjectId='$ProjectId' AND InputEntityId=$InputEntityId";
+                    //Staging table updation
+                    $module = $JsonArray['Module'];
+                    $module = array_keys($module);
+                    $ProductionFields = array();
+                    foreach ($module as $key => $value) {
+                        $StaticFieldssarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['production'];
+                        if (!empty($StaticFieldssarr)) {
+                            $moduleId = $value;
+                        }
+                    }
+
+                    $stagingTable = 'Staging_' . $moduleId . '_Data';
+                    $UpdateQryStatus = "update $stagingTable set  StatusId='$putlcompletedstatus_id' where ProjectId='$ProjectId' AND InputEntityId=$InputEntityId";
                     $QryStatus = $connection->execute($UpdateQryStatus);
-					
-                    
                 }
             }
         }
-        
+
         $data1 = $queries[0];
         if ($data1['StatusId'] == 4) {
             $rebute_txt = "Rebute";
