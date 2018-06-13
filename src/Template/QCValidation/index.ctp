@@ -4127,6 +4127,7 @@ if ($this->request->query['continue'] == 'yes') {
         var ProductionEntityID = "<?php echo $productionjob['Id'];?>";
         var StatusId = "<?php echo $productionjob['StatusId'];?>";
         var UserId = "<?php echo $productionjob['UserId'];?>";
+        var QCModuleId = "<?php echo $QCModuleId;?>";
         var AttributeMasterId = $('#attrId').val();
          //var SequenceNumber = 1;
         var SequenceNumber = $('#seq').val();
@@ -4209,7 +4210,7 @@ if ($this->request->query['continue'] == 'yes') {
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxqueryinsert'));?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId, CommentsId: CommentsId, AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId, AttributeStatus: AttributeStatus, StatusId: StatusId, UserId: UserId, Attribute: Attribute, OldValue: OldValue, QCComments: QCComments, SequenceNumber: SequenceNumber, CategoryName: CategoryName, CategoryId: CategoryId, SubCategoryName: SubCategoryName, SubCategoryId: SubCategoryId}),
+            data: ({ProjectId: ProjectId, RegionId: RegionId, QCModuleId:QCModuleId,InputEntityId: InputEntityId, CommentsId: CommentsId, AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId, AttributeStatus: AttributeStatus, StatusId: StatusId, UserId: UserId, Attribute: Attribute, OldValue: OldValue, QCComments: QCComments, SequenceNumber: SequenceNumber, CategoryName: CategoryName, CategoryId: CategoryId, SubCategoryName: SubCategoryName, SubCategoryId: SubCategoryId}),
             dataType: 'text',
             async: false,
             success: function (result) {

@@ -110,6 +110,7 @@ class QCValidationController extends AppController {
         $domainUrl = $JsonArray['ProjectConfig']['DomainUrl'];
         $userList = $JsonArray['UserList'];
         $this->set('userList', $userList);
+        $this->set('QCModuleId', $moduleId);
        // $frameType = 3;
 
         if ($frameType == 1) {
@@ -1396,7 +1397,10 @@ class QCValidationController extends AppController {
                 $cnt_InputEntity_QcError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID in (1,9) AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
 //pr($cnt_InputEntity_QcError);
                 $cnt_InputEntity_TLAcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=8 AND ProjectId=" . $ProjectId . " AND UserId=" . $user_id . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                
+                $cnt_InputEntity_TLRejectError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=9 AND ProjectId=" . $ProjectId . " AND UserId=" . $user_id . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
 
+                
                 $cnt_InputEntity_QcError_Deleted = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=0 AND RecordStatus =1 AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
 
                // $cnt_InputEntity_TL_rebutall = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=7 AND RecordStatus =1 AND ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
@@ -1426,12 +1430,20 @@ class QCValidationController extends AppController {
                 }
 				//echo $completion_status;
 				//exit;
+                
+                
                 if ($completion_status != '') {
                    // $QcIterationUpdate = $connection->execute("UPDATE MV_QC_Iteration SET QcEndDate='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE CreatedDate IN (select MAX (createddate)from MV_QC_Iteration) and InputEntityId=" . $InputEntityId);
                     $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completion_status . ",ActEnddate='" . date('Y-m-d H:i:s') . "' ,TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntity=" . $ProductionEntity);
                     $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
                     $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET StatusId=" . $completion_status . ",QcStatusId=" . $QcStatusId . ",QCEndDate='" . date('Y-m-d H:i:s') . "',QCTimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntityID=" . $ProductionEntity . " AND Module_Id=" . $moduleId);
-
+                    if(count($cnt_InputEntity_TLRejectError[0]['cnt'])>0){
+                        
+                    $moduleId=$connection->execute("SELECT ModuleId FROM ME_Module_Level_Config where Project=3346 and Modulegroup=1")->fetchAll('assoc');    
+					//pr($moduleId);
+                    $table='Staging_'.$moduleId[0]['ModuleId'].'_Data';
+                    $productionjob = $connection->execute("UPDATE $table SET StatusId=" . $completion_status . " WHERE ProductionEntity=" . $ProductionEntity);    
+                    }
                     $this->redirect(array('controller' => 'QCValidation', 'action' => '', '?' => array('job' => $submitType)));
                     return $this->redirect(['action' => 'index']);
                     return $this->redirect(['action' => 'index']);
@@ -2726,11 +2738,11 @@ function ajaxgetafterreferenceurl() {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         if ($commentsId != 0) {
-            $connection->execute("UPDATE MV_QC_Comments SET ProjectId = $ProjectId, RegionId='" . $_POST['RegionId'] . "',InputEntityId='" . $_POST['InputEntityId'] . "',AttributeMasterId='" . $_POST['AttributeMasterId'] . "',ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "',OldValue='" . trim($OldValue) . "',"
+            $connection->execute("UPDATE MV_QC_Comments SET ProjectId = $ProjectId,ModuleId='".$_POST['QCModuleId']."', RegionId='" . $_POST['RegionId'] . "',InputEntityId='" . $_POST['InputEntityId'] . "',AttributeMasterId='" . $_POST['AttributeMasterId'] . "',ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "',OldValue='" . trim($OldValue) . "',"
                     . "QCComments='" . trim($QCComments) . "',ErrorCategoryMasterId='" . $_POST['CategoryId'] . "' ,SubErrorCategoryMasterId='" . $_POST['SubCategoryId'] . "' ,SequenceNumber='" . $_POST['SequenceNumber'] . "' ,UserId='" . $user_id . "' ,StatusId=1 ,RecordStatus=1 ,ModifiedDate='" . $ModifiedDate . "' ,ModifiedBy=$user_id where Id = '" . $_POST['CommentsId'] . "'");
         } else {
-            $connection->execute("INSERT into MV_QC_Comments (ProjectId,RegionId,InputEntityId,AttributeMasterId,ProjectAttributeMasterId,OldValue,QCComments,ErrorCategoryMasterId,SubErrorCategoryMasterId,SequenceNumber,UserId,StatusId,RecordStatus,CreatedDate,CreatedBy)"
-                    . "values($ProjectId,'" . $_POST['RegionId'] . "','" . $_POST['InputEntityId'] . "','" . $_POST['AttributeMasterId'] . "','" . $_POST['ProjectAttributeMasterId'] . "','" . trim($OldValue) . "','" . trim($QCComments) . "','" . $_POST['CategoryId'] . "','" . $_POST['SubCategoryId'] . "','" . $_POST['SequenceNumber'] . "','" . $user_id . "',1,1,'" . $createddate . "','" . $user_id . "')");
+            $connection->execute("INSERT into MV_QC_Comments (ProjectId,RegionId,ModuleId,InputEntityId,AttributeMasterId,ProjectAttributeMasterId,OldValue,QCComments,ErrorCategoryMasterId,SubErrorCategoryMasterId,SequenceNumber,UserId,StatusId,RecordStatus,CreatedDate,CreatedBy)"
+                    . "values($ProjectId,'" . $_POST['RegionId'] . "','".$_POST['QCModuleId']."','" . $_POST['InputEntityId'] . "','" . $_POST['AttributeMasterId'] . "','" . $_POST['ProjectAttributeMasterId'] . "','" . trim($OldValue) . "','" . trim($QCComments) . "','" . $_POST['CategoryId'] . "','" . $_POST['SubCategoryId'] . "','" . $_POST['SequenceNumber'] . "','" . $user_id . "',1,1,'" . $createddate . "','" . $user_id . "')");
         }
         die;
     }

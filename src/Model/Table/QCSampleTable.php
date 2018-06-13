@@ -30,13 +30,13 @@ class QCSampleTable extends Table {
     public function findBatches(Query $query, array $options) {
 
         $connection = ConnectionManager::get('default');
+       
         $QcStatusId = $options['QcStatusId'];
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
         $ModuleId = $options['ModuleId'];
         $UserGroupId = $options['UserGroupId'];
-        $QcModuleId = $option['QcModuleId'];
-        
+         $QcModuleId = $options['QcModuleId']; 
         $QcStatusDetails = $connection->execute("select Id,ProjectId,RegionId,ProcessId,BatchName,EntityCount,ProductionStartDate,"
                 . "ProductionEndDate,StatusId,RecordStatus,CreatedDate FROM MV_QC_BatchMaster WHERE StatusId IN ($QcStatusId) "
                 . "and ProjectId='" . $ProjectId . "' and RegionId='" . $RegionId . "' and QC_Module_Id='".$QcModuleId."' and ProcessId='" . $ModuleId . "' and UserGroupId='" . $UserGroupId . "' and RecordStatus=1 ORDER BY CreatedDate DESC");
