@@ -91,7 +91,7 @@ class QCSampleController extends AppController {
              $session = $this->request->session();
         $userid = $session->read('user_id');
         
-        $moduleId = $session->read("moduleId");
+         $moduleId = $session->read("moduleId");
 
             $SelectQCBatch = $this->QCSample->find('batches', ['QcStatusId' => $QcStatusId, 'QcModuleId' => $moduleId, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'ModuleId' => $ModuleId, 'UserGroupId' => $UserGroupId]);
             
