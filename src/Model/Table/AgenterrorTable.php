@@ -58,5 +58,42 @@ class AgenterrorTable extends Table {
             return $template;
         }
     }
+        function findExport(Query $query, array $options) {
+        // pr($options); 
+            $ProjectId = $options['ProjectId'];           
+            $tableData = '<table border=1>  <thead>';
+            $tableData.='<tr class="Heading"><th>Date</th><th>Project</th><th>Batch Name</th><th>Status</th><th>Batch Size</th><th>Sample Size</th><th>QC Completed</th><th>Pending</th><th>Final AOQ</th>';
+            
+        $tableData.= '</tr>';
+        $tableData.='</thead>';
+
+       
+        $totcount=count($options['condition']);
+        for($i=0;$i<$totcount;$i++){
+	    //pr($input);exit;
+            $tableData .= '<tbody>';
+            $IDValue = $input['Id'];
+            $statusName = $status_list[$input['StatusId']];
+            $showDataRow = false;
+            
+                $tableData.='<tr><td>' . $input['CreatedDate'] . '</td>';
+                $tableData.='<td>' . $contentArr[$input['ProjectId']] . '</td>';
+                $tableData.='<td>' . $input['BatchName'] . '</td>';
+                $tableData.='<td>' . $input['StatusId'] . '</td>';
+                $tableData.='<td>' . $input['EntityCount'] . '</td>';
+				$tableData.='<td>' . $input['SampleCount'] . '</td>';
+				$tableData.='<td>' . $input['QCCompletedCount'] . '</td>';
+				$tableData.='<td>' . $qcpending . '</td>';
+				$tableData.='<td>' . $input['aoq'] . '</td>';
+                
+                $tableData.='</tr>';
+          
+            $i++;
+        }
+        $tableData.='</tbody></table>';
+        //echo 'jai'.$tableData;
+        //exit;
+        return $tableData;
+    }
   
 }
