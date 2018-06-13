@@ -120,7 +120,7 @@ $AttributeGroupMaster = $contentArr['AttributeGroupMasterDirect'];
 endforeach;
 //seperate count///
 
-
+/*
 
 $Arrfdate=explode("-",$fdate);
 $Arrtdate=explode("-",$tdate);
@@ -137,9 +137,25 @@ $month2 = date('m', $ts2);
 if($month1 == $month2 && $year1 == $year2){
     $countmonth = 1;
 }
+*/
+////
+$QueryDateFrom=$this->request->data('batch_from');
+$QueryDateTo=$this->request->data('batch_to');
+
+///
+if ($QueryDateFrom != '' && $QueryDateTo != '') { 
+$months = $this->getmonthlist($QueryDateFrom, $QueryDateTo); 
+} 
+elseif ($QueryDateFrom != '' && $QueryDateTo == '') {  
+$months = $this->getmonthlist($QueryDateFrom, $QueryDateFrom);
+}
+elseif ($QueryDateFrom == '' && $QueryDateTo != '') { 
+$months = $this->getmonthlist($QueryDateTo, $QueryDateTo); 
+}
+
             
        if(!empty($this->request->data('batch_from')) && empty($this->request->data('batch_to'))){
-           $Datecheck ="Convert(date, pm.ProductionStartDate)='".$fdateformat."' AND ";
+           $Datecheck ="Convert(date, pm.ProductionStartDate)='".$fdateformat."' AND ";         
        } 
        elseif($this->request->data('batch_from') == $this->request->data('batch_to')){
            $Datecheck ="Convert(date, pm.ProductionStartDate)='".$fdateformat."' AND ";
@@ -156,7 +172,6 @@ $Arrcompleted=array();
 $Arrtarget=array();
 $Arrmonthtitle=array();
 //$ProjectId=3351;
-$target_report = $connection->execute("SELECT MonthlyTarget as mon FROM ProjectMaster  WHERE ProjectId='".$ProjectId."'")->fetchAll('assoc');
 
         $V_project=array();
         $V_empid=array();
@@ -231,21 +246,16 @@ $target_report = $connection->execute("SELECT MonthlyTarget as mon FROM ProjectM
           
           ///////////campaign end////////////     
   
-			 for($i=0;$i<$countmonth;$i++){
-                             $j=$i+1;
-                             
-				 if($Setmonth == 13){
-					 $Setmonth=1;
-					 $Setyear=$Setyear +1;
-				 }
+			 //for($i=0;$i<$countmonth;$i++){
+                          //   $j=$i+1;
+                          foreach($months as $CountMonth){
+                             				
 				 /////Query start/////
 				 //targete
-				 $strdate =$Setyear."-".$Setmonth."-01";
+                                 $Arrdatetitle=explode("_",$CountMonth);
+				 $strdate =$Arrdatetitle[2]."-".$Arrdatetitle[1]."-01";
 				 $Arrmonthtitle[]=date('F Y', strtotime($strdate));
-				 $Arrtarget[]=$target_report[0]['mon'];
-                                 
-				 //end
-				  $Mnth="_".(int)$Setmonth."_".(int)$Setyear;
+                                 $Mnth =$CountMonth;
                                   $Prod_Module = 'tm.*';
       
         //$ProdModuleId=6694018;                     
@@ -395,6 +405,26 @@ $target_report = $connection->execute("SELECT MonthlyTarget as mon FROM ProjectM
         echo $Campaign = $this->Agenterror->find('Campaign', ['ProjectId' => $_POST['projectId']]);
         exit;
     } 
+
+        public function getmonthlist($date1, $date2) { 
+        $ts1 = strtotime($date1);
+        $ts2 = strtotime($date2); 
+        $year1 = date('Y', $ts1); 
+        $year2 = date('Y', $ts2);
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2); 
+        $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+         if ($diff > 0) {        
+            for ($i = 0; $i <= $diff; $i++) {
+                $months[] = date('_n_Y', strtotime("$date1 +$i month"));
+            }  
+          } 
+        else 
+           { 
+            $months[] = date('_n_Y', strtotime($date1));
+           }       
+            return $months;  
+    }
        
 
 }
