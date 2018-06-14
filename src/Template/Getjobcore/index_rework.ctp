@@ -2964,7 +2964,7 @@ $(document).keydown(function(e) {
         }
 
         function formSubmit() {
-            
+            var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
 		 ProjectId = $("#ProjectId").val();
             RegionId = $("#RegionId").val();	 
 	InputEntityId = $("#InputEntityId").val();
@@ -2972,7 +2972,7 @@ $(document).keydown(function(e) {
                 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxcheckreworkincomplete')); ?>",
-                data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId}),
+                data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,QcCommentsModuleId:QcCommentsModuleId}),
                 dataType: 'json',
                 async: false,
                 success: function (result) {
@@ -3659,11 +3659,12 @@ $(document).keydown(function(e) {
     
       function loadhandsondatafinal(id, idval, key, keysub, submenu,ModuleId) {
         var ProductionEntityId = $("#ProductionEntity").val();
+        var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
         $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandrework')); ?>',
             dataType: 'text',
             type: 'POST',
-            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id, title:submenu,ModuleId:ModuleId},
+            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id, title:submenu,ModuleId:ModuleId,QcCommentsModuleId:QcCommentsModuleId},
             success: function (res) {   
                 $(".hot").html(res);
             }
@@ -3765,12 +3766,12 @@ function loadMultiFieldqcerror(attributeMasterId, clkseq) {
         }	
 function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
  var ProductionEntityId = $("#ProductionEntity").val();
-
+var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
         $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldatarework')); ?>',
             dataType: 'text',
             type: 'POST',
-            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId},
+            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,QcCommentsModuleId:QcCommentsModuleId},
             success: function (res) {	
 	     $(".hot").html(res);
             }
@@ -3905,12 +3906,12 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
         var SequenceNumber = $('#seq').val();
         var AttributeMasterId = $("#attrId").val();
         var ProjectAttributeMasterId = $("#ProjattrId").val();
-       
+        var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
         var result = new Array();
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxupdateacceptstatus'));?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,UserId: UserId,SequenceNumber: SequenceNumber}),
+            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,UserId: UserId,SequenceNumber: SequenceNumber,QcCommentsModuleId:QcCommentsModuleId}),
             dataType: 'text',
             async: false,
             success: function (result) {
@@ -3942,16 +3943,18 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
         var SequenceNumber = $('#seq').val();
         var AttributeMasterId = $("#attrId").val();
         var ProjectAttributeMasterId = $("#ProjattrId").val();
-       
+        var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
         showRebuttedData(ProjectId,RegionId,InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, SequenceNumber);
      }
      
      function showRebuttedData(ProjectId,RegionId,InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, SequenceNumber){
+         
+         var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
           var result = new Array();
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxgetrebutteddata'));?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,SequenceNumber: SequenceNumber}),
+            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,SequenceNumber: SequenceNumber,QcCommentsModuleId:QcCommentsModuleId}),
             dataType: 'text',
             async: false,
             success: function (result) {
@@ -3975,7 +3978,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
         var AttributeMasterId = $("#attrId").val();
         var ProjectAttributeMasterId = $("#ProjattrId").val();
         var PuComments = $('#PUComments').val();
-        
+        var QcCommentsModuleId = "<?php echo $QcCommentsModuleId; ?>";
         if(PuComments == ''){
             alert("Enter PU Comments");
             $("#PUComments").focus();
@@ -3986,7 +3989,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxupdaterejectstatus'));?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,UserId: UserId,SequenceNumber: SequenceNumber}),
+            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,UserId: UserId,SequenceNumber: SequenceNumber,QcCommentsModuleId: QcCommentsModuleId}),
             dataType: 'text',
             async: false,
             success: function (result) {
@@ -3998,7 +4001,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxinsertpurebuttal'));?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,StatusId: StatusId, UserId: UserId, PuComments: PuComments, SequenceNumber: SequenceNumber}),
+            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId,AttributeMasterId: AttributeMasterId, ProjectAttributeMasterId: ProjectAttributeMasterId,StatusId: StatusId, UserId: UserId, PuComments: PuComments, SequenceNumber: SequenceNumber, QcCommentsModuleId:QcCommentsModuleId}),
             dataType: 'text',
             async: false,
             success: function (result) {
@@ -4116,3 +4119,43 @@ if ($this->request->query['continue'] == 'yes') {
     echo "<script>getJob();</script>";
 }
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

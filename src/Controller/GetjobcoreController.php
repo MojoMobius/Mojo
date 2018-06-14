@@ -761,6 +761,9 @@ class GetjobcoreController extends AppController {
                 
                 $ProductionEntityStatus=array_intersect($FirstStatusId,$PuFirst_Status_id);
                 
+                $moduleStatus = $FirstStatus;
+                $moduleStatusName = $JsonArray['ProjectStatus'][$moduleStatus];
+               
                 if (empty($productionjob)) {
                     $this->set('NoNewJob', 'NoNewJob');
                 } else {
@@ -783,12 +786,24 @@ class GetjobcoreController extends AppController {
                 }
            
             } else {
+                
                 $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$next_status_id.')  AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id .'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
                 $this->set('getNewJOb', '');
                 $this->set('productionjob', $InprogressProductionjob[0]);
                 $productionjobNew = $InprogressProductionjob;
+                $moduleStatus = $productionjobNew[0]['StatusId'];
+                $moduleStatusName = $JsonArray['ProjectStatus'][$moduleStatus];
+                $connection = ConnectionManager::get('d2k');
+                $module = $connection->execute("SELECT ProjectEntityStatusMaster.Status FROM D2K_ModuleStatusMaster inner join d2k_projectmodulestatusmapping on D2K_ModuleStatusMaster.Id = D2K_ProjectModuleStatusMapping.ModuleStatusId inner join projectentitystatusmaster on projectentitystatusmaster.id = D2K_ProjectModuleStatusMapping.ProjectStatusId where D2K_ModuleStatusMaster.status = '".$moduleStatusName."'")->fetchAll('assoc');
+                $moduleStatusName = $module[0]['Status'];
             }
-        
+            if($moduleStatusName != ''){
+            $QcCommentsModuleId = $connection->execute("SELECT ModuleId from D2K_ModuleStatusMaster where Status = '".$moduleStatusName."' Order by ModuleId desc")->fetchAll('assoc');
+            $QcCommentsModuleId = $QcCommentsModuleId[0]['ModuleId'];
+            $this->set('QcCommentsModuleId', $QcCommentsModuleId);
+            }
+            $connection = ConnectionManager::get('default');
+            
             $RegionId = $productionjobNew[0]['RegionId'];
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
             $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
@@ -983,11 +998,11 @@ class GetjobcoreController extends AppController {
               
                 $queryStatus = $connection->execute("SELECT count(1) as cnt FROM ME_UserQuery WITH (NOLOCK) WHERE  StatusID=1 AND ProjectId=" . $ProjectId . " AND  ProductionEntityId='" . $productionjobNew[0]['ProductionEntity'] . "'")->fetchAll('assoc');
                 
-                $cnt_InputEntity_RejectError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=3 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                $cnt_InputEntity_RejectError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=3 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "' AND ModuleId='".$QcCommentsModuleId."'")->fetchAll('assoc');
                 
-                $cnt_InputEntity_TLAcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=4 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                $cnt_InputEntity_TLAcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=4 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "' AND ModuleId='".$QcCommentsModuleId."'")->fetchAll('assoc');
                 
-                $cnt_InputEntity_AcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=2 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "'")->fetchAll('assoc');
+                $cnt_InputEntity_AcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=2 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "' AND ModuleId='".$QcCommentsModuleId."'")->fetchAll('assoc');
                 
                 if ($queryStatus[0]['cnt'] > 0) {
 //                    $completion_status = $queryStatusId;
@@ -1155,7 +1170,8 @@ class GetjobcoreController extends AppController {
                    // $validate[$val['ProjectAttributeMasterId']]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against . ','.$against_org.'';
                     $validate[$val['ProjectAttributeMasterId']]['Reload'] = $against . ','.$against_org;
                 }
-              $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->Getjobcore->ajax_GetQcComments_seq($productionjobNew[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1);
+                
+              $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->Getjobcore->ajax_GetQcComments_seq($productionjobNew[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$QcCommentsModuleId);
             }
             $this->set('QcErrorComments', $QcErrorComments);
             $this->set('validate', $validate);
@@ -2001,6 +2017,7 @@ class GetjobcoreController extends AppController {
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
         $moduleId = $_POST['ModuleId'];
+        $qcModuleId = $_POST['QcCommentsModuleId']; 
         $Title = $_POST['title'];
         $session = $this->request->session();
         $ProjectId = $session->read("ProjectId");
@@ -2053,7 +2070,7 @@ class GetjobcoreController extends AppController {
 		   $AttributeMasterId = $value['AttributeMasterId'];
 		   $SequenceNumber = $value['SequenceNumber'];
                    
-                   $qcerror['handson'][$i][$value4]['status'] =$this->getdataqccommentpurebuttal($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) ;
+                   $qcerror['handson'][$i][$value4]['status'] =$this->getdataqccommentpurebuttal($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber,$qcModuleId) ;
 		    $qcerror['handson'][$i][$value4]['seq'] =$value['SequenceNumber'];
                     
             }
@@ -2249,6 +2266,7 @@ class GetjobcoreController extends AppController {
         $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $handskey = $_POST['handskey'];
+        $qcModuleId = $_POST['QcCommentsModuleId']; 
         $session = $this->request->session();
 //        $moduleId = $session->read("moduleId");
         
@@ -2340,7 +2358,7 @@ class GetjobcoreController extends AppController {
 		   $AttributeMasterId = $value['AttributeMasterId'];
 		   $SequenceNumber = $value['SequenceNumber'];
                    
-                   $qcerror['handson'][$value['SequenceNumber']][$valprodFields['AttributeName']]['status'] =$this->getdataqccommentpurebuttal($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) ;
+                   $qcerror['handson'][$value['SequenceNumber']][$valprodFields['AttributeName']]['status'] =$this->getdataqccommentpurebuttal($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber, $qcModuleId) ;
 		    $qcerror['handson'][$value['SequenceNumber']][$valprodFields['AttributeName']]['seq'] =$value['SequenceNumber'];
 		  
 		   
@@ -2647,7 +2665,7 @@ class GetjobcoreController extends AppController {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-        $connection->execute("UPDATE MV_QC_Comments SET UserReputedComments = '" . trim($PuComments) . "' where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "'");
+        $connection->execute("UPDATE MV_QC_Comments SET UserReputedComments = '" . trim($PuComments) . "' where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "' and ModuleId='".$_POST['QcCommentsModuleId']."' and SequenceNumber='" . $_POST['SequenceNumber'] . "'");
         exit;        
      
  }
@@ -2664,7 +2682,7 @@ class GetjobcoreController extends AppController {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-        $connection->execute("UPDATE MV_QC_Comments SET StatusId = 2,UserReputedComments='' where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "'");
+        $connection->execute("UPDATE MV_QC_Comments SET StatusId = 2,UserReputedComments='' where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "' and ModuleId='".$_POST['QcCommentsModuleId']."' and SequenceNumber='" . $_POST['SequenceNumber'] . "'");
         exit;        
  }
  
@@ -2680,7 +2698,7 @@ class GetjobcoreController extends AppController {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-        $connection->execute("UPDATE MV_QC_Comments SET StatusId = 3 where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "'");
+        $connection->execute("UPDATE MV_QC_Comments SET StatusId = 3 where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "' and ModuleId='".$_POST['QcCommentsModuleId']."' and SequenceNumber='" . $_POST['SequenceNumber'] . "'");
         exit;        
  }
  function ajaxcheckreworkincomplete(){
@@ -2695,7 +2713,7 @@ class GetjobcoreController extends AppController {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-       $reworkCount =  $connection->execute("Select count(Id) as cnt from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1 and StatusID IN (1,5,9)")->fetchAll('assoc');
+       $reworkCount =  $connection->execute("Select count(Id) as cnt from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and ModuleId='".$_POST['QcCommentsModuleId']."' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1 and StatusID IN (1,5,9)")->fetchAll('assoc');
         echo $reworkCount[0]['cnt'];
         exit; 
         
@@ -2714,7 +2732,7 @@ class GetjobcoreController extends AppController {
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
         
-       $reworkCount =  $connection->execute("Select UserReputedComments,TLReputedComments from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1")->fetchAll('assoc');
+       $reworkCount =  $connection->execute("Select UserReputedComments,TLReputedComments from MV_QC_Comments where ProjectId = '" . $_POST['ProjectId'] . "' and RegionId='" . $_POST['RegionId'] . "' and SequenceNumber='" . $_POST['SequenceNumber'] . "' and AttributeMasterId='" . $_POST['AttributeMasterId'] . "' and ModuleId='".$_POST['QcCommentsModuleId']."' and InputEntityId='" . $_POST['InputEntityId'] . "' and RecordStatus=1")->fetchAll('assoc');
       
        $getdata['UserReputedComments'] = $reworkCount[0]['UserReputedComments'];
         $getdata['TLReputedComments'] = $reworkCount[0]['TLReputedComments'];
