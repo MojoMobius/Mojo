@@ -21,7 +21,7 @@ use Cake\I18n\Date;
 use Cake\I18n\Time;
 use Cake\Utility\Hash;
 
-class AgenterrorController extends AppController {
+class ErrortrendreportController extends AppController {
 
     /**
      * to initialize the model/utilities gonna to be used this page
@@ -36,7 +36,7 @@ class AgenterrorController extends AppController {
     public function initialize() {
         parent::initialize();
         $this->loadModel('QCBatchMaster');
-        $this->loadModel('Agenterror');
+        $this->loadModel('Errortrendreport');
         $this->loadModel('GetJob');
         $this->loadModel('projectmasters');
         $this->loadComponent('RequestHandler');
@@ -180,39 +180,50 @@ class AgenterrorController extends AppController {
                 }
             }
 
-            ///////////campaign////////
-            //$RegionId = $productionjobNew[0]['RegionId'];
+                ///////////campaign////////
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$ProdModuleId]['production'];
             $AttributeGroupMasterDirect = $JsonArray['AttributeGroupMasterDirect'];
             $AttributeOrder = $JsonArray['AttributeOrder'];
             $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
+            
             $AttributeGroupMaster = $AttributeGroupMaster[$ProdModuleId];
             $groupwisearray = array();
             $subgroupwisearray = array();
             foreach ($AttributeGroupMaster as $key => $value) {
+                
                 $groupwisearray[$key] = $value;
                 $keys = array_map(function($v) use ($key, $emparr) {
                     if ($v['MainGroupId'] == $key) {
                         return $v;
                     }
-                }, $ProductionFields);
+                }, $ProductionFields);               
                 //$keys_sub = $this->combineBySubGroup($keys);
-
+               
                 $groupwisearray[$key] = $keys;
+                
             }
-            foreach ($groupwisearray as $arkey => $resval) {
-                foreach ($resval as $key => $newresval) {
-                    if ($newresval['AttributeMasterId'] != "")
-                        $ArrAtributes_all[$arkey][] = $newresval['AttributeMasterId']; //if end
+            
+         
+           foreach($groupwisearray as $arkey => $resval){
+              foreach($resval as $key => $newresval){      
+               if($newresval['AttributeMasterId']!="")
+                  $ArrAtributes_all[$arkey][]= $newresval['AttributeMasterId']; //if end
                 }
+              
             }
-            $checkAttributes = "";
-            if (!empty($CampaignId)) {
-                $ListAttributes = implode(",", $ArrAtributes_all[$CampaignId]);
-                $checkAttributes = "AND  mc.AttributeMasterId IN (" . $ListAttributes . ")";
-            }
+            
+             $checkAttributes="";
+			 $ListArr=array();
+             if(!empty($CampaignId)){ 
 
-            ///////////campaign end////////////  
+					foreach($CampaignId as $result){
+                     $ListArr[]=implode(",",$ArrAtributes_all[$result]);
+					}
+					 $ListAttributes=implode(",",$ListArr);
+                     $checkAttributes="AND  mc.AttributeMasterId IN (".$ListAttributes.")";
+             }
+          
+          ///////////campaign end/////////////  
 
             foreach ($months as $CountMonth) {
 
@@ -228,11 +239,6 @@ class AgenterrorController extends AppController {
 
                 $cnt_report = $connection->execute("SELECT DISTINCT pm.InputEntityId,$Prod_Module ,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId  WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ")->fetchAll('assoc');
 
-                /*  foreach($cnt_report as $val){
-                  $ArrInputEntity[]=$val['InputEntityId'];
-                  }
-                 * 
-                 */
 
                 foreach ($cnt_report as $val) {
 
@@ -353,7 +359,7 @@ class AgenterrorController extends AppController {
 
                 $productionData = '';
                 if (!empty($QA_data)) {
-                    $productionData = $this->Agenterror->find('export', ['ProjectId' => $ProjectId, 'v_totalcount' => $V_total,'v_error' => $V_errors,'v_project' => $V_project,'v_empid' => $V_empid,'v_empname' => $V_empname,'v_campaign' => $V_campaign,'v_percentage' => $V_percentage,'v_attrname' => $V_attrname]);
+                    $productionData = $this->Errortrendreport->find('export', ['ProjectId' => $ProjectId, 'v_totalcount' => $V_total,'v_error' => $V_errors,'v_project' => $V_project,'v_empid' => $V_empid,'v_empname' => $V_empname,'v_campaign' => $V_campaign,'v_percentage' => $V_percentage,'v_attrname' => $V_attrname]);
                 $this->layout = null;
                 if (headers_sent())
                     throw new Exception('Headers sent.');
@@ -383,7 +389,7 @@ class AgenterrorController extends AppController {
 //        return $mainarr;
 //    }
     function ajaxcampaign() {
-        echo $Campaign = $this->Agenterror->find('Campaign', ['ProjectId' => $_POST['projectId']]);
+        echo $Campaign = $this->Errortrendreport->find('Campaign', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
 

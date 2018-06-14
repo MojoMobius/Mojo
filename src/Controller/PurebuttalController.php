@@ -209,6 +209,8 @@ class PurebuttalController extends AppController {
             $queryData = $connection->execute("SELECT uniq.AttributeMasterId,prdem.id as ProductionEntityMasterId,prdem.InputEntityId FROM MV_UniqueIdFields as uniq inner join ProductionEntityMaster as prdem on uniq.ProjectId = prdem.ProjectId where prdem.ProjectId='$ProjectId' and uniq.ReferanceId = '$ReferanceId' and prdem.StatusId ='$first_Status_id' $conditions")->fetchAll('assoc');
            
             
+            
+            
 //             echo "<pre>s";print_r($queryData);
 //echo $ProjectId.'--'.$first_Status_name."--".$first_Status_id;exit;
             

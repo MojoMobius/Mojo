@@ -102,10 +102,13 @@ $Arrmonthtitle=array();
 				  
 			 for($i=0;$i<=$countmonth;$i++){
                              $j=$i+1;
-				 
+				 if($Setmonth== 13){
+					 $Setmonth=1;
+					 $Setyear=$Setyear + 1;
+				 }
 				 /////Query start/////
 				 //targete
-				 $strdate =$Setyear."-".$Setmonth."-01";
+				  $strdate =$Setyear."-".$Setmonth."-01";
 				 $Arrmonthtitle[]=date('F Y', strtotime($strdate));
 				 $Arrtarget[]=$target_report[0]['mon'];
                                  
@@ -120,6 +123,7 @@ $Arrmonthtitle=array();
 				 
 				 $Setmonth= $Setmonth + 1;
 			 }
+			 
 			 
         $this->set('target', $Arrtarget);
         $this->set('completed', $Arrcompleted); 

@@ -88,15 +88,15 @@ table.dataTable tbody tr {
                 <div class="col-sm-6">
                   <?php
                     if ($CampaignId == '') {
-                        $Campaign = array(0 => '--Select--');
+                        //$Campaign = array(0 => '--Select--');
                         echo '<div id="LoadCampaign">';
-                        echo $this->Form->input('', array('options' => $Campaign, 'id' => 'CampaignId', 'name' => 'CampaignId', 'class' => 'form-control','style' => 'margin-top:-17px' ,'value' => $CampaignId ));
+                         echo $this->Form->input('', array('options' => $Campaign, 'class' => 'form-control', 'selected' => $CampaignId, 'value' => $CampaignId, 'id' => 'CampaignId', 'name' => 'CampaignId', 'style' => 'height:100px; margin-top:-15px;', 'multiple' => true));
                         echo '</div>';
                     } else {
                         echo $CampaignId;
                     }
                     ?>
-                    
+                   
                 </div>
             </div>
         </div>
@@ -126,8 +126,7 @@ table.dataTable tbody tr {
     </div>
 </div>
 <?php 
-if (!empty($v_project)) {
-    
+if (!empty($v_project)) {    
 ?>
 <div class="container-fluid">
     <div class="bs-example">
@@ -143,8 +142,6 @@ if (!empty($v_project)) {
                                     <tr>
 					<th style="display:none">Id</th>
                                         <th class="Cell">PROJECT</th> 
-                                        <th class="Cell">EMP ID</th>  
-                                        <th class="Cell">EMP NAME</th>  
                                         <th class="Cell">CAMPAIGN</th> 
                                         <th class="Cell">ERRORS</th> 
                                         <th class="Cell">COUNT</th>
@@ -153,7 +150,7 @@ if (!empty($v_project)) {
                                     
                                 </thead> 
                                 <tbody>
-                        <?php              
+                        <?php                        
 $totcount= count($v_project);
   for($i=0;$i < $totcount;$i++){
                             
@@ -161,8 +158,6 @@ $totcount= count($v_project);
 				<tr>
                                     <td style="display:none"></td>
                                     <td><?php echo $v_project[$i];?></td>
-                                    <td><?php echo $v_empid[$i];?></td>   
-                                    <td><?php echo $v_empname[$i];?></td>
                                     <td><?php echo $v_campaign[$i];?></td>
                                     <td><?php echo $v_error[$i];?></td>
                                     <td><?php echo $v_totalcount[$i]; ?></td>
@@ -192,8 +187,6 @@ else{
                                     <tr>
 					<th style="display:none">Id</th>
                                         <th class="Cell">PROJECT</th> 
-                                        <th class="Cell" >EMP ID</th>  
-                                        <th class="Cell">EMP NAME</th>  
                                         <th class="Cell">CAMPAIGN</th> 
                                         <th class="Cell">ERRORS</th> 
                                         <th class="Cell">COUNT</th>
@@ -489,31 +482,7 @@ $('#example').find('tr').click( function(){
 		});
 });*/
 </script>
- <script type="text/javascript">
-  window.onload = function () {
-    var chart = new CanvasJS.Chart("chartContainer",
-    {
-      title:{
-        text: "Monthly Delivered Chart"      
-      },   
-	  axisX: {
-				
-			},
-      data: [{        
-        type: "column",
-        <?php echo $fchart;?>
-      },
-      {        
-        type: "column",
-        <?php echo $f2chart;?>
-      }        
-      ]
-    });
 
-    chart.render();
-  }
-  </script>
-  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <style>
     .overlay {
         position: absolute;
@@ -605,7 +574,7 @@ $('#example').find('tr').click( function(){
 
         $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Agenterror', 'action' => 'ajaxcampaign')); ?>",
+            url: "<?php echo Router::url(array('controller' => 'Errortrendreport', 'action' => 'ajaxcampaign')); ?>",
             data: ({projectId: projectId}),
             dataType: 'text',
             async: false,

@@ -19,7 +19,7 @@ use Cake\I18n\Time;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
-class AgenterrorTable extends Table {
+class ErrortrendreportTable extends Table {
 
     public function initialize(array $config) {
         $this->table('MV_QC_BatchMaster');
@@ -31,7 +31,7 @@ class AgenterrorTable extends Table {
         }
         //$call = 'getModule();getusergroupdetails(this.value);';
         $template = '';
-        $template.='<select name="CampaignId" id="CampaignId" class="form-control" ><option value=0>--Select--</option>';
+        $template.='<select name="CampaignId" id="CampaignId" class="form-control" multiple="multiple" style ="height:100px;" >';
         if (file_exists($path)) {
             $content = file_get_contents($path);
             $contentArr = json_decode($content, true);
@@ -58,11 +58,11 @@ class AgenterrorTable extends Table {
             return $template;
         }
     }
-        function findExport(Query $query, array $options) {
+	function findExport(Query $query, array $options) {
         // pr($options); 
             $ProjectId = $options['ProjectId'];           
             $tableData = '<table border=1>  <thead>';
-            $tableData.='<tr class="Heading"><th>PROJECT</th><th>EMP ID</th><th>EMP NAME</th><th>CAMPAIGN</th><th>ERRORS</th><th>COUNT</th><th>PERCENTAGE</th>';
+            $tableData.='<tr class="Heading"><th>PROJECT</th><th>CAMPAIGN</th><th>ERRORS</th><th>COUNT</th><th>PERCENTAGE</th>';
             
         $tableData.= '</tr>';
         $tableData.='</thead>';
@@ -73,8 +73,6 @@ class AgenterrorTable extends Table {
 	    //pr($input);exit;
             $tableData .= '<tbody>';         
                 $tableData.='<tr><td>' . $options['v_project'][$i] . '</td>';
-                $tableData.='<td>' . $options['v_empid'][$i] . '</td>';
-                $tableData.='<td>' .$options['v_empname'][$i] . '</td>';
                 $tableData.='<td>' . $options['v_campaign'][$i] . '</td>';
                 $tableData.='<td>' . $options['v_error'][$i] . '</td>';
                 $tableData.='<td>' . $options['v_totalcount'][$i] . '</td>';
