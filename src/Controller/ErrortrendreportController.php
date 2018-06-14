@@ -359,7 +359,7 @@ class ErrortrendreportController extends AppController {
 
                 $productionData = '';
                 if (!empty($QA_data)) {
-                    $productionData = $this->Agenterror->find('export', ['ProjectId' => $ProjectId, 'v_totalcount' => $V_total,'v_error' => $V_errors,'v_project' => $V_project,'v_empid' => $V_empid,'v_empname' => $V_empname,'v_campaign' => $V_campaign,'v_percentage' => $V_percentage,'v_attrname' => $V_attrname]);
+                    $productionData = $this->Errortrendreport->find('export', ['ProjectId' => $ProjectId, 'v_totalcount' => $V_total,'v_error' => $V_errors,'v_project' => $V_project,'v_empid' => $V_empid,'v_empname' => $V_empname,'v_campaign' => $V_campaign,'v_percentage' => $V_percentage,'v_attrname' => $V_attrname]);
                 $this->layout = null;
                 if (headers_sent())
                     throw new Exception('Headers sent.');
@@ -389,7 +389,7 @@ class ErrortrendreportController extends AppController {
 //        return $mainarr;
 //    }
     function ajaxcampaign() {
-        echo $Campaign = $this->Agenterror->find('Campaign', ['ProjectId' => $_POST['projectId']]);
+        echo $Campaign = $this->Errortrendreport->find('Campaign', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
 
