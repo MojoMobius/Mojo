@@ -62,29 +62,23 @@ class AgenterrorTable extends Table {
         // pr($options); 
             $ProjectId = $options['ProjectId'];           
             $tableData = '<table border=1>  <thead>';
-            $tableData.='<tr class="Heading"><th>Date</th><th>Project</th><th>Batch Name</th><th>Status</th><th>Batch Size</th><th>Sample Size</th><th>QC Completed</th><th>Pending</th><th>Final AOQ</th>';
+            $tableData.='<tr class="Heading"><th>PROJECT</th><th>EMP ID</th><th>EMP NAME</th><th>CAMPAIGN</th><th>ERRORS</th><th>COUNT</th><th>PERCENTAGE</th>';
             
         $tableData.= '</tr>';
         $tableData.='</thead>';
 
        
-        $totcount=count($options['condition']);
-        for($i=0;$i<$totcount;$i++){
+  $totcount=count($options['v_project']);
+  for($i=0;$i < $totcount;$i++){
 	    //pr($input);exit;
-            $tableData .= '<tbody>';
-            $IDValue = $input['Id'];
-            $statusName = $status_list[$input['StatusId']];
-            $showDataRow = false;
-            
-                $tableData.='<tr><td>' . $input['CreatedDate'] . '</td>';
-                $tableData.='<td>' . $contentArr[$input['ProjectId']] . '</td>';
-                $tableData.='<td>' . $input['BatchName'] . '</td>';
-                $tableData.='<td>' . $input['StatusId'] . '</td>';
-                $tableData.='<td>' . $input['EntityCount'] . '</td>';
-				$tableData.='<td>' . $input['SampleCount'] . '</td>';
-				$tableData.='<td>' . $input['QCCompletedCount'] . '</td>';
-				$tableData.='<td>' . $qcpending . '</td>';
-				$tableData.='<td>' . $input['aoq'] . '</td>';
+            $tableData .= '<tbody>';         
+                $tableData.='<tr><td>' . $options['v_project'][$i] . '</td>';
+                $tableData.='<td>' . $options['v_empid'][$i] . '</td>';
+                $tableData.='<td>' .$options['v_empname'][$i] . '</td>';
+                $tableData.='<td>' . $options['v_campaign'][$i] . '</td>';
+                $tableData.='<td>' . $options['v_error'][$i] . '</td>';
+                $tableData.='<td>' . $options['v_totalcount'][$i] . '</td>';
+                $tableData.='<td>' . $options['v_percentage'][$i] . '</td>';
                 
                 $tableData.='</tr>';
           

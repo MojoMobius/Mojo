@@ -164,9 +164,8 @@ $totcount= count($v_project);
                                     <td><?php echo $v_empid[$i];?></td>   
                                     <td><?php echo $v_empname[$i];?></td>
                                     <td><?php echo $v_campaign[$i];?></td>
-                                    <td><?php echo $v_error[$i]." ".$v_attrname[$i];?></td>
-                                    <td><?php echo $v_totalcount[$i]; ?>
-                                    </td>
+                                    <td><?php echo $v_error[$i];?></td>
+                                    <td><?php echo $v_totalcount[$i]; ?></td>
                                     <td><?php echo $v_percentage[$i];?></td>                                
                                 </tr>	
                         <?php } ?>

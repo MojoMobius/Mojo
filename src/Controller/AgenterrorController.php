@@ -79,7 +79,7 @@ class AgenterrorController extends AppController {
 
 ////index value form end/////  
 
-        if (isset($this->request->data['check_submit'])) {
+        if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
             $session = $this->request->session();
             $user_id = $session->read("user_id");
             $moduleId = $session->read("moduleId");
@@ -222,9 +222,11 @@ class AgenterrorController extends AppController {
                 $Arrmonthtitle[] = date('F Y', strtotime($strdate));
                 $Mnth = $CountMonth;
                 $Prod_Module = 'tm.*';
+/*
+ echo "SELECT DISTINCT pm.InputEntityId,$Prod_Module ,ec.ErrorCategoryName,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId LEFT JOIN MV_QC_ErrorCategoryMaster as ec ON ec.ID = mc.ErrorCategoryMasterId WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ";
+*/
 
-
-                $cnt_report = $connection->execute("SELECT DISTINCT pm.InputEntityId,$Prod_Module ,ec.ErrorCategoryName,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId LEFT JOIN MV_QC_ErrorCategoryMaster as ec ON ec.ID = mc.ErrorCategoryMasterId WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ")->fetchAll('assoc');
+                $cnt_report = $connection->execute("SELECT DISTINCT pm.InputEntityId,$Prod_Module ,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId  WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ")->fetchAll('assoc');
 
                 /*  foreach($cnt_report as $val){
                   $ArrInputEntity[]=$val['InputEntityId'];
@@ -239,26 +241,31 @@ class AgenterrorController extends AppController {
                     foreach ($ArrAtributes_all as $key => $value) {
                         if (in_array($value, $ArrAtributes_all[$key])) {
                             $aoqAttributes = implode(",", $ArrAtributes_all[$key]);
-                            $Camp_name = $AttributeGroupMasterDirect[$key];
+                            $Camp_name = $AttributeGroupMasterDirect[$key];                            
+                            
                         }                       
                     }
                     /////end///////
-                    
-                    /////error_Category //////////////
-
-
-                    /////error_Category end //////////////
-                            
-
 
                     if (!empty($Camp_name)) {
 
                         if (!in_array($Camp_name, $V_camp)) {
                             $V_camp[] = $Camp_name;
                             /////error name/////
-                           /*  $Selecterror = $connection->execute("select InputEntityId from MV_QC_Comments where ProjectId='" . $ProjectId . "' AND ErrorCategoryMasterId ='" . $val['ErrorCategoryMasterId'] . "' AND AttributeMasterId IN(" . $aoqAttributes . ")")->fetchAll('assoc');
+                            $List_Error_Name='';
+                             $Selecterror = $connection->execute("select ec.ErrorCategoryName,mc.ProjectAttributeMasterId from MV_QC_Comments as mc LEFT JOIN MV_QC_ErrorCategoryMaster as ec ON ec.ID = mc.ErrorCategoryMasterId  where ProjectId='" . $ProjectId . "' AND ErrorCategoryMasterId ='" . $val['ErrorCategoryMasterId'] . "' AND AttributeMasterId IN(" . $aoqAttributes . ")")->fetchAll('assoc');
+                             $ei=0;
+                             foreach($Selecterror as $reserror){
+                                 if($ei!=0){
+                                     $List_Error_Name.=",";
+                                 }
+                                 $Attr_name = $AttributeOrder[$RegionId][$reserror['ProjectAttributeMasterId']]['DisplayAttributeName'];
+                                 
+                                 $List_Error_Name.=$reserror['ErrorCategoryName']." ".$Attr_name;
+                                 $ei++;
+                              }
                             
-                            */
+                            
                             ////error name end/////
                             
                             
@@ -311,11 +318,11 @@ class AgenterrorController extends AppController {
                             ////Aoq calculate end/////////////////
                            
                             $Empname = $JsonArray['UserList'][$val[$ProdModuleId]];
-                            $Attr_name = $AttributeOrder[$RegionId][$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
+                           
 
 
 
-                            $V_errors[] = $val['ErrorCategoryName'];
+                            $V_errors[] = $List_Error_Name;
                             $V_project[] = $ProName;
                             $V_empid[] = $val[$ProdModuleId];
                             $V_empname[] = $Empname;
@@ -329,7 +336,7 @@ class AgenterrorController extends AppController {
 
                 /////Query end/////
 
-                $Setmonth = $Setmonth + 1;
+               // $Setmonth = $Setmonth + 1;
             }
 
 
@@ -346,8 +353,7 @@ class AgenterrorController extends AppController {
 
                 $productionData = '';
                 if (!empty($QA_data)) {
-                    $productionData = $this->Agenterror->find('export', ['ProjectId' => $ProjectId, 'condition' => $V_project]);
-                }
+                    $productionData = $this->Agenterror->find('export', ['ProjectId' => $ProjectId, 'v_totalcount' => $V_total,'v_error' => $V_errors,'v_project' => $V_project,'v_empid' => $V_empid,'v_empname' => $V_empname,'v_campaign' => $V_campaign,'v_percentage' => $V_percentage,'v_attrname' => $V_attrname]);
                 $this->layout = null;
                 if (headers_sent())
                     throw new Exception('Headers sent.');
@@ -358,6 +364,11 @@ class AgenterrorController extends AppController {
                 header("Content-Disposition:attachment;filename=QAreviewreport.xls");
                 echo $productionData;
                 exit;
+                
+                }
+            }//download end
+            if (empty($QA_data)) {
+                $this->Flash->error(__('No Record found for this combination!'));
             }
         }
     }
