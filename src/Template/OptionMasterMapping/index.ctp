@@ -5,6 +5,59 @@
 
 use Cake\Routing\Router; ?>
 <script type="text/javascript">
+    $(function () {
+        $("#file").change(function () {
+          $("#fileuploads").show();
+          $("#submitbtwn").hide();
+          
+        });
+        
+    });
+
+    function validatefileForm()
+    {
+
+        if ($('#ProjectId').val() == 0)
+        {
+            alert('Select Project Name');
+            $('#ProjectId').focus();
+            return false;
+        }
+        if ($('#RegionId').val() == 0)
+        {
+            alert('Select Region Name');
+            $('#RegionId').focus();
+            return false;
+        }
+        if ($('#ModuleId').val() == 0)
+        {
+            alert('Select Module Name');
+            $('#ModuleId').focus();
+            return false;
+        }
+        if ($('#LoadPrimaryAttributeids').val() == 0)
+        {
+            alert('Select Primary Attribute List');
+            $('#LoadPrimaryAttributeids').focus();
+            return false;
+        }
+        if ($('#LoadSecondaryAttributeids').val() == 0)
+        {
+            alert('Select Secondary Attribute List');
+            $('#LoadSecondaryAttributeids').focus();
+            return false;
+        }
+
+        if ($('#file').val() == '')
+        {
+            alert('Choose a file for Upload');
+            $('#file').focus();
+            return false;
+        }
+
+
+    }
+
     function validateForm()
     {
         if ($('#ProjectId').val() == 0)
@@ -78,7 +131,7 @@ use Cake\Routing\Router; ?>
         {
             var loadval = '<tr><td>NULL</td><td>NULL</td></tr>';
             document.getElementById('Loadattribute').innerHTML = loadval;
-            document.getElementById('optshow').style.display='none';
+            document.getElementById('optshow').style.display = 'none';
         }
         $.ajax({
             type: "POST",
@@ -139,15 +192,15 @@ use Cake\Routing\Router; ?>
             dataType: 'text',
             async: false,
             success: function (result) {
-                if(result!=''){
-                document.getElementById('Loadattribute').innerHTML = result;
-                document.getElementById('optshow').style.display='';
-            }else{
-            var loadval = '<tr><td>NULL</td><td>NULL</td></tr>';
-            document.getElementById('Loadattribute').innerHTML = loadval;
-            document.getElementById('optshow').style.display='none';
+                if (result != '') {
+                    document.getElementById('Loadattribute').innerHTML = result;
+                    document.getElementById('optshow').style.display = '';
+                } else {
+                    var loadval = '<tr><td>NULL</td><td>NULL</td></tr>';
+                    document.getElementById('Loadattribute').innerHTML = loadval;
+                    document.getElementById('optshow').style.display = 'none';
+                }
             }
-        }
         });
     }
     function getDependencyattmodule()
@@ -167,15 +220,15 @@ use Cake\Routing\Router; ?>
             dataType: 'text',
             async: false,
             success: function (result) {
-                if(result!=''){
-                document.getElementById('Loadattribute').innerHTML = result;
-                document.getElementById('optshow').style.display='';
-            }else{
-            var loadval = '<tr><td>NULL</td><td>NULL</td></tr>';
-            document.getElementById('Loadattribute').innerHTML = loadval;
-            document.getElementById('optshow').style.display='none';
+                if (result != '') {
+                    document.getElementById('Loadattribute').innerHTML = result;
+                    document.getElementById('optshow').style.display = '';
+                } else {
+                    var loadval = '<tr><td>NULL</td><td>NULL</td></tr>';
+                    document.getElementById('Loadattribute').innerHTML = loadval;
+                    document.getElementById('optshow').style.display = 'none';
+                }
             }
-        }
         });
     }
 
@@ -185,7 +238,7 @@ use Cake\Routing\Router; ?>
 <div class="container-fluid">
     <div class="jumbotron formcontent">
         <h4>Attribute Dependency Definition</h4>
-        <?php echo $this->Form->create($OptionMaster, array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
+        <?php echo $this->Form->create($OptionMaster, array('class' => 'form-horizontal', 'id' => 'projectforms','enctype' => 'multipart/form-data')); ?>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Project</label>
@@ -204,9 +257,9 @@ use Cake\Routing\Router; ?>
                         echo $RegList;
                         if ($RegList == '') {
                             ?>
-                            <select class="form-control">
-                                <option selected>--Select--</option>
-                            </select>
+                        <select class="form-control">
+                            <option selected>--Select--</option>
+                        </select>
                         <?php } ?>
                     </div>
                 </div>
@@ -222,9 +275,9 @@ use Cake\Routing\Router; ?>
                         echo $ModuleList;
                         if ($ModuleList == '') {
                             ?>
-                            <select class="form-control" id="module">
-                                <option selected>--Select--</option>
-                            </select>
+                        <select class="form-control" id="module">
+                            <option selected>--Select--</option>
+                        </select>
                         <?php } ?>
                     </div>
                 </div>
@@ -252,6 +305,25 @@ use Cake\Routing\Router; ?>
             </div>
         </div>
 
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-5 control-label" style="margin-left:-86px;margin-top: 13px;">Choose File</label>
+                <div class="col-sm-6">
+                    <span><input type="file" name="file" id="file"  style="border:none; margin-top:11px;">
+                    </span>
+                    <br>(Allowed Formats:.csv and .xlsx)<a href="webroot/attributedependancy.xlsx" style="font-size: 12px;"> Sample</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="text-align:center;display:none;" id="fileuploads">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary btn-sm" value="Submit" id="submit" name="submit" onclick="return validatefileForm()">Upload</button>
+            </div>
+        </div>
+
+
         <div id="optshow" class="bs-example" style="display: none;">
             <table class="table table-striped table-center" id="AddOptionMapTable">
                 <thead>
@@ -268,7 +340,7 @@ use Cake\Routing\Router; ?>
         </div>
 
 
-        <div class="form-group" style="text-align:center;">
+        <div id="submitbtwn" class="form-group" style="text-align:center;">
             <div class="col-sm-12">
                 <!--                     <button type="cancel" class="btn btn-primary btn-sm pull-right">Cancel</button>
                                      <button type="submit" class="btn btn-primary btn-sm pull-right">Submit</button>-->
