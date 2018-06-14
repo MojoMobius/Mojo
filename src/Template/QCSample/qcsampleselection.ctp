@@ -11,6 +11,7 @@ $SampleCount_showValue = "";
 if(isset($showValuesArray)) {
     $sampling_showValue = $showValuesArray['sampling'];
     $RuleId_showValue = $showValuesArray['RuleId'];
+    $ReworkId_showValue = $showValuesArray['ReworkId'];
     $SampleCount_showValue = $showValuesArray['SampleCount']; 
     $SampleCountWithPercentage = $showValuesArray['SampleCountWithPercentage']; 
 }
@@ -63,7 +64,7 @@ if(isset($showValuesArray)) {
                     <input type="radio" <?php if($sampling_showValue==2) { echo "checked"; } ?> class="samplingInputClass" id="sampling2" name="sampling" value="2"> Stratified Sampling
                 </div>
             </div>
-        </div>
+        </div>  
         
         <div class="col-md-4 SamplingTypeBothDivs" id="RuleIdDiv" style="display:none;">
             <div class="form-group">
@@ -101,6 +102,16 @@ if(isset($showValuesArray)) {
                 </div>
             </div>
         </div>
+        
+          <div class="col-md-4" id="ReworkHide">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">Rework Type :</label>
+                <div class="col-sm-6">
+                    <input type="radio" <?php echo "checked"; ?>  id="sampleRework" name="ReworkId" value="0"> Sample Rework
+                    <input type="radio" <?php if($ReworkId_showValue==1) { echo "checked"; } ?>  id="batchRework" name="ReworkId" value="1"> Batch Rework
+                </div>
+            </div>
+        </div>  
         
         <div class="form-group" style="text-align:center;">
             <div class="col-sm-12">
@@ -289,6 +300,7 @@ if(isset($showValuesArray)) {
         $(".samplingInputClass").click(function() {
             var samplingval = $('input[name=sampling]:checked').val();
             if(samplingval==1) {
+                document.getElementById("ReworkHide").style = "margin-left:115px;";
                 $('.SamplingTypeBothDivs').hide();
                 $('#SampleCountDiv').show();
                 $('#SampleCount').val('');
@@ -296,6 +308,7 @@ if(isset($showValuesArray)) {
                 $("#check_submit").attr('name', 'check_submit_random');
             }
             if(samplingval==2) {
+                document.getElementById("ReworkHide").style = "margin-left:115px;";
                 $('.SamplingTypeBothDivs').hide();
                 $('#RuleIdDiv').show();
                 $('#RuleId').val('0');
