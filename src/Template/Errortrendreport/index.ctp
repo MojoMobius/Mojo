@@ -42,17 +42,41 @@ table.dataTable tbody tr {
 </style>
 <div class="container-fluid">
     <div class=" jumbotron formcontent">
-        <h4>Monthly Delivered Report</h4>
+        <h4>Agent wise Error Trend Report</h4>
         <?php echo $this->Form->create('', array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
 
-        
-       <div class="col-md-12" >
+         <div class="col-md-12" >
            
         <div class="col-md-4" >
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-6 control-label">From Date</label>
                 <div class="col-sm-6">
-                    <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_from' id='month_from' value='<?php echo $fromdate;?>'>
+                    <input readonly='readonly' placeholder='DD-MM-YYYY' type='text' name='batch_from' id='batch_from' value='<?php echo $fromdate;?>'>
+                </div>
+            </div>
+        </div>
+          <div class="col-md-2"></div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="inputPassword4" class="col-sm-6 control-label">To Date</label>
+                <div class="col-sm-6">				
+                    <input readonly='readonly' placeholder='DD-MM-YYYY' type='text' name='batch_to' id='batch_to' value='<?php echo $todate;?>'>
+                </div>
+            </div>
+        </div>
+      <div class="col-md-3"></div>
+		</div>
+        
+       <div class="col-md-12" >
+           
+        <div class="col-md-4" >
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">Project</label>
+                <div class="col-sm-6">
+                    <?php
+                    echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control prodash-txt', 'value' => $this->request->data('ProjectId'),'onchange' => 'getCampaign(this.value);'));
+                    ?>
                 </div>
             </div>
         </div>
@@ -60,9 +84,19 @@ table.dataTable tbody tr {
 
         <div class="col-md-3">
             <div class="form-group">
-                <label for="inputPassword4" class="col-sm-6 control-label">To Date</label>
-                <div class="col-sm-6">				
-                    <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_to' id='month_to' value='<?php echo $todate;?>'>
+                <label for="inputPassword4" class="col-sm-6 control-label">Campaign</label>
+                <div class="col-sm-6">
+                  <?php
+                    if ($CampaignId == '') {
+                        //$Campaign = array(0 => '--Select--');
+                        echo '<div id="LoadCampaign">';
+                         echo $this->Form->input('', array('options' => $Campaign, 'class' => 'form-control', 'selected' => $CampaignId, 'value' => $CampaignId, 'id' => 'CampaignId', 'name' => 'CampaignId', 'style' => 'height:100px; margin-top:-15px;', 'multiple' => true));
+                        echo '</div>';
+                    } else {
+                        echo $CampaignId;
+                    }
+                    ?>
+                   
                 </div>
             </div>
         </div>
@@ -75,6 +109,7 @@ table.dataTable tbody tr {
                 <?php
             echo $this->Form->button('Create Report', array('id' => 'check_submit', 'name' => 'check_submit', 'value' => 'Search',  'class' => 'btn btn-primary btn-sm', 'onclick' => 'return Mandatory()','type' => 'submit'));
 	        echo $this->Form->button('Clear', array('id' => 'Clear', 'name' => 'Clear', 'value' => 'Clear', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return ClearFields()', 'type' => 'button'));
+                 echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return Mandatory()', 'type' => 'submit'));
              
         echo $this->Form->end();
         ?>
@@ -87,26 +122,12 @@ table.dataTable tbody tr {
                   echo '<div id="LoadDate">';
                  // echo $this->Form->input('Module Name', array('options' => $Module,'type'=>'hidden', 'id' => 'ModuleId', 'name' => 'ModuleId', 'class'=>'form-control')); 
                   echo '</div>';
-                ?>
+ ?>
     </div>
 </div>
-        <?php 
-if (!empty($monthtitle)) {
+<?php 
+if (!empty($v_project)) {    
 ?>
-<div class="container-fluid"  >
-    <div class="bs-example">
-        <div id="vertical">
-   
-					
-                <div id="chartContainer" style="height: 200px; width: 100%;padding-bottom:10px;"></div>
-                        
-
-</div>
-</div>
-</div>
-		
-
-
 <div class="container-fluid">
     <div class="bs-example">
         <div id="vertical">
@@ -116,36 +137,33 @@ if (!empty($monthtitle)) {
                     <div id="left-pane" class="pa-lef-10 col-md-12">
 					
                         <div class="pane-content tab-scroll">
-                            <table style='width:100%;' class="table table-striped table-center table-hover" id="example1">
-                                <thead>
+                            <table style='width:100%;' class="table table-striped table-center table-hover" id="example">
+                                   <thead>
                                     <tr>
-										<th class="Cell" width="10%">Menu</th>
-										<?php foreach ($monthtitle as $val){ ?>
-                                        <th class="Cell" width="10%"><?php echo $val;?></th> 
-										<?php } ?>
-										
+					<th style="display:none">Id</th>
+                                        <th class="Cell">PROJECT</th> 
+                                        <th class="Cell">CAMPAIGN</th> 
+                                        <th class="Cell">ERRORS</th> 
+                                        <th class="Cell">COUNT</th>
+                                        <th class="Cell">PERCENTAGE</th>
                                     </tr>
-                                </thead>
+                                    
+                                </thead> 
                                 <tbody>
-                                  
-                                    <!--<tr  data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal" >-->
-                                    <tr>
-									 <td>Target</td> 
-									<?php foreach ($target as $val){ ?>									
-                                        <td><?php echo $val;?></td> 
-									<?php } ?>
-									
-									</tr>
-									<tr>
-									 <td>Completed</td> 
-									<?php foreach ($completed as $val){ ?>									
-                                     <td><?php echo $val;?></td> 
-									<?php } ?>
-									
-									</tr>
-										
-										
-                                   
+                        <?php                        
+$totcount= count($v_project);
+  for($i=0;$i < $totcount;$i++){
+                            
+                            ?>            
+				<tr>
+                                    <td style="display:none"></td>
+                                    <td><?php echo $v_project[$i];?></td>
+                                    <td><?php echo $v_campaign[$i];?></td>
+                                    <td><?php echo $v_error[$i];?></td>
+                                    <td><?php echo $v_totalcount[$i]; ?></td>
+                                    <td><?php echo $v_percentage[$i];?></td>                                
+                                </tr>	
+                        <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -162,21 +180,40 @@ if (!empty($monthtitle)) {
 }
 else{
     ?>
+
+<div class="container-fluid">
     <table style='width:100%;' class="table table-striped table-center table-hover" id='example'>
                                 <thead>
                                     <tr>
 					<th style="display:none">Id</th>
-                                        <th class="Cell" width="10%">Name</th> 
-                                        <th class="Cell" width="10%">Month</th> 
+                                        <th class="Cell">PROJECT</th> 
+                                        <th class="Cell">CAMPAIGN</th> 
+                                        <th class="Cell">ERRORS</th> 
+                                        <th class="Cell">COUNT</th>
+                                        <th class="Cell">PERCENTAGE</th>
                                     </tr>
-									<tr><td>Target</td><td></td></td></tr>									
-									<tr><td>Completed</td><td></td></td></tr>
-                                </thead>    
+                                    
+                                </thead> 
+                                <tbody>
+				<tr>
+                                    <td style="display:none"></td>
+                                    <td></td>
+                                    <td></td>   
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                
+                                </tr>									
+                                </tbody>
+				   
     </table>
+</div>
     <?php
 }
 echo $this->Form->end();
-?><?php echo $this->Html->script('reportchart/canvasjs.min.js'); ?>
+?>
 
 <script type="text/javascript">
 
@@ -445,32 +482,7 @@ $('#example').find('tr').click( function(){
 		});
 });*/
 </script>
- <script type="text/javascript">
-  window.onload = function () {
-    var chart = new CanvasJS.Chart("chartContainer",
-    {
-      title:{
-        text: "Monthly Delivered Chart"      
-      },   
-	  axisX: {
-				
-			},
-      data: [{        
-        type: "column",
-        <?php echo $fchart;?>
-      },
-      {        
-        type: "column",
-        <?php echo $f2chart;?>
-      }        
-      ]
-    });
 
-    chart.render();
-  }
-  </script>
-  
-  <!--<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
 <style>
     .overlay {
         position: absolute;
@@ -544,3 +556,31 @@ $('#example').find('tr').click( function(){
 
 </style>
 
+<script>
+  $(document).ready(function (projectId) {
+        var id = $('#CampaignId').val();
+
+        // alert(id);
+        if ($('#ProjectId').val() != '') {
+            getCampaign();
+            var e = document.getElementById("CampaignId");
+            var strUser = e.options[e.selectedIndex].text;
+        }
+    });
+
+    function getCampaign(projectId) {
+
+        var result = new Array();
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'Errortrendreport', 'action' => 'ajaxcampaign')); ?>",
+            data: ({projectId: projectId}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+                document.getElementById('LoadCampaign').innerHTML = result;
+            }
+        });
+    }        
+</script>        
