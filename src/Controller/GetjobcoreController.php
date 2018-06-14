@@ -798,12 +798,13 @@ class GetjobcoreController extends AppController {
                 $moduleStatusName = $module[0]['Status'];
             }
             if($moduleStatusName != ''){
+            $connection = ConnectionManager::get('d2k');
             $QcCommentsModuleId = $connection->execute("SELECT ModuleId from D2K_ModuleStatusMaster where Status = '".$moduleStatusName."' Order by ModuleId desc")->fetchAll('assoc');
             $QcCommentsModuleId = $QcCommentsModuleId[0]['ModuleId'];
             $this->set('QcCommentsModuleId', $QcCommentsModuleId);
             }
+
             $connection = ConnectionManager::get('default');
-            
             $RegionId = $productionjobNew[0]['RegionId'];
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
             $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
