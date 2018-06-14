@@ -151,7 +151,7 @@ if (count($SelectQCBatch) > 0) {
                                         $RegionName = $contentArr['RegionList'][$input['RegionId']];
                                         $ModuleName = $contentArr['Module'][$input['ProcessId']];
                                         $UserGroup = $contentArr['UserGroups'][$input['UserGroupId']];
-                                        $StatusType=array(2=>'Ready For Hygenic Check',3=>'Ready For QC Sampling',4=>'TL Rebutal',5=>'Ready For QC',6=>'TL Rebutal Rejected');
+                                        $StatusType=array(2=>'Ready For Hygenic Check',3=>'Ready For QC Sampling',4=>'TL Rebutal',5=>'Ready For QC',6=>'Ready for Delivery');
                                         $originalStartDate = $input['ProductionStartDate'];
                                         $newStartDate = date("d-m-Y H:i:s", strtotime($originalStartDate));
 
