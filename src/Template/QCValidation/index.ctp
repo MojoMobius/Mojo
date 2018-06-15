@@ -720,7 +720,7 @@ width:100%;
 																	else
                                                                                 $inpClass = 'class="wid-100per form-control doOnBlur ' . $dbClassName . '" ';
 																	
-                                                                            $inpId = 'id="prodInput_' . $valprodFields['AttributeMasterId'] . '" ';
+                                                                            $inpId = 'id="' . $ProdFieldsName . '" ';
                                                                             $inpName = 'name="' . $ProdFieldsName . '" ';
                                                                             $inpValue = 'value="' . $ProdFieldsValue . '" ';
 																			$titleValue = 'title="' . $ProdFieldsValue . '" ';
@@ -787,12 +787,12 @@ width:100%;
                                                                 </div>
                                                                 <div class="col-md-3 form-text">
                                                             <div class="form-group comments">
-                                                                    <textarea readonly="" rows="1" cols="50" class="form-control <?php echo $dbClassName; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);" <?php echo $highlightRework;?>><?php echo $CommentsFieldsValue; ?></textarea>
+                                                                    <textarea readonly="" rows="1" cols="50" class="form-control <?php echo $dbClassName; ?>" id="<?php echo $CommentsFieldsName; ?>" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);" <?php echo $highlightRework;?>><?php echo $CommentsFieldsValue; ?></textarea>
                                                             </div>
                                                                 </div>
                                                                 <div class="col-md-4 form-status">
                                                             <div class="form-group status">
-                                                                <select disabled="disabled" id="" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect" <?php echo $highlightRework;?>>
+                                                                <select disabled="disabled" id="<?php echo $DispositionFieldsName; ?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect" <?php echo $highlightRework;?>>
                                                                     <option value="">--</option>
                                                                         <option value="A" <?php
                                                                     if ($DispositionFieldsValue == "A") {
@@ -876,7 +876,7 @@ width:100%;
 										else{
                                          ?>
 										<div class='qcComments_accept' id='QcCommentsAccept_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="qcCommentsAccept('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $thisseq;?>');">  </div>
-                                        <div class='qcComments_reject' id='QcCommentsReject_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="QcCommentsReject('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>','<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', <?php echo "'".$errorcat."'";?>, <?php echo "'".$errorsub."'";?>);">  </div>
+                                        <div class='qcComments_reject' id='QcCommentsReject_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="QcCommentsReject('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>','<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', <?php echo "'".$errorcat."'";?>, <?php echo "'".$errorsub."'";?>,'<?php echo $thisseq;?>');">  </div>
                              	         <div class="qcstatusinfo<?php echo $valprodFields['AttributeMasterId'];?>"> <?php echo $StatusInfo;?></div>
 										<?php	
 										}
@@ -1405,7 +1405,7 @@ width:100%;
                 <label class="col-sm-4 control-label"><b>QC Comments</b></label>
                 <div class="col-sm-7" id="QcCmnd">
                 <?php 
-				echo $this->Form->textarea('', array( 'type'=>'text','id' => 'QCComments', 'name' => 'QCComments','style'=>'margin-bottom:8px;'));
+				echo $this->Form->textarea('', array( 'type'=>'text','id' => 'QCRebuteComments', 'name' => 'QCRebuteComments','style'=>'margin-bottom:8px;'));
 			    echo $this->Form->input('', array( 'type'=>'hidden','id' => 'Id', 'name' => 'Id','value' => '','style'=>'margin-bottom:8px;margin-top:10px;')); 
  			    echo $this->Form->input('', array( 'type'=>'hidden','id' => 'AttributeId', 'name' => 'AttributeId','value' => '','style'=>'margin-bottom:8px;margin-top:10px;')); 
  			    ?>
@@ -4350,6 +4350,11 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
                 
     //pu rework code
     function qcCommentsAccept(Id,AttributeMasterId, ProjectAttributeMasterId,seq){ 
+	//alert('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['ProductionField']; ?>_'+seq);
+	$('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['ProductionField']; ?>_'+seq).removeAttr("style", "border-color: red;");
+        $('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['Comments']; ?>_'+seq).removeAttr("style", "border-color: red;");
+        $('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['Disposition']; ?>_'+seq).removeAttr("style", "border-color: red;");
+		
         var result = new Array();
 		$('.qcstatusinfo'+AttributeMasterId).text('Accepted');     
         $.ajax({
@@ -4363,7 +4368,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
         });
     }
             
-	function QcCommentsReject(Id,AttributeMasterId,AttributeName,Attributeval,Comments,disposition,errorcat,errorsubcat){
+	function QcCommentsReject(Id,AttributeMasterId,AttributeName,Attributeval,Comments,disposition,errorcat,errorsubcat,seq){
 
       document.getElementById('rebuttal').style.display = 'block';
         document.getElementById('rebuttalfade').style.display = 'block';
@@ -4393,16 +4398,49 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
         $('#SubCategory').text(errorsubcat);
         $('#Id').val(Id);
         $('#AttributeId').val(AttributeMasterId);
-		
-		
-		
+		$('#seq').val(seq);
+		 var ProjectId = "<?php echo $productionjob['ProjectId'];?>";
+        var RegionId = "<?php echo $productionjob['RegionId'];?>";
+        var InputEntityId = "<?php echo $productionjob['InputEntityId'];?>";
+        var ProductionEntityID = "<?php echo $productionjob['Id'];?>";
+        var StatusId = "<?php echo $productionjob['StatusId'];?>";
+        var UserId = "<?php echo $productionjob['UserId'];?>";
+        var SequenceNumber = $('#seq').val();
+        var AttributeMasterId = $("#attrId").val();
+        var ProjectAttributeMasterId = $("#ProjattrId").val();
+        var QcCommentsModuleId = "<?php echo $QCModuleId; ?>";
+		showRebuttedData(ProjectId,RegionId,InputEntityId, ProductionEntityID, Id);
        
 	}
+	function showRebuttedData(ProjectId,RegionId,InputEntityId, ProductionEntityID,Id){
+         
+         var QcCommentsModuleId = "<?php echo $QCModuleId; ?>";
+          var result = new Array();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxgetrebutteddata'));?>",
+            data: ({ProjectId: ProjectId, RegionId: RegionId, InputEntityId: InputEntityId, id:Id,QcCommentsModuleId:QcCommentsModuleId}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+                 var obj = JSON.parse(result);
+               document.getElementById('QCRebuteComments').value = obj['QCComments'];
+//               if(obj['TLReputedComments'] != ''){
+//                   $('#TLComments').show();
+//               $('#TLComments').text(obj['TLReputedComments']);
+//           }
+            }
+        });
+    }
+function valicateQcrebutal(){
 
-function valicateQcrebutal(){		
+				
 		    var AttributeId = $('#AttributeId').val();
-          $('.qcstatusinfo'+AttributeId).text('Rejected');  
-        var commentstype = $('#QCComments').val();	
+			var AttributeMasterId = $("#AttributeId").val();
+          $('.qcstatusinfo'+AttributeId).text('Rejected'); 
+		var SequenceNumber = $('#seq').val();		  
+        var commentstype = $('#QCRebuteComments').val();	
+		//alert(commentstype);
         var Id = $('#Id').val();
 		 var result = new Array();
         $.ajax({
@@ -4415,6 +4453,11 @@ function valicateQcrebutal(){
               
             }
         });
+		//alert('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['ProductionField']; ?>_'+SequenceNumber);
+		$('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['ProductionField']; ?>_'+SequenceNumber).removeAttr("style", "border-color: red;");
+        $('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['Comments']; ?>_'+SequenceNumber).removeAttr("style", "border-color: red;");
+        $('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['Disposition']; ?>_'+SequenceNumber).removeAttr("style", "border-color: red;");
+        
 		document.getElementById('rebuttal').style.display = 'none';
 		document.getElementById('rebuttalfade').style.display = 'none';
 		cleartext();
@@ -4423,19 +4466,28 @@ function valicateQcrebutal(){
  function formSubmit() {
    
         var QCrework  = $('#getreworkjob').val();	
+
         var QCrework_next_id  = $('#qc_rework_nexeId').val();	
         var project  = $('#ProjectId').val();	
         var entity  = $('#InputEntityId').val();	
 		 var result = new Array();
-        $.ajax({
+		 
+        result=	$.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxformsubmit'));?>",
             data: ({rework: QCrework, projectId: project, entityId: entity , nextId: QCrework_next_id}),
             dataType: 'text',
             async: false,
             success: function (result) {
-              if(result > 0){
-				// $( "#ProductionArea" ).submit();              		 
+			
+			//alert(result);
+              
+            }
+        });
+		
+		if(result.responseText > 0){
+				 //$( "#ProductionArea" ).submit();  
+					return true;
 			  }
 			  else{
 				  /*
@@ -4446,9 +4498,7 @@ function valicateQcrebutal(){
 				 return false;
                  				 
 			  }
-            }
-        });
-		
+		return false;
         }
     
     
