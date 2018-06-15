@@ -43,7 +43,7 @@ class PurebuttallistTable extends Table {
    public function ajax_GetQcComments_seq($InputEntyId, $AttributeMasterId, $ProjectAttributeMasterId, $SequenceNumber) {
            $connection = ConnectionManager::get('default');
 
-           $cmdOldData = $connection->execute("select mvc.SequenceNumber,mvc.QCComments,mvc.StatusID,mvc.UserReputedComments, mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (3,4,5) order by mvc.SequenceNumber")->fetchAll('assoc');
+           $cmdOldData = $connection->execute("select mvc.SequenceNumber,mvc.QCComments,mvc.StatusID,mvc.QCTLRebuttedComments,mvc.UserReputedComments, mve.ErrorCategoryName from MV_QC_Comments as mvc inner join MV_QC_ErrorCategoryMaster as mve on mvc.ErrorCategoryMasterId = mve.Id where mvc.AttributeMasterId = $AttributeMasterId and mvc.ProjectAttributeMasterId=$ProjectAttributeMasterId and mvc.InputEntityId=$InputEntyId and mvc.StatusID IN (3,4,5,7) order by mvc.SequenceNumber")->fetchAll('assoc');
            if(!empty($cmdOldData)){
          // $cmdOldData = array_column($cmdOldData, 'QCComments');
           
@@ -53,6 +53,7 @@ class PurebuttallistTable extends Table {
                $new_cmdOldData['ErrorCategoryName'][$i]=$val['ErrorCategoryName'];
                $new_cmdOldData['StatusID'][$i]=$val['StatusID'];
                $new_cmdOldData['UserReputedComments'][$i]=$val['UserReputedComments'];
+			   $new_cmdOldData['QCTLRebuttedComments'][$i]=$val['QCTLRebuttedComments'];
               // $i++;
            }
 
