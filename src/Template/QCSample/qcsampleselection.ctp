@@ -307,6 +307,7 @@ if(isset($showValuesArray)) {
                 $('.stratumView').hide();
                 $("#check_submit").attr('name', 'check_submit_random');
             }
+            
             if(samplingval==2) {
                 document.getElementById("ReworkHide").style = "margin-left:115px;";
                 $('.SamplingTypeBothDivs').hide();
