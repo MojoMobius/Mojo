@@ -770,7 +770,8 @@ width:100%;
                                                                    //  pr($QcErrorComments);
                                     if (isset($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['UserReputedComments'][$tempSq]) && !empty($tempSq) && !empty($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['UserReputedComments'][$tempSq]) ) {
                                   ?>
-                                                                    <span style="color:red;float: left;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['UserReputedComments'][$tempSq]; ?></span>
+                                                                    <span style="color:red;float: left;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['UserReputedComments'][$tempSq]; ?></span><br/>
+																	<span style="color:#8B0000;"><?php echo $QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCTLRebuttedComments'][$tempSq]; ?></span>
                               <?php      }  
                                          ?>   
                                                                 

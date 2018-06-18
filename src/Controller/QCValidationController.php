@@ -989,7 +989,7 @@ class QCValidationController extends AppController {
         } 
 		else {
            
-
+//pr($this->request);
             $distinct = $this->GetJob->find('getDistinct', ['ProjectId' => $ProjectId]);
             $this->set('distinct', $distinct);
 
@@ -1370,7 +1370,7 @@ class QCValidationController extends AppController {
             $productionjobStatusId = $this->request->data['StatusId'];
          // pr($this->request->data); exit;
             if (isset($this->request->data['Submit'])) {
-                // exit;
+                 //exit;
             //////rework check/////////////////////////////
             /*if($this->request->data['getreworkjob'] =="rework"){
                 
@@ -2858,7 +2858,8 @@ function ajaxgetafterreferenceurl() {
         $connection = ConnectionManager::get('default');
         $Id = $_POST['Id'];
         $Comments = $_POST['comment'];
-        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCTLRebuttedComments='".$Comments."' WHERE Id='".$Id."'");
+		echo "Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'";
+        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'");
         
    } 
    function Checkcomment(){
@@ -2903,6 +2904,8 @@ function ajaxgetafterreferenceurl() {
         $nextId = $_POST['nextId'];
         if($rework =="rework"){
 		if($InputEntityId){
+		//echo "SELECT count(1) as cnt FROM MV_QC_Comments  WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=6";
+		
             $cnt_InputEntity = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments  WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=6")->fetchAll('assoc');
             $cnt_InputEntityReject = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WHERE ProjectId=" . $ProjectId . " AND  InputEntityId='" . $InputEntityId . "' AND StatusId=9")->fetchAll('assoc');
             
@@ -2930,5 +2933,19 @@ function ajaxgetafterreferenceurl() {
         exit;
    }
   
- 
+ function ajaxgetrebutteddata(){
+     
+      $connection = ConnectionManager::get('default');
+      
+        $ModifiedDate = date("Y-m-d H:i:s");
+       $id = $_POST['id'];
+	   
+       $reworkCount =  $connection->execute("Select QCComments from MV_QC_Comments where   Id='".$id."'  and RecordStatus=1")->fetchAll('assoc');
+      
+       $getdata['QCComments'] = $reworkCount[0]['QCComments'];
+        
+     
+        echo json_encode($getdata);
+        exit; 
+ }
 }

@@ -227,7 +227,7 @@ class PurebuttalController extends AppController {
                     // check fdrid not empty
                     if (!empty($getresultfdrid)) {
                         $fdrid = $getresultfdrid[0]['AttributeValue'];
-                        $queries = $connection->execute("SELECT qccmt.StatusId,qccmt.RegionId,qccmt.SequenceNumber,qccmt.ProjectAttributeMasterId,qccmt.Id,qccmt.ProjectId,qccmt.RegionId,qccmt.InputEntityId,qccmt.TLReputedComments,qccmt.UserReputedComments,qccmt.QCComments,qccmt.AttributeMasterId,qccmt.OldValue,qccat.ErrorCategoryName FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where qccmt.ProjectId = '$ProjectId' and qccmt.InputEntityId ='$InputEntityId' and qccmt.StatusId IN(3,4,5)")->fetchAll('assoc');
+                        $queries = $connection->execute("SELECT qccmt.StatusId,qccmt.RegionId,qccmt.SequenceNumber,qccmt.ProjectAttributeMasterId,qccmt.Id,qccmt.ProjectId,qccmt.RegionId,qccmt.InputEntityId,qccmt.TLReputedComments,qccmt.UserReputedComments,qccmt.QCComments,qccmt.AttributeMasterId,qccmt.OldValue,qccat.ErrorCategoryName FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where qccmt.ProjectId = '$ProjectId' and qccmt.InputEntityId ='$InputEntityId' and qccmt.StatusId IN(3,4,5,7)")->fetchAll('assoc');
 
                         foreach ($queries as $key => $val) {
                             $queries[$key]['displayname'] = $contentArr['AttributeOrder'][$val['RegionId']][$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
