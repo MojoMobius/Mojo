@@ -6,8 +6,11 @@ use Cake\Routing\Router;
 .hot table { 
     border-spacing: 10px;
 }
-table.dataTable tbody tr {
+tr {
     cursor: pointer !important;
+}
+.no-cursor{
+    cursor: default;
 }
 .modal-header {
  
@@ -137,26 +140,34 @@ if (count($SelectQCBatch) > 0) {
                                         <th class="Cell" width="10%">QC Completed</th>
                                         <th class="Cell" width="10%">Pending</th>
                                         <th class="Cell" width="10%">Final AOQ</th>
+                                        <th class="Cell" width="10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $i = 0;
                                     foreach ($SelectQCBatch as $inputVal => $input):
-                                        
+                                        $RejectStatus="";
+                                        if($input['BatchRejectionStatus'] == 1){
+                                            $RejectStatus="Reverted";
+                                        }
+                                        elseif($input['QCpending'] > 0){
+                                            $RejectStatus=  $this->Form->button('Revert', array('id' => 'rejectstatus', 'name' => 'rejectstatus', 'value' => 'rejectstatus', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'RejectStatus('.$input['Id'].');', 'type' => 'button'));
+                                        }
                                             ?>
-                                    <tr  data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal" >
+                                    <tr   >
                                     <!--<tr >-->
-										<td style="display:none"><?php echo $input['Id'];?></td>  
-										<td><?php echo $input['CreatedDate']; ?></td>
-                                        <td><?php echo $Projects[$input['ProjectId']]; ?></td>
-                                        <td><?php echo $input['BatchName']; ?></td>
-                                        <td><?php echo $input['StatusId']; ?></td>
-                                        <td><?php echo $input['EntityCount']; ?></td>
-                                        <td><?php echo $input['SampleCount']; ?></td>
-                                        <td><?php echo $input['QCCompletedCount']; ?></td>
-                                        <td><?php echo $input['QCpending']; ?></td>
-                                        <td><?php echo $input['aoq']; ?></td>
+					<td style="display:none"><?php echo $input['Id'];?></td>  
+					<td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['CreatedDate']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $Projects[$input['ProjectId']]; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['BatchName']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['StatusId']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['EntityCount']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['SampleCount']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['QCCompletedCount']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['QCpending']; ?></td>
+                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['aoq']; ?></td>
+                                        <td class="no-cursor"><span id="status-txt<?php echo $input['Id'];?>"><?php echo $RejectStatus; ?></span></td>
                                     </tr>
                                     <?php
                                     $i++;
@@ -221,6 +232,7 @@ else{
                                         <th class="Cell" width="10%">QC Completed</th>
                                         <th class="Cell" width="10%">Pending</th>
                                         <th class="Cell" width="10%">Final AOQ</th>
+                                        <th class="Cell" width="10%">Action</th>
                                     </tr>
                                 </thead>    
     </table>
@@ -502,7 +514,19 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         
         getAvailableDate(1);
     }
+    function RejectStatus(Id){
+  $.ajax({
+		    url: '<?php echo Router::url(array('controller' => 'QAreview', 'action' => 'ajaxRejectstatus')); ?>',
+		    dataType: 'text',
+		    type: 'POST',
+		    data: {Id: Id},
+		    success: function (res) {              
+		    }
+		}); 
 
+                        $("#status-txt"+Id).text("Reverted");  
+               
+    }
     function isToDate(str)
     {
         var toTime = $("#" + str + "ToTime").val();

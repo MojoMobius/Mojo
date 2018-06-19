@@ -215,6 +215,8 @@ class QAreviewController extends AppController {
                 $QA_data[$i]['QCCompletedCount'] = $input['QCCompletedCount'];
                 $QA_data[$i]['QCpending'] = $qcpending;
                 $QA_data[$i]['aoq'] = $accuracy_percentage;
+                $QA_data[$i]['BatchRejectionStatus'] = $input['BatchRejectionStatus'];
+                $QA_data[$i]['Id'] = $input['Id'];
 
 
                 $i++;
@@ -493,6 +495,15 @@ class QAreviewController extends AppController {
         //}
 
         exit;
+    }
+    function ajaxRejectstatus(){
+       
+        $connection = ConnectionManager::get('default');
+      
+         $Id = $_POST['Id'];
+         $selectRecords = $connection->execute("update MV_QC_BatchMaster set BatchRejectionStatus = '1' where Id='".$Id."'")->fetchAll('assoc');
+         echo "true";
+         exit;
     }
 
 }
