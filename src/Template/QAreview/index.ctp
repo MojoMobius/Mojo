@@ -145,8 +145,8 @@ if (count($SelectQCBatch) > 0) {
                                     foreach ($SelectQCBatch as $inputVal => $input):
                                         
                                             ?>
-                                    <!--<tr  data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal" >-->
-                                    <tr >
+                                    <tr  data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal" >
+                                    <!--<tr >-->
 										<td style="display:none"><?php echo $input['Id'];?></td>  
 										<td><?php echo $input['CreatedDate']; ?></td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
