@@ -451,10 +451,11 @@ $('#example').find('tr').click( function(){
     {
       title:{
         text: "Monthly Delivered Chart"      
-      },   
+      },  
 	  axisX: {
-				
-			},
+              		
+		},
+      dataPointWidth: 25,
       data: [{        
         type: "column",
         <?php echo $fchart;?>
