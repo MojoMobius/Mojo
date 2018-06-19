@@ -819,8 +819,8 @@ width:100%;
                
                                                             <?php if ($totalSeqCnt > 1) { ?>
                                                                 <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>','<?php echo $ModuleId; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
-                                                                <i class="fa fa-angle-double-left " onclick="loadMultiField('previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
+                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php } ?>
 <!--                                                                  <div style="cursor: pointer;" id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="margin-left:290px;margin-top: -65px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');" style="margin-top:-4px;"> 
@@ -2246,18 +2246,53 @@ $('.more').each(function() {
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
 
-            if (action == 'next' && totalseq >= nex) {
+            if (currentSeq == totalseq){
+                $('.i_next_' + attributeMasterId).css('color', 'grey');
+                }
+            else{
+                $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+                }
+
+            
+            if (currentSeq == 1){
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                }
+                else{
+                $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+                }
+
+            if (action == 'i_next' && totalseq >= nex) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
                 $("#MultiField_" + attributeMasterId + "_" + nex).show();
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(nex);
+                if (nex == totalseq)
+                    $('.i_next_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+
+                if (nex == 1)
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+
             }
 
-            if (action == 'previous' && totalseq >= prev && prev > 0) {
+            if (action == 'i_previous' && totalseq >= prev && prev > 0) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
                 $("#MultiField_" + attributeMasterId + "_" + prev).show();
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(prev);
+                
+                if (prev == totalseq)
+                    $('.i_next_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+
+                if (prev == 1)
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
             }
         }
         
