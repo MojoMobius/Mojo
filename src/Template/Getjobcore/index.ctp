@@ -897,8 +897,8 @@ if ($NoNewJob == 'NoNewJob') {
                                                                             ?>
                                                                  
                                                                 <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
-                                                                <i class="fa fa-angle-double-left " onclick="loadMultiField('previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
+                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php
                                                             } ?>
@@ -2724,27 +2724,65 @@ $(document).keydown(function(e) {
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
 
-            if (action == 'next' && totalseq >= nex) {
+    
+           if (currentSeq == totalseq){
+                $('.i_next_' + attributeMasterId).css('color', 'grey');
+                }
+            else{
+                $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+                }
+
+            
+            if (currentSeq == 1){
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                }
+                else{
+                $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+                }
+
+
+
+            if (action == 'i_next' && totalseq >= nex) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
                 $("#MultiField_" + attributeMasterId + "_" + nex).show();
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(nex);
+
+             if (nex == totalseq)
+                    $('.i_next_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+
+                if (nex == 1)
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+
             }
 
-            if (action == 'previous' && totalseq >= prev && prev > 0) {
+            if (action == 'i_previous' && totalseq >= prev && prev > 0) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
                 $("#MultiField_" + attributeMasterId + "_" + prev).show();
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(prev);
+                
+                if (prev == totalseq)
+                    $('.i_next_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+
+                if (prev == 1)
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+                
             }
         }
+
         function Paginate(action, subgrp, totalseq) {
             var currentSeq = $(".GroupSeq_" + subgrp + "").val();
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
-
-
-
 
             //tot =3
             //current 1
