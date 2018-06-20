@@ -501,7 +501,8 @@ class QAreviewController extends AppController {
         $connection = ConnectionManager::get('default');
       
          $Id = $_POST['Id'];
-         $selectRecords = $connection->execute("update MV_QC_BatchMaster set BatchRejectionStatus = '1' where Id='".$Id."'")->fetchAll('assoc');
+         $flag = $_POST['flag'];
+         $selectRecords = $connection->execute("update MV_QC_BatchMaster set BatchRejectionStatus = '".$flag."' where Id='".$Id."'")->fetchAll('assoc');
          echo "true";
          exit;
     }

@@ -11,6 +11,7 @@ tr {
 }
 .no-cursor{
     cursor: default;
+    text-align: center;
 }
 .modal-header {
  
@@ -147,12 +148,16 @@ if (count($SelectQCBatch) > 0) {
                                     <?php
                                     $i = 0;
                                     foreach ($SelectQCBatch as $inputVal => $input):
-                                        $RejectStatus="";
-                                        if($input['BatchRejectionStatus'] == 1){
-                                            $RejectStatus="Reverted";
+                                        
+                                        $status_revert="style='display:none;'";
+                                        $status_rework="style='display:none;'";
+                                        if(!empty($input['BatchRejectionStatus'])){
+                                        $status_revert="style='display:block;'";
+                                        $status_rework="style='display:none;'";
                                         }
                                         elseif($input['QCpending'] > 0){
-                                            $RejectStatus=  $this->Form->button('Revert', array('id' => 'rejectstatus', 'name' => 'rejectstatus', 'value' => 'rejectstatus', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'RejectStatus('.$input['Id'].');', 'type' => 'button'));
+                                        $status_revert="style='display:none;'";
+                                        $status_rework="style='display:block;'";
                                         }
                                             ?>
                                     <tr   >
@@ -167,7 +172,13 @@ if (count($SelectQCBatch) > 0) {
                                         <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['QCCompletedCount']; ?></td>
                                         <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['QCpending']; ?></td>
                                         <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['aoq']; ?></td>
-                                        <td class="no-cursor"><span id="status-txt<?php echo $input['Id'];?>"><?php echo $RejectStatus; ?></span></td>
+                                        <td class="no-cursor">
+                                            <span id="status-revert<?php echo $input['Id'];?>" <?php echo $status_revert;?>><?php echo  $this->Form->button('Revert', array('id' => 'rejectstatus', 'name' => 'rejectstatus', 'value' => 'rejectstatus', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'RejectStatus('.$input['Id'].',0);', 'type' => 'button')); ?>
+                                            </span>
+                                            <span id="status-rework<?php echo $input['Id'];?>" <?php echo $status_rework;?>><?php echo  $this->Form->button('Batch Rework', array('id' => 'rejectstatus', 'name' => 'rejectstatus', 'value' => 'rejectstatus', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'RejectStatus('.$input['Id'].',1);', 'type' => 'button')); ?>
+                                            </span>
+                                        
+                                        </td>
                                     </tr>
                                     <?php
                                     $i++;
@@ -514,17 +525,24 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         
         getAvailableDate(1);
     }
-    function RejectStatus(Id){
+    function RejectStatus(Id,flag){
   $.ajax({
 		    url: '<?php echo Router::url(array('controller' => 'QAreview', 'action' => 'ajaxRejectstatus')); ?>',
 		    dataType: 'text',
 		    type: 'POST',
-		    data: {Id: Id},
-		    success: function (res) {              
+		    data: {Id: Id ,flag:flag},
+		    success: function (res) {
+                       
 		    }
 		}); 
-
-                        $("#status-txt"+Id).text("Reverted");  
+                if(flag == 1){
+                    $("#status-revert"+Id).css("display", "block");
+                    $("#status-rework"+Id).css("display", "none");
+                }
+                else{
+                    $("#status-revert"+Id).css("display", "none");
+                    $("#status-rework"+Id).css("display", "block");
+                }        
                
     }
     function isToDate(str)
