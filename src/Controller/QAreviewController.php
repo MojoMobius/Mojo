@@ -50,6 +50,7 @@ class QAreviewController extends AppController {
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $userid = $session->read('user_id');
+        $moduleId = $session->read("moduleId");
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
         $ProList = $this->QCBatchMaster->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
@@ -114,9 +115,8 @@ class QAreviewController extends AppController {
                 $ProjectId = $session->read('ProjectId');
             }
 
-
             //$StatusId=5;			
-            $Filter = "WHERE StatusId=" . $StatusId . " AND ProjectId=" . $ProjectId . " ";
+            $Filter = "WHERE QC_Module_Id=".$moduleId." AND StatusId=" . $StatusId . " AND ProjectId=" . $ProjectId . " ";
             if (!empty($batch_from) && !empty($batch_to)) {
                 $Filter.="AND CONVERT(date,CreatedDate) >= '" . date("Y-m-d", strtotime($batch_from)) . "'";
             } else if (!empty($batch_from) && empty($batch_to)) {
@@ -136,7 +136,7 @@ class QAreviewController extends AppController {
 
             //echo "select * from MV_QC_BatchMaster ".$Filter."  ORDER BY ProductionStartDate DESC,ProductionStartTime DESC";exit;
 
-            $SelectQCBatch = $connection->execute("select * from MV_QC_BatchMaster " . $Filter . "  ORDER BY Id DESC")->fetchAll('assoc');
+            $SelectQCBatch = $connection->execute("select * from MV_QC_BatchMaster  " . $Filter . "   ORDER BY Id DESC")->fetchAll('assoc');
             //$this->set('SelectQCBatch', $SelectQCBatch);
 
 
@@ -145,7 +145,8 @@ class QAreviewController extends AppController {
 
 
                 /////////////AOQ start/////////////////
-
+            
+            
                 $DependentMasterIdsQuery = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='" . $input['ProjectId'] . "' AND FieldTypeName='After Normalized'")->fetchAll('assoc');
                 $DependId = $DependentMasterIdsQuery[0]['Id'];
 
@@ -170,8 +171,17 @@ class QAreviewController extends AppController {
                 $totweight = $Selectaoqweight[0]['weightage'];
 
                 ///////end/////////////////
+            /*    
+echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='" . $ErrorcatId . "' AND InputEntityId='" . $Selectaoqtime[0]['InputEntityId'] . "'";
+            echo "select COUNT(Id) as cnt from MC_CengageProcessInputData where DependencyTypeMasterId='" . $DependId . "' AND InputEntityId='" . $Selectaoqtime[0]['InputEntityId'] . "' GROUP BY SequenceNumber,AttributeMasterId,DependencyTypeMasterId";
+            
+            echo "select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory  where InputEntityId='" . $Selectaoqtime[0]['InputEntityId'] . "' GROUP BY cm.InputEntityId";
+            
+            exit;*/
+                
+                
                 $totAttributes = $totAttrFilled + $totAttrMissed;
-                $AOQ_Calc = 100 - ($totweight / $totAttributes);
+                $AOQ_Calc = 100 - (($totweight / $totAttributes) * 100);
                 $AOQ_Calc = bcdiv($AOQ_Calc, 1, 2);  // 2.56
                 if (floor($AOQ_Calc) == $AOQ_Calc) {
                     $AOQ_Calc = round($AOQ_Calc);
