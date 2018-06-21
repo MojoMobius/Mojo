@@ -1308,7 +1308,7 @@ width:100%;
                 <div class="col-sm-12" style="text-align:center;margin-top: 7px;">
                 <?php
                   echo $this->Form->button('Mark Error', array( 'id' => 'QuerySubmit', 'name' => 'QuerySubmit', 'value' => 'QuerySubmit','class'=>'btn btn-primary btn-sm','onclick'=>"return valicateQueryInsert();",'type'=>'button')).' '; 
-                 echo $this->Form->button('Clear', array( 'type'=>'button','id' => 'Cancel', 'name' => 'Cancel', 'value' => 'Cancel','class'=>'btn btn-primary btn-sm','onclick'=>"document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none';cleartext();")).' '; 
+                 echo $this->Form->button('Close', array( 'type'=>'button','id' => 'Cancel', 'name' => 'Cancel', 'value' => 'Cancel','class'=>'btn btn-primary btn-sm','onclick'=>"document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none';cleartext();")).' '; 
                     echo $this->Form->button('Delete', array( 'type'=>'button','id' => 'Delete', 'name' => 'Delete', 'value' => 'Delete','class'=>'btn btn-primary btn-sm','onclick'=>"cleartext();return DeleteQuery();")); ?>   
                 </div>   
                 &nbsp;
