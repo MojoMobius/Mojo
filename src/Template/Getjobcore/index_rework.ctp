@@ -905,7 +905,8 @@ width:100%;
                                                                                         echo '</select>';
                                                                                     }
                                                                                     ?>
-                                                                    <span class="lighttext" value="<?php echo $InpValueFieldsValue; ?>" id="beforeText_<?php echo $key; ?>_<?php echo $keysub; ?>_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $tempSq; ?>" data-toggle="tooltip" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span><?php //echo $ScoreFieldsValue; ?>
+                                                                    <span class="lighttext" value="<?php echo $InpValueFieldsValue; ?>" id="beforeText_<?php echo $key; ?>_<?php echo $keysub; ?>_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $tempSq; ?>" data-toggle="tooltip" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span></br>
+																	<?php //echo $ScoreFieldsValue; ?>
                                                                      <?php 
                                                                    //  pr($QcErrorComments);
                                     if (isset($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCComments'][$tempSq]) && !empty($tempSq) && !empty($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['QCComments'][$tempSq]) ) { 
