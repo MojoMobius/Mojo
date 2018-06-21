@@ -1221,7 +1221,7 @@ width:100%;
     <div id="light" class="white_content" style="position:fixed;">
         <div class="query_popuptitle"><div style='float:left;width:40%'><b>QC Comments</b></div><div align='right'> <b><a onclick="document.getElementById('light').style.display = 'none';document.getElementById('fade').style.display = 'none';cleartext();"><?php echo $this->Html->image('cancel.png', array('width'=>'20px','height'=>'20px','alt' => 'Close'));?></a></b></div></div>
         <div class="query_innerbdr">
-            <div class="query_outerbdr" style='height:315px;overflow:auto;'>
+            <div class="query_outerbdr" style='height:450px;overflow:auto;'>
                 <div id='QcsuccessMessage' align='center' style='display:none;color:green;'><b>Comments Successfully Posted!</b></div>
                 <div id='QcDeletedMessage' align='center' style='display:none;color:green;'><b>Comments Deleted Successfully!</b></div>
                 <input type='hidden' name='CommentsId' Id ='CommentsId' value='0'>
@@ -1320,7 +1320,7 @@ width:100%;
     <div id="rebuttal" class="white_content" style="position:fixed;">
         <div class="query_popuptitle"><div style='float:left;width:40%'><b>QC Comments</b></div><div align='right'> <b><a onclick="document.getElementById('rebuttal').style.display = 'none';document.getElementById('rebuttalfade').style.display = 'none';cleartext();"><?php echo $this->Html->image('cancel.png', array('width'=>'20px','height'=>'20px','alt' => 'Close'));?></a></b></div></div>
         <div class="query_innerbdr">
-            <div class="query_outerbdr" style='height:315px;overflow:auto;'>
+            <div class="query_outerbdr" style='height:450px;overflow:auto;'>
                 <div id='QcsuccessMessage' align='center' style='display:none;color:green;'><b>Comments Successfully Posted!</b></div>
                 <div id='QcDeletedMessage' align='center' style='display:none;color:green;'><b>Comments Deleted Successfully!</b></div>
                 <input type='hidden' name='CommentsId' Id ='CommentsId' value='0'>
