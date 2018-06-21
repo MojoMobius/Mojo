@@ -1428,6 +1428,11 @@ class QCValidationController extends AppController {
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][2][1];
                     $QcStatusId = 0;
                     $submitType = 'completed';
+					///qc complete////
+                    $QCcompletequery = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric where InputEntityId='".$InputEntityId."'")->fetchAll('assoc');
+                    $QCBatchId=$QCcompletequery[0]['Qc_Batch_Id'];         
+                    $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount = QCCompletedCount + 1 where Id='".$QCBatchId."'");
+                    /////end///////// 
                 }
 				//echo $completion_status;
 				//exit;

@@ -827,8 +827,8 @@ width:100%;
                
                                                             <?php if ($totalSeqCnt > 1) { ?>
                                                                 <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
-                                                                <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-angle-double-left " onclick="loadMultiField('previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
+                                                                <i class="fa fa-angle-double-right m-r-5" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php } ?>
 <!--                                                                  <div style="cursor: pointer;" id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="margin-left:290px;margin-top: -65px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');" style="margin-top:-4px;"> 
@@ -1221,7 +1221,7 @@ width:100%;
     <div id="light" class="white_content" style="position:fixed;">
         <div class="query_popuptitle"><div style='float:left;width:40%'><b>QC Comments</b></div><div align='right'> <b><a onclick="document.getElementById('light').style.display = 'none';document.getElementById('fade').style.display = 'none';cleartext();"><?php echo $this->Html->image('cancel.png', array('width'=>'20px','height'=>'20px','alt' => 'Close'));?></a></b></div></div>
         <div class="query_innerbdr">
-            <div class="query_outerbdr" style='height:315px;overflow:auto;'>
+            <div class="query_outerbdr" style='height:450px;overflow:auto;'>
                 <div id='QcsuccessMessage' align='center' style='display:none;color:green;'><b>Comments Successfully Posted!</b></div>
                 <div id='QcDeletedMessage' align='center' style='display:none;color:green;'><b>Comments Deleted Successfully!</b></div>
                 <input type='hidden' name='CommentsId' Id ='CommentsId' value='0'>
@@ -1297,8 +1297,7 @@ width:100%;
                     echo $this->Form->input('', array( 'type'=>'text','id' => 'Reference', 'name' => 'Reference','style'=>'margin-bottom:8px;margin-top:10px;')); 
                 ?>
                 </div>-->
-
-                <label class="col-sm-4 control-label"><b>QC Comments</b></label>
+				<label class="col-sm-4 control-label"><b>QC Comments&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7" id="QcCmnd">
                 <?php echo $this->Form->textarea('', array( 'type'=>'text','id' => 'QCComments', 'name' => 'QCComments','style'=>'margin-bottom:8px;')); ?>
                 </div>
@@ -1321,7 +1320,7 @@ width:100%;
     <div id="rebuttal" class="white_content" style="position:fixed;">
         <div class="query_popuptitle"><div style='float:left;width:40%'><b>QC Comments</b></div><div align='right'> <b><a onclick="document.getElementById('rebuttal').style.display = 'none';document.getElementById('rebuttalfade').style.display = 'none';cleartext();"><?php echo $this->Html->image('cancel.png', array('width'=>'20px','height'=>'20px','alt' => 'Close'));?></a></b></div></div>
         <div class="query_innerbdr">
-            <div class="query_outerbdr" style='height:315px;overflow:auto;'>
+            <div class="query_outerbdr" style='height:450px;overflow:auto;'>
                 <div id='QcsuccessMessage' align='center' style='display:none;color:green;'><b>Comments Successfully Posted!</b></div>
                 <div id='QcDeletedMessage' align='center' style='display:none;color:green;'><b>Comments Deleted Successfully!</b></div>
                 <input type='hidden' name='CommentsId' Id ='CommentsId' value='0'>
@@ -1416,7 +1415,7 @@ width:100%;
                 <div class="col-sm-12" style="text-align:center;margin-top: 7px;">
                 <?php
                   echo $this->Form->button('QC Rebutal', array( 'id' => 'QuerySubmit', 'name' => 'QuerySubmit', 'value' => 'QuerySubmit','class'=>'btn btn-primary btn-sm','onclick'=>"return valicateQcrebutal();",'type'=>'button')).' '; 
-                 echo $this->Form->button('Close', array( 'type'=>'button','id' => 'Cancel', 'name' => 'Cancel', 'value' => 'Cancel','class'=>'btn btn-primary btn-sm','onclick'=>"document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none';cleartext();")).' '; 
+                 echo $this->Form->button('Close', array( 'type'=>'button','id' => 'Cancel', 'name' => 'Cancel', 'value' => 'Cancel','class'=>'btn btn-primary btn-sm','onclick'=>"document.getElementById('rebuttal').style.display='none';document.getElementById('rebuttalfade').style.display='none';cleartext();")).' '; 
                    ?>   
                 </div>   
                 &nbsp;
@@ -2463,62 +2462,25 @@ $('.more').each(function() {
         }
 
         // load next attribute
-    function loadMultiField(action, attributeMasterId, totalseq) {
+        function loadMultiField(action, attributeMasterId, totalseq) {
             var currentSeq = $(".ShowingSeqDiv_" + attributeMasterId + "").val();
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
 
-            if (currentSeq == totalseq){
-                $('.i_next_' + attributeMasterId).css('color', 'grey');
-                }
-            else{
-                $('.i_next_' + attributeMasterId).css('color', '#4397e6');
-                }
-
-            
-            if (currentSeq == 1){
-                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
-                }
-                else{
-                $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
-                }
-
-            if (action == 'i_next' && totalseq >= nex) {
+            if (action == 'next' && totalseq >= nex) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
                 $("#MultiField_" + attributeMasterId + "_" + nex).show();
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(nex);
-                if (nex == totalseq)
-                    $('.i_next_' + attributeMasterId).css('color', 'grey');
-                else
-                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
-
-                if (nex == 1)
-                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
-                else
-                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
-
             }
 
-            if (action == 'i_previous' && totalseq >= prev && prev > 0) {
+            if (action == 'previous' && totalseq >= prev && prev > 0) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
                 $("#MultiField_" + attributeMasterId + "_" + prev).show();
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(prev);
-                
-                if (prev == totalseq)
-                    $('.i_next_' + attributeMasterId).css('color', 'grey');
-                else
-                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
-
-                if (prev == 1)
-                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
-                else
-                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
             }
         }
-
-        
         function Paginate(action, subgrp, totalseq) {
             var currentSeq = $(".GroupSeq_" + subgrp + "").val();
             var nex = parseInt(currentSeq) + 1;
