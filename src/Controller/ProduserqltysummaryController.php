@@ -269,7 +269,7 @@ class ProduserqltysummaryController extends AppController {
 
                     ///////end/////////////////
                     $totAttributes = $totAttrFilled + $totAttrMissed;
-                    $AOQ_Calc = 100 - ($totweight / $totAttributes);
+                    $AOQ_Calc = 100 - (($totweight / $totAttributes)*100);
                     $AOQ_Calc = bcdiv($AOQ_Calc, 1, 2);  // 2.56
                     if (floor($AOQ_Calc) == $AOQ_Calc) {
                         $AOQ_Calc = round($AOQ_Calc);
