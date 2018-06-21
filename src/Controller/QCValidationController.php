@@ -2738,10 +2738,22 @@ function ajaxgetafterreferenceurl() {
         $user_id = $session->read('user_id');
         $commentsId = $_POST['CommentsId'];
         $ModifiedDate = date("Y-m-d H:i:s");
-        if ($commentsId != 0) {
+      
+        $findresult = $connection->execute("Select count(Id) cnt FROM MV_QC_Comments where InputEntityId = " . $_POST['InputEntityId'] . " and AttributeMasterId=" . $_POST['AttributeMasterId'] . " and ProjectAttributeMasterId=" . $_POST['ProjectAttributeMasterId'] . " and ModuleId=" . $_POST['QCModuleId'] . "  and SequenceNumber=" . $_POST['SequenceNumber'] . " and UserId=" . $user_id . "")->fetchAll('assoc');
+     
+        if(!empty($findresult) && $findresult[0]['cnt'] > 0){
+       
+       if(!empty($_POST['CommentsId'])){
             $connection->execute("UPDATE MV_QC_Comments SET ProjectId = $ProjectId,ModuleId='".$_POST['QCModuleId']."', RegionId='" . $_POST['RegionId'] . "',InputEntityId='" . $_POST['InputEntityId'] . "',AttributeMasterId='" . $_POST['AttributeMasterId'] . "',ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "',OldValue='" . trim($OldValue) . "',"
                     . "QCComments='" . trim($QCComments) . "',ErrorCategoryMasterId='" . $_POST['CategoryId'] . "' ,SubErrorCategoryMasterId='" . $_POST['SubCategoryId'] . "' ,SequenceNumber='" . $_POST['SequenceNumber'] . "' ,UserId='" . $user_id . "' ,StatusId=1 ,RecordStatus=1 ,ModifiedDate='" . $ModifiedDate . "' ,ModifiedBy=$user_id where Id = '" . $_POST['CommentsId'] . "'");
+       }else{
+            $connection->execute("UPDATE MV_QC_Comments SET ProjectId = $ProjectId,ModuleId='".$_POST['QCModuleId']."', RegionId='" . $_POST['RegionId'] . "',InputEntityId='" . $_POST['InputEntityId'] . "',AttributeMasterId='" . $_POST['AttributeMasterId'] . "',ProjectAttributeMasterId='" . $_POST['ProjectAttributeMasterId'] . "',OldValue='" . trim($OldValue) . "',"
+                    . "QCComments='" . trim($QCComments) . "',ErrorCategoryMasterId='" . $_POST['CategoryId'] . "' ,SubErrorCategoryMasterId='" . $_POST['SubCategoryId'] . "' ,SequenceNumber='" . $_POST['SequenceNumber'] . "' ,UserId='" . $user_id . "' ,StatusId=1 ,RecordStatus=1 ,ModifiedDate='" . $ModifiedDate . "' ,ModifiedBy=$user_id where InputEntityId = " . $_POST['InputEntityId'] . " and AttributeMasterId=" . $_POST['AttributeMasterId'] . " and ProjectAttributeMasterId=" . $_POST['ProjectAttributeMasterId'] . " and ModuleId=" . $_POST['QCModuleId'] . "  and SequenceNumber=" . $_POST['SequenceNumber'] . " and UserId=" . $user_id . "");
+
+       }
+           
         } else {
+            
             $connection->execute("INSERT into MV_QC_Comments (ProjectId,RegionId,ModuleId,InputEntityId,AttributeMasterId,ProjectAttributeMasterId,OldValue,QCComments,ErrorCategoryMasterId,SubErrorCategoryMasterId,SequenceNumber,UserId,StatusId,RecordStatus,CreatedDate,CreatedBy)"
                     . "values($ProjectId,'" . $_POST['RegionId'] . "','".$_POST['QCModuleId']."','" . $_POST['InputEntityId'] . "','" . $_POST['AttributeMasterId'] . "','" . $_POST['ProjectAttributeMasterId'] . "','" . trim($OldValue) . "','" . trim($QCComments) . "','" . $_POST['CategoryId'] . "','" . $_POST['SubCategoryId'] . "','" . $_POST['SequenceNumber'] . "','" . $user_id . "',1,1,'" . $createddate . "','" . $user_id . "')");
         }
