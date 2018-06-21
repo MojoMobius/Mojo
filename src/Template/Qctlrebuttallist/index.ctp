@@ -765,7 +765,7 @@ width:100%;
                                                                     }
 																						echo '</select>';
                                                                 } ?>
-                                                                <span class="lighttext more" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span>
+                                                                <span class="lighttext more" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span></br>
                                                              <?php 
                                                                    //  pr($QcErrorComments);
                                     if (isset($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['TLReputedComments'][$tempSq]) && !empty($tempSq) && !empty($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['TLReputedComments'][$tempSq]) ) {

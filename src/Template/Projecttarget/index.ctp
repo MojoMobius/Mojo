@@ -40,6 +40,7 @@ table.dataTable tbody tr {
 
 
 </style>
+
 <div class="container-fluid">
     <div class=" jumbotron formcontent">
         <h4>Monthly Delivered Report</h4>
@@ -95,13 +96,23 @@ if (!empty($monthtitle)) {
 ?>
 <div class="container-fluid"  >
     <div class="bs-example">
-        <div id="vertical">
-   
-					
-                <div id="chartContainer" style="height: 200px; width: 100%;padding-bottom:10px;"></div>
-                        
-
-</div>
+      
+   <div class="row" id="monitor-list">
+      <div class="col-md-6">
+        <div class="col-md-12 panel">
+          <h4 class="graph-title">Delivered Records</h4>
+             <div id="chartContainer" style="height: 300px; width: 100%;padding-bottom:10px;"></div>
+        </div>
+      </div>
+      <div class="col-md-6">
+          <div class="col-md-12 panel">
+             <h4 class="graph-title">Records Status</h4>
+              <div id="chartContainer2" style="height: 300px; width: 100%;padding-bottom:10px;"></div>
+          </div>
+        </div>
+    </div>				
+               
+    
 </div>
 </div>
 		
@@ -450,18 +461,44 @@ $('#example').find('tr').click( function(){
     var chart = new CanvasJS.Chart("chartContainer",
     {
       title:{
-        text: "Monthly Delivered Chart"      
+        /*text: "Monthly Delivered Chart",
+        horizontalAlign: "left",
+        fontSize: 20,*/
       },  
-	  axisX: {
-              		
+      axisY: {
+    gridThickness: 0,
+    stripLines: [
+      {
+        value: 0,
+        showOnTop: true,
+        color: "gray",
+        thickness: 2
+      }
+    ]
+ },
+legend: 
+		{
+			dockInsidePlotArea: true,
+			verticalAlign: "top",
+			horizontalAlign: "top"               
 		},
+	  axisX: {
+              
+		},
+               
       dataPointWidth: 25,
       data: [{        
         type: "column",
+        name: "Target",
+        color:"#38a2eb",
+        showInLegend: true, 
         <?php echo $fchart;?>
       },
       {        
         type: "column",
+        name: "Achieved",
+        color:"#ff6485",
+        showInLegend: true, 
         <?php echo $f2chart;?>
       }        
       ]
@@ -544,4 +581,3 @@ $('#example').find('tr').click( function(){
     }
 
 </style>
-
