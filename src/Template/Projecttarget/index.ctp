@@ -106,7 +106,7 @@ if (!empty($monthtitle)) {
       </div>
       <div class="col-md-6">
           <div class="col-md-12 panel">
-             <h4 class="graph-title">Records Status</h4>
+             <h4 class="graph-title" style="color:red;">No data found</h4>
               <div id="chartContainer2" style="height: 300px; width: 100%;padding-bottom:10px;"></div>
           </div>
         </div>
