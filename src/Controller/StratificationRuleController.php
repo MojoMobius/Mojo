@@ -88,11 +88,9 @@ class StratificationRuleController extends AppController {
             $Resource_sample = $this->request->data('Resource_sample');
             $Resource_value = $this->request->data('Resource_value');
             $StratificationRuleId = $this->request->data('StratificationRuleId');
-            
-             $session = $this->request->session();
-        $userid = $session->read('user_id');
-        $moduleId = $session->read("moduleId");
-        
+			$path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+        $content = file_get_contents($path);
+		$contentArr = json_decode($content, true);
             if(isset($this->request->data['Resource_stratification'])){
                 $Resource_stratification=1;
             }else{
@@ -141,11 +139,9 @@ class StratificationRuleController extends AppController {
             $MinimumSample = $this->request->data('MinimumSample');
             $LoadAttribute = $this->request->data('LoadAttributeids');
             $SampleType = $this->request->data('Rule_sample');
-            
-             $session = $this->request->session();
-        $userid = $session->read('user_id');
-        $moduleId = $session->read("moduleId");
-        
+			$path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+        $content = file_get_contents($path);
+		$contentArr = json_decode($content, true);
             if($SampleType ==''){
                     $SampleType=0;
             }
@@ -193,6 +189,10 @@ class StratificationRuleController extends AppController {
         $RegionId = $RuleList[0]['RegionId'];
         foreach ($RuleList as $values):
             $RuleId = $values['Id'];
+			$ProjectId = $values['ProjectId'];
+			$path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+        $content = file_get_contents($path);
+		$contentArr = json_decode($content, true);
             $usearray = $contentArr['AttributeOrder'][$RegionId];
             $Stratificationfactors = $connection->execute("SELECT StratificationRuleId,AttributeMasterId,ProjectAttributeMasterId FROM MV_QC_StratificationFactors where StratificationRuleId=".$RuleId)->fetchAll('assoc');
             $attributeNames = array_map(function($a) use($usearray){ return $usearray[$a['AttributeMasterId']]['DisplayAttributeName']; },$Stratificationfactors);
@@ -219,12 +219,8 @@ class StratificationRuleController extends AppController {
         $SampleValueEdit = '';
         $StratificationRuleId = '';
         
-         $session = $this->request->session();
-        $userid = $session->read('user_id');
-        $moduleId = $session->read("moduleId"); 
-        
         if ($Id != '') {
-            $EditRuleList = $connection->execute("SELECT * FROM MV_QC_StratificationRules  WHERE Id=$Id and QC_Module_Id=$moduleId and RecordStatus=1")->fetchAll('assoc');
+            $EditRuleList = $connection->execute("SELECT * FROM MV_QC_StratificationRules  WHERE Id=$Id and RecordStatus=1")->fetchAll('assoc');
           $finalArr=array();
             foreach ($EditRuleList as $key => $query):
                 $EditId = $query['Id'];
