@@ -481,10 +481,19 @@ use Cake\Routing\Router; ?>
                     ?>
                     <tr>
                         <?php
-                        if($input['ResourceSampleType'] == 0){
+						if($input['SampleType'] == 1){
+						$sampletype = 'Percentage';
+						}
+						else{
+						$sampletype = 'Count';
+						}
+						if($input['ResourceSampleType'] == 0){
                             $ResourceSampleType = '-';
+                        }
+                        else if($input['ResourceSampleType'] == 1){
+                            $ResourceSampleType = 'Percentage';
                         }else{
-                            $ResourceSampleType = $input['ResourceSampleType'];
+                            $ResourceSampleType = 'Count';
                         }
                         if($input['ResourceSampleValue'] == 0){
                             $ResourceSampleValue = '-';
@@ -492,16 +501,16 @@ use Cake\Routing\Router; ?>
                             $ResourceSampleValue = $input['ResourceSampleValue'];
                         }
                         if($input['ResourceStratification'] == 0){
-                            $ResourceStratification = '-';
+                            $ResourceStratification = 'No';
                         }else{
-                            $ResourceStratification = $input['ResourceStratification'];
+                            $ResourceStratification = 'Yes';
                         }
                         echo '<td>' . $Projects[$input['ProjectId']] . '</td>';
                         echo '<td>' . $input['RuleName'] . '</td>';
                         echo '<td>' . $input['AceptanceLimit'] . '</td>';
                         echo '<td>' . $detailArr[$input['ProjectId']]['Module'][$input['ProcessId']] . '</td>';
                         echo '<td>' . $input['StratificationFactors'] . '</td>';
-                        echo '<td>' . $input['SampleType'] . '</td>';
+                        echo '<td>' . $sampletype . '</td>';
                         echo '<td>' . $input['SampleValue'] . '</td>';
                         echo '<td>' . $ResourceStratification . '</td>';
                         echo '<td>' . $ResourceSampleType . '</td>';
