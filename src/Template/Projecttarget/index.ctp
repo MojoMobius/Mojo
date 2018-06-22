@@ -465,44 +465,43 @@ $('#example').find('tr').click( function(){
         horizontalAlign: "left",
         fontSize: 20,*/
       },  
-      axisY: {
-    gridThickness: 0,
-    stripLines: [
-      {
-        value: 0,
-        showOnTop: true,
-        color: "gray",
-        thickness: 2
-      }
-    ]
- },
-legend: 
-		{
-			dockInsidePlotArea: true,
-			verticalAlign: "top",
-			horizontalAlign: "top"               
-		},
-	  axisX: {
-              
-		},
-               
-      dataPointWidth: 25,
-      data: [{        
-        type: "column",
-        name: "Target",
-        color:"#38a2eb",
-        showInLegend: true, 
-        <?php echo $fchart;?>
-      },
-      {        
-        type: "column",
-        name: "Achieved",
-        color:"#ff6485",
-        showInLegend: true, 
-        <?php echo $f2chart;?>
-      }        
-      ]
-    });
+        axisY: {
+        gridThickness: 0,
+        stripLines: [
+        {
+          value: 0,
+          showOnTop: true,
+          color: "gray",
+          thickness: 2
+        }
+        ]
+        },
+          legend:{
+                          dockInsidePlotArea: true,
+                          verticalAlign: "top",
+                          horizontalAlign: "top"               
+                  },
+            axisX: {
+
+                  },
+
+        dataPointWidth: 20,
+        data: [{        
+          type: "column",
+          name: "Target",
+          color:"#38a2eb",
+          showInLegend: true, 
+          <?php echo $fchart;?>
+        },
+        {        
+          type: "column",
+          name: "Achieved",
+          color:"#ff6485",
+          showInLegend: true, 
+          <?php echo $f2chart;?>
+        }        
+        ]
+        });
 
     chart.render();
   }
