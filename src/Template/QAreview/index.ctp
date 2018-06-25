@@ -177,7 +177,6 @@ if (count($SelectQCBatch) > 0) {
                                             </span>
                                             <span id="status-rework<?php echo $input['Id'];?>" <?php echo $status_rework;?>><?php echo  $this->Form->button('Batch Rework', array('id' => 'rejectstatus', 'name' => 'rejectstatus', 'value' => 'rejectstatus', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'RejectStatus('.$input['Id'].',1);', 'type' => 'button')); ?>
                                             </span>
-                                        
                                         </td>
                                     </tr>
                                     <?php
@@ -579,7 +578,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         }
          getAvailableDate(1);
     }
-/*
+
 $('#example').find('tr').click( function(){
  var id = $(this).find('td:first').text();
   $.ajax({
@@ -591,7 +590,7 @@ $('#example').find('tr').click( function(){
 		     $(".hot").html(res);
 		    }
 		});
-});*/
+});
 </script>
 <style>
     .overlay {
