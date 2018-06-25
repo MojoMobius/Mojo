@@ -565,6 +565,7 @@ if ($NoNewJob == 'NoNewJob') {
                                       </div>
                                             <?php
                                             $i = 0;
+											
                                             foreach ($AttributeGroupMaster as $key => $GroupName) {
                                                 if ($i < 0) {
                                                     $ariaexpanded = 'aria-expanded="true"';
@@ -771,7 +772,8 @@ if ($NoNewJob == 'NoNewJob') {
                                                             <div id="MultiField_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $thisseq; ?>" class="clearfix MultiField_<?php echo $valprodFields['AttributeMasterId']; ?> CampaignWiseFieldsDiv_<?php echo $key; ?> row form-responsive" style="<?php echo $disnone; ?>" >
                                                                 
                                                                 <div class="col-md-3 form-title">
-                                                                <div class="form-group" style=""><p><?php echo $valprodFields['DisplayAttributeName'] ?></p>
+                                                                <div class="form-group" style=""><p class="link-style"><a onclick="GetFrameData('<?php echo $valprodFields['AttributeName'] ?>');"><?php echo $valprodFields['DisplayAttributeName'] ?></a></p>
+
                                                                     <input type="hidden" value="<?php echo $valprodFields['DisplayAttributeName'] ?>" id="attrdisp<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $i; ?>_<?php echo $key; ?>_<?php echo $keysub; ?>" class="removeinputclass">
                                                                 </div>	
                                                                 </div>
@@ -1862,6 +1864,7 @@ $(document).keydown(function(e) {
 									var spanId = $span.attr('data');
 									if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
 									   $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
+									   $span.attr('id', spanId);
 								  }
 								});
 							};
@@ -4012,9 +4015,28 @@ $(document).keydown(function(e) {
     .pane-content {
         padding: 0 10px;
     }
+	.link-style{
+	cursor: pointer;
+	}
 </style>
 <?php
 if ($this->request->query['continue'] == 'yes') {
     echo "<script>getJob();</script>";
 }
 ?>
+
+<script>
+function GetFrameData(val){
+goToMsg(val);
+}
+function goToMsg(id){
+      var iframe = document.getElementById("frame1");
+      var elem = iframe.contentWindow.document.getElementById(id);
+      iframe.contentWindow.location.hash = id;
+     $("html, body")
+     .animate({scrollTop:$( elem ).offset().top}, 250, function() {        
+       $(elem).fadeIn(200).fadeOut(200).fadeIn(200)
+     })
+ 
+   }
+</script>
