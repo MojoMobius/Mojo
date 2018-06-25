@@ -4035,7 +4035,7 @@ function goToMsg(id){
       iframe.contentWindow.location.hash = id;
      $("html, body")
      .animate({scrollTop:$( elem ).offset().top}, 250, function() {        
-       $(elem).fadeIn(200).fadeOut(200).fadeIn(200)
+       $(elem).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200)
      })
  
    }
