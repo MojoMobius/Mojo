@@ -330,7 +330,7 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
           max(QCBatchId)
           for QCBatchId in ([4155])
           ) piv;")->fetchAll('assoc'); */
-        $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='4155'")->fetchAll('assoc');
+        $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
         $ArKey = array();
         $ArVal = array();
         $i = 0;
