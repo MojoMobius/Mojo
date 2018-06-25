@@ -965,7 +965,7 @@ width:100%;
                                                                 <?php } ?>
                                                                          
                 <?php 
-                                   if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '1') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '2') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '3') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '5') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '9')){
+                                   if ((($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '1') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '2') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '3') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '4') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '5') || (($QcErrorComments[$valprodFields['AttributeMasterId']]['seq']['StatusID'][$tempSq]) == '9')){
                                   ?>
                                                                        
                                                                          <div class='qcComments_accept' id='QcCommentsAccept_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer;"  onclick="qcCommentsAccept('<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $tempSq;?>');">  </div>
@@ -1113,7 +1113,7 @@ width:100%;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">?/span>
                         </button>
                         <h4 class="modal-title" id="exampleFillInModalTitle">All Source Links</h4>
                     </div>
@@ -1173,13 +1173,13 @@ width:100%;
     <?php //foreach (){   ?>
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
+                                                    <span aria-hidden="true">?/span>
                                                 </button>
                                                 <h4 class="modal-title" id="HelpModelAttribute"></h4>
                                             </div>
                     <div class="modal-body">
                         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">?/span>
                         </button> -->
                         <div class="form-group">
                             <span id='HelpModelContent'>
@@ -1200,7 +1200,7 @@ width:100%;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">?/span>
                         </button>
                         <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
                     </div>
@@ -1233,7 +1233,7 @@ width:100%;
                     <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">?/span>
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Query</h4>
                     </div>
@@ -1259,7 +1259,7 @@ width:100%;
                     <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">?/span>
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Query</h4>
                     </div>
@@ -1282,7 +1282,7 @@ width:100%;
                     <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">?/span>
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Query</h4>
                     </div>
