@@ -1201,7 +1201,7 @@ width:100%;
                                 <label for="Query" class="query">Query</label>
                                 <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
                             </div>
-                        </form>
+                        </form> 
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
@@ -1354,7 +1354,7 @@ width:100%;
                 <label class="col-sm-4 control-label"><b>Error Category&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7">
 				
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='CategoryName'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='CategoryNameRebutal'>-</pre>
                 <?php 
 				
                    // echo $this->Form->input('',array('options' => $CategoryName,'default' => '0','name'=>'CategoryName','id'=>'CategoryName','style'=>'width:177px !important;','class'=>'form-control','onchange' => 'getCategory(this.value);')); 
@@ -1365,7 +1365,7 @@ width:100%;
                 <label style="margin-top:16px;" class="col-sm-4 control-label"><b>Error Sub Category&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7">
 				
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='SubCategory'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='SubCategoryRebutal'>-</pre>
                 <?php /*
                         $SubCategory = array(0 => '-- Select --');
                         echo '<div id="LoadSubCategory">';
@@ -1410,7 +1410,7 @@ width:100%;
  			    ?>
                 </div>
 
-                <div  class="col-sm-10" id='oldData' ></div>
+                <div  class="col-sm-10" id='oldData'></div>
 
                 <div class="col-sm-12" style="text-align:center;margin-top: 7px;">
                 <?php
@@ -4369,7 +4369,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
             
 	function QcCommentsReject(Id,AttributeMasterId,AttributeName,Attributeval,Comments,disposition,errorcat,errorsubcat,seq){
 
-      document.getElementById('rebuttal').style.display = 'block';
+        document.getElementById('rebuttal').style.display = 'block';
         document.getElementById('rebuttalfade').style.display = 'block';
         if(AttributeName==""){
 			AttributeName="-";
@@ -4393,8 +4393,8 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
         $('#commentsinfo').text(Comments);
         $('#qcvalueinfo').text(Attributeval);
         $('#dispositioninfo').text(disposition);		
-        $('#CategoryName').text(errorcat);		
-        $('#SubCategory').text(errorsubcat);
+        $('#CategoryNameRebutal').text(errorcat);		
+        $('#SubCategoryRebutal').text(errorsubcat);
         $('#Id').val(Id);
         $('#AttributeId').val(AttributeMasterId);
 		$('#seq').val(seq);
