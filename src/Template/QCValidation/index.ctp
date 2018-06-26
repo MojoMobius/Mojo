@@ -841,7 +841,7 @@ width:100%;
 									    $QcCommentErrorcat= $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_errorcat'];  
 									    $QcCommentErrorsub = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_errorsub'];   
 										$errorcat=$CategoryName[$QcCommentErrorcat];
-										$errorsub=$CategoryName[$QcCommentErrorsub];
+										$errorsub=$SubcategoryName[$QcCommentErrorsub];
 										if($QcCommentStatus==8){
 											$StatusInfo="Accepted";
 										}

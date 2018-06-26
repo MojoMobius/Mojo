@@ -98,8 +98,17 @@ class QCValidationController extends AppController {
             $CategoryName[0] = '-- Select --';
             $CategoryName[$value['Id']] = $value['ErrorCategoryName'];
         }
+		
+		$ErrorsubCategory = $connection->execute("SELECT ID, SubCategoryName FROM MV_QC_ErrorSubCategoryMaster")->fetchAll('assoc');
 
+        $SubcategoryName = array();
+        foreach ($ErrorsubCategory as $key => $value) {
+            $SubcategoryName[0] = '-- Select --';
+            $SubcategoryName[$value['ID']] = $value['SubCategoryName'];
+        }
+//pr($SubcategoryName);exit;
         $this->set('CategoryName', $CategoryName);
+        $this->set('SubcategoryName', $SubcategoryName);
 
         $moduleName = $JsonArray['Module'][$moduleId];
         $this->set('moduleName', $moduleName);
@@ -996,9 +1005,6 @@ class QCValidationController extends AppController {
             // pr($distinct);
             //----------------------------------$frameType == 3------------------------------//
             $this->viewBuilder()->layout('boostrap-default');
-
-
-
             if (isset($this->request->query['job']))
                 $newJob = $this->request->query['job'];
             if (isset($this->request->data['NewJob']))
@@ -1267,6 +1273,7 @@ class QCValidationController extends AppController {
                 }
 				
                 if (!empty($InputEntityId)) {
+				//	echo 'SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')';
                     $CengageProcessInputData = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')')->fetchAll('assoc');
                         $staticFields = array();
                     foreach ($StaticFields as $key => $value) {
@@ -1275,6 +1282,7 @@ class QCValidationController extends AppController {
                         $staticFields = array_merge($staticFields,$getDomainIdVal);
 						
                         }
+						//pr($CengageProcessInputData);exit;
 //                    if ($domainUrl) {
 //                        $getDomainUrlVal = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $domainUrl . ') AND ID=355729')->fetchAll('assoc');
 //                    }
@@ -1302,7 +1310,9 @@ class QCValidationController extends AppController {
                 $finalprodValue = array();
                 foreach ($CengageProcessInputData as $key => $value) {
                     ////qc comment status find/////////////////////
-                   // pr($value);
+                   
+				 //  echo 'SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' and ModuleId='.$moduleId.'';
+				 //  exit;
                      $QcCommentVal = $connection->execute('SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' and ModuleId='.$moduleId )->fetchAll('assoc');
                     if(!empty($QcCommentVal)){
                        $qc_status= $QcCommentVal[0]['StatusId'];
@@ -1315,8 +1325,7 @@ class QCValidationController extends AppController {
                      $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']]['qccomment_errorcat'] = $QcCommentVal[0]['ErrorCategoryMasterId'];
                      $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']]['qccomment_errorsub'] = $QcCommentVal[0]['SubErrorCategoryMasterId'];
                 
-                    ////qc comment status find end/////////////////////
-                    
+                    ////qc comment status find end/////////////////////                   
                     
                     $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = [$value['AttributeValue']];
                 }
