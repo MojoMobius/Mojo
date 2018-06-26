@@ -4018,6 +4018,7 @@ $(document).keydown(function(e) {
 	.link-style{
 	cursor: pointer;
 	}
+		
 </style>
 <?php
 if ($this->request->query['continue'] == 'yes') {
@@ -4033,10 +4034,23 @@ function goToMsg(id){
       var iframe = document.getElementById("frame1");
       var elem = iframe.contentWindow.document.getElementById(id);
       iframe.contentWindow.location.hash = id;
+	  		
      $("html, body")
-     .animate({scrollTop:$( elem ).offset().top}, 250, function() {        
-       $(elem).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200)
+     .animate({scrollTop:$( elem ).offset().top}, 250, function() {		
+		elements = iframe.contentWindow.document.getElementsByClassName('annotated');
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].style.backgroundColor="blue";
+		}
+
+		 $(elem).css('background-color', 'red');	
+
+	//$(elem).css('cursor', 'pointer');
+      // $(elem).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200)
      })
- 
+	 
+	 
    }
+   
+
+    
 </script>
