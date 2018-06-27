@@ -828,7 +828,7 @@ width:100%;
                                                             <?php if ($totalSeqCnt > 1) { ?>
                                                                 <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                 <i class="fa fa-angle-double-left " onclick="loadMultiField('previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-angle-double-right m-r-5" style="color:#4397e6" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php } ?>
 <!--                                                                  <div style="cursor: pointer;" id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="margin-left:290px;margin-top: -65px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');" style="margin-top:-4px;"> 
@@ -4101,8 +4101,11 @@ if ($this->request->query['continue'] == 'yes') {
                     $("#CategoryName").val(0);
                     $("#SubCategory").val(0);
                     showOldData(OldValue, Attribute, AttributeMasterId, ProjectAttributeMasterId, InputEntityId, SequenceNumber);
-                     $('#Error_' + AttributeMasterId).removeClass("qcGreen_popuptitle");
-                     $('#Error_' + AttributeMasterId).addClass("qc_popuptitle");
+                     //$('#Error_' + AttributeMasterId).removeClass("qcGreen_popuptitle");
+                  //   $('#Error_' + AttributeMasterId).addClass("qc_popuptitle");
+                     $('#Error_' + AttributeMasterId+'_'+SequenceNumber).addClass("qc_popuptitle");
+                    $('#Error_' + AttributeMasterId+'_'+SequenceNumber).removeClass("qcGreen_popuptitle");
+                        
                 }, 2000);
             }
 

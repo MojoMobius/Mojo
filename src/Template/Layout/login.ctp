@@ -36,28 +36,37 @@ echo $this->Html->script('sleetmute');?>
  </script>
     </head><link rel="icon" href="../webroot/images/mob-icon.ico">
     <body>
+	 <section class="material-half-bg">
+      <div class="cover"></div>
+    </section>
   <?= $this->Flash->render(); ?>
+    <section class="login-content">
   <div class="login"> <!-- Login -->
 
-      <h1><?php echo $this->Html->image('../webroot/images/logo1.png', array('alt' => 'CakePHP'));?></h1>
-
-    <form class="form log-for" method="post" action="">
-
+     
+ <div class="login-box">
+    <form class="form log-for login-form" method="post" action="">
+	 <h1><?php echo $this->Html->image('../webroot/images/logo1.png', array('alt' => 'CakePHP'));?></h1>
+  <div class="form-group">
+   <label>Username or email</label>
       <p class="field">
         <input type="text" name="login" placeholder="Username or email" required/>
         <i class="fa fa-user"></i>
       </p>
-
+</div>
+  <div class="form-group">
+    <label>Password</label>
       <p class="field">
         <input type="password" name="password" placeholder="Password" required/>
         <i class="fa fa-lock"></i>
       </p>
-
-      <p class="submit"><input type="submit" name="commit" value="Login"><div class="logo_img"><?php //echo $this->Html->image('mob_logo.png', array('alt' => 'CakePHP'));?>&nbsp;<?php //echo $this->Html->image('copy_right.png', array('alt' => 'CakePHP'));?></div></p>
+</div>
+      <p class="submit"><i class="fa fa-sign-in fa-lg fa-fw"></i> <input type="submit" name="commit" value="Login"><div class="logo_img"><?php //echo $this->Html->image('mob_logo.png', array('alt' => 'CakePHP'));?>&nbsp;<?php //echo $this->Html->image('copy_right.png', array('alt' => 'CakePHP'));?></div></p>
 
      
     </form>
+	</div>
   </div> <!--/ Login-->
-  
+  </section>
 </body>
 </html>

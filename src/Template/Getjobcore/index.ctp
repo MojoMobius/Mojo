@@ -900,7 +900,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                  
                                                                 <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
                                                                 <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" style="color:#4397e6" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php
                                                             } ?>
