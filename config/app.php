@@ -232,8 +232,8 @@ return [
            // 'port' => '1433',
             'username' => 'mojouser',
 
-            'password' => 'Mojo@user8690',
-            'database' => 'Demo_D2k_Mojo',
+            'password' => 'Mojo@user201',
+            'database' => 'D2K_Mojo_Entity_Validation',
             'encoding' => PDO::SQLSRV_ENCODING_UTF8,
             'timezone' => 'IST',
             'flags' => [],
@@ -268,9 +268,9 @@ return [
             //'host' => '172.198.11.18',
 
             'host' => '10.101.11.209',
-            'username' => 'phpliveuser',
-            'password' => 'Php@user456',
-            'database' => 'Demo_D2k_V3_config',
+            'username' => 'd2kconfiguser',
+            'password' => 'D2k@user201',
+            'database' => 'D2K_V3_Config',
             'encoding' => PDO::SQLSRV_ENCODING_UTF8,
             'timezone' => 'IST',
             'flags' => [],
