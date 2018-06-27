@@ -826,22 +826,22 @@ width:100%;
                                                                 <?php } ?>
                
                                                             <?php if ($totalSeqCnt > 1) { ?>
-                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
-                                                                <i class="fa fa-angle-double-left " onclick="loadMultiField('previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5" style="color:#4397e6" onclick="loadMultiField('next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>','<?php echo $ModuleId; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
+                                                                <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
+                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php } ?>
 <!--                                                                  <div style="cursor: pointer;" id='Error_<?php echo $valprodFields['AttributeMasterId']; ?>' style="margin-left:290px;margin-top: -65px;" value='' onclick="query('<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', '<?php echo $thisseq;?>', '<?php echo $valprodFields['ControlName'];?>');" style="margin-top:-4px;"> 
                                                                 <img src="img/comments.jpg" />
                                                             </div>-->
                                                                        <?php 
-
+	//pr($processinputdata);exit;
 									    $QcCommentStatus = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_status'];  
 									    $QcCommentId = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_id'];         
 									    $QcCommentErrorcat= $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_errorcat'];  
 									    $QcCommentErrorsub = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq]['qccomment_errorsub'];   
 										$errorcat=$CategoryName[$QcCommentErrorcat];
-										$errorsub=$SubcategoryName[$QcCommentErrorsub];
+										$errorsub=$CategoryName[$QcCommentErrorsub];
 										if($QcCommentStatus==8){
 											$StatusInfo="Accepted";
 										}
@@ -852,7 +852,7 @@ width:100%;
 											$StatusInfo="";
 										}
                                         
-
+										
 										if($QcCommentStatus !='6' && $QcCommentStatus !='8' && $QcCommentStatus !='9'){										
 																	   
                                      if (isset($OldDataresultError[$valprodFields['AttributeMasterId']]['seq'][$tempSq]) && !empty($tempSq) && !empty($OldDataresultError[$valprodFields['AttributeMasterId']]['seq'][$tempSq]) ) {?>
@@ -1201,7 +1201,7 @@ width:100%;
                                 <label for="Query" class="query">Query</label>
                                 <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
                             </div>
-                        </form> 
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
@@ -1354,7 +1354,7 @@ width:100%;
                 <label class="col-sm-4 control-label"><b>Error Category&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7">
 				
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='CategoryNameRebutal'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='CategoryName'>-</pre>
                 <?php 
 				
                    // echo $this->Form->input('',array('options' => $CategoryName,'default' => '0','name'=>'CategoryName','id'=>'CategoryName','style'=>'width:177px !important;','class'=>'form-control','onchange' => 'getCategory(this.value);')); 
@@ -1365,7 +1365,7 @@ width:100%;
                 <label style="margin-top:16px;" class="col-sm-4 control-label"><b>Error Sub Category&nbsp;<span style='color:red'>&nbsp;*</span></b></label>
                 <div class="col-sm-7">
 				
-                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='SubCategoryRebutal'>-</pre>
+                    <pre class="" style='background-color:white;border:0px;padding:0px;' id='SubCategory'>-</pre>
                 <?php /*
                         $SubCategory = array(0 => '-- Select --');
                         echo '<div id="LoadSubCategory">';
@@ -1410,7 +1410,7 @@ width:100%;
  			    ?>
                 </div>
 
-                <div  class="col-sm-10" id='oldData'></div>
+                <div  class="col-sm-10" id='oldData' ></div>
 
                 <div class="col-sm-12" style="text-align:center;margin-top: 7px;">
                 <?php
@@ -2462,8 +2462,25 @@ $('.more').each(function() {
         }
 
         // load next attribute
-        function loadMultiField(action, attributeMasterId, totalseq) {
-            var currentSeq = $(".ShowingSeqDiv_" + attributeMasterId + "").val();
+        function loadMultiFieldqcerror(attributeMasterId, clkseq) {
+        
+                $('#exampleFillPopup').modal('hide');
+//                $('#exampleFillInHandson').modal('hide');
+                var currentSeq = $(".ShowingSeqDiv_" + attributeMasterId + "").val(); // 2
+                var totalseq = $(".ShowingSeqDiv_"+attributeMasterId).attr('data'); // 4
+                
+                
+                
+               var action ="";
+                if(currentSeq < clkseq){
+                    action = "next";
+                }else if(currentSeq > clkseq){
+                    action = "previous";
+                }
+            var nex = parseInt(clkseq);
+            var prev = parseInt(clkseq);
+        
+          
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
 
@@ -2481,14 +2498,128 @@ $('.more').each(function() {
                 $(".ShowingSeqDiv_" + attributeMasterId + "").val(prev);
             }
         }
-        function Paginate(action, subgrp, totalseq) {
-            var currentSeq = $(".GroupSeq_" + subgrp + "").val();
+        
+        // load next attribute
+        function loadMultiField(action, attributeMasterId, totalseq) {
+            var currentSeq = $(".ShowingSeqDiv_" + attributeMasterId + "").val();
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
 
+            if (currentSeq == totalseq){
+                $('.i_next_' + attributeMasterId).css('color', 'grey');
+                }
+            else{
+                $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+                }
 
+            
+            if (currentSeq == 1){
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                }
+                else{
+                $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+                }
 
+            if (action == 'i_next' && totalseq >= nex) {
+                //$(".MultiField_" + attributeMasterId).hide();
+                $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
+                $("#MultiField_" + attributeMasterId + "_" + nex).show();
+                $(".ShowingSeqDiv_" + attributeMasterId + "").val(nex);
+                if (nex == totalseq)
+                    $('.i_next_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
 
+                if (nex == 1)
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+
+            }
+
+            if (action == 'i_previous' && totalseq >= prev && prev > 0) {
+                //$(".MultiField_" + attributeMasterId).hide();
+                $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
+                $("#MultiField_" + attributeMasterId + "_" + prev).show();
+                $(".ShowingSeqDiv_" + attributeMasterId + "").val(prev);
+                
+                if (prev == totalseq)
+                    $('.i_next_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_next_' + attributeMasterId).css('color', '#4397e6');
+
+                if (prev == 1)
+                    $('.i_previous_' + attributeMasterId).css('color', 'grey');
+                else
+                    $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+            }
+        }
+        
+          function Pucmterrorclk(subgrp, clkseq) {
+                $('#exampleFillPopup').modal('hide');
+                var currentSeq = $(".GroupSeq_" + subgrp + "").val(); // 2
+                var totalseq = $(".GroupSeq_"+subgrp).attr('data'); // 4
+                
+                   var action ="";
+                if(currentSeq < clkseq){
+                    action = "next";
+                }else if(currentSeq > clkseq){
+                    action = "previous";
+                }
+            var nex = parseInt(clkseq);
+            var prev = parseInt(clkseq);
+            
+            if (currentSeq == totalseq)
+                $('#next_' + subgrp).css('color', 'grey');
+            else
+                $('#next_' + subgrp).css('color', '#4397e6');
+
+            if (currentSeq == 1)
+                $('#previous_' + subgrp).css('color', 'grey');
+            else
+                $('#previous_' + subgrp).css('color', '#4397e6');
+
+            if (action == 'next' && totalseq >= nex) {
+
+                $("#MultiSubGroup_" + subgrp + "_" + currentSeq).hide();
+                $("#MultiSubGroup_" + subgrp + "_" + nex).show();
+                $(".GroupSeq_" + subgrp + "").val(nex);
+                if (nex == totalseq)
+                    $('#next_' + subgrp).css('color', 'grey');
+                else
+                    $('#next_' + subgrp).css('color', '#4397e6');
+                if (nex == 1)
+                    $('#previous_' + subgrp).css('color', 'grey');
+                else
+                    $('#previous_' + subgrp).css('color', '#4397e6');
+            }
+
+            if (action == 'previous' && totalseq >= prev && prev > 0) {
+
+                $("#MultiSubGroup_" + subgrp + "_" + currentSeq).hide();
+                $("#MultiSubGroup_" + subgrp + "_" + prev).show();
+                $(".GroupSeq_" + subgrp + "").val(prev);
+
+                if (prev == totalseq)
+                    $('#next_' + subgrp).css('color', 'grey');
+                else
+                    $('#next_' + subgrp).css('color', '#4397e6');
+
+                if (prev == 1)
+                    $('#previous_' + subgrp).css('color', 'grey');
+                else
+                    $('#previous_' + subgrp).css('color', '#4397e6');
+            }
+              
+          }
+        
+        
+        function Paginate(action, subgrp, totalseq) {
+            
+           
+            var currentSeq = $(".GroupSeq_" + subgrp + "").val();
+            var nex = parseInt(currentSeq) + 1;
+            var prev = parseInt(currentSeq) - 1;
             //tot =3
             //current 1
             //prev 0
@@ -4101,11 +4232,8 @@ if ($this->request->query['continue'] == 'yes') {
                     $("#CategoryName").val(0);
                     $("#SubCategory").val(0);
                     showOldData(OldValue, Attribute, AttributeMasterId, ProjectAttributeMasterId, InputEntityId, SequenceNumber);
-                     //$('#Error_' + AttributeMasterId).removeClass("qcGreen_popuptitle");
-                  //   $('#Error_' + AttributeMasterId).addClass("qc_popuptitle");
-                     $('#Error_' + AttributeMasterId+'_'+SequenceNumber).addClass("qc_popuptitle");
-                    $('#Error_' + AttributeMasterId+'_'+SequenceNumber).removeClass("qcGreen_popuptitle");
-                        
+                     $('#Error_' + AttributeMasterId).removeClass("qcGreen_popuptitle");
+                     $('#Error_' + AttributeMasterId).addClass("qc_popuptitle");
                 }, 2000);
             }
 
@@ -4372,7 +4500,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
             
 	function QcCommentsReject(Id,AttributeMasterId,AttributeName,Attributeval,Comments,disposition,errorcat,errorsubcat,seq){
 
-        document.getElementById('rebuttal').style.display = 'block';
+      document.getElementById('rebuttal').style.display = 'block';
         document.getElementById('rebuttalfade').style.display = 'block';
         if(AttributeName==""){
 			AttributeName="-";
@@ -4396,8 +4524,8 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
         $('#commentsinfo').text(Comments);
         $('#qcvalueinfo').text(Attributeval);
         $('#dispositioninfo').text(disposition);		
-        $('#CategoryNameRebutal').text(errorcat);		
-        $('#SubCategoryRebutal').text(errorsubcat);
+        $('#CategoryName').text(errorcat);		
+        $('#SubCategory').text(errorsubcat);
         $('#Id').val(Id);
         $('#AttributeId').val(AttributeMasterId);
 		$('#seq').val(seq);
