@@ -159,7 +159,8 @@ class QCSampleController extends AppController {
             ];
           
             $getUserIdByGroup = $connection->execute("SELECT UserId,Count(UserId) UserDoneCnt FROM ME_Production_TimeMetric WHERE Qc_Batch_Id='".$BatchId."' and QC_Module_Id=$moduleId and QcStatusId=3 GROUP BY UserId")->fetchAll('assoc');
-            
+             $availJOb = $connection->execute("SELECT count(1) as cnt FROM ME_Production_TimeMetric WHERE Qc_Batch_Id='".$BatchId."' and QC_Module_Id=$moduleId and QcStatusId=3 GROUP BY InputEntityId")->fetchAll('assoc');
+			 
 //            $SampleCountAvail = $SampleCount;
 //            $useridsCount = count($getUserIdByGroup);
 //            $totalAvailJobs = $SelectQCBatch['0']['EntityCount'];
@@ -167,9 +168,10 @@ class QCSampleController extends AppController {
 //            $eachUserJobsAssignCnt = floor($SampleCount/$useridsCount);
 
             $useridsCount = count($getUserIdByGroup);
-            $totalAvailJobs = $SelectQCBatch['0']['EntityCount'];
+            //$totalAvailJobs = $SelectQCBatch['0']['EntityCount'];
+			$totalAvailJobs = count($availJOb);
             $SampleCountAvail = $SampleCountWithPercentage = ceil(($SampleCount / 100) * $totalAvailJobs);
-            $showValuesArray['SampleCountWithPercentage'] = $SampleCountWithPercentage;
+            $showValuesArray['SampleCountWithPercentage'] = $SampleCountWithPercentage; //exit;
             //$eachUserJobsAssignPercentage = floor(($SampleCount/$totalAvailJobs)*100);
             $eachUserJobsAssignPercentage = $SampleCount;
             $eachUserJobsAssignCnt = floor($SampleCount/$useridsCount);
@@ -362,7 +364,7 @@ class QCSampleController extends AppController {
         $moduleId = $session->read("moduleId");
             $ModifiedDate = date("Y-m-d H:i:s");
             $connection->execute("UPDATE ME_Production_TimeMetric SET QcStatusId=5, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Qc_Batch_Id=".$QCBatchId." and QC_Module_Id=$moduleId");
-            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,BatchRejectionStatus='". $ReworkId ."',SampleCount=".$samplecountArr.", ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId." and QC_Module_Id=$moduleId");
+            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,BatchRejectionStatus='". $ReworkId ."',SampleCount=".$samplecountArr.",QCCompletedCount=0, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId." and QC_Module_Id=$moduleId");
             $this->Flash->success(__('Random Sampling Created Successfully!'));
             $this->redirect(['action' => 'index']);  
         }
@@ -421,13 +423,14 @@ class QCSampleController extends AppController {
         $moduleId = $session->read("moduleId");
             $ModifiedDate = date("Y-m-d H:i:s");
             $connection->execute("UPDATE ME_Production_TimeMetric SET QcStatusId=5, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Qc_Batch_Id=".$QCBatchId." and QC_Module_Id=$moduleId");
-            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,BatchRejectionStatus='". $ReworkId ."',SampleCount=$samplecountArr, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId." and QC_Module_Id=$moduleId");
+            $connection->execute("UPDATE MV_QC_BatchMaster SET StatusId=5,BatchRejectionStatus='". $ReworkId ."',SampleCount=$samplecountArr,QCCompletedCount=0, ModifiedBy='". $userid ."', ModifiedDate='".$ModifiedDate."' WHERE Id=".$QCBatchId." and QC_Module_Id=$moduleId");
             $this->Flash->success(__('Stratified Sampling Created Successfully!'));
             $this->redirect(['action' => 'index']);  
         }
     }
     
     function getAvailUserArrays($ShowSamplingRecords,$SampleCountAvail) {
+	//echo 'came'; 
         $found_items = []; 
         foreach($ShowSamplingRecords as $k=>$v)
         {
@@ -454,6 +457,7 @@ class QCSampleController extends AppController {
         if($SampleCountAvail>0) {
             $ShowSamplingRecords = $this->getAvailUserArrays($ShowSamplingRecords,$SampleCountAvail);
         }
+		//pr($ShowSamplingRecords);
         return $ShowSamplingRecords;
     }
     

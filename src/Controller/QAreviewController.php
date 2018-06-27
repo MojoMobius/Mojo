@@ -145,30 +145,54 @@ class QAreviewController extends AppController {
 
 
                 /////////////AOQ start/////////////////
-            
+
             
                 $DependentMasterIdsQuery = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='" . $input['ProjectId'] . "' AND FieldTypeName='After Normalized'")->fetchAll('assoc');
                 $DependId = $DependentMasterIdsQuery[0]['Id'];
 
-
+//echo "select DISTINCT InputEntityId from ME_Production_TimeMetric where Qc_Batch_Id='" . $input['Id'] . "'";
                 $Selectaoqtime = $connection->execute("select DISTINCT InputEntityId from ME_Production_TimeMetric where Qc_Batch_Id='" . $input['Id'] . "'")->fetchAll('assoc');
                 // echo $Selectaoqtime[0]['InputEntityId'];exit;
+				$in=0;$inputentityArr='';
+				foreach($Selectaoqtime as $val){
+					$inputentityArr[$in]=$val['InputEntityId'];
+					$in++;
+				}
+				 $inputentity=implode(',',$inputentityArr);
+				//if($inputentity!=''){
                 /////Attributes Missed 
-                $Selectaoqqc = $connection->execute("select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='" . $ErrorcatId . "' AND InputEntityId='" . $Selectaoqtime[0]['InputEntityId'] . "'")->fetchAll('assoc');
-                $totAttrMissed = $Selectaoqqc[0]['cnt'];
+                $Selectaoqqc = $connection->execute("select COUNT(Id) as cnt from MV_QC_Comments where ModuleId=".$moduleId." and ErrorCategoryMasterId='" . $ErrorcatId . "' AND InputEntityId in (" . $inputentity . ")")->fetchAll('assoc');
+                foreach ($Selectaoqqc as $Inattr):
+                    $AttrFilledqc[] = $Inattr['cnt'];
+                endforeach;
+                  $totAttrMissed = array_sum($AttrFilledqc);
+				//$totAttrMissed = $Selectaoqqc[0]['cnt'];
 
                 /////Attributes Filled
-                $Selectaoqinput = $connection->execute("select COUNT(Id) as cnt from MC_CengageProcessInputData where DependencyTypeMasterId='" . $DependId . "' AND InputEntityId='" . $Selectaoqtime[0]['InputEntityId'] . "' GROUP BY SequenceNumber,AttributeMasterId,DependencyTypeMasterId")->fetchAll('assoc');
+			//	echo "select COUNT(Id) as cnt from MC_CengageProcessInputData where DependencyTypeMasterId='" . $DependId . "' AND InputEntityId in (" . $inputentity . " ) GROUP BY SequenceNumber,AttributeMasterId,DependencyTypeMasterId";
+				$Selectaoqinput = $connection->execute("select COUNT(MC_CengageProcessInputData.Id) as cnt from MC_CengageProcessInputData 
+				INNER JOIN ProductionEntityMaster ON ProductionEntityMaster.InputEntityId=	MC_CengageProcessInputData.InputEntityId
+				
+				where DependencyTypeMasterId='" . $DependId . "' AND MC_CengageProcessInputData.InputEntityId in (" . $inputentity . " )
+				AND StatusId!=19
+				GROUP BY MC_CengageProcessInputData.InputEntityId ,MC_CengageProcessInputData.SequenceNumber,MC_CengageProcessInputData.AttributeMasterId,MC_CengageProcessInputData.DependencyTypeMasterId")->fetchAll('assoc');
                 $AttrFilled = array();
                 foreach ($Selectaoqinput as $Inattr):
                     $AttrFilled[] = $Inattr['cnt'];
                 endforeach;
-                $totAttrFilled = array_sum($AttrFilled);
+                   $totAttrFilled = count($Selectaoqinput);
 
 
-                ///error weightage//////////
-                $Selectaoqweight = $connection->execute("select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory  where InputEntityId='" . $Selectaoqtime[0]['InputEntityId'] . "' GROUP BY cm.InputEntityId")->fetchAll('assoc');
-                $totweight = $Selectaoqweight[0]['weightage'];
+                
+				///error weightage//////////
+				//echo "select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory  where InputEntityId in (" . $inputentity . ") GROUP BY cm.InputEntityId";
+				//echo "select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory   where cm.ModuleId=".$moduleId." and InputEntityId in (" . $inputentity . ") GROUP BY cm.InputEntityId";
+                $Selectaoqweight = $connection->execute("select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory   where cm.ModuleId=".$moduleId." and InputEntityId in (" . $inputentity . ") GROUP BY cm.InputEntityId")->fetchAll('assoc');
+                  foreach ($Selectaoqweight as $Inaoqattr):
+                    $AoqAttrFilled[] = $Inaoqattr['weightage'];
+                endforeach;
+                   $totweight = array_sum($AoqAttrFilled);
+				 //$totweight = $Selectaoqweight[0]['weightage'];
 
                 ///////end/////////////////
             /*    
@@ -187,7 +211,7 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
                     $AOQ_Calc = round($AOQ_Calc);
                 }
 
-
+				$AOQ_Calc=$AOQ_Calc/count($inputentity);
 
                 /////////////AOQ end/////////////////
 
@@ -330,7 +354,9 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
           max(QCBatchId)
           for QCBatchId in ([4155])
           ) piv;")->fetchAll('assoc'); */
-        $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
+       // $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='4155'")->fetchAll('assoc');
+	           $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
+
         $ArKey = array();
         $ArVal = array();
         $i = 0;
@@ -507,7 +533,7 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
         exit;
     }
     function ajaxRejectstatus(){
-       
+
         $connection = ConnectionManager::get('default');
       
          $Id = $_POST['Id'];
@@ -515,6 +541,6 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
          $selectRecords = $connection->execute("update MV_QC_BatchMaster set BatchRejectionStatus = '".$flag."' where Id='".$Id."'")->fetchAll('assoc');
          echo "true";
          exit;
-    }
+}
 
 }

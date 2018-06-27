@@ -900,7 +900,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                  
                                                                 <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
                                                                 <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
-                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
+                                                                <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" style="color:#4397e6" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
                                                                 <?php
                                                             } ?>
@@ -4018,6 +4018,7 @@ $(document).keydown(function(e) {
 	.link-style{
 	cursor: pointer;
 	}
+		
 </style>
 <?php
 if ($this->request->query['continue'] == 'yes') {
@@ -4033,10 +4034,23 @@ function goToMsg(id){
       var iframe = document.getElementById("frame1");
       var elem = iframe.contentWindow.document.getElementById(id);
       iframe.contentWindow.location.hash = id;
+	  		
      $("html, body")
-     .animate({scrollTop:$( elem ).offset().top}, 250, function() {        
-       $(elem).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200)
+     .animate({scrollTop:$( elem ).offset().top}, 250, function() {		
+		elements = iframe.contentWindow.document.getElementsByClassName('annotated');
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].style.backgroundColor="blue";
+		}
+
+		 $(elem).css('background-color', 'red');	
+
+	//$(elem).css('cursor', 'pointer');
+      // $(elem).fadeIn(200).fadeOut(200).fadeIn(200).fadeOut(200).fadeIn(200)
      })
- 
+	 
+	 
    }
+   
+
+    
 </script>

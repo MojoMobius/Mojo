@@ -1415,8 +1415,15 @@ class QCValidationController extends AppController {
 						
                     } 
 					else if ($cnt_InputEntity_TLAcceptError[0]['cnt'] != 0) {
+					//echo $next_status_id_org;
                             $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][2][1]; //QC completed - QC Accept all
                             $QcStatusId = 8;
+								///qc complete////
+                    $QCcompletequery = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric where InputEntityId='".$InputEntityId."' and Qc_Batch_Id!=''")->fetchAll('assoc');
+                    $QCBatchId=$QCcompletequery[0]['Qc_Batch_Id'];  
+
+                    $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount = QCCompletedCount + 1 where Id='".$QCBatchId."'");
+                    /////end///////// 
                         }
 					else if ($cnt_InputEntity_QcError_Deleted[0]['cnt'] != 0) {
 							$completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][2][1];
@@ -1429,8 +1436,9 @@ class QCValidationController extends AppController {
                     $QcStatusId = 0;
                     $submitType = 'completed';
 					///qc complete////
-                    $QCcompletequery = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric where InputEntityId='".$InputEntityId."'")->fetchAll('assoc');
-                    $QCBatchId=$QCcompletequery[0]['Qc_Batch_Id'];         
+                    $QCcompletequery = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric where InputEntityId='".$InputEntityId."' and Qc_Batch_Id!=''")->fetchAll('assoc');
+                    $QCBatchId=$QCcompletequery[0]['Qc_Batch_Id'];  
+//echo "UPDATE MV_QC_BatchMaster SET QCCompletedCount = QCCompletedCount + 1 where Id='".$QCBatchId."'";					
                     $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount = QCCompletedCount + 1 where Id='".$QCBatchId."'");
                     /////end///////// 
                 }
@@ -2758,7 +2766,7 @@ function ajaxgetafterreferenceurl() {
        }
            
         } else {
-            
+
             $connection->execute("INSERT into MV_QC_Comments (ProjectId,RegionId,ModuleId,InputEntityId,AttributeMasterId,ProjectAttributeMasterId,OldValue,QCComments,ErrorCategoryMasterId,SubErrorCategoryMasterId,SequenceNumber,UserId,StatusId,RecordStatus,CreatedDate,CreatedBy)"
                     . "values($ProjectId,'" . $_POST['RegionId'] . "','".$_POST['QCModuleId']."','" . $_POST['InputEntityId'] . "','" . $_POST['AttributeMasterId'] . "','" . $_POST['ProjectAttributeMasterId'] . "','" . trim($OldValue) . "','" . trim($QCComments) . "','" . $_POST['CategoryId'] . "','" . $_POST['SubCategoryId'] . "','" . $_POST['SequenceNumber'] . "','" . $user_id . "',1,1,'" . $createddate . "','" . $user_id . "')");
         }

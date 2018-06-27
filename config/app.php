@@ -223,7 +223,7 @@ return [
             'driver' => 'Cake\Database\Driver\Sqlserver',
             'persistent' => false,
             //'host' => '172.198.11.18',
-            'host' => '34.206.95.78',
+            'host' => '10.101.11.209',
             /**
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
@@ -267,7 +267,7 @@ return [
             'persistent' => false,
             //'host' => '172.198.11.18',
 
-            'host' => '34.206.95.78',
+            'host' => '10.101.11.209',
             'username' => 'phpliveuser',
             'password' => 'Php@user456',
             'database' => 'Demo_D2k_V3_config',
