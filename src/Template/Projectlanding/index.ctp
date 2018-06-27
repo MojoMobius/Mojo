@@ -7,16 +7,14 @@
 use Cake\Routing\Router; ?>
 
 
-
-<script>
-function ValidateForm() {
-    if(($('#ProjectId').val()==0)) {
-            alert('Select any one project!');
-            $('#ProjectId').focus();
-            return false;
-    }
+<style>
+.btn-width {
+	width:80%;	
+	padding:15px 10px;
+	margin:10px auto;
 }
-</script>
+</style>
+
 <div class="container-fluid Project_landing_container">
 <!-- <div class="app-title">
         <div>
@@ -52,23 +50,30 @@ function ValidateForm() {
 		</div>
 		
       </div> -->
-    <div class="jumbotron formcontent proj-land">
-        <h4>ProjectLanding</h4>
-        <?php echo $this->Form->create($OptionMaster, array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
-        <div class="col-xs-12">
-            <div class="form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Project Name</label>
-                <div class="col-sm-9">
-                    <?php echo $UserProject; ?>
-                </div>
-            </div>
-        </div>
-        <div class="form-group" style="text-align:center;">
-            <div class="col-sm-12">
-            	
-                <button type="submit" class="btn btn-primary btn-sm" value="Submit" id="submit" name="submit" onclick="return ValidateForm()">Submit</button>
-            </div>
-        </div>
-        
-        </div>
+	   <?php echo $this->Form->create($OptionMaster, array('class' => 'form-horizontal', 'id' => 'projectforms'));
+		     echo $this->Form->input('', array('type' => 'hidden', 'id' => 'ProjectId', 'name' => 'ProjectId')); 
+
+
+	   ?>
+		<div class="row" id="monitor-list">
+			<div class="col-md-12">
+				<h4>ProjectLanding</h4>   
+				<?php
+				foreach($Proname as $key => $value){				
+				?>
+					<div class="col-md-6">	
+						 <button type="submit" class="btn btn-primary btn-sm btn-width" value="Submit" id="submit" name="submit" onclick="Formsubmit(<?php echo $Proid[$key];?>);"><?php echo $value;?></button>
+
+					</div>
+				<?php
+				}
+				?>					
+			</div>     
+		</div>
+
 </div>
+<script>
+function Formsubmit(id){
+	 $('#ProjectId').val(id);
+}
+</script>
