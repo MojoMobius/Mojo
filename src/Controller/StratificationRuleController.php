@@ -196,7 +196,7 @@ class StratificationRuleController extends AppController {
             $usearray = $contentArr['AttributeOrder'][$RegionId];
             $Stratificationfactors = $connection->execute("SELECT StratificationRuleId,AttributeMasterId,ProjectAttributeMasterId FROM MV_QC_StratificationFactors where StratificationRuleId=".$RuleId)->fetchAll('assoc');
             $attributeNames = array_map(function($a) use($usearray){ return $usearray[$a['AttributeMasterId']]['DisplayAttributeName']; },$Stratificationfactors);
-            //pr($attributeNames);
+
             $values['StratificationFactors'] = implode(',', $attributeNames);
 //            $values['SampleType'] = $Stratificationfactors['0']['SampleType'];
 //            $values['SampleValue'] = $Stratificationfactors['0']['SampleValue'];
