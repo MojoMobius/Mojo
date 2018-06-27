@@ -16,6 +16,7 @@ class ProjectLandingController extends AppController {
     // Access Model file
     // Function for Validate the user credentials
     public function index() {
+		
         $session = $this->request->session();
         $userid = $session->read('user_id');
 //        $this->loadModel('projectmasters');
@@ -78,14 +79,21 @@ class ProjectLandingController extends AppController {
                 else {
                     $this->loadModel('Projectlanding');
                     $ProList = $this->Projectlanding->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
-                    $ProListopt = '<select name="ProjectId" id="ProjectId" class="form-control"><option value=0>--Select--</option>';
-                    foreach ($ProList as $query):
-                        $ProListopt.='<option  value="' . $query['ProjectId'] . '">';
-                        $ProListopt.=$query['ProjectName'];
-                        $ProListopt.='</option>';
+                    //$ProListopt = '<select name="ProjectId" id="ProjectId" class="form-control"><option value=0>--Select--</option>';
+					$ProName=array();
+					$ProId=array();
+				   foreach ($ProList as $query):
+                        //$ProListopt.='<option  value="' . $query['ProjectId'] . '">';
+                       // $ProListopt.=$query['ProjectName'];
+                        //$ProListopt.='</option>';
+						 $ProName[]=$query['ProjectName'];
+						 $ProId[]=$query['ProjectId'];
                     endforeach;
                     $ProListopt.='</select>';
-                    $this->set('UserProject', $ProListopt);
+                   // $this->set('UserProject', $ProListopt);
+					$this->set('Proname', $ProName);
+					$this->set('Proid', $ProId);
+					
                 }
             }
         }
