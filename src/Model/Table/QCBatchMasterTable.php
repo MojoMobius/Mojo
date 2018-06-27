@@ -295,6 +295,8 @@ class QCBatchMasterTable extends Table {
         return $tableData;
     }
     public function findAvailableproduction(Query $query, array $options) {
+	
+	
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
         $ModuleId = $options['ModuleId'];
@@ -363,8 +365,8 @@ class QCBatchMasterTable extends Table {
         $queries = $queries->fetchAll('assoc');
         $Queriesresult = array_map('current', $queries);
         $UserList = implode(",", $Queriesresult);
-//echo "SELECT InputEntityId FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QcStatusId=$ReadyForQCBatch";
-       
+		
+
                 $CompletedRecords = $connection->execute("SELECT InputEntityId,UserId FROM ME_Production_TimeMetric where $conditions $joinoperator ProjectId=$ProjectId and RegionId = $RegionId and Module_Id= $ModuleId and UserId IN (" . $UserList . ") and Qc_Batch_Id is NULL and QC_Module_Id=$QcModuleId and QcStatusId=$ReadyForQCBatch order by Start_Date")->fetchAll('assoc');
        
         $Completedresult = array_map('current', $CompletedRecords);
@@ -378,9 +380,11 @@ class QCBatchMasterTable extends Table {
        
         $inputEntity=  implode(',', $inputEntity);
         $Production='';
+		
         $Dependency = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where FieldTypeName='General' and ProjectId=$ProjectId")->fetchAll('assoc');
        $DependencyType=$Dependency[0]['Id'];
-        if($inputEntity){
+        if($inputEntity){ 
+	//	echo "SELECT * FROM ProductionEntityMaster where InputEntityId in ($inputEntity) ORDER BY InputEntityId";
         $Production = $connection->execute("SELECT * FROM ProductionEntityMaster where InputEntityId in ($inputEntity) ORDER BY InputEntityId")->fetchAll('assoc');
        // $domainId = $connection->execute("SELECT InputEntityId,AttributeValue FROM MC_CengageProcessInputData where InputEntityId in ($inputEntity) and AttributeMasterId=$domainId and DependencyTypeMasterId=$DependencyType ORDER BY InputEntityId")->fetchAll('assoc');
         //foreach ($domainId as $val ){
@@ -398,12 +402,12 @@ class QCBatchMasterTable extends Table {
         $tableData .= '</div>';
         }
         else {
-           // pr($Production);
+            //pr($Production);
             $cnt=count($Production);
         $tableData = '<div class="bs-example" style="margin-top:20px;">';
         $tableData .= '<table id="AddOptionTable" class="table table-striped table-center">';
        // $tableData.='<thead><tr><th style="text-align:center;">Id</th><th style="text-align:center;">Status</th><th style="text-align:center;">Start Date</th><th style="text-align:center;">End Date</th><th style="text-align:center;">Time Taken</th><th style="text-align:center;">User ID</th></tr></thead><tbody>';
-        $tableData.='<thead><th><th style="text-align:center;">Total No Of Jobs Available for Batch Creation : '.$cnt.' (from '. strtotime($Production[0]['ProductionStartDate']).')</th></tr>'
+        $tableData.='<thead><th><th style="text-align:center;">Total No Of Jobs Available for Batch Creation : '.$cnt.' (from '. date('d-m-Y H:i:s:',strtotime($Production[0]['ProductionStartDate'])).')</th></tr>'
                 
                 . '</thead>';
         //foreach ($Production as $key=>$val) {

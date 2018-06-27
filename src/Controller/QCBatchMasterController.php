@@ -233,7 +233,7 @@ class QCBatchMasterController extends AppController {
     function getProductionData() {
         $session = $this->request->session();
         $moduleId = $session->read("moduleId");
-         echo $Module = $this->QCBatchMaster->find('availableproduction', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'ModuleId' => $_POST['ModuleId'], 'UserGroupId' => $_POST['UserGroupId'], 'batch_from' => $_POST['batch_from'], 'batch_to' => $_POST['batch_to'], 'FromTime' => $_POST['FromTime'], 'ToTime' => $_POST['ToTime'], 'QcModuleId' => $_POST['moduleId']]);
+         echo $Module = $this->QCBatchMaster->find('availableproduction', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'ModuleId' => $_POST['ModuleId'], 'UserGroupId' => $_POST['UserGroupId'], 'batch_from' => $_POST['batch_from'], 'batch_to' => $_POST['batch_to'], 'FromTime' => $_POST['FromTime'], 'ToTime' => $_POST['ToTime'], 'QcModuleId' => $moduleId]);
         exit;
     }
     function ajaxcount() {
