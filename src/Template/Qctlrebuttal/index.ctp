@@ -503,11 +503,11 @@ function commentsQueryInsert(){
             $('#QueryDateFrom').focus();
             return false;
         }
-//        if ($('#QueryDateTo').val() == '') {
-//            alert('Select To Date');
-//              $('#QueryDateTo').focus();
-//            return false;
-//        }
+        if ($('#QueryDateTo').val() == '') {
+            alert('Select To Date');
+              $('#QueryDateTo').focus();
+            return false;
+        }
         
         if ($('#user_id').val() == '') {
             alert('Select Resource');
