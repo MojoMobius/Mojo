@@ -1185,10 +1185,13 @@ class GetjobcoreController extends AppController {
             $dynamicData = $SequenceNumber[0];
             $this->set('dynamicData', $dynamicData);
 
-            foreach($PuNextStatusId as $val){
-              if($productionjobNew[0]['StatusId'] == $val){
-                 $this->render('/Getjobcore/index_rework');
-            }  
+           foreach($PuNextStatusId as $val){
+              if(($BatchRejectionStatus == 2) && ($productionjobNew[0]['StatusId'] == $val)){
+                 $this->render('/Getjobcore/index');
+            }
+			else if($productionjobNew[0]['StatusId'] == $val){
+				$this->render('/Getjobcore/index_rework');
+			}
             }
             
         }

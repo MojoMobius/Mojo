@@ -153,6 +153,7 @@ if(isset($showValuesArray)) {
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 Sample Count: <?php echo $SampleCountWithPercentage; ?><br>
                                 <input name="SampleCountWithPercentage" type="hidden" id="SampleCountWithPercentage" value="<?php echo $SampleCountWithPercentage; ?>">
+								<input name="ReworkId" type="hidden" id="ReworkId" value="<?php echo $ReworkId_showValue; ?>">
                                 <table style='width:99%;' class="table table-striped table-center" id='example'>
                                     <thead>
                                         <tr class="Heading">
