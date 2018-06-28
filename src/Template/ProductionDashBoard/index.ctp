@@ -4,6 +4,11 @@
 use Cake\Routing\Router;
 ?>
 <style>
+.panel{
+	height:425;
+	width:100%;
+	margin:10px 0px;
+}
 .setting-popup .widget-item {
     display: flex;
     align-items: center;
@@ -83,14 +88,28 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.set-filter{
+	padding-top:15px;
+}
+.set-border {
+    border-bottom: 1px dashed #ADADAD;
+}
+.set-border p{
+	font-size:20px;
+	padding:5px;
+	font-weight:600;
+}
+.setting-ico{
+	padding-top:10px;
+}
 .setting-ico i {font-size: 20pt; cursor: pointer;color:#6b6d70;}
 .setting-ico i:hover {color: #4397e6;}
 </style>
 <div class="container-fluid">
     <div class=" jumbotron formcontent">
-         <div class="col-md-12"><div class="col-md-11">  <h4>Quality Dashboard</h4></div> <div class="col-md-1 setting-ico"> <i class="fa fa-cog pull-right" data-toggle="modal" data-target="#widget-modal"></i></div></div>
+         <div class="col-md-12 set-border"><div class="col-md-11"> <p>Quality Dashboard </p></div> <div class="col-md-1 setting-ico"> <i class="fa fa-cog pull-right" data-toggle="modal" data-target="#widget-modal"></i></div></div>
         <?php echo $this->Form->create('', array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
- <div class="col-md-12"> 
+ <div class="col-md-12 set-filter"> 
         <div class="col-md-3">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Project</label>
@@ -163,7 +182,7 @@ if (count($Chartreports) >= 0) {
                     <div class="col-md-12">
                         <div class="col-md-6">
 
-                            <div class="col-md-12 panel" style="height: 410px;width: 100%;" id="chart-results">
+                            <div class="col-md-12 panel" style="min-height: 425px;width: 100%;margin-top:10px;" id="chart-results">
                                 <b>Over all</b> 
                                 <div id="linechartContainer"></div>
 
@@ -171,7 +190,7 @@ if (count($Chartreports) >= 0) {
 
                         </div>
                         <div class="col-md-6">
-                            <div class="col-md-12 panel" style="height: 410px;width: 100%;" id="">
+                            <div class="col-md-12 panel" style="min-height: 425px;width: 100%;margin-top:10px;" id="">
                                 <b>Error Distribution</b> 
                                 <div id="errorchartContainer"></div>
 
@@ -180,8 +199,10 @@ if (count($Chartreports) >= 0) {
                         </div>
 
                         <div class="col-md-12">
-                            <div class="col-md-12 panel" style="height: 700px;width: 100%;" id="">
-                                <b>Issues</b>
+
+                           <div class="col-md-12 panel" style="height: 500px;width: 100%;margin-top:10px;" id="">
+                                <b>Error Distribution</b> 
+        
                                 <div id="errorbarchartContainer"></div>
 
 
@@ -727,8 +748,9 @@ echo $this->Form->end();
             },
             legend: {
                 dockInsidePlotArea: true,
-                verticalAlign: "top",
-                horizontalAlign: "right"
+                verticalAlign: "center",
+                horizontalAlign: "right",
+				maxWidth:300,
             },
             dataPointWidth: 5,
             data:chartres
