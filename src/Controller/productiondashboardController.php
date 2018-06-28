@@ -249,25 +249,16 @@ class productiondashboardController extends AppController {
         }
     }
 
-    public function getErrorchartreports() {
+    public function getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId){
 
         $Chartreports = array();
         $connection = ConnectionManager::get('default');
 
-        if (isset($this->request->data['ProjectId'])) {
+        if (isset($ProjectId)) {
 
-//                $ProjectId = 3346;
-            $ProjectId = $this->request->data('ProjectId');
-            $ProjectId = 3346;
             $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
             $content = file_get_contents($path);
             $contentArr = json_decode($content, true);
-
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
-
-            $batch_from = '01-2018';
-            $batch_to = '06-2018';
 
             if (!empty($batch_from) && !empty($batch_to)) {
                 $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
@@ -279,9 +270,6 @@ class productiondashboardController extends AppController {
                 $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_to));
                 $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_to));
             }
-
-//                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime($batch_from));
-//                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime($batch_to));
 
             $queries = $connection->execute("SELECT qccat.ErrorCategoryName,qccmt.ProjectAttributeMasterId,count(qccmt.ProjectAttributeMasterId) as cnt,qccmt.ErrorCategoryMasterId,qccmt.RegionId FROM MV_QC_Comments as qccmt inner join MV_QC_ErrorCategoryMaster as qccat on qccat.id= qccmt.ErrorCategoryMasterId where ProjectId = '$ProjectId' and qccmt.CreatedDate between '$ProductionStartDate' and '$ProductionEndDate' GROUP BY qccat.ErrorCategoryName, qccmt.ErrorCategoryMasterId,qccmt.RegionId,qccmt.ProjectAttributeMasterId");
             $queries = $queries->fetchAll('assoc');
@@ -315,8 +303,11 @@ class productiondashboardController extends AppController {
             $Chartreports['chartres'] = $chartres;
         }
         $Chartreports['status'] = 1;
-        echo json_encode($Chartreports);
-        exit;
+        return $Chartreports;
+        
+//        echo json_encode($Chartreports);
+//        exit;
+        
     }
 
     function ajaxgetcampaign($ProjectId) {
@@ -352,39 +343,52 @@ class productiondashboardController extends AppController {
         return $months;
     }
 
-    public function getErrorbarchartreports() {
+    public function getdashboardchartreports() {
+        $RegionId = 1011;
+        $ProjectId = $this->request->data['ProjectId'];
+        $ProjectId = 3346;
+        if (!empty($this->request->data('month_from'))) {
+            $batch_from = $this->request->data('month_from');
+        }
+
+        if (!empty($this->request->data('month_to'))) {
+            $batch_to = $this->request->data('month_to');
+        }
+        $batch_from = '03-2018';
+        $batch_to = '06-2018';
+
+        // Line chart 
+        $result['linechart'] = $this->getChartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+     
+        // Pie-chart 
+        $result['piechart'] = $this->getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        
+        
+        // barchart
+        $result['barchart'] = $this->getErrorbarchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        
+        
+
+        echo json_encode($result);
+        exit;
+    }
+
+    public function getErrorbarchartreports($batch_from, $batch_to, $ProjectId, $RegionId) {
 
         $Chartreports = array();
         $connection = ConnectionManager::get('default');
-        if (isset($this->request->data['ProjectId'])) {
+        if (isset($ProjectId)) {
             $first_head_result = array();
-            $RegionId = 1011;
             try {
 
-                $ProjectId = $this->request->data['ProjectId'];
-                $ProjectId = 3346;
-//                $campaign = $this->ajaxgetcampaign($ProjectId);
-
-                $sladefault = QareviewSLA;
-                $batch_from = "";
-                $batch_to = "";
                 $ProductionStartDate = "";
                 $ProductionEndDate = "";
 
-                if (!empty($this->request->data('month_from'))) {
-                    $batch_from = $this->request->data('month_from');
-                }
+//                $QueryDateFrom = $batch_from = '03-2018';
+//                $QueryDateTo = $batch_to = '06-2018';
 
-                if (!empty($this->request->data('month_to'))) {
-                    $batch_to = $this->request->data('month_to');
-                }
-
-//            $batch_from = '08-05-2018';
-                $QueryDateFrom = $batch_from = '01-2018';
-                $QueryDateTo = $batch_to = '06-2018';
-
-//            $QueryDateFrom = $this->request->data('batch_from');
-//            $QueryDateTo = $this->request->data('batch_to');
+                $QueryDateFrom = $batch_from;
+                $QueryDateTo = $batch_to;
 
                 if (!empty($batch_from) && !empty($batch_to)) {
                     $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
@@ -406,13 +410,6 @@ class productiondashboardController extends AppController {
                 } elseif ($QueryDateFrom == '' && $QueryDateTo != '') {
                     $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
                 }
-                
-                
-                
-                
-//                echo "<pre>s";
-//                print_r($months);
-//                exit;
 
 
                 $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
@@ -438,7 +435,7 @@ class productiondashboardController extends AppController {
                             return $v;
                         }
                     }, $ProductionFields);
-                    //$keys_sub = $this->combineBySubGroup($keys);
+
                     $groupwisearray[$key] = $keys;
                 }
                 foreach ($groupwisearray as $arkey => $resval) {
@@ -453,129 +450,82 @@ class productiondashboardController extends AppController {
 
                 foreach ($ArrAtributes_all as $atr_key => $atr_val) {
 
+                    // campaign list level 1 - getting subattributes
+                    $ListAttributes = implode(",", $atr_val);
+                    $check_Attributes = " mc.AttributeMasterId IN (" . $ListAttributes . ")";
+
+                    $Datecheck = "Convert(date, pm.ProductionStartDate)>='" . $ProductionStartDate . "' AND Convert(date, pm.ProductionEndDate)<='" . $ProductionEndDate . "' AND";
+
+                    // Get month list for - Report_ProductionEntityMaster$Mnth level 2
+                    // ......
                     $first_head['name'] = $AttributeGroupMasterDirect[$atr_key];
                     $first_head['type'] = "column";
                     $first_head['showInLegend'] = true;
                     $first_head['yValueFormatString'] = "###0.0'%'";
                     $first_head['dataPoints'] = array();
 
-                    // campaign list level 1 - getting subattributes
-                    $ListAttributes = implode(",", $atr_val);
-                    $check_Attributes = " mc.AttributeMasterId IN (" . $ListAttributes . ")";
+                    foreach ($months as $key => $val) {
 
-                    $Datecheck = "Convert(date, pm.ProductionStartDate)>='" . $ProductionStartDate . "' AND Convert(date, pm.ProductionEndDate)<='" . $ProductionEndDate . "' AND";
-                    $Mnth = '_6_2018';
+                        $date_strings = str_replace("_", "-", $val);
+                        $xAxisname = date("F Y", strtotime("01" . $date_strings));
 
-                    $table_rep = "Report_ProductionEntityMaster$Mnth";
-                   
-                    $get_InputEntityIds = $connection->execute("IF OBJECT_ID (N'$table_rep', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res ")->fetchAll('assoc');
-                    
-                    foreach($months as $key=>$val){
-                        
-//                        IF OBJECT_ID (N'MV_QC_Commentss', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res;
-                    
-                    echo $val;exit;
-                    
-                    
-                        }
-                    
-                    
-                    
-                    // Get month list for - Report_ProductionEntityMaster$Mnth level 2
-                    // ......
-                    // get input ids based on start & end date.
-                    $get_InputEntityIds = $connection->execute("SELECT DISTINCT pm.InputEntityId FROM Report_ProductionEntityMaster$Mnth as pm  WHERE $Datecheck pm.ProjectId='$ProjectId' ")->fetchAll('assoc');
+                        $table_rep = "Report_ProductionEntityMaster$val";
+                        $get_tableexist = $connection->execute("IF OBJECT_ID (N'$table_rep', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res ")->fetchAll('assoc');
 
+                        if ($get_tableexist[0]['res'] > 0) {
 
-                    // if having inputentityids count error info level 3
-                    // no ids empty result
-                    if (!empty($get_InputEntityIds)) {
+                            // get input ids based on start & end date.
+                            $get_InputEntityIds = $connection->execute("SELECT DISTINCT pm.InputEntityId FROM $table_rep as pm  WHERE $Datecheck pm.ProjectId='$ProjectId' ")->fetchAll('assoc');
 
-                        $get_InputEntityId_ids = implode(",", array_column($get_InputEntityIds, 'InputEntityId'));
-                        $check_Inputentityids = " mc.InputEntityId IN ($get_InputEntityId_ids)";
+                            // if having inputentityids count error info level 3
+                            // no ids empty result
+                            if (!empty($get_InputEntityIds)) {
 
-                        // get count info errror
-                        $Error_cnt_report = $connection->execute("SELECT count(Id) as count FROM MV_QC_Comments as mc  WHERE mc.ProjectId='$ProjectId' AND $check_Attributes AND $check_Inputentityids")->fetchAll('assoc');
+                                $InputEntityIds = array_column($get_InputEntityIds, 'InputEntityId');
+                                $get_InputEntityId_ids = implode(",", $InputEntityIds);
+                                $check_Inputentityids = " mc.InputEntityId IN ($get_InputEntityId_ids)";
 
+                                // get count info errror
+                                $Error_cnt_report = $connection->execute("SELECT count(Id) as count FROM MV_QC_Comments as mc  WHERE mc.ProjectId='$ProjectId' AND $check_Attributes AND $check_Inputentityids")->fetchAll('assoc');
 
 //                        $first_head['dataPoints'] = array(array("y" => $Error_cnt_report[0]['count'], "label" => date('F Y', strtotime($ProductionStartDate))));
-                        $first_head['dataPoints'] = array(array("y" => $atr_key, "label" => date('F Y', strtotime($ProductionStartDate))));
+                                $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+                            } else {
+                                $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+                            }
+                        } else {
+                            $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+                        }
                     }
-
-
                     $first_head_result[] = $first_head;
                 }
 
-
-
-//             type: "column",
-//                    showInLegend: true,
-//                    yValueFormatString: "#,##0.## tonnes",
-//                    name: "Target",
-//                    dataPoints: chartres
-
-
-                $dataformat = array(
-                    array("y" => 3373.64, "label" => "Germany"),
-                    array("y" => 2435.94, "label" => "France"),
-                    array("y" => 1842.55, "label" => "China"),
-                    array("y" => 1828.55, "label" => "Russia"),
-                    array("y" => 1039.99, "label" => "Switzerland"),
-                    array("y" => 765.215, "label" => "Japan"),
-                    array("y" => 612.453, "label" => "Netherlands")
-                );
-
-
-
-
-                // get campaign 
-//                $Chartreports['chartres'] = $dataformat;
-//                $Chartreports['total'] = count($dataformat);
+//                       echo "<pre>s";print_r($first_head_result);
 
                 $Chartreports['chartres'] = $first_head_result;
                 $Chartreports['total'] = count($first_head_result);
 
-//            echo "<pre>ss";
-//            print_r($first_head_result);
-//            exit;
-                $Chartreports['status'] = 1;
-                echo json_encode($Chartreports);
-                exit;
+                return $Chartreports;
+
             } catch (\Exception $e) {
                 $Chartreports['status'] = 1;
-                echo json_encode($Chartreports);
-                exit;
+                $Chartreports['total'] = 0;
+                return $Chartreports;
             }
         }
     }
 
-    public function getChartreports() {
+    public function getChartreports($batch_from, $batch_to, $ProjectId, $RegionId) {
 
         $Chartreports = array();
         $connection = ConnectionManager::get('default');
-        if (isset($this->request->data['ProjectId'])) {
+        if (isset($ProjectId)) {
 
             try {
-
-                $ProjectId = $this->request->data['ProjectId'];
-                $ProjectId = 3346;
+                
                 $sladefault = QareviewSLA;
-                $batch_from = "";
-                $batch_to = "";
                 $ProductionStartDate = "";
                 $ProductionEndDate = "";
-
-                if (!empty($this->request->data('month_from'))) {
-                    $batch_from = $this->request->data('month_from');
-                }
-
-                if (!empty($this->request->data('month_to'))) {
-                    $batch_to = $this->request->data('month_to');
-                }
-
-//            $batch_from = '08-05-2018';
-                $batch_from = '01-2018';
-                $batch_to = '06-2018';
 
                 if (!empty($batch_from) && !empty($batch_to)) {
                     $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
@@ -588,12 +538,11 @@ class productiondashboardController extends AppController {
                     $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_to));
                 }
 
-
                 //and Date between '$ProductionStartDate' and '$ProductionEndDate'
 
                 $getbatchavg = $connection->execute("SELECT avg(AOQ) as Accuracy,MONTH(Date) as month,YEAR(Date) as year, (SELECT TOP 1 AOQ from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Iteration = 1) as Firstpass,'$sladefault' as sla from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Date between '$ProductionStartDate' and '$ProductionEndDate' group by MONTH(Date),YEAR(Date) order by MONTH(Date) asc");
                 $getbatchavgres = $getbatchavg->fetchAll('assoc');
-//print_r("SELECT avg(AOQ) as Accuracy,MONTH(Date) as month,YEAR(Date) as year, (SELECT TOP 1 AOQ from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Iteration = 1) as Firstpass,'$sladefault' as sla from MV_QC_BatchIteration where ProjectId = '$ProjectId' and Date between '$ProductionStartDate' and '$ProductionEndDate' group by MONTH(Date),YEAR(Date) order by MONTH(Date) asc");exit;
+
                 $dataformat = array();
                 $dataformataccuracy = array();
                 $dataformataccuracyres = array();
@@ -618,9 +567,9 @@ class productiondashboardController extends AppController {
                         $dataformatsla['label'] = $daytext;
                         $dataformatslares[] = $dataformatsla;
                         // firstpass
-                        $dataformatfirstpass['y'] = intval($value['Firstpass']);
-                        $dataformatfirstpass['label'] = $daytext;
-                        $dataformatfirstpassres[] = $dataformatfirstpass;
+//                        $dataformatfirstpass['y'] = intval($value['Firstpass']);
+//                        $dataformatfirstpass['label'] = $daytext;
+//                        $dataformatfirstpassres[] = $dataformatfirstpass;
 
                         $getbatchavgres[$key]['monthTxt'] = $daytext;
                         $getbatchavgres[$key]['FirstpassTxt'] = intval($value['Firstpass']) . $percentage;
@@ -633,29 +582,26 @@ class productiondashboardController extends AppController {
                 $dataformat[0]["showInLegend"] = true;
                 $dataformat[0]["dataPoints"] = $dataformataccuracyres;
 
-                $dataformat[1]["type"] = "line";
-                $dataformat[1]["showInLegend"] = true;
-                $dataformat[1]["legendText"] = "First Pass";
-                $dataformat[1]["dataPoints"] = $dataformatfirstpassres;
+//                $dataformat[2]["type"] = "line";
+//                $dataformat[2]["showInLegend"] = true;
+//                $dataformat[2]["legendText"] = "First Pass";
+//                $dataformat[2]["dataPoints"] = $dataformatfirstpassres;
 
-                $dataformat[2]["type"] = "line";
-                $dataformat[2]["legendText"] = "SLA";
-                $dataformat[2]["showInLegend"] = true;
-                $dataformat[2]["dataPoints"] = $dataformatslares;
+                $dataformat[1]["type"] = "line";
+                $dataformat[1]["legendText"] = "SLA";
+                $dataformat[1]["showInLegend"] = true;
+                $dataformat[1]["dataPoints"] = $dataformatslares;
 
                 $Chartreports['chartres'] = $dataformat;
                 $Chartreports['total'] = count($getbatchavgres);
-                $Chartreports['getbatchavgres'] = $getbatchavgres;
-//            echo "<pre>ss";
-//            print_r($getbatchavgres);
-//            exit;
+
                 $Chartreports['status'] = 1;
-                echo json_encode($Chartreports);
-                exit;
+                return $Chartreports;
+
             } catch (\Exception $e) {
                 $Chartreports['status'] = 1;
-                echo json_encode($Chartreports);
-                exit;
+                $Chartreports['total'] = 0;
+                return $Chartreports;
             }
         }
     }
