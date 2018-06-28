@@ -51,6 +51,13 @@ class productiondashboardController extends AppController {
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
 
+        $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='" . $user . "'")->fetchAll('assoc');
+
+        $this->set('setting_overall', $configquery[0]['Overall']);
+        $this->set('setting_error', $configquery[0]['Errordistribution']);
+        $this->set('setting_issue', $configquery[0]['Issues']);
+        $this->set('setting_rft', $configquery[0]['Rightfirst']);
+
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
@@ -304,7 +311,6 @@ class productiondashboardController extends AppController {
         }
         $Chartreports['status'] = 1;
         return $Chartreports;
-
     }
 
     function ajaxgetcampaign($ProjectId) {
@@ -1000,10 +1006,19 @@ class productiondashboardController extends AppController {
         $session = $this->request->session();
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
-        $configquery = $connectiond2k->execute("SELECT Id FROM DashboardModuleconfig where Userid='" . $user . "'")->fetchAll('assoc');
+        $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='" . $user . "'")->fetchAll('assoc');
+        //echo count($configquery);exit;
         if (count($configquery) > 0) {
-            $UpdateQryStatus = "update DashboardModuleconfig set  TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
+            $UpdateQryStatus = "update DashboardModuleconfig set  Overall='" . $_POST['overall'] . "' ,Errordistribution='" . $_POST['error_dist'] . "' ,Issues='" . $_POST['issue'] . "',Rightfirst='" . $_POST['rft'] . "' where Userid='" . $user . "' ";
+            $QryStatus = $connection->execute($UpdateQryStatus);
+        } else {
+            $InsertQryStatus = "INSERT INTO DashboardModuleconfig (Overall, Errordistribution, Issues, Rightfirst,Userid ) VALUES ('" . $_POST['overall'] . "','" . $_POST['error_dist'] . "','" . $_POST['issue'] . "','" . $_POST['rft'] . "','" . $user . "')";
+            $QryStatus = $connection->execute($InsertQryStatus);
+            //pr($QryStatus);exit;
         }
+
+        echo "success";
+        exit;
     }
 
     function combineBySubGroup($keysss) {
