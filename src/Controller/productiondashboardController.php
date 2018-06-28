@@ -50,7 +50,14 @@ class productiondashboardController extends AppController {
         $role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
-
+ 
+  $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='".$user."'")->fetchAll('assoc');
+ 
+ $this->set('setting_overall', $configquery[0]['Overall']);
+ $this->set('setting_error', $configquery[0]['Errordistribution']);
+ $this->set('setting_issue', $configquery[0]['Issues']);
+ $this->set('setting_rft', $configquery[0]['Rightfirst']);
+ 
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
@@ -983,17 +990,19 @@ class productiondashboardController extends AppController {
 		//echo $this->request->data('overall');
 		//echo $_POST['overall'];
 		//exit;
-        $ProjectId = $session->read("ProjectId");
+		
+
+ 
+          $ProjectId = $session->read("ProjectId");
 		  $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='".$user."'")->fetchAll('assoc');
 		  //echo count($configquery);exit;
          if(count($configquery) > 0){
-		$UpdateQryStatus = "update DashboardModuleconfig set  Overall='" .$_POST['overall']. "' ,Errordistribution='" . $_POST['error_dist'] . "' ,Issues='". $_POST['issue'] ."',Rightfirst='" . $_POST['rft'] . "' where Userid='" . $user . "' ";
-		 $QryStatus = $connection->execute($UpdateQryStatus);
+		  $UpdateQryStatus = "update DashboardModuleconfig set  Overall='" .$_POST['overall']. "' ,Errordistribution='" . $_POST['error_dist'] . "' ,Issues='". $_POST['issue'] ."',Rightfirst='" . $_POST['rft'] . "' where Userid='" . $user . "' ";
+		  $QryStatus = $connection->execute($UpdateQryStatus);
 		   }
-		   else{
-			   
+		   else{			   
 			   $InsertQryStatus = "INSERT INTO DashboardModuleconfig (Overall, Errordistribution, Issues, Rightfirst,Userid ) VALUES ('".$_POST['overall']."','".$_POST['error_dist']."','".$_POST['issue']."','".$_POST['rft']."','".$user."')";
-				$QryStatus = $connection->execute($InsertQryStatus);
+			   $QryStatus = $connection->execute($InsertQryStatus);
 				//pr($QryStatus);exit;
 		   }
 		   
