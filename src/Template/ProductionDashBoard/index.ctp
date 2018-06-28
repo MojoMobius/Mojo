@@ -263,37 +263,40 @@ if (count($Chartreports) >= 0) {
             </div>
             <div class="modal-body">
                 <div class="widget-item" >
-                    <span>Over All</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
+ <span>Over All</span>
+                  <label class="switch">
+                      <input name="overall" id="overall" value="1" type="checkbox" <?php if($setting_overall > 0){ echo "checked"; } ?>>
+                      <span class="slider round"></span>
+                 
+
                     </label>
                 </div>
                 <div class="widget-item" >
                     <span>Error Distribution</span>
                     <label class="switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox"  name="error_dist" id="error_dist" value="1" <?php if($setting_error > 0){ echo "checked"; } ?>>
                         <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="widget-item" >
-                    <span>Issues</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="widget-item">
-                    <span>Right First Time</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
+ </label>
+                  </div>
+                  <div class="widget-item" >
+                      <span>Issues</span>
+                      <label class="switch">
+                          <input type="checkbox"  name="issue" id="issue" value="1" <?php if($setting_issue > 0){ echo "checked"; } ?> >
+                          <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="widget-item">
+                      <span>Right First Time</span>
+                      <label class="switch">
+                          <input type="checkbox"  name="rft" id="rft" value="1" <?php if($setting_rft > 0){ echo "checked"; } ?> >
+                          <span class="slider round"></span>
+                        </label>
+                    </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="Ajaxsetting();">Save</button>
+              
             </div>
         </div>
     </div>
@@ -752,4 +755,12 @@ echo $this->Form->end();
 
 
 </style>
+<script>
+function Ajaxsetting(){
+	
+		//document.getElementById('widget-modal').style.display = 'none';
+		//$("#widget-modal").modal('toggle');
+		//$(".modal").modal('toggle');
+}
+</script>
 
