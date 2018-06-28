@@ -181,15 +181,370 @@ if (count($Chartreports) >= 0) {
 
                         <div class="col-md-12">
                             <div class="col-md-12 panel" style="height: 700px;width: 100%;" id="">
-                                <b>Error Distribution</b> 
+                                <b>Issues</b>
                                 <div id="errorbarchartContainer"></div>
 
 
                             </div>
                         </div>
 
+                         <div class="col-md-12">
+                            <div class="col-md-12 panel" style="height: 700px;width: 100%;" id="">
+                          <b>Right First Time - Campaign Level</b>
+                          <div id="errorcampaignlevelContainer">
+                              
+           <div class="col-md-12 panel data-table" style="padding-bottom:20px;">
+            <p class="graph-title">Right First Time - Campaign Level</p>
+            <div class="table-responsive">
+              <table class="table table-striped dataTable no-footer" id="data-table">
+                <thead>
+                  <tr>
+                    <th class="sorting_disabled">Table Name</th>
+                    <th class="sorting_disabled">Field Name</th>
+                    <th class="sorting_disabled">X</th>
+                    <th class="sorting_disabled">A</th>
+                    <th class="sorting_disabled">D</th>
+                    <th class="sorting_disabled">M</th>
+                    <th class="sorting_disabled">V</th>
+                    <th class="sorting_disabled">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr role="row">
+                    <th rowspan="21">Organization Information</th>
+                    <td>Disposition_Organization Name</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>722</td>
+                    <td>15186</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Organization Category_A</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>15908</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Organization Status_A</td>
+                    <td>15901</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>7</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Organization Name Type_A</td>
+                    <td>2233</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>13675</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Acronym_A</td>
+                    <td>15506</td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td>401</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Inception Date_A</td>
+                    <td>7044</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>8864</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Main URL Address_A</td>
+                    <td>5083</td>
+                    <td>381</td>
+                    <td>696</td>
+                    <td>816</td>
+                    <td>8932</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Location Type_A</td>
+                    <td></td>
+                    <td>14</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>15893</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Address Status_A</td>
+                    <td>15863</td>
+                    <td>36</td>
+                    <td>9</td>
+                    <td></td>
+                    <td></td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Physical Street_A</td>
+                    <td></td>
+                    <td>9</td>
+                    <td>36</td>
+                    <td>5731</td>
+                    <td>10132</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Physical City_A</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2181</td>
+                    <td>13722</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Physical State_A</td>
+                    <td>9145</td>
+                    <td>91</td>
+                    <td>2</td>
+                    <td>174</td>
+                    <td>6496</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Physical Country_A</td>
+                    <td></td>
+                    <td>5</td>
+                    <td></td>
+                    <td>34</td>
+                    <td>15869</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Physical Postal1_A</td>
+                    <td>2709</td>
+                    <td>267</td>
+                    <td>75</td>
+                    <td>3718</td>
+                    <td>9139</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Physical Subdivision_A</td>
+                    <td>15868</td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>33</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Disposition_English Spoken</td>
+                    <td>5154</td>
+                    <td>1653</td>
+                    <td>624</td>
+                    <td>1696</td>
+                    <td>6781</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Mailing Street_A</td>
+                    <td>13482</td>
+                    <td>578</td>
+                    <td>412</td>
+                    <td>105</td>
+                    <td>1331</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Mailing City_A</td>
+                    <td>13481</td>
+                    <td>576</td>
+                    <td>414</td>
+                    <td>59</td>
+                    <td>1378</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Mailing State_A</td>
+                    <td>14858</td>
+                    <td>259</td>
+                    <td>373</td>
+                    <td>2</td>
+                    <td>416</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Mailing Country_A</td>
+                    <td>13477</td>
+                    <td>580</td>
+                    <td>413</td>
+                    <td></td>
+                    <td>1438</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <td>Mailing Postal1_A</td>
+                    <td>14109</td>
+                    <td>476</td>
+                    <td>384</td>
+                    <td>189</td>
+                    <td>750</td>
+                    <td>15908</td>
+                  </tr>
+                  <tr>
+                    <th>Location Email</th>
+                    <td>Email Address_A</td>
+                    <td></td>
+                    <td>2147</td>
+                    <td>2189</td>
+                    <td>1</td>
+                    <td>7256</td>
+                    <td>11593</td>
+                  </tr>
+                  <tr>
+                    <th>Languages</th>
+                    <td>Languages_A</td>
+                    <td></td>
+                    <td>11632</td>
+                    <td>1315</td>
+                    <td></td>
+                    <td>3117</td>
+                    <td>16064</td>
+                  </tr>
+                  <tr>
+                    <th rowspan="6">Phone</th>
+                    <td>PhoneType_A</td>
+                    <td>50</td>
+                    <td>8297</td>
+                    <td>9183</td>
+                    <td>335</td>
+                    <td>13507</td>
+                    <td>31372</td>
+                  </tr>
+                  <tr>
+                    <td>Area Code_A</td>
+                    <td>24936</td>
+                    <td>844</td>
+                    <td>4310</td>
+                    <td></td>
+                    <td>1282</td>
+                    <td>31372</td>
+                  </tr>
+                  <tr>
+                    <td>City Code_A</td>
+                    <td>14669</td>
+                    <td>6805</td>
+                    <td>2292</td>
+                    <td>119</td>
+                    <td>7487</td>
+                    <td>31372</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number_A</td>
+                    <td></td>
+                    <td>8281</td>
+                    <td>9233</td>
+                    <td>2640</td>
+                    <td>11218</td>
+                    <td>31372</td>
+                  </tr>
+                  <tr>
+                    <td>Country Calling Code_A</td>
+                    <td>6854</td>
+                    <td>7211</td>
+                    <td>4865</td>
+                    <td>33</td>
+                    <td>12409</td>
+                    <td>31372</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Text_A</td>
+                    <td>31354</td>
+                    <td></td>
+                    <td>18</td>
+                    <td></td>
+                    <td></td>
+                    <td>31372</td>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">Social Media</th>
+                    <td>Social Media Type_A</td>
+                    <td>4</td>
+                    <td>2328</td>
+                    <td>27</td>
+                    <td></td>
+                    <td>4448</td>
+                    <td>6807</td>
+                  </tr>
+                  <tr>
+                    <td>Social Media Handle_A</td>
+                    <td>4</td>
+                    <td>2328</td>
+                    <td>28</td>
+                    <td>2</td>
+                    <td>4445</td>
+                    <td>6807</td>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">Variant Name</th>
+                    <td>Variant Name_A</td>
+                    <td></td>
+                    <td></td>
+                    <td>156</td>
+                    <td>1</td>
+                    <td>26</td>
+                    <td>183</td>
+                  </tr>
+                  <tr>
+                    <td>Organization Name Type_A</td>
+                    <td>2</td>
+                    <td></td>
+                    <td>154</td>
+                    <td></td>
+                    <td>27</td>
+                    <td>183</td>
+                  </tr>
+                  <tr>
+                    <th>ISO</th>
+                    <td>ISO_A</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <th>Secondary URL</th>
+                    <td>URL Address_A</td>
+                    <td></td>
+                    <td></td>
+                    <td>22</td>
+                    <td></td>
+                    <td>66</td>
+                    <td>88</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div> 
+                              
+                              
+                          </div>
 
-                    </div>     
+                            </div>
+                        </div>
+
+                    </div>
 
 
 
@@ -323,9 +678,7 @@ echo $this->Form->end();
             data: chartres
 
         });
-
         chart.render();
-
 
     }
 
@@ -396,34 +749,7 @@ echo $this->Form->end();
         });
         chart.render();
 
-        /*
-         axisY: {
-         gridThickness: 0,
-         stripLines: [
-         {
-         value: 0,
-         showOnTop: true,
-         color: "gray",
-         thickness: 2
-         }
-         ]
-         },
-         legend:{
-         dockInsidePlotArea: true,
-         verticalAlign: "top",
-         horizontalAlign: "top"               
-         },
-         axisX: {
-         
-         },
-         
-         dataPointWidth: 20,*/
-
-
-
-    }
-
-
+      }
 
 </script>
 
@@ -435,7 +761,6 @@ echo $this->Form->end();
         $('#ProjectId').val('0');
         $('#month_from').val('');
         $('#month_to').val('');
-
     }
 
 
@@ -563,29 +888,7 @@ echo $this->Form->end();
 
 
         return 1;
-        
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'getErrorchartreports')); ?>",
-            data: ({ProjectId: ProjectId, month_from: month_from, month_to: month_to}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-                console.log(result);
-                debugger;
-                var results = JSON.parse(result);
-                if (results.total > 0) {
-
-                    Errorchartreports(results.chartres);
-
-
-                } else {
-
-                }
-                //$(".validationloader").hide();
-                //$(".container-fluid").css("opacity", '');
-            }
-        });
+      
     }
 
     function isNumberKey(evt)
