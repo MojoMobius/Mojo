@@ -4,149 +4,149 @@
 use Cake\Routing\Router;
 ?>
 <style>
-.panel{
-	height:425;
-	width:100%;
-	margin:10px 0px;
-}
-.setting-popup .widget-item {
-    display: flex;
-    align-items: center;
-    padding: 5px 0px;
-    justify-content: space-between;
-    border-bottom: 1px solid rgb(231, 231, 231);
-	margin-bottom:10px;
+    .panel{
+        height:425;
+        width:100%;
+        margin:10px 0px;
     }
-	.widget-item > span {
-    font-weight: bold;
-    color: #666;
-    margin-right: 20px;
-}
-.setting-popup .widget-item .switch {
-    position: relative;
-    display: inline-block;
-    width: 55px;
-    height: 28px;
-    margin-bottom: 0;
-}
-.setting-popup.widget-item label {
-    color: #555555;
-    font-size: 12pt;
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 55px;
-    height: 28px;
-    margin-bottom: 0;
-}
+    .setting-popup .widget-item {
+        display: flex;
+        align-items: center;
+        padding: 5px 0px;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(231, 231, 231);
+        margin-bottom:10px;
+    }
+    .widget-item > span {
+        font-weight: bold;
+        color: #666;
+        margin-right: 20px;
+    }
+    .setting-popup .widget-item .switch {
+        position: relative;
+        display: inline-block;
+        width: 55px;
+        height: 28px;
+        margin-bottom: 0;
+    }
+    .setting-popup.widget-item label {
+        color: #555555;
+        font-size: 12pt;
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 55px;
+        height: 28px;
+        margin-bottom: 0;
+    }
 
-.switch input {display:none;}
+    .switch input {display:none;}
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 21px;
-  width: 21px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-input:checked + .slider {
-  background-color: #2196F3;
-}
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 21px;
+        width: 21px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 28px;
-}
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 28px;
+    }
 
-.slider.round:before {
-  border-radius: 50%;
-}
-.set-filter{
-	padding-top:15px;
-}
-.set-border {
-    border-bottom: 1px dashed #ADADAD;
-}
-.set-border p{
-	font-size:20px;
-	padding:5px;
-	font-weight:600;
-}
-.setting-ico{
-	padding-top:10px;
-}
-.setting-ico i {font-size: 20pt; cursor: pointer;color:#6b6d70;}
-.setting-ico i:hover {color: #4397e6;}
+    .slider.round:before {
+        border-radius: 50%;
+    }
+    .set-filter{
+        padding-top:15px;
+    }
+    .set-border {
+        border-bottom: 1px dashed #ADADAD;
+    }
+    .set-border p{
+        font-size:20px;
+        padding:5px;
+        font-weight:600;
+    }
+    .setting-ico{
+        padding-top:10px;
+    }
+    .setting-ico i {font-size: 20pt; cursor: pointer;color:#6b6d70;}
+    .setting-ico i:hover {color: #4397e6;}
 </style>
 <div class="container-fluid">
     <div class=" jumbotron formcontent">
-         <div class="col-md-12 set-border"><div class="col-md-11"> <p>Quality Dashboard </p></div> <div class="col-md-1 setting-ico"> <i class="fa fa-cog pull-right" data-toggle="modal" data-target="#widget-modal"></i></div></div>
+        <div class="col-md-12 set-border"><div class="col-md-11"> <p>Quality Dashboard </p></div> <div class="col-md-1 setting-ico"> <i class="fa fa-cog pull-right" data-toggle="modal" data-target="#widget-modal"></i></div></div>
         <?php echo $this->Form->create('', array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
- <div class="col-md-12 set-filter"> 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="inputEmail3" class="col-sm-6 control-label">Project</label>
-                <div class="col-sm-6">
+        <div class="col-md-12 set-filter"> 
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-6 control-label">Project</label>
+                    <div class="col-sm-6">
                     <?php
                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control prodash-txt', 'value' => $ProjectId));
                     ?>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="form-group">
+            <div class="col-md-3">
+                <div class="form-group">
 
-                <label for="inputPassword3" class="col-sm-6 control-label">From</label>
-                <div class="col-sm-6">
-                    <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_from' id='month_from'>
-
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-
-                <div class="col-sm-6">
-                    <label for="inputPassword3" class="col-sm-6 control-label">To</label>
+                    <label for="inputPassword3" class="col-sm-6 control-label">From</label>
                     <div class="col-sm-6">
-                        <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_to' id='month_to'>
+                        <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_from' id='month_from'>
 
                     </div>
 
                 </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
 
+                    <div class="col-sm-6">
+                        <label for="inputPassword3" class="col-sm-6 control-label">To</label>
+                        <div class="col-sm-6">
+                            <input readonly='readonly' placeholder='MM-YYYY' type='text' name='month_to' id='month_to'>
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </div>
-</div>
 
 
         <div class="form-group" style="text-align:center;">
@@ -180,396 +180,55 @@ if (count($Chartreports) >= 0) {
 
                 <div class="row" id="monitor-list">
                     <div class="col-md-12">
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="parent_linechartContainer">
 
                             <div class="col-md-12 panel" style="min-height: 425px;width: 100%;margin-top:10px;" id="chart-results">
                                 <b>Over all</b> 
                                 <div id="linechartContainer"></div>
-
+                                <div id="err_linechartContainer" class="no-results-found" style="display:none;" >
+                                    No Results found
+                                </div>
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="parent_errorpiechartContainer">
                             <div class="col-md-12 panel" style="min-height: 425px;width: 100%;margin-top:10px;" id="">
                                 <b>Error Distribution</b> 
-                                <div id="errorchartContainer"></div>
-
+                                <div id="errorpiechartContainer"></div>
+                                <div id="err_errorpiechartContainer" class="no-results-found" style="display:none;" >
+                                    No Results found
+                                </div>
 
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="parent_errorbarchartContainer">
 
-                           <div class="col-md-12 panel" style="height: 500px;width: 100%;margin-top:10px;" id="">
+                            <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 400px;margin-top:10px;">
                                 <b>Error Distribution</b> 
-        
+
                                 <div id="errorbarchartContainer"></div>
 
+                                <div id="err_errorbarchartContainer" class="no-results-found" style="display:none;" >
+                                    No Results found
+                                </div>
 
                             </div>
                         </div>
 
-                         <div class="col-md-12">
-                            <div class="col-md-12 panel" style="height: 700px;width: 100%;" id="">
-                          <b>Right First Time - Campaign Level</b>
-                          <div id="errorcampaignlevelContainer">
-                              
-           <div class="col-md-12 panel data-table" style="padding-bottom:20px;">
-            <p class="graph-title">Right First Time - Campaign Level</p>
-            <div class="table-responsive">
-              <table class="table table-striped dataTable no-footer" id="data-table">
-                <thead>
-                  <tr>
-                    <th class="sorting_disabled">Table Name</th>
-                    <th class="sorting_disabled">Field Name</th>
-                    <th class="sorting_disabled">X</th>
-                    <th class="sorting_disabled">A</th>
-                    <th class="sorting_disabled">D</th>
-                    <th class="sorting_disabled">M</th>
-                    <th class="sorting_disabled">V</th>
-                    <th class="sorting_disabled">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr role="row">
-                    <th rowspan="21">Organization Information</th>
-                    <td>Disposition_Organization Name</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>722</td>
-                    <td>15186</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Organization Category_A</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>15908</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Organization Status_A</td>
-                    <td>15901</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>7</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Organization Name Type_A</td>
-                    <td>2233</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>13675</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Acronym_A</td>
-                    <td>15506</td>
-                    <td></td>
-                    <td>1</td>
-                    <td></td>
-                    <td>401</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Inception Date_A</td>
-                    <td>7044</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>8864</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Main URL Address_A</td>
-                    <td>5083</td>
-                    <td>381</td>
-                    <td>696</td>
-                    <td>816</td>
-                    <td>8932</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Location Type_A</td>
-                    <td></td>
-                    <td>14</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>15893</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Address Status_A</td>
-                    <td>15863</td>
-                    <td>36</td>
-                    <td>9</td>
-                    <td></td>
-                    <td></td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Physical Street_A</td>
-                    <td></td>
-                    <td>9</td>
-                    <td>36</td>
-                    <td>5731</td>
-                    <td>10132</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Physical City_A</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2181</td>
-                    <td>13722</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Physical State_A</td>
-                    <td>9145</td>
-                    <td>91</td>
-                    <td>2</td>
-                    <td>174</td>
-                    <td>6496</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Physical Country_A</td>
-                    <td></td>
-                    <td>5</td>
-                    <td></td>
-                    <td>34</td>
-                    <td>15869</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Physical Postal1_A</td>
-                    <td>2709</td>
-                    <td>267</td>
-                    <td>75</td>
-                    <td>3718</td>
-                    <td>9139</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Physical Subdivision_A</td>
-                    <td>15868</td>
-                    <td>1</td>
-                    <td>5</td>
-                    <td>1</td>
-                    <td>33</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Disposition_English Spoken</td>
-                    <td>5154</td>
-                    <td>1653</td>
-                    <td>624</td>
-                    <td>1696</td>
-                    <td>6781</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Mailing Street_A</td>
-                    <td>13482</td>
-                    <td>578</td>
-                    <td>412</td>
-                    <td>105</td>
-                    <td>1331</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Mailing City_A</td>
-                    <td>13481</td>
-                    <td>576</td>
-                    <td>414</td>
-                    <td>59</td>
-                    <td>1378</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Mailing State_A</td>
-                    <td>14858</td>
-                    <td>259</td>
-                    <td>373</td>
-                    <td>2</td>
-                    <td>416</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Mailing Country_A</td>
-                    <td>13477</td>
-                    <td>580</td>
-                    <td>413</td>
-                    <td></td>
-                    <td>1438</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <td>Mailing Postal1_A</td>
-                    <td>14109</td>
-                    <td>476</td>
-                    <td>384</td>
-                    <td>189</td>
-                    <td>750</td>
-                    <td>15908</td>
-                  </tr>
-                  <tr>
-                    <th>Location Email</th>
-                    <td>Email Address_A</td>
-                    <td></td>
-                    <td>2147</td>
-                    <td>2189</td>
-                    <td>1</td>
-                    <td>7256</td>
-                    <td>11593</td>
-                  </tr>
-                  <tr>
-                    <th>Languages</th>
-                    <td>Languages_A</td>
-                    <td></td>
-                    <td>11632</td>
-                    <td>1315</td>
-                    <td></td>
-                    <td>3117</td>
-                    <td>16064</td>
-                  </tr>
-                  <tr>
-                    <th rowspan="6">Phone</th>
-                    <td>PhoneType_A</td>
-                    <td>50</td>
-                    <td>8297</td>
-                    <td>9183</td>
-                    <td>335</td>
-                    <td>13507</td>
-                    <td>31372</td>
-                  </tr>
-                  <tr>
-                    <td>Area Code_A</td>
-                    <td>24936</td>
-                    <td>844</td>
-                    <td>4310</td>
-                    <td></td>
-                    <td>1282</td>
-                    <td>31372</td>
-                  </tr>
-                  <tr>
-                    <td>City Code_A</td>
-                    <td>14669</td>
-                    <td>6805</td>
-                    <td>2292</td>
-                    <td>119</td>
-                    <td>7487</td>
-                    <td>31372</td>
-                  </tr>
-                  <tr>
-                    <td>Phone Number_A</td>
-                    <td></td>
-                    <td>8281</td>
-                    <td>9233</td>
-                    <td>2640</td>
-                    <td>11218</td>
-                    <td>31372</td>
-                  </tr>
-                  <tr>
-                    <td>Country Calling Code_A</td>
-                    <td>6854</td>
-                    <td>7211</td>
-                    <td>4865</td>
-                    <td>33</td>
-                    <td>12409</td>
-                    <td>31372</td>
-                  </tr>
-                  <tr>
-                    <td>Phone Text_A</td>
-                    <td>31354</td>
-                    <td></td>
-                    <td>18</td>
-                    <td></td>
-                    <td></td>
-                    <td>31372</td>
-                  </tr>
-                  <tr>
-                    <th rowspan="2">Social Media</th>
-                    <td>Social Media Type_A</td>
-                    <td>4</td>
-                    <td>2328</td>
-                    <td>27</td>
-                    <td></td>
-                    <td>4448</td>
-                    <td>6807</td>
-                  </tr>
-                  <tr>
-                    <td>Social Media Handle_A</td>
-                    <td>4</td>
-                    <td>2328</td>
-                    <td>28</td>
-                    <td>2</td>
-                    <td>4445</td>
-                    <td>6807</td>
-                  </tr>
-                  <tr>
-                    <th rowspan="2">Variant Name</th>
-                    <td>Variant Name_A</td>
-                    <td></td>
-                    <td></td>
-                    <td>156</td>
-                    <td>1</td>
-                    <td>26</td>
-                    <td>183</td>
-                  </tr>
-                  <tr>
-                    <td>Organization Name Type_A</td>
-                    <td>2</td>
-                    <td></td>
-                    <td>154</td>
-                    <td></td>
-                    <td>27</td>
-                    <td>183</td>
-                  </tr>
-                  <tr>
-                    <th>ISO</th>
-                    <td>ISO_A</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <th>Secondary URL</th>
-                    <td>URL Address_A</td>
-                    <td></td>
-                    <td></td>
-                    <td>22</td>
-                    <td></td>
-                    <td>66</td>
-                    <td>88</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-        </div> 
-                              
-                              
-                          </div>
+                        <div class="col-md-12" id="parent_errorcampaignlevelContainer">
+                            <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 400px;">
+                                <b>Right First Time - Campaign Level</b>
+                                <div id="errorcampaignlevelContainer" class="bs-example">
 
+                                </div>
+                                <div id="err_errorcampaignlevelContainer" class="no-results-found" style="display:none;" >
+                                    No Results found
+                                </div>
                             </div>
                         </div>
 
                     </div>
-
-
-
-
 
                 </div>
 
@@ -592,22 +251,22 @@ if (count($Chartreports) >= 0) {
         </div>
     </div>
 </div>
-       <!-- Widget Modal -->
-        <div class="modal fade setting-popup" id="widget-modal" aria-hidden="true" aria-labelledby="widget-modal" role="dialog" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-          <div class="modal-content">
+<!-- Widget Modal -->
+<div class="modal fade setting-popup" id="widget-modal" aria-hidden="true" aria-labelledby="widget-modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-              <h4 class="modal-title" id="exampleModalTitle">Widget Settings</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalTitle">Widget Settings</h4>
             </div>
             <div class="modal-body">
                 <div class="widget-item" >
-                  <span>Over All</span>
-                  <label class="switch">
-                      <input type="checkbox" checked>
-                      <span class="slider round"></span>
+                    <span>Over All</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
                     </label>
                 </div>
                 <div class="widget-item" >
@@ -615,31 +274,31 @@ if (count($Chartreports) >= 0) {
                     <label class="switch">
                         <input type="checkbox" checked>
                         <span class="slider round"></span>
-                      </label>
-                  </div>
-                  <div class="widget-item" >
-                      <span>Issues</span>
-                      <label class="switch">
-                          <input type="checkbox" checked>
-                          <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="widget-item">
-                      <span>Right First Time</span>
-                      <label class="switch">
-                          <input type="checkbox" checked>
-                          <span class="slider round"></span>
-                        </label>
-                    </div>
+                    </label>
+                </div>
+                <div class="widget-item" >
+                    <span>Issues</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="widget-item">
+                    <span>Right First Time</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
             </div>
-          </div>
         </div>
-      </div>
-      <!-- Widget Modal -->
+    </div>
+</div>
+<!-- Widget Modal -->
 
 <?php
 }
@@ -706,7 +365,7 @@ echo $this->Form->end();
 
     function pieErrorchartreports(chartres) {
 
-        var chart = new CanvasJS.Chart("errorchartContainer", {
+        var chart = new CanvasJS.Chart("errorpiechartContainer", {
             theme: "light2",
             animationEnabled: true,
             title: {
@@ -750,10 +409,10 @@ echo $this->Form->end();
                 dockInsidePlotArea: true,
                 verticalAlign: "center",
                 horizontalAlign: "right",
-				maxWidth:300,
+                maxWidth: 300,
             },
             dataPointWidth: 5,
-            data:chartres
+            data: chartres
 //            data: [{
 //                    type: "column",
 //                    showInLegend: true,
@@ -771,7 +430,7 @@ echo $this->Form->end();
         });
         chart.render();
 
-      }
+    }
 
 </script>
 
@@ -874,7 +533,7 @@ echo $this->Form->end();
         var txt_td = "";
 
 
-    $.ajax({
+        $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'getdashboardchartreports')); ?>",
             data: ({ProjectId: ProjectId, month_from: month_from, month_to: month_to}),
@@ -883,26 +542,34 @@ echo $this->Form->end();
             success: function (result) {
 
                 var results = JSON.parse(result);
-               
+
                 // line chart
                 if (results.linechart.total > 0) {
                     LineChartreports(results.linechart.chartres);
+                } else {
+                    $("#err_linechartContainer").show();
                 }
-                
+
                 // pie-chart
                 if (results.piechart.total > 0) {
                     pieErrorchartreports(results.piechart.chartres);
+                } else {
+                    $("#err_errorpiechartContainer").show();
                 }
-                
-                 //bar chart 
+
+                //bar chart 
                 if (results.barchart.total > 0) {
                     Errorbarchart(results.barchart.chartres);
+                } else {
+                    $("#err_errorbarchartContainer").show();
                 }
-                
-                
-//                console.log(results.linechart.total);debugger;
-                
-                
+
+                if (results.campaigntab.total > 0) {
+                    $("#errorcampaignlevelContainer").html(results.campaigntab.table);
+                } else {
+                    $("#err_errorcampaignlevelContainer").show();
+                }
+
                 $(".validationloader").hide();
                 $(".container-fluid").css("opacity", '');
             }
@@ -910,7 +577,7 @@ echo $this->Form->end();
 
 
         return 1;
-      
+
     }
 
     function isNumberKey(evt)
@@ -1004,7 +671,7 @@ echo $this->Form->end();
         float: left;
         margin-top: 10px;
     }
-    #no-results-found{
+    .no-results-found{
         height: 61%;
         width: 89%;
         text-align: center;
