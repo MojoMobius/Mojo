@@ -294,6 +294,7 @@ if (count($Chartreports) >= 0) {
                     </div>
             </div>
             <div class="modal-footer">
+			<span id="saved_status"></span>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" onclick="Ajaxsetting();">Save</button>
               
@@ -757,10 +758,37 @@ echo $this->Form->end();
 </style>
 <script>
 function Ajaxsetting(){
-	
-		//document.getElementById('widget-modal').style.display = 'none';
-		//$("#widget-modal").modal('toggle');
-		//$(".modal").modal('toggle');
+	var overall = 0;
+	var error_dist = 0;
+	var issue = 0;
+	var rft = 0;
+if ($('#overall').is(":checked"))
+{
+	 var overall = 1;
+}
+if ($('#error_dist').is(":checked"))
+{
+	 var error_dist = 1;
+}
+if ($('#issue').is(":checked"))
+{
+	 var issue = 1;
+}
+
+if ($('#rft').is(":checked"))
+{
+	 var rft = 1;
+} 
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'ajaxsetting')); ?>",
+            data: ({overall: overall, error_dist: error_dist, issue: issue,rft: rft}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+                $("#saved_status").text("Saved");
+            }
+        });
 }
 </script>
 
