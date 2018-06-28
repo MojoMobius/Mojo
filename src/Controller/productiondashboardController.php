@@ -496,6 +496,7 @@ class productiondashboardController extends AppController {
                         } else {
                             $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
                         }
+						
                     }
                     $first_head_result[] = $first_head;
                 }
@@ -763,5 +764,18 @@ class productiondashboardController extends AppController {
         echo 'updated';
         exit;
     }
+	
+    public function ajaxsetting() {
+		$connection = ConnectionManager::get('default');
+        $session = $this->request->session();
+        $user = $session->read("user_id");
+        $ProjectId = $session->read("ProjectId");
+		  $configquery = $connectiond2k->execute("SELECT Id FROM DashboardModuleconfig where Userid='".$user."'")->fetchAll('assoc');
+           if(count($configquery) > 0){
+		$UpdateQryStatus = "update DashboardModuleconfig set  TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
+		   }
+        
+        
+	}
 
 }
