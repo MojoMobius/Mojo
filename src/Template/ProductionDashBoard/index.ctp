@@ -278,11 +278,15 @@ if (count($Chartreports) >= 0) {
                         <span class="slider round"></span>
                     </label>
                 </div>
+                <div>
+                    <span id="saved_status"></span>
+                </div>
+
             </div>
             <div class="modal-footer">
-               <span id="saved_status"></span>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="Ajaxsetting();">Save</button>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="Ajaxsetting();">Save</button>
 
             </div>
         </div>
@@ -542,7 +546,7 @@ echo $this->Form->end();
                     } else {
                         $("#err_linechartContainer").show();
                     }
-                }else {
+                } else {
                     $("#parent_linechartContainer").hide();
                 }
 
@@ -555,20 +559,20 @@ echo $this->Form->end();
                     } else {
                         $("#err_errorpiechartContainer").show();
                     }
-                }else {
-                   $("#parent_errorpiechartContainer").hide();
+                } else {
+                    $("#parent_errorpiechartContainer").hide();
                 }
 
 
                 //bar chart 
                 if (results.barchart.status > 0) {
                     if (results.barchart.total > 0) {
-                         $("#parent_errorbarchartContainer").show();
+                        $("#parent_errorbarchartContainer").show();
                         Errorbarchart(results.barchart.chartres);
                     } else {
                         $("#err_errorbarchartContainer").show();
                     }
-                }else {
+                } else {
                     $("#parent_errorbarchartContainer").hide();
                 }
 
@@ -580,8 +584,8 @@ echo $this->Form->end();
                     } else {
                         $("#err_errorcampaignlevelContainer").show();
                     }
-                }else {
-                     $("#parent_errorcampaignlevelContainer").hide();
+                } else {
+                    $("#parent_errorcampaignlevelContainer").hide();
                 }
 
 
@@ -764,43 +768,50 @@ echo $this->Form->end();
         width: 50%;
         z-index: 1002;
     }
+    #saved_status{
+        color: green;
+        font-size: 16px;
+        padding-left: 97px;
+    }
 
 
 </style>
 <script>
-function Ajaxsetting(){
-	var overall = 0;
-	var error_dist = 0;
-	var issue = 0;
-	var rft = 0;
-if ($('#overall').is(":checked"))
-{
-	 var overall = 1;
-}
-if ($('#error_dist').is(":checked"))
-{
-	 var error_dist = 1;
-}
-if ($('#issue').is(":checked"))
-{
-	 var issue = 1;
-}
+    function Ajaxsetting() {
+        var overall = 0;
+        var error_dist = 0;
+        var issue = 0;
+        var rft = 0;
+        if ($('#overall').is(":checked"))
+        {
+            var overall = 1;
+        }
+        if ($('#error_dist').is(":checked"))
+        {
+            var error_dist = 1;
+        }
+        if ($('#issue').is(":checked"))
+        {
+            var issue = 1;
+        }
 
-if ($('#rft').is(":checked"))
-{
-	 var rft = 1;
-} 
+        if ($('#rft').is(":checked"))
+        {
+            var rft = 1;
+        }
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'ajaxsetting')); ?>",
-            data: ({overall: overall, error_dist: error_dist, issue: issue,rft: rft}),
+            data: ({overall: overall, error_dist: error_dist, issue: issue, rft: rft}),
             dataType: 'text',
             async: false,
             success: function (result) {
+                $("#saved_status").show();
                 $("#saved_status").text("Saved");
+                $("#saved_status").fadeOut(3000);
             }
         });
-}
+    }
 
 </script>
 

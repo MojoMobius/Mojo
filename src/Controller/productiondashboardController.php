@@ -51,13 +51,14 @@ class productiondashboardController extends AppController {
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
 
-        $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='" . $user . "'")->fetchAll('assoc');
+        $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='" . $user_id . "'")->fetchAll('assoc');
 
         $this->set('setting_overall', $configquery[0]['Overall']);
         $this->set('setting_error', $configquery[0]['Errordistribution']);
         $this->set('setting_issue', $configquery[0]['Issues']);
         $this->set('setting_rft', $configquery[0]['Rightfirst']);
 
+        
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
@@ -348,6 +349,8 @@ class productiondashboardController extends AppController {
 
     public function getdashboardchartreports() {
         $RegionId = 1011;
+        $user_id = $this->request->session()->read('user_id');
+         $connection = ConnectionManager::get('default');
         $ProjectId = $this->request->data['ProjectId'];
         $ProjectId = 3346;
         if (!empty($this->request->data('month_from'))) {
@@ -360,11 +363,13 @@ class productiondashboardController extends AppController {
         $batch_from = '03-2018';
         $batch_to = '06-2018';
 
-        $userconfiglist = array();
-        $linechart = 0;
-        $piechart = 1;
-        $barchart = 0;
-        $campaigntab = 1;
+      
+         $configquery = $connection->execute("SELECT * FROM DashboardModuleconfig where Userid='" . $user_id . "'")->fetchAll('assoc');
+
+        $linechart = $configquery[0]['Overall'];
+        $piechart = $configquery[0]['Errordistribution'];
+        $barchart = $configquery[0]['Issues'];
+        $campaigntab = $configquery[0]['Rightfirst'];
 
 
         // Line chart 
