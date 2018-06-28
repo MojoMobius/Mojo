@@ -163,10 +163,9 @@ if (count($Chartreports) >= 0) {
                     <div class="col-md-12">
                         <div class="col-md-6">
 
-                            <div class="col-md-12 panel" style="height: 410px;width: 100%;display:none;" id="chart-results">
+                            <div class="col-md-12 panel" style="height: 410px;width: 100%;" id="chart-results">
                                 <b>Over all</b> 
-                                <div id="chartContainer"></div>
-
+                                <div id="linechartContainer"></div>
 
                             </div>
 
@@ -180,8 +179,8 @@ if (count($Chartreports) >= 0) {
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="col-md-12 panel" style="height: 410px;width: 100%;" id="">
+                        <div class="col-md-12">
+                            <div class="col-md-12 panel" style="height: 700px;width: 100%;" id="">
                                 <b>Error Distribution</b> 
                                 <div id="errorbarchartContainer"></div>
 
@@ -312,9 +311,9 @@ echo $this->Form->end();
 
 <script>
 
-    function Chartreports(chartres) {
+    function LineChartreports(chartres) {
 
-        var chart = new CanvasJS.Chart("chartContainer", {
+        var chart = new CanvasJS.Chart("linechartContainer", {
             title: {
                 text: ""
             },
@@ -331,7 +330,7 @@ echo $this->Form->end();
     }
 
 
-    function Errorchartreports(chartres) {
+    function pieErrorchartreports(chartres) {
 
         var chart = new CanvasJS.Chart("errorchartContainer", {
             theme: "light2",
@@ -367,8 +366,6 @@ echo $this->Form->end();
 
     function Errorbarchart(chartres) {
 
-        console.log(chartres);debugger;
-
         var chart = new CanvasJS.Chart("errorbarchartContainer", {
             animationEnabled: true,
             theme: "light2",
@@ -378,9 +375,9 @@ echo $this->Form->end();
             legend: {
                 dockInsidePlotArea: true,
                 verticalAlign: "top",
-                horizontalAlign: "top"
+                horizontalAlign: "right"
             },
-            dataPointWidth: 20,
+            dataPointWidth: 5,
             data:chartres
 //            data: [{
 //                    type: "column",
@@ -530,19 +527,35 @@ echo $this->Form->end();
         var txt_td = "";
 
 
-        $.ajax({
+    $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'getErrorbarchartreports')); ?>",
+            url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'getdashboardchartreports')); ?>",
             data: ({ProjectId: ProjectId, month_from: month_from, month_to: month_to}),
             dataType: 'text',
             async: false,
             success: function (result) {
 
                 var results = JSON.parse(result);
-                if (results.total > 0) {
-                    Errorbarchart(results.chartres);
-
+               
+                // line chart
+                if (results.linechart.total > 0) {
+                    LineChartreports(results.linechart.chartres);
                 }
+                
+                // pie-chart
+                if (results.piechart.total > 0) {
+                    pieErrorchartreports(results.piechart.chartres);
+                }
+                
+                 //bar chart 
+                if (results.barchart.total > 0) {
+                    Errorbarchart(results.barchart.chartres);
+                }
+                
+                
+//                console.log(results.linechart.total);debugger;
+                
+                
                 $(".validationloader").hide();
                 $(".container-fluid").css("opacity", '');
             }
@@ -550,41 +563,7 @@ echo $this->Form->end();
 
 
         return 1;
-
-
-
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'getChartreports')); ?>",
-            data: ({ProjectId: ProjectId, month_from: month_from, month_to: month_to}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-
-                var results = JSON.parse(result);
-                if (results.total > 0) {
-
-                    if (results.getbatchavgres.length > 0) {
-                        $("#chart-results").show();
-                        $("#no-results-found").hide();
-                        Chartreports(results.chartres);
-
-                    }
-
-                } else {
-//                    $("#chart-results").hide();
-                    $("#no-results-found").show();
-                    $("#left-pane").show();
-                }
-                $(".validationloader").hide();
-                $(".container-fluid").css("opacity", '');
-            }
-        });
-
-
-
-
-
+        
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller' => 'productiondashboard', 'action' => 'getErrorchartreports')); ?>",
