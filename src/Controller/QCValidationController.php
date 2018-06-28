@@ -154,6 +154,7 @@ class QCValidationController extends AppController {
                                     $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET StatusId=" . $next_status_id . ",QCUSerID=" . $user_id . ",QCStartDate='" . date('Y-m-d H:i:s') . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE ProductionEntityID=" . $val['ProductionEntity'] . " AND Module_Id=" . $moduleId);
                                     $productionjob[0]['StatusId'] = $next_status_id;
                                     $productionjob[0]['StatusId'] = 'QC In Progress';
+                                    $productionjob[0]['UserId'] = $user_id;
                                 }
                             }
                             $productionjobNew = $productionjob[0];
@@ -184,6 +185,7 @@ class QCValidationController extends AppController {
                             $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET QcStatusId = 4,QCUSerID=" . $user_id . ",ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id,QCStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntityID=" . $productionjob[0]['ProductionEntity'] . " AND Module_Id=" . $moduleId);
                             $productionjob[0]['StatusId'] = $Error_status;
                             $productionjob[0]['StatusId'] = 'QC Error In Progress';
+                            $productionjob[0]['UserId'] = $user_id;
                         }
                         $productionjobNew = $productionjob[0];
                         $this->set('productionjob', $productionjob[0]);
@@ -1051,7 +1053,7 @@ class QCValidationController extends AppController {
                                     $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $next_status_id . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $val['ProductionEntity']);
                                     $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET StatusId=" . $next_status_id . ",QCUSerID=" . $user_id . ",QCStartDate='" . date('Y-m-d H:i:s') . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE ProductionEntityID=" . $val['ProductionEntity'] . " AND Module_Id=" . $moduleId);
                                     $productionjob[0]['StatusId'] = $next_status_id;
-									
+                                    $productionjob[0]['UserId'] = $user_id;
                                     $productionjob[0]['StatusId'] = 'QC In Progress';
                                 }
                             }
@@ -1086,6 +1088,7 @@ class QCValidationController extends AppController {
                                     $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $next_status_id_rw . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $val['ProductionEntity']);
                                     $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET StatusId=" . $next_status_id_rw . ",QCUSerID=" . $user_id . ",QCStartDate='" . date('Y-m-d H:i:s') . "',ModifiedDate='" . date('Y-m-d H:i:s') . "',ModifiedBy=$user_id WHERE ProductionEntityID=" . $val['ProductionEntity'] . " AND Module_Id=" . $moduleId);
                                     $Reworkjob[0]['StatusId'] = $next_status_id_rw;
+                                    $Reworkjob[0]['UserId'] = $user_id;
                                     $Reworkjob[0]['StatusId'] = 'QC Rework In Progress';
                         }
                             }
@@ -1431,6 +1434,17 @@ class QCValidationController extends AppController {
                             $submitType = 'completed';
                         
                     }
+					else{
+						 $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][2][1];
+                    $QcStatusId = 0;
+                    $submitType = 'completed';
+					///qc complete////
+                    $QCcompletequery = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric where InputEntityId='".$InputEntityId."' and Qc_Batch_Id!=''")->fetchAll('assoc');
+                    $QCBatchId=$QCcompletequery[0]['Qc_Batch_Id'];  
+//echo "UPDATE MV_QC_BatchMaster SET QCCompletedCount = QCCompletedCount + 1 where Id='".$QCBatchId."'";					
+                    $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount = QCCompletedCount + 1 where Id='".$QCBatchId."'");
+                    /////end/////////
+					}
                 } else {
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][2][1];
                     $QcStatusId = 0;
@@ -2801,7 +2815,7 @@ function ajaxgetafterreferenceurl() {
     }
 
     function ajaxquerydelete() {
-
+        
         $connection = ConnectionManager::get('default');
         $TLresult = $connection->execute("Select * FROM MV_QC_Comments where StatusId = 3 and InputEntityId = " . $_POST['InputEntityId'] . " and AttributeMasterId=" . $_POST['AttributeMasterId'] . " and ProjectAttributeMasterId=" . $_POST['ProjectAttributeMasterId'] . " and SequenceNumber=" . $_POST['SequenceNumber'] . " and UserId=" . $_POST['UserId'] . "")->fetchAll('assoc');
         $Errorresult = $connection->execute("Select * FROM MV_QC_Comments where StatusId = 1 and InputEntityId = " . $_POST['InputEntityId'] . " and AttributeMasterId=" . $_POST['AttributeMasterId'] . " and ProjectAttributeMasterId=" . $_POST['ProjectAttributeMasterId'] . " and SequenceNumber=" . $_POST['SequenceNumber'] . " and UserId=" . $_POST['UserId'] . "")->fetchAll('assoc');
