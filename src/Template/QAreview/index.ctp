@@ -148,7 +148,11 @@ if (count($SelectQCBatch) > 0) {
                                     <?php
                                     $i = 0;
                                     foreach ($SelectQCBatch as $inputVal => $input):
-                                        
+                                         if($input['popup_count'] > 1 ){
+                                            $tr_toggle='data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"';
+                                        }else{
+                                             $tr_toggle='';
+                                        }
                                         $status_revert="style='display:none;'";
                                         $status_rework="style='display:none;'";
                                         if(!empty($input['BatchRejectionStatus'])){
@@ -163,15 +167,15 @@ if (count($SelectQCBatch) > 0) {
                                     <tr   >
                                     <!--<tr >-->
 					<td style="display:none"><?php echo $input['Id'];?></td>  
-					<td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['CreatedDate']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $Projects[$input['ProjectId']]; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['BatchName']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['StatusId']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['EntityCount']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['SampleCount']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['QCCompletedCount']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['QCpending']; ?></td>
-                                        <td data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"><?php echo $input['aoq']; ?></td>
+					<td <?php echo $tr_toggle; ?> ><?php echo $input['CreatedDate']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $Projects[$input['ProjectId']]; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['BatchName']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['StatusId']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['EntityCount']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['SampleCount']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['QCCompletedCount']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['QCpending']; ?></td>
+                                        <td <?php echo $tr_toggle; ?>><?php echo $input['aoq']; ?></td>
                                         <td class="no-cursor">
                                             <span id="status-revert<?php echo $input['Id'];?>" <?php echo $status_revert;?>><?php echo  $this->Form->button('Revert', array('id' => 'rejectstatus', 'name' => 'rejectstatus', 'value' => 'rejectstatus', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'RejectStatus('.$input['Id'].',0);', 'type' => 'button')); ?>
                                             </span>

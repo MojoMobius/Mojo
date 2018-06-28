@@ -875,9 +875,12 @@ width:100%;
 										}
 										else{
                                          ?>
-										<div class='qcComments_accept' id='QcCommentsAccept_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="qcCommentsAccept('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $thisseq;?>');">  </div>
-                                        <div class='qcComments_reject' id='QcCommentsReject_<?php echo $valprodFields['AttributeMasterId']."_".$thisseq; ?>' style="cursor: pointer;" value='' onclick="QcCommentsReject('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>','<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', <?php echo "'".$errorcat."'";?>, <?php echo "'".$errorsub."'";?>,'<?php echo $thisseq;?>');">  </div>
-                             	         <div class="qcstatusinfo<?php echo $valprodFields['AttributeMasterId'];?>"> <?php echo $StatusInfo;?></div>
+                                          
+										<div class='qcComments_accept' id='QcCommentsAccept_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer;" value='' onclick="qcCommentsAccept('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $tempSq;?>');">  </div>
+                                        <div class='qcComments_reject' id='QcCommentsReject_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer;" value='' onclick="QcCommentsReject('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>','<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', <?php echo "'".$errorcat."'";?>, <?php echo "'".$errorsub."'";?>,'<?php echo $tempSq;?>');">  </div>
+ <div id="CommentStatus_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>">                             	        
+ <div class="qcstatusinfo<?php echo $valprodFields['AttributeMasterId'].$tempSq;?>"> <?php echo $StatusInfo;?></div>
+                                         </div>
 										<?php	
 										}
                                          ?>
@@ -2500,11 +2503,13 @@ $('.more').each(function() {
         }
         
         // load next attribute
-        function loadMultiField(action, attributeMasterId, totalseq) {
+        function loadMultiField(action, attributeMasterId, totalseq ) {
+           
+           
+
             var currentSeq = $(".ShowingSeqDiv_" + attributeMasterId + "").val();
             var nex = parseInt(currentSeq) + 1;
             var prev = parseInt(currentSeq) - 1;
-
             if (currentSeq == totalseq){
                 $('.i_next_' + attributeMasterId).css('color', 'grey');
                 }
@@ -2520,6 +2525,8 @@ $('.more').each(function() {
                 $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
                 }
 
+
+$('#qcstatusinfo_'+attributeMasterId+'_'+currentSeq).display('none');
             if (action == 'i_next' && totalseq >= nex) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
@@ -2535,6 +2542,7 @@ $('.more').each(function() {
                 else
                     $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
 
+ $('#qcstatusinfo_'+attributeMasterId+'_'+nex).display('block');
             }
 
             if (action == 'i_previous' && totalseq >= prev && prev > 0) {
@@ -2552,6 +2560,7 @@ $('.more').each(function() {
                     $('.i_previous_' + attributeMasterId).css('color', 'grey');
                 else
                     $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
+ $('#qcstatusinfo_'+attributeMasterId+'_'+prev).display('block');
             }
         }
         
@@ -4486,7 +4495,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
         $('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['Disposition']; ?>_'+seq).removeAttr("style", "border-color: red;");
 		
         var result = new Array();
-		$('.qcstatusinfo'+AttributeMasterId).text('Accepted');     
+		$('.qcstatusinfo'+AttributeMasterId+seq).text('Accepted');     
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxupdateacceptstatus'));?>",
@@ -4567,7 +4576,7 @@ function valicateQcrebutal(){
 				
 		    var AttributeId = $('#AttributeId').val();
 			var AttributeMasterId = $("#AttributeId").val();
-          $('.qcstatusinfo'+AttributeId).text('Rejected'); 
+          $('.qcstatusinfo'+AttributeId+seq).text('Rejected'); 
 		var SequenceNumber = $('#seq').val();		  
         var commentstype = $('#QCRebuteComments').val();	
 		//alert(commentstype);
@@ -4576,7 +4585,7 @@ function valicateQcrebutal(){
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxupdaterejectstatus'));?>",
-            data: ({Id: Id, comment: commentstype}),
+            data: ({Id: Id, comment: commentstype,SequenceNumber:SequenceNumber}),
             dataType: 'text',
             async: false,
             success: function (result) {

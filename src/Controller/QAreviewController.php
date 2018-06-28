@@ -153,8 +153,14 @@ class QAreviewController extends AppController {
 
             $QA_data = array();
             foreach ($SelectQCBatch as $input):
-
-                    
+                /////iteration count start//////
+                 $Selectiteration = $connection->execute("select * from MV_QC_BatchIteration where QCBatchId='" . $input['Id'] . "'")->fetchAll('assoc');
+            $IterationCount=0;
+            if(!empty($Selectiteration)){
+                 $IterationCount = count($Selectiteration);           
+            }
+              //$IterationCount=2;  
+             /////iteration count end//////
                 /////////////AOQ start/////////////////
 
             
@@ -263,6 +269,7 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
                 $QA_data[$i]['aoq'] = $accuracy_percentage;
                 $QA_data[$i]['BatchRejectionStatus'] = $input['BatchRejectionStatus'];
                 $QA_data[$i]['Id'] = $input['Id'];
+                $QA_data[$i]['popup_count'] = $IterationCount;
 
 
                 $i++;
@@ -378,9 +385,9 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
         $qc_datahead = "<tr>";
         for ($r = 0; $r <= $totRow; $r++) {
             if ($r == 0) {
-                $title = "";
+                $title = "Attempt #";
             } else {
-                $title = "Iteration-" . $r;
+                $title =  $r;
             }
             $qc_datahead.='<td style="border: 1px solid black;">' . $title . '</td>';
         }
