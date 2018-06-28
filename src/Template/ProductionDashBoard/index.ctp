@@ -1,12 +1,96 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" href="/webroot/css/font-awesome.min.css">-->
 <?php
-
 use Cake\Routing\Router;
 ?>
+<style>
+.setting-popup .widget-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 0px;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(231, 231, 231);
+	margin-bottom:10px;
+    }
+	.widget-item > span {
+    font-weight: bold;
+    color: #666;
+    margin-right: 20px;
+}
+.setting-popup .widget-item .switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+    margin-bottom: 0;
+}
+.setting-popup.widget-item label {
+    color: #555555;
+    font-size: 12pt;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+    margin-bottom: 0;
+}
+
+.switch input {display:none;}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 21px;
+  width: 21px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 28px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.setting-ico i {font-size: 20pt; cursor: pointer;color:#6b6d70;}
+.setting-ico i:hover {color: #4397e6;}
+</style>
 <div class="container-fluid">
     <div class=" jumbotron formcontent">
-        <h4>Quality Dashboard</h4>
+         <div class="col-md-12"><div class="col-md-11">  <h4>Quality Dashboard</h4></div> <div class="col-md-1 setting-ico"> <i class="fa fa-cog pull-right" data-toggle="modal" data-target="#widget-modal"></i></div></div>
         <?php echo $this->Form->create('', array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
-
+ <div class="col-md-12"> 
         <div class="col-md-3">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Project</label>
@@ -43,7 +127,7 @@ use Cake\Routing\Router;
 
             </div>
         </div>
-
+</div>
 
 
         <div class="form-group" style="text-align:center;">
@@ -133,6 +217,54 @@ if (count($Chartreports) >= 0) {
         </div>
     </div>
 </div>
+       <!-- Widget Modal -->
+        <div class="modal fade setting-popup" id="widget-modal" aria-hidden="true" aria-labelledby="widget-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title" id="exampleModalTitle">Widget Settings</h4>
+            </div>
+            <div class="modal-body">
+                <div class="widget-item" >
+                  <span>Over All</span>
+                  <label class="switch">
+                      <input type="checkbox" checked>
+                      <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="widget-item" >
+                    <span>Error Distribution</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                      </label>
+                  </div>
+                  <div class="widget-item" >
+                      <span>Issues</span>
+                      <label class="switch">
+                          <input type="checkbox" checked>
+                          <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="widget-item">
+                      <span>Right First Time</span>
+                      <label class="switch">
+                          <input type="checkbox" checked>
+                          <span class="slider round"></span>
+                        </label>
+                    </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Widget Modal -->
 
 <?php
 }
@@ -646,6 +778,7 @@ echo $this->Form->end();
         width: 50%;
         z-index: 1002;
     }
+
 
 </style>
 
