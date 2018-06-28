@@ -178,7 +178,7 @@ if (count($Chartreports) >= 0) {
         <div id="vertical">
             <div id="top-pane">
 
-                <div class="row" id="monitor-list">
+                <div class="row" id="dashbhord-report" style="display:none">
                     <div class="col-md-12">
                         <div class="col-md-6" id="parent_linechartContainer">
 
@@ -217,7 +217,7 @@ if (count($Chartreports) >= 0) {
                         </div>
 
                         <div class="col-md-12" id="parent_errorcampaignlevelContainer">
-                            <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 400px;">
+                            <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 400px;margin-top:10px;">
                                 <b>Right First Time - Campaign Level</b>
                                 <div id="errorcampaignlevelContainer" class="bs-example">
 
@@ -232,21 +232,7 @@ if (count($Chartreports) >= 0) {
 
                 </div>
 
-                <!--                <div id="horizontal" style="height: 100%; width: 100%;">
-                
-                
-                                    <div id="left-pane" class="pa-lef-10" style="display: none;">
-                                        <div class="pane-content" >
-                                            <div id="no-results-found" style="display:none;" >
-                                                No Results found
-                                            </div>
-                
-                                            
-                
-                
-                                        </div>
-                                    </div>
-                                </div>-->
+
             </div>
         </div>
     </div>
@@ -263,11 +249,11 @@ if (count($Chartreports) >= 0) {
             </div>
             <div class="modal-body">
                 <div class="widget-item" >
- <span>Over All</span>
-                  <label class="switch">
-                      <input name="overall" id="overall" value="1" type="checkbox" <?php if($setting_overall > 0){ echo "checked"; } ?>>
-                      <span class="slider round"></span>
-                 
+                    <span>Over All</span>
+                    <label class="switch">
+                        <input name="overall" id="overall" value="1" type="checkbox" <?php if($setting_overall > 0){ echo "checked"; } ?>>
+                        <span class="slider round"></span>
+
 
                     </label>
                 </div>
@@ -276,27 +262,27 @@ if (count($Chartreports) >= 0) {
                     <label class="switch">
                         <input type="checkbox"  name="error_dist" id="error_dist" value="1" <?php if($setting_error > 0){ echo "checked"; } ?>>
                         <span class="slider round"></span>
- </label>
-                  </div>
-                  <div class="widget-item" >
-                      <span>Issues</span>
-                      <label class="switch">
-                          <input type="checkbox"  name="issue" id="issue" value="1" <?php if($setting_issue > 0){ echo "checked"; } ?> >
-                          <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="widget-item">
-                      <span>Right First Time</span>
-                      <label class="switch">
-                          <input type="checkbox"  name="rft" id="rft" value="1" <?php if($setting_rft > 0){ echo "checked"; } ?> >
-                          <span class="slider round"></span>
-                        </label>
-                    </div>
+                    </label>
+                </div>
+                <div class="widget-item" >
+                    <span>Issues</span>
+                    <label class="switch">
+                        <input type="checkbox"  name="issue" id="issue" value="1" <?php if($setting_issue > 0){ echo "checked"; } ?> >
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="widget-item">
+                    <span>Right First Time</span>
+                    <label class="switch">
+                        <input type="checkbox"  name="rft" id="rft" value="1" <?php if($setting_rft > 0){ echo "checked"; } ?> >
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="Ajaxsetting();">Save</button>
-              
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="Ajaxsetting();">Save</button>
+
             </div>
         </div>
     </div>
@@ -545,33 +531,58 @@ echo $this->Form->end();
             success: function (result) {
 
                 var results = JSON.parse(result);
+                $("#dashbhord-report").show();
 
                 // line chart
-                if (results.linechart.total > 0) {
-                    LineChartreports(results.linechart.chartres);
-                } else {
-                    $("#err_linechartContainer").show();
+                if (results.linechart.status > 0) {
+                    if (results.linechart.total > 0) {
+                        $("#parent_linechartContainer").show();
+                        LineChartreports(results.linechart.chartres);
+                    } else {
+                        $("#err_linechartContainer").show();
+                    }
+                }else {
+                    $("#parent_linechartContainer").hide();
                 }
+
 
                 // pie-chart
-                if (results.piechart.total > 0) {
-                    pieErrorchartreports(results.piechart.chartres);
-                } else {
-                    $("#err_errorpiechartContainer").show();
+                if (results.piechart.status > 0) {
+                    if (results.piechart.total > 0) {
+                        $("#parent_errorpiechartContainer").show();
+                        pieErrorchartreports(results.piechart.chartres);
+                    } else {
+                        $("#err_errorpiechartContainer").show();
+                    }
+                }else {
+                   $("#parent_errorpiechartContainer").hide();
                 }
+
 
                 //bar chart 
-                if (results.barchart.total > 0) {
-                    Errorbarchart(results.barchart.chartres);
-                } else {
-                    $("#err_errorbarchartContainer").show();
+                if (results.barchart.status > 0) {
+                    if (results.barchart.total > 0) {
+                         $("#parent_errorbarchartContainer").show();
+                        Errorbarchart(results.barchart.chartres);
+                    } else {
+                        $("#err_errorbarchartContainer").show();
+                    }
+                }else {
+                    $("#parent_errorbarchartContainer").hide();
                 }
 
-                if (results.campaigntab.total > 0) {
-                    $("#errorcampaignlevelContainer").html(results.campaigntab.table);
-                } else {
-                    $("#err_errorcampaignlevelContainer").show();
+                // campaign table
+                if (results.campaigntab.status > 0) {
+                    if (results.campaigntab.total > 0) {
+                        $("#parent_errorcampaignlevelContainer").show();
+                        $("#errorcampaignlevelContainer").html(results.campaigntab.table);
+                    } else {
+                        $("#err_errorcampaignlevelContainer").show();
+                    }
+                }else {
+                     $("#parent_errorcampaignlevelContainer").hide();
                 }
+
 
                 $(".validationloader").hide();
                 $(".container-fluid").css("opacity", '');
@@ -756,11 +767,11 @@ echo $this->Form->end();
 
 </style>
 <script>
-function Ajaxsetting(){
-	
-		//document.getElementById('widget-modal').style.display = 'none';
-		//$("#widget-modal").modal('toggle');
-		//$(".modal").modal('toggle');
-}
+    function Ajaxsetting() {
+
+        //document.getElementById('widget-modal').style.display = 'none';
+        //$("#widget-modal").modal('toggle');
+        //$(".modal").modal('toggle');
+    }
 </script>
 

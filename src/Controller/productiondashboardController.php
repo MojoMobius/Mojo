@@ -305,8 +305,6 @@ class productiondashboardController extends AppController {
         $Chartreports['status'] = 1;
         return $Chartreports;
 
-//        echo json_encode($Chartreports);
-//        exit;
     }
 
     function ajaxgetcampaign($ProjectId) {
@@ -356,33 +354,54 @@ class productiondashboardController extends AppController {
         $batch_from = '03-2018';
         $batch_to = '06-2018';
 
-        // campaign table 
-        $result['campaigntab'] = $this->getCampaignerrreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        $userconfiglist = array();
+        $linechart = 0;
+        $piechart = 1;
+        $barchart = 0;
+        $campaigntab = 1;
+
 
         // Line chart 
-        $result['linechart'] = $this->getChartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        if (!empty($linechart)) {
+            $result['linechart'] = $this->getChartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        } else {
+            $result['linechart'] = array("status" => 0);
+        }
 
         // Pie-chart 
-        $result['piechart'] = $this->getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
-
+        if (!empty($piechart)) {
+            $result['piechart'] = $this->getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        } else {
+            $result['piechart'] = array("status" => 0);
+        }
 
         // barchart
-        $result['barchart'] = $this->getErrorbarchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        if (!empty($barchart)) {
+            $result['barchart'] = $this->getErrorbarchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        } else {
+            $result['barchart'] = array("status" => 0);
+        }
 
-
+        // campaign table 
+        if (!empty($campaigntab)) {
+            $result['campaigntab'] = $this->getCampaignerrreports($batch_from, $batch_to, $ProjectId, $RegionId);
+        } else {
+            $result['campaigntab'] = array("status" => 0);
+        }
 
         echo json_encode($result);
         exit;
     }
 
-    public function pr($arr,$sk=1) {
-        
-        echo "<pre>";print_r($arr);
-        if(!empty($sk)){
+    public function pr($arr, $sk = 1) {
+
+        echo "<pre>";
+        print_r($arr);
+        if (!empty($sk)) {
             exit;
         }
     }
-    
+
     public function getCampaignerrreports($batch_from, $batch_to, $ProjectId, $RegionId) {
 
         $connection = ConnectionManager::get('default');
@@ -486,12 +505,12 @@ class productiondashboardController extends AppController {
             foreach ($arrtlist as $key => $value) {
                 foreach ($value as $val) {
                     $select_fields_sel = "'$val'";
-                    
+
                     // get monthly reports 
-                                        
+
                     $queriesFieldFind = $connection->execute("select name as select_fields_name FROM sys.columns WHERE name in (N$select_fields_sel) AND object_id = OBJECT_ID(N'Report_ProductionEntityMaster_" . $dt . "')");
                     $queriesFieldFind = $queriesFieldFind->fetchAll('assoc');
-                    
+
 //$this->pr($queriesFieldFind);
 
                     $reportListfinal = array();
@@ -505,16 +524,16 @@ class productiondashboardController extends AppController {
 //                        $reportList = $connection->execute("Select count(" . $select_fields_exists_group . ") as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_" . $dt . " where $conditions and ProjectId ='" . $ProjectId . "'  and DependencyTypeMasterId=20  group by " . $select_fields_exists_group . "");
                         $reportList = $connection->execute("Select count($select_fields_exists_group) as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_$dt where $conditions and ProjectId ='$ProjectId'  group by  $select_fields_exists_group ");
                         $reportList = $reportList->fetchAll('assoc');
-                    
-                        
+
+
                         foreach ($reportList as $keys => $vals) {
                             foreach ($ProductionFields as $item) {
                                 $SubGroupName = $contentArr['AttributeSubGroupMaster'][$item['MainGroupId']][$key];
-                          
+
                                 if (($vals[$select_fields_ex['select_fields_name']] == '') || ($vals[$select_fields_ex['select_fields_name']] == null)) {
 //                                    $this->pr($item,0);
 //                                    $this->pr($select_fields_ex['select_fields_name']);
-                                    
+
                                     if ($item['AttributeMasterId'] == $select_fields_ex['select_fields_name'])
                                         $result[$SubGroupName][$item['DisplayAttributeName']]['X'] = $vals['cnt'];
                                 }
@@ -539,7 +558,7 @@ class productiondashboardController extends AppController {
                     }
                 }
             }
-     
+
 
             $table = "<table class='table table-striped table-center'>";
             $table .="<thead><tr>
@@ -578,6 +597,7 @@ class productiondashboardController extends AppController {
 
             $results['table'] = $table;
             $results['total'] = count($result);
+            $results['status'] = 1;
 
             return $results;
 //            echo "<pre>";
@@ -709,7 +729,6 @@ class productiondashboardController extends AppController {
                         } else {
                             $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
                         }
-						
                     }
                     $first_head_result[] = $first_head;
                 }
@@ -718,7 +737,7 @@ class productiondashboardController extends AppController {
 
                 $Chartreports['chartres'] = $first_head_result;
                 $Chartreports['total'] = count($first_head_result);
-
+                $Chartreports['status'] = 1;
                 return $Chartreports;
             } catch (\Exception $e) {
                 $Chartreports['status'] = 1;
@@ -975,19 +994,17 @@ class productiondashboardController extends AppController {
         echo 'updated';
         exit;
     }
-	
+
     public function ajaxsetting() {
-		$connection = ConnectionManager::get('default');
+        $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
-		  $configquery = $connectiond2k->execute("SELECT Id FROM DashboardModuleconfig where Userid='".$user."'")->fetchAll('assoc');
-           if(count($configquery) > 0){
-		$UpdateQryStatus = "update DashboardModuleconfig set  TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
-		   }
-        
-        
-	}
+        $configquery = $connectiond2k->execute("SELECT Id FROM DashboardModuleconfig where Userid='" . $user . "'")->fetchAll('assoc');
+        if (count($configquery) > 0) {
+            $UpdateQryStatus = "update DashboardModuleconfig set  TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
+        }
+    }
 
     function combineBySubGroup($keysss) {
         $mainarr = array();
