@@ -249,7 +249,7 @@ class productiondashboardController extends AppController {
         }
     }
 
-    public function getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId){
+    public function getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId) {
 
         $Chartreports = array();
         $connection = ConnectionManager::get('default');
@@ -304,10 +304,9 @@ class productiondashboardController extends AppController {
         }
         $Chartreports['status'] = 1;
         return $Chartreports;
-        
+
 //        echo json_encode($Chartreports);
 //        exit;
-        
     }
 
     function ajaxgetcampaign($ProjectId) {
@@ -357,20 +356,234 @@ class productiondashboardController extends AppController {
         $batch_from = '03-2018';
         $batch_to = '06-2018';
 
+        // campaign table 
+        $result['campaigntab'] = $this->getCampaignerrreports($batch_from, $batch_to, $ProjectId, $RegionId);
+
         // Line chart 
         $result['linechart'] = $this->getChartreports($batch_from, $batch_to, $ProjectId, $RegionId);
-     
+
         // Pie-chart 
         $result['piechart'] = $this->getErrorchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
-        
-        
+
+
         // barchart
         $result['barchart'] = $this->getErrorbarchartreports($batch_from, $batch_to, $ProjectId, $RegionId);
-        
-        
+
+
 
         echo json_encode($result);
         exit;
+    }
+
+    public function pr($arr,$sk=1) {
+        
+        echo "<pre>";print_r($arr);
+        if(!empty($sk)){
+            exit;
+        }
+    }
+    
+    public function getCampaignerrreports($batch_from, $batch_to, $ProjectId, $RegionId) {
+
+        $connection = ConnectionManager::get('default');
+        if (!empty($ProjectId)) {
+
+            $ProductionStartDate = "";
+            $ProductionEndDate = "";
+//                $QueryDateFrom = $batch_from = '03-2018';
+//                $QueryDateTo = $batch_to = '06-2018';
+
+            $QueryDateFrom = $batch_from;
+            $QueryDateTo = $batch_to;
+
+            if (!empty($batch_from) && !empty($batch_to)) {
+                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
+                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_to));
+            } elseif (!empty($batch_from) && empty($batch_to)) {
+                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
+                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_from));
+            } elseif (empty($batch_from) && !empty($batch_to)) {
+                $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_to));
+                $ProductionEndDate = date("Y-m-d 23:59:59", strtotime("30-" . $batch_to));
+            }
+
+            $QueryDateFrom = $ProductionStartDate;
+            $QueryDateTo = $ProductionEndDate;
+            if ($QueryDateFrom != '' && $QueryDateTo != '') {
+                $months = $this->getmonthlist($QueryDateFrom, $QueryDateTo);
+            } elseif ($QueryDateFrom != '' && $QueryDateTo == '') {
+                $months = $this->getmonthlist($QueryDateFrom, $QueryDateFrom);
+            } elseif ($QueryDateFrom == '' && $QueryDateTo != '') {
+                $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
+            }
+
+
+            $contentArr = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+
+            $month = '6';
+            $year = '2018';
+
+            $dt = $month . '_' . $year;
+            $conditions = "month(ProductionStartDate) ='$month' AND year(ProductionStartDate) ='$year'";
+
+            $moduleId = $connection->execute("select ModuleId from ME_Module_Level_Config where modulegroup =1 and Project = $ProjectId")->fetchAll('assoc');
+
+            $moduleId = $moduleId[0]['ModuleId'];
+            $Regionid = $contentArr['RegionList'];
+            $Regionid = array_keys($Regionid);
+            $Regionid = $Regionid[0];
+            $ProductionFields = $contentArr['ModuleAttributes'][$Regionid][$moduleId]['production'];
+            $AttributeGroupMaster = $contentArr['AttributeGroupMasterDirect'];
+            $groupwisearray = array();
+            $subgroupwisearray = array();
+            foreach ($AttributeGroupMaster as $key => $value) {
+                //    $groupwisearray[] = $value;
+                $keys = array_map(function($v) use ($key, $emparr) {
+                    if ($v['MainGroupId'] == $key) {
+                        return $v;
+                    }
+                }, $ProductionFields);
+
+                $keys_sub = $this->combineBySubGroup($keys);
+                $groupwisearray[] = $keys_sub;
+            }
+            $n = 0;
+            $firstValue = array();
+            foreach ($AttributeGroupMaster as $key => $value) {
+                foreach ($groupwisearray[$key] as $keysub => $valuesSub) {
+                    $firstValue[$n] = $valuesSub[0];
+                    $n++;
+                }
+            }
+
+            $subattrList = array();
+            $finalarray = array();
+            $arrtlist = array();
+            foreach ($AttributeGroupMaster as $key => $val) {
+                $subattrList[] = $contentArr['AttributeSubGroupMaster'][$key];
+            }
+
+            $i = 0;
+            foreach ($subattrList as $key => $val) {
+                foreach ($val as $keys => $vals) {
+                    $finalarray[$keys] = $groupwisearray[$i][$keys];
+                }
+                $i++;
+            }
+
+
+            foreach ($finalarray as $key => $val) {
+                foreach ($val as $keys => $value) {
+                    $arrtlist[$key][] = $value['AttributeMasterId'];
+                }
+            }
+
+            $select_fields_sel = [];
+            $select_fields_exists = [];
+            $select_fields_exists_group = [];
+            $result = array();
+
+            foreach ($arrtlist as $key => $value) {
+                foreach ($value as $val) {
+                    $select_fields_sel = "'$val'";
+                    
+                    // get monthly reports 
+                                        
+                    $queriesFieldFind = $connection->execute("select name as select_fields_name FROM sys.columns WHERE name in (N$select_fields_sel) AND object_id = OBJECT_ID(N'Report_ProductionEntityMaster_" . $dt . "')");
+                    $queriesFieldFind = $queriesFieldFind->fetchAll('assoc');
+                    
+//$this->pr($queriesFieldFind);
+
+                    $reportListfinal = array();
+                    foreach ($queriesFieldFind as $select_fields_ex) {
+
+                        $vals_exist = '[' . $select_fields_ex['select_fields_name'] . ']';
+                        $select_fields_exists_group = '[' . $select_fields_ex['select_fields_name'] . ']';
+                        $select_fields_exists = "REPLACE(REPLACE(" . $vals_exist . ",CHAR(13),' '),CHAR(10),' ') as " . $vals_exist . "";
+
+                        $display_fields[] = $select_fields_ex['select_fields_name'];
+//                        $reportList = $connection->execute("Select count(" . $select_fields_exists_group . ") as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_" . $dt . " where $conditions and ProjectId ='" . $ProjectId . "'  and DependencyTypeMasterId=20  group by " . $select_fields_exists_group . "");
+                        $reportList = $connection->execute("Select count($select_fields_exists_group) as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_$dt where $conditions and ProjectId ='$ProjectId'  group by  $select_fields_exists_group ");
+                        $reportList = $reportList->fetchAll('assoc');
+                    
+                        
+                        foreach ($reportList as $keys => $vals) {
+                            foreach ($ProductionFields as $item) {
+                                $SubGroupName = $contentArr['AttributeSubGroupMaster'][$item['MainGroupId']][$key];
+                          
+                                if (($vals[$select_fields_ex['select_fields_name']] == '') || ($vals[$select_fields_ex['select_fields_name']] == null)) {
+//                                    $this->pr($item,0);
+//                                    $this->pr($select_fields_ex['select_fields_name']);
+                                    
+                                    if ($item['AttributeMasterId'] == $select_fields_ex['select_fields_name'])
+                                        $result[$SubGroupName][$item['DisplayAttributeName']]['X'] = $vals['cnt'];
+                                }
+                                if ($vals[$select_fields_ex['select_fields_name']] == 'A') {
+                                    if ($item['AttributeMasterId'] == $select_fields_ex['select_fields_name'])
+                                        $result[$SubGroupName][$item['DisplayAttributeName']]['A'] = $vals['cnt'];
+                                }
+                                if ($vals[$select_fields_ex['select_fields_name']] == 'D') {
+                                    if ($item['AttributeMasterId'] == $select_fields_ex['select_fields_name'])
+                                        $result[$SubGroupName][$item['DisplayAttributeName']]['D'] = $vals['cnt'];
+                                }
+                                if ($vals[$select_fields_ex['select_fields_name']] == 'M') {
+                                    if ($item['AttributeMasterId'] == $select_fields_ex['select_fields_name'])
+                                        $result[$SubGroupName][$item['DisplayAttributeName']]['M'] = $vals['cnt'];
+                                }
+                                if ($vals[$select_fields_ex['select_fields_name']] == 'V') {
+                                    if ($item['AttributeMasterId'] == $select_fields_ex['select_fields_name'])
+                                        $result[$SubGroupName][$item['DisplayAttributeName']]['V'] = $vals['cnt'];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+     
+
+            $table = "<table class='table table-striped table-center'>";
+            $table .="<thead><tr>
+                <th>Sub Group Name</th>
+                <th>Field Name</th>
+                <th>X</th>
+                <th>A</th>
+                <th>D</th>
+                <th>M</th>
+                <th>V</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>";
+            foreach ($result as $query => $value) {
+                $i = 0;
+                foreach ($value as $vals => $val) {
+                    $table .= '<tr>';
+                    if ($i == 0)
+                        $table .= '<td rowspan=' . count($value) . '>' . $query . '</td>';
+                    $Total = $val['X'] + $val['A'] + $val['D'] + $val['M'] + $val['V'];
+                    $table .= '<td>' . $vals . '</td>';
+                    $table .= '<td>' . $val['X'] . '</td>';
+                    $table .= '<td>' . $val['A'] . '</td>';
+                    $table .= '<td>' . $val['D'] . '</td>';
+                    $table .= '<td>' . $val['M'] . '</td>';
+                    $table .= '<td>' . $val['V'] . '</td>';
+                    $table .= '<td>' . $Total . '</td>';
+                    $table .= '</tr>';
+                    $i++;
+                }
+            }
+            $table .= "</tbody>
+    </table>";
+
+
+            $results['table'] = $table;
+            $results['total'] = count($result);
+
+            return $results;
+//            echo "<pre>";
+//            print_r($table);
+//            exit;
+        }
     }
 
     public function getErrorbarchartreports($batch_from, $batch_to, $ProjectId, $RegionId) {
@@ -507,7 +720,6 @@ class productiondashboardController extends AppController {
                 $Chartreports['total'] = count($first_head_result);
 
                 return $Chartreports;
-
             } catch (\Exception $e) {
                 $Chartreports['status'] = 1;
                 $Chartreports['total'] = 0;
@@ -523,7 +735,7 @@ class productiondashboardController extends AppController {
         if (isset($ProjectId)) {
 
             try {
-                
+
                 $sladefault = QareviewSLA;
                 $ProductionStartDate = "";
                 $ProductionEndDate = "";
@@ -598,7 +810,6 @@ class productiondashboardController extends AppController {
 
                 $Chartreports['status'] = 1;
                 return $Chartreports;
-
             } catch (\Exception $e) {
                 $Chartreports['status'] = 1;
                 $Chartreports['total'] = 0;
@@ -777,5 +988,14 @@ class productiondashboardController extends AppController {
         
         
 	}
+
+    function combineBySubGroup($keysss) {
+        $mainarr = array();
+        foreach ($keysss as $key => $value) {
+            if (!empty($value))
+                $mainarr[$value['SubGroupId']][] = $value;
+        }
+        return $mainarr;
+    }
 
 }
