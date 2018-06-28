@@ -96,7 +96,10 @@ class ADMVReportController extends AppController {
                         $select_fields_exists_group = '['.$select_fields_ex['select_fields_name'].']';
                         $select_fields_exists = "REPLACE(REPLACE(".$vals_exist.",CHAR(13),' '),CHAR(10),' ') as ".$vals_exist."";
                         $display_fields[] = $select_fields_ex['select_fields_name'];
-                           $reportList = $connection->execute("Select count(".$select_fields_exists_group.") as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_" . $dt . " where $conditions and ProjectId ='".$ProjectId."'  and DependencyTypeMasterId=20  group by ".$select_fields_exists_group."");
+					
+					$RefUrlID = $connection->execute("Select Id from MC_DependencyTypeMaster where Type = 'Disposition' AND ProjectId=".$ProjectId)->fetchAll('assoc');
+		
+                           $reportList = $connection->execute("Select count(".$select_fields_exists_group.") as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_" . $dt . " where $conditions and ProjectId ='".$ProjectId."'  and DependencyTypeMasterId='".$RefUrlID[0]['Id']."'  group by ".$select_fields_exists_group."");
                 $reportList = $reportList->fetchAll('assoc');
                $this->set('select_fields_exists_group', $select_fields_exists_group);
                
