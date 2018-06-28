@@ -9,7 +9,7 @@
 <script src="webroot/js/samples.js"></script>
 <script src="webroot/js/highlight/highlight.pack.js"></script>
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
-<link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"  href="webroot/css/font-awesome/css/font-awesome.min.css">
 <?php
 
 //pr($processinputdata); //exit;
