@@ -565,14 +565,22 @@ class productiondashboardController extends AppController {
 
                                 // get count info errror
                                 $Error_cnt_report = $connection->execute("SELECT count(Id) as count FROM MV_QC_Comments as mc  WHERE mc.ProjectId='$ProjectId' AND $check_Attributes AND $check_Inputentityids")->fetchAll('assoc');
-
-//                        $first_head['dataPoints'] = array(array("y" => $Error_cnt_report[0]['count'], "label" => date('F Y', strtotime($ProductionStartDate))));
-                                $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+                            if(!empty($Error_cnt_report[0]['count'])){
+                                    $count = intval($Error_cnt_report[0]['count']);
+//                                    $count = intval(97);
+                            }else{
+                                $count = 0;
+                            }
+                         
+                                $first_head['dataPoints'] = array(array("y" => $count, "label" => $xAxisname ));
+//                                $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+//                                $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
                             } else {
-                                $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+                              
+                                $first_head['dataPoints'][] = array("y" => 0, "label" => $xAxisname);
                             }
                         } else {
-                            $first_head['dataPoints'][] = array("y" => $atr_key, "label" => $xAxisname);
+                            $first_head['dataPoints'][] = array("y" => 0, "label" => $xAxisname);
                         }
                     }
                     $first_head_result[] = $first_head;
@@ -644,9 +652,9 @@ class productiondashboardController extends AppController {
                         $dataformatsla['label'] = $daytext;
                         $dataformatslares[] = $dataformatsla;
                         // firstpass
-//                        $dataformatfirstpass['y'] = intval($value['Firstpass']);
-//                        $dataformatfirstpass['label'] = $daytext;
-//                        $dataformatfirstpassres[] = $dataformatfirstpass;
+                        $dataformatfirstpass['y'] = intval($value['Firstpass']);
+                        $dataformatfirstpass['label'] = $daytext;
+                        $dataformatfirstpassres[] = $dataformatfirstpass;
 
                         $getbatchavgres[$key]['monthTxt'] = $daytext;
                         $getbatchavgres[$key]['FirstpassTxt'] = intval($value['Firstpass']) . $percentage;
@@ -659,16 +667,16 @@ class productiondashboardController extends AppController {
                 $dataformat[0]["showInLegend"] = true;
                 $dataformat[0]["dataPoints"] = $dataformataccuracyres;
 
-//                $dataformat[2]["type"] = "line";
-//                $dataformat[2]["showInLegend"] = true;
-//                $dataformat[2]["legendText"] = "First Pass";
-//                $dataformat[2]["dataPoints"] = $dataformatfirstpassres;
-
                 $dataformat[1]["type"] = "line";
                 $dataformat[1]["legendText"] = "SLA";
                 $dataformat[1]["showInLegend"] = true;
                 $dataformat[1]["dataPoints"] = $dataformatslares;
-
+                
+                $dataformat[2]["type"] = "line";
+                $dataformat[2]["showInLegend"] = true;
+                $dataformat[2]["legendText"] = "First Pass";
+                $dataformat[2]["dataPoints"] = $dataformatfirstpassres;
+                
                 $Chartreports['chartres'] = $dataformat;
                 $Chartreports['total'] = count($getbatchavgres);
 
