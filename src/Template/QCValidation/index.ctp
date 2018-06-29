@@ -879,7 +879,7 @@ width:100%;
 										<div class='qcComments_accept' id='QcCommentsAccept_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer;" value='' onclick="qcCommentsAccept('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>', '<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $tempSq;?>');">  </div>
                                         <div class='qcComments_reject' id='QcCommentsReject_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>' style="cursor: pointer;" value='' onclick="QcCommentsReject('<?php echo $QcCommentId;?>','<?php echo $valprodFields['AttributeMasterId'];?>','<?php echo $valprodFields['DisplayAttributeName'];?>', '<?php echo $ProdFieldsValue;?>', '<?php echo $CommentsFieldsValue;?>', '<?php echo $DispositionFieldsValue;?>', <?php echo "'".$errorcat."'";?>, <?php echo "'".$errorsub."'";?>,'<?php echo $tempSq;?>');">  </div>
  <div id="CommentStatus_<?php echo $valprodFields['AttributeMasterId']."_".$tempSq; ?>">                             	        
- <div class="qcstatusinfo<?php echo $valprodFields['AttributeMasterId'].$tempSq;?>"> <?php echo $StatusInfo;?></div>
+ <div id="qcstatusinfo<?php echo $valprodFields['AttributeMasterId'].$tempSq;?>"> <?php echo $StatusInfo;?></div>
                                          </div>
 										<?php	
 										}
@@ -2525,8 +2525,7 @@ $('.more').each(function() {
                 $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
                 }
 
-
-$('#qcstatusinfo_'+attributeMasterId+'_'+currentSeq).display('none');
+$('#qcstatusinfo_'+attributeMasterId+currentSeq).css("display", "none");;
             if (action == 'i_next' && totalseq >= nex) {
                 //$(".MultiField_" + attributeMasterId).hide();
                 $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
@@ -2542,7 +2541,7 @@ $('#qcstatusinfo_'+attributeMasterId+'_'+currentSeq).display('none');
                 else
                     $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
 
- $('#qcstatusinfo_'+attributeMasterId+'_'+nex).display('block');
+ $('#qcstatusinfo_'+attributeMasterId+nex).css("display", "block");;
             }
 
             if (action == 'i_previous' && totalseq >= prev && prev > 0) {
@@ -2560,7 +2559,7 @@ $('#qcstatusinfo_'+attributeMasterId+'_'+currentSeq).display('none');
                     $('.i_previous_' + attributeMasterId).css('color', 'grey');
                 else
                     $('.i_previous_' + attributeMasterId).css('color', '#4397e6');
- $('#qcstatusinfo_'+attributeMasterId+'_'+prev).display('block');
+ $('#qcstatusinfo_'+attributeMasterId+prev).css("display", "block");;
             }
         }
         
@@ -4241,8 +4240,11 @@ if ($this->request->query['continue'] == 'yes') {
                     $("#CategoryName").val(0);
                     $("#SubCategory").val(0);
                     showOldData(OldValue, Attribute, AttributeMasterId, ProjectAttributeMasterId, InputEntityId, SequenceNumber);
-                     $('#Error_' + AttributeMasterId).removeClass("qcGreen_popuptitle");
-                     $('#Error_' + AttributeMasterId).addClass("qc_popuptitle");
+                     
+
+                    $('#Error_' + AttributeMasterId+'_'+SequenceNumber).removeClass("qcGreen_popuptitle");
+                    $('#Error_' + AttributeMasterId+'_'+SequenceNumber).addClass("qc_popuptitle");
+                    
                 }, 2000);
             }
 
@@ -4495,7 +4497,7 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu) {
         $('#ProductionFields_'+AttributeMasterId +'_<?php echo $DependentMasterIds['Disposition']; ?>_'+seq).removeAttr("style", "border-color: red;");
 		
         var result = new Array();
-		$('.qcstatusinfo'+AttributeMasterId+seq).text('Accepted');     
+		$('#qcstatusinfo'+AttributeMasterId+seq).text('Accepted');     
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller'=>'QCValidation','action'=>'ajaxupdateacceptstatus'));?>",
@@ -4576,8 +4578,9 @@ function valicateQcrebutal(){
 				
 		    var AttributeId = $('#AttributeId').val();
 			var AttributeMasterId = $("#AttributeId").val();
-          $('.qcstatusinfo'+AttributeId+seq).text('Rejected'); 
-		var SequenceNumber = $('#seq').val();		  
+          
+		var SequenceNumber = $('#seq').val();	
+$('#qcstatusinfo'+AttributeId+SequenceNumber).text('Rejected'); 	  
         var commentstype = $('#QCRebuteComments').val();	
 		//alert(commentstype);
         var Id = $('#Id').val();
