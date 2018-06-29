@@ -402,9 +402,8 @@ echo $this->Form->end();
                 dockInsidePlotArea: true,
                 verticalAlign: "center",
                 horizontalAlign: "right",
-                maxWidth: 300,
             },
-            dataPointWidth: 5,
+            dataPointWidth: 3,
             data: chartres
 //            data: [{
 //                    type: "column",
