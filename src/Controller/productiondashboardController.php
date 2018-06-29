@@ -83,8 +83,6 @@ class productiondashboardController extends AppController {
             $ProjectId = 0;
         }
 
-      
-
 
     }
 
@@ -258,8 +256,6 @@ class productiondashboardController extends AppController {
 //                $QueryDateFrom = $batch_from = '03-2018';
 //                $QueryDateTo = $batch_to = '06-2018';
 
-            $QueryDateFrom = $batch_from;
-            $QueryDateTo = $batch_to;
 
             if (!empty($batch_from) && !empty($batch_to)) {
                 $ProductionStartDate = date("Y-m-d 00:00:00", strtotime("01-" . $batch_from));
@@ -281,7 +277,8 @@ class productiondashboardController extends AppController {
             } elseif ($QueryDateFrom == '' && $QueryDateTo != '') {
                 $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
             }
-
+            
+//$this->pr($months);
 
             $contentArr = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 
@@ -368,7 +365,9 @@ class productiondashboardController extends AppController {
 
                         $display_fields[] = $select_fields_ex['select_fields_name'];
 //                        $reportList = $connection->execute("Select count(" . $select_fields_exists_group . ") as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_" . $dt . " where $conditions and ProjectId ='" . $ProjectId . "'  and DependencyTypeMasterId=20  group by " . $select_fields_exists_group . "");
-                        $reportList = $connection->execute("Select count($select_fields_exists_group) as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_$dt where $conditions and ProjectId ='$ProjectId'  group by  $select_fields_exists_group ");
+                        $RefUrlID = $connection->execute("Select Id from MC_DependencyTypeMaster where Type = 'Disposition' AND ProjectId='$ProjectId'")->fetchAll('assoc');
+                        
+                        $reportList = $connection->execute("Select count($select_fields_exists_group) as cnt,$select_fields_exists_group as $select_fields_exists_group from Report_ProductionEntityMaster_$dt where $conditions and ProjectId ='$ProjectId' and DependencyTypeMasterId='".$RefUrlID[0]['Id']."'   group by  $select_fields_exists_group ");
                         $reportList = $reportList->fetchAll('assoc');
 
 
