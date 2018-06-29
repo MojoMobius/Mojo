@@ -9,7 +9,7 @@
 <script src="webroot/js/samples.js"></script>
 <script src="webroot/js/highlight/highlight.pack.js"></script>
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
-<link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"  href="webroot/css/font-awesome/css/font-awesome.min.css">
 <?php
 
 //pr($processinputdata); //exit;
@@ -4213,7 +4213,7 @@ if ($this->request->query['continue'] == 'yes') {
         var ProductionEntityID = "<?php echo $productionjob['Id'];?>";
         var StatusId = "<?php echo $productionjob['StatusId'];?>";
         var UserId = "<?php echo $productionjob['UserId'];?>";
-         //var SequenceNumber = 1;
+         //var SequenceNumber = 1;  
         var SequenceNumber = $('#seq').val();
         var AttributeStatus = $("#AttributeStatus").val();
         var AttributeMasterId = $("#AttributeMasterId").html();
@@ -4240,11 +4240,10 @@ if ($this->request->query['continue'] == 'yes') {
                     $("#CategoryName").val(0);
                     $("#SubCategory").val(0);
                     showOldData(OldValue, Attribute, AttributeMasterId, ProjectAttributeMasterId, InputEntityId, SequenceNumber);
-                     
 
-                    $('#Error_' + AttributeMasterId+'_'+SequenceNumber).removeClass("qcGreen_popuptitle");
+                     $('#Error_' + AttributeMasterId+'_'+SequenceNumber).removeClass("qcGreen_popuptitle");
                     $('#Error_' + AttributeMasterId+'_'+SequenceNumber).addClass("qc_popuptitle");
-                    
+
                 }, 2000);
             }
 

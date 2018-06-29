@@ -928,6 +928,8 @@ class GetjobcoreController extends AppController {
                 //$DependancyId = $DependentMasterIds['InputValue']['Id'];
                 $DependancyId = $DependentMasterIds['InputValue'];
                  $getDomainUrlVal = $finalprodValue[$domainUrl][1][$DependancyId];
+              //   print_r($getDomainUrlVal);
+              //   exit;
                // $SelDomainUrl = $getDomainUrlVal[0]['AttributeValue'];
 //$getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-biggest-winner-in-a-5g-world';
                 $html = strpos($getDomainUrlVal, '.html');
@@ -935,6 +937,9 @@ class GetjobcoreController extends AppController {
                   $pos = strpos($getDomainUrlVal, 'http');
                     if ($pos === false) {
                         $SelDomainUrl = "http://" . $getDomainUrlVal;
+                    }
+                    else{
+                        $SelDomainUrl = $getDomainUrlVal;
                     }
                 }else{
                    // echo 'coming';
