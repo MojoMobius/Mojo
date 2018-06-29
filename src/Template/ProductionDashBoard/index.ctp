@@ -540,6 +540,7 @@ echo $this->Form->end();
                 if (results.linechart.status > 0) {
                     if (results.linechart.total > 0) {
                         $("#parent_linechartContainer").show();
+                          $("#err_linechartContainer").hide();
                         LineChartreports(results.linechart.chartres);
                     } else {
                         $("#err_linechartContainer").show();
@@ -553,6 +554,7 @@ echo $this->Form->end();
                 if (results.piechart.status > 0) {
                     if (results.piechart.total > 0) {
                         $("#parent_errorpiechartContainer").show();
+                         $("#err_errorpiechartContainer").hide();
                         pieErrorchartreports(results.piechart.chartres);
                     } else {
                         $("#err_errorpiechartContainer").show();
@@ -566,6 +568,7 @@ echo $this->Form->end();
                 if (results.barchart.status > 0) {
                     if (results.barchart.total > 0) {
                         $("#parent_errorbarchartContainer").show();
+                           $("#err_errorbarchartContainer").hide();
                         Errorbarchart(results.barchart.chartres);
                     } else {
                         $("#err_errorbarchartContainer").show();
@@ -578,6 +581,7 @@ echo $this->Form->end();
                 if (results.campaigntab.status > 0) {
                     if (results.campaigntab.total > 0) {
                         $("#parent_errorcampaignlevelContainer").show();
+                        $("#err_errorcampaignlevelContainer").hide();
                         $("#errorcampaignlevelContainer").html(results.campaigntab.table);
                     } else {
                         $("#err_errorcampaignlevelContainer").show();
