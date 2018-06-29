@@ -160,8 +160,7 @@ use Cake\Routing\Router;
         ?>
             </div>
         </div>
-        <a href="../../../../../../../C:/Users/vgs-user/Downloads/Mojo docu/mojo-v8/production-dashboard.html"></a>
-
+        
 
     </div>
 </div>
@@ -182,8 +181,8 @@ if (count($Chartreports) >= 0) {
                     <div class="col-md-12">
                         <div class="col-md-6" id="parent_linechartContainer">
 
-                            <div class="col-md-12 panel" style="min-height: 425px;width: 100%;margin-top:10px;" id="chart-results">
-                                <b>Over all</b> 
+                            <div class="col-md-12 panel" style="min-height: 445px;width: 100%;margin-top:10px;" >
+                                <div class="dash-header">Over all</div>
                                 <div id="linechartContainer"></div>
                                 <div id="err_linechartContainer" class="no-results-found" style="display:none;" >
                                     No Results found
@@ -192,8 +191,8 @@ if (count($Chartreports) >= 0) {
 
                         </div>
                         <div class="col-md-6" id="parent_errorpiechartContainer">
-                            <div class="col-md-12 panel" style="min-height: 425px;width: 100%;margin-top:10px;" id="">
-                                <b>Error Distribution</b> 
+                            <div class="col-md-12 panel" style="min-height: 445px;width: 100%;margin-top:10px;">
+                                 <div class="dash-header">Error Distribution</div>
                                 <div id="errorpiechartContainer"></div>
                                 <div id="err_errorpiechartContainer" class="no-results-found" style="display:none;" >
                                     No Results found
@@ -204,8 +203,8 @@ if (count($Chartreports) >= 0) {
 
                         <div class="col-md-12" id="parent_errorbarchartContainer">
 
-                            <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 400px;margin-top:10px;">
-                                <b>Error Distribution</b> 
+                            <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 445px;margin-top:10px;">
+                                <div class="dash-header">Issues</div>
 
                                 <div id="errorbarchartContainer"></div>
 
@@ -218,7 +217,7 @@ if (count($Chartreports) >= 0) {
 
                         <div class="col-md-12" id="parent_errorcampaignlevelContainer">
                             <div class="col-md-12 panel" style="height: auto;width: 100%;min-height: 400px;margin-top:10px;">
-                                <b>Right First Time - Campaign Level</b>
+                                <div class="dash-header"> Right First Time - Campaign Level</div>
                                 <div id="errorcampaignlevelContainer" class="bs-example">
 
                                 </div>
@@ -441,71 +440,71 @@ echo $this->Form->end();
 
     function Mandatory()
     {
-//        $("#chart-results").hide();
-//        var today = new Date();
-//        var dd = today.getDate();
-//        var mm = today.getMonth() + 1; //January is 0!
-//        var yyyy = today.getFullYear();
-//
-//        var hour = today.getHours();
-//        var minute = today.getMinutes();
-//        var seconds = today.getSeconds();
-//
-//        var todaydate = new Date();
-//        var dd = todaydate.getDate();
-//        var mm = todaydate.getMonth() + 1; //January is 0!
-//        var yyyy = todaydate.getFullYear();
-//
-//        var hour = todaydate.getHours();
-//        var minute = todaydate.getMinutes();
-//        var seconds = todaydate.getSeconds();
-//
-//        if (dd < 10) {
-//            dd = '0' + dd
-//        }
-//
-//        if (mm < 10) {
-//            mm = '0' + mm
-//        }
-//        if (hour < 10) {
-//            hour = '0' + hour
-//        }
-//
-//        if (minute < 10) {
-//            minute = '0' + minute
-//        }
-//
-//        if (seconds < 10) {
-//            seconds = '0' + seconds
-//        }
-//        today = dd + '-' + mm + '-' + yyyy;
-//        todaydate = yyyy + '-' + mm + '-' + dd;
-//        var time = hour + ':' + minute + ':' + seconds;
-//
-//        if ($('#ProjectId').val() == 0) {
-//            alert('Select Project Name');
-//            $('#ProjectId').focus();
-//            return false;
-//        }
-//
-//
-//        if (($('#month_from').val() == ''))
-//        {
-//            alert('Select From date!');
-//            $('#month_from').focus();
-//            return false;
-//        }
-//
-//        if (($('#month_from').val() == '') && ($('#month_to').val() != ''))
-//        {
-//            alert('Select From date!');
-//            $('#month_from').focus();
-//            return false;
-//        }
-//
-//        var date = $('#month_from').val();
-//        var datearray = date.split("-");
-//        var month_from = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+        $("#chart-results").hide();
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        var hour = today.getHours();
+        var minute = today.getMinutes();
+        var seconds = today.getSeconds();
+
+        var todaydate = new Date();
+        var dd = todaydate.getDate();
+        var mm = todaydate.getMonth() + 1; //January is 0!
+        var yyyy = todaydate.getFullYear();
+
+        var hour = todaydate.getHours();
+        var minute = todaydate.getMinutes();
+        var seconds = todaydate.getSeconds();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        if (hour < 10) {
+            hour = '0' + hour
+        }
+
+        if (minute < 10) {
+            minute = '0' + minute
+        }
+
+        if (seconds < 10) {
+            seconds = '0' + seconds
+        }
+        today = dd + '-' + mm + '-' + yyyy;
+        todaydate = yyyy + '-' + mm + '-' + dd;
+        var time = hour + ':' + minute + ':' + seconds;
+
+        if ($('#ProjectId').val() == 0) {
+            alert('Select Project Name');
+            $('#ProjectId').focus();
+            return false;
+        }
+
+
+        if (($('#month_from').val() == ''))
+        {
+            alert('Select From date!');
+            $('#month_from').focus();
+            return false;
+        }
+
+        if (($('#month_from').val() == '') && ($('#month_to').val() != ''))
+        {
+            alert('Select From date!');
+            $('#month_from').focus();
+            return false;
+        }
+
+        var date = $('#month_from').val();
+        var datearray = date.split("-");
+        var month_from = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
 
         $("#left-pane").show();
         $(".validationloader").show();
@@ -773,7 +772,11 @@ echo $this->Form->end();
         font-size: 16px;
         padding-left: 97px;
     }
-
+    .dash-header{
+        font-size: 13px;
+        margin: 10px 0px 10px 0px;
+        font-weight: bold;
+    }
 
 </style>
 <script>
