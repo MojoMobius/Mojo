@@ -374,7 +374,10 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
           for QCBatchId in ([4155])
           ) piv;")->fetchAll('assoc'); */
        // $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='4155'")->fetchAll('assoc');
-	           $SelectRow = $connection->execute("select  BatchSize,SampleSize,concat(round(( BatchSize/SampleSize * 100 ),2),'%') AS samplepercentage,ProjectId,BatchName,StatusId,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
+
+	           //$SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
+			   $SelectRow = $connection->execute("select  BatchSize as 'Total Batch Size',SampleSize as 'Total Records Audited', Audit_attribute as 'Total Attributes Audited', Weightage as 'Total Weightage', Error_count as 'Total Random QC Errors', AOQ as 'Attribute Accuracy %' from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
+
 
         $ArKey = array();
         $ArVal = array();
@@ -383,11 +386,13 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
         $totRow = count($SelectRow);
 ////head//////////////////////////////
         $qc_datahead = "<tr>";
+
         for ($r = 0; $r <= $totRow; $r++) {
             if ($r == 0) {
                 $title = "Attempt #";
             } else {
                 $title =  $r;
+				
             }
             $qc_datahead.='<td style="border: 1px solid black;">' . $title . '</td>';
         }
@@ -409,14 +414,12 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
 ///////////////row//////////////////
         for ($j = 0; $j < $totcountkey; $j++) {
             $key = $ArKey[0][$j];
-            if($key=="BatchSize") { $key_name="Total Batch Size"; }
-            if($key=="BatchSize") { $key_name="Total Batch Size"; }
-            if($key=="BatchSize") { $key_name="Total Batch Size"; }
-            if($key=="BatchSize") { $key_name="Total Batch Size"; }
-            if($key=="BatchSize") { $key_name="Total Batch Size"; }
+          
 
             $qc_datarow.='<tr>';
             $qc_datarow.='<td style="border: 1px solid black;">' . $key . '</td>';
+			 
+			 
             for ($i = 0; $i < $totcount; $i++) {
                 if ($key == "ProjectId") {
 
@@ -428,9 +431,42 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
                 $qc_datarow.='<td style="border: 1px solid black;">' . $value . '</td>';
             }
 
-            $qc_datarow.='<tr>';
+            $qc_datarow.='</tr>';
+			
         }
+		
 
+
+            $qc_datarow.='<tr>';
+            $qc_datarow.='<td style="border: 1px solid black;">'.'SLA %'.'</td>';
+			 
+			 
+            for ($i = 0; $i < $totcount; $i++) {
+                
+                $qc_datarow.='<td style="border: 1px solid black;">' . '97.00' . '</td>';
+            }
+
+            $qc_datarow.='</tr>';
+			
+			$qc_datarow.='<tr>';
+            $qc_datarow.='<td style="border: 1px solid black;">'.'Recommendation'.'</td>';
+			 
+			 
+            for ($i = 0; $i < $totcount; $i++) {
+                $accuracy = $SelectRow[$i]['Attribute Accuracy %'];
+				if($accuracy < 97){
+				 $Recommendation = 'Not-Good-to-Go';
+				 $qc_datarow.='<td style="border: 1px solid black; color:red;">' . $Recommendation . '</td>';
+				}
+				else{
+				$Recommendation = 'Good-to-Go';
+				$qc_datarow.='<td style="border: 1px solid black; color:green;">' . $Recommendation . '</td>';
+				}
+                
+            }
+
+            $qc_datarow.='</tr>';
+        
 ///////////////row end//////////////////
 
 
