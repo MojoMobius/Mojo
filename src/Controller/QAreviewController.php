@@ -374,7 +374,7 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
           for QCBatchId in ([4155])
           ) piv;")->fetchAll('assoc'); */
        // $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='4155'")->fetchAll('assoc');
-	           $SelectRow = $connection->execute("select  date,ProjectId,BatchName,StatusId,BatchSize,SampleSize,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
+	           $SelectRow = $connection->execute("select  BatchSize,SampleSize,concat(round(( BatchSize/SampleSize * 100 ),2),'%') AS samplepercentage,ProjectId,BatchName,StatusId,QcCompleted,QcPending,AOQ  from MV_QC_BatchIteration WHERE QCBatchId='".$id."'")->fetchAll('assoc');
 
         $ArKey = array();
         $ArVal = array();
@@ -409,6 +409,11 @@ echo "select COUNT(Id) as cnt from MV_QC_Comments where ErrorCategoryMasterId='"
 ///////////////row//////////////////
         for ($j = 0; $j < $totcountkey; $j++) {
             $key = $ArKey[0][$j];
+            if($key=="BatchSize") { $key_name="Total Batch Size"; }
+            if($key=="BatchSize") { $key_name="Total Batch Size"; }
+            if($key=="BatchSize") { $key_name="Total Batch Size"; }
+            if($key=="BatchSize") { $key_name="Total Batch Size"; }
+            if($key=="BatchSize") { $key_name="Total Batch Size"; }
 
             $qc_datarow.='<tr>';
             $qc_datarow.='<td style="border: 1px solid black;">' . $key . '</td>';
