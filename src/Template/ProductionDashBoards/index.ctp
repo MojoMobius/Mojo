@@ -2,6 +2,29 @@
 
 use Cake\Routing\Router
 ?>
+<style>
+    .modal-dialog{
+        width:900px !important;
+    }
+    @media screen and (max-height: 650px) {
+    #right-pane{
+        height:300px!important;
+        overflow-y:auto!important;
+    }
+    #vertical_modal {
+        height:300px!important;
+    }
+    }
+    table td input {
+    width: 40px !important;
+    }
+    form {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    }
+    
+</style>
 <div class="panel-group" id="accordion-dv" role="tablist" aria-multiselectable="true" style="margin-top:10px;">
     <div class="container-fluid">
 
@@ -196,17 +219,19 @@ if (count($Production_dashboard) > 0) {
                 <div id="horizontal" style="height: 100%; width: 100%;">
                     <div id="left-pane" class="pa-lef-10">
                         <div class="pane-content" >
+                            
+                              <input type="button" id="prioritize" name="prioritize" value="Allocate/Prioritize" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="priority();" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal">
                             <input type="hidden" name="UpdateId" id="UpdateId">
                             <button style="float:right; height:18px; visibility: hidden; margin-right:15px;" type='hidden' name='downloadFile' id='downloadFile' value='downloadFile'></button>
                             <table style='width:100%;' class="table table-striped table-center" id='example'>
                                 <thead>
                                     <tr>
-                                        <th colspan="5"></th>
+                                        <th colspan="7"></th>
                                             <?php
                                                 foreach ($module as $key => $val) {
                                                 if(($moduleConfig[$key]['IsAllowedToDisplay']==1) && ($moduleConfig[$key]['IsModuleGroup']==1)){
                                             ?>
-                                                <th colspan="5" align='center'><?php echo $val; ?></th>
+                                                <th colspan="7" align='center'><?php echo $val; ?></th>
                                             <?php
                                                 }
                                             }
@@ -214,10 +239,12 @@ if (count($Production_dashboard) > 0) {
                                     </tr>
                                     <tr class="Heading">
                                         <th class="Cell" width="10%" hidden="">InputEntityId</th> 
+                                        <th class="Cell" width="7%"></th>
                                         <th class="Cell" width="10%">Project Name</th> 
                                         <th class="Cell" width="10%">Region</th> 
                                         <th class="Cell" width="10%">Id</th>
                                         <th class="Cell" width="10%">Status</th>
+                                        <th class="Cell" width="7%">Priority</th>
                                             <?php
                                             foreach ($module as $key => $val){
                                                if(($moduleConfig[$key]['IsAllowedToDisplay']==1) && ($moduleConfig[$key]['IsModuleGroup']==1)){
@@ -265,10 +292,12 @@ if (count($Production_dashboard) > 0) {
                                     <tr>
 
                                         <td hidden=""><?php echo $input['InputEntityId']; ?></td>
+                                        <td><input type="checkbox" class="Pri_ids" name="priority[]" id="priority.<?php echo $input['InputEntityId']; ?>" value="<?php echo $input['InputEntityId'];?>"></td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
                                         <td><?php echo $region[$input['RegionId']]; ?></td>
                                         <td><?php echo $input['domainId']; ?></td>
                                         <td><?php echo $Status[$input['StatusId']]; ?></td>
+                                        <td><?php echo $input['priority']; ?></td>
                                         <?php
                                             foreach ($module as $key=>$val){
                                             if(($moduleConfig[$key]['IsAllowedToDisplay']==1) && ($moduleConfig[$key]['IsModuleGroup']==1)){
@@ -367,7 +396,40 @@ echo $this->Form->end();
         </div>
     </div></div>
 
+	 <!-- Popup new Modal -->
+<div class="modal fade modal-fill-in" id="exampleFillPopup" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle">Priority/Job Allocation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div  class="container-fluid" style="margin-bottom:-10px;">
+                            <div id="vertical_modal">
+                                <div id="top-pane">
+                                    <div id="horizontal" style="height: 100%; width: 100%;">
+                                        <div id="right-pane">
+                                           <div class="hot">
 
+
+                                           </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer"> <input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" ></div>
+                    
+                </div>
+            </div>
+        </div>
+       
+        <!-- Popup new Modal -->
 <div id="fade" class="black_overlay"></div>
 <?php
 //pr($productionjobNew);
@@ -802,3 +864,65 @@ if ($CallUserGroupFunctions == 'yes') {
     <?php
 }
 ?>
+<script>
+        
+function priority(){
+ //var n = $("input[name^='priority']").length;
+ 
+ var arraydata = $('.Pri_ids:checked').serialize();
+ var Proid=$('#ProjectId').val();
+ //console.log(arraydata);
+// var arr_value = '';
+//for(i=0;i<n;i++)
+//{
+//    
+// var arr_value+='_' + arraydata[i].value;
+//}
+
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdata')); ?>',
+            
+            data: {ProductionEntityId: arraydata,ProjectId: Proid},
+            type: 'POST',
+            success: function (res) { 
+	     $(".hot").html(res);
+            }
+        });
+}    
+function prioritysubmit(){
+ //var n = $("input[name^='priority']").length;
+ 
+ var arraydata = $('.allocateforms').serialize() ;
+ 
+ var Proid=$('#ProjectId').val();
+ //console.log(arraydata);
+// var arr_value = '';
+//for(i=0;i<n;i++)
+//{
+//    
+// var arr_value+='_' + arraydata[i].value;
+//}
+
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdatasubmit')); ?>',
+            
+            data: {userId: arraydata, ProjectId:Proid},
+            type: 'POST',
+            success: function (res) { 
+	     //$(".hot").html(res);
+            }
+        });
+        location.reload();
+}    
+function numericvalidation(id){
+$("#pri_id"+id).keypress(function (e) {
+     //if the letter is not digit then display error and don't type anything
+     
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        //display error message
+       // $("#errmsg"+id).html("Number Only").show().fadeOut("slow");
+               return false;
+    }
+   });
+}
+</script>

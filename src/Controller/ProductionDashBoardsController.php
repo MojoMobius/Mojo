@@ -297,6 +297,7 @@ class ProductionDashBoardsController extends AppController {
                     $Production_dashboard = array();
                     foreach ($ProductionDashboardarr as $Production):
                         $Production_dashboard[$i]['InputEntityId'] = $Production['InputEntityId'];
+                        $Production_dashboard[$i]['priority'] = $Production['priority'];
                         $Production_dashboard[$i]['AttributeValue'] = $Production['domainId'];
                         $Production_dashboard[$i]['ProjectId'] = $Production['ProjectId'];
                         $Production_dashboard[$i]['RegionId'] = $Production['RegionId'];
@@ -520,5 +521,97 @@ class ProductionDashBoardsController extends AppController {
         echo $updateuser = $this->ProductionDashBoards->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
         exit;
     }
+	 function ajaxgetdata() {
+		 
+      $connection = ConnectionManager::get('default');
+	  $id=$_POST['ProductionEntityId'];
+	  $ProjectId=$_POST['ProjectId'];
+	  //echo $ProjectId;exit;
+	   $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+            $content = file_get_contents($path);
+            $contentArr = json_decode($content, true);
+			//pr($contentArr);exit;
+			$Module=array();
+			$Module_key=array();
+			foreach($contentArr['ModuleConfig'] as $key => $value){
+				if($value['IsModuleGroup'] > 0){
+					$Module[]=$contentArr['Module'][$key];
+					$Module_key[]=$key;
+				}
+			}
+				/*foreach($Module_key as $val):				
+				foreach($contentArr['ModuleUser'][$val] as $key => $value):
+				pr($value);
+				endforeach;
+				endforeach;
+				exit;*/
+		
+
+	 /* if(isset($_POST['ProductionEntityId']))
+		{
+			parse_str($_POST['ProductionEntityId'], $searcharray);		 
+			//echo json_encode($data);
+		}
+	*/	
+	  parse_str($_POST['ProductionEntityId'], $searcharray);
+	
+       // echo $updateuser = $this->ProductionDashBoards->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
+	   $tbl_view='<form method="post" accept-charset="utf-8" class="form-horizontal allocateforms" id="projectforms">';
+        
+		///title start///		
+			$tbl_view.="<table class='table table-striped table-center'><tr><th>Id</th><th>Priority</th>";
+			foreach($Module as $value):
+			$tbl_view.='<th>'.$value.'</th>';
+			endforeach;
+			$tbl_view.='</tr>';
+		////title end///
+	  
+	   if(!empty($searcharray['priority'])){
+		   $i=0;
+		   
+		   foreach($searcharray['priority'] as $row):	
+			$j=0;		   
+		    $i++;
+				$tbl_view.='<tr><td>'.$row.'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="'.$i.'" class="form-control P_priority" keypress="numericvalidation('.$i.')"></td>';
+				////dynamic td///////
+				foreach($Module_key as $val):
+				$j++;
+				
+				$UserListFinal = array('0' => '--Select Project--');
+				$templateUser="<select name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."'><option value=0>--Select--</option>";
+					foreach($contentArr['ModuleUser'][$val] as $key => $values):
+						//$UserListFinal[$values['Id']] = $values['Username'];
+						$templateUser.='<option value="'.$values['Id'].'" >';
+            $templateUser.=$values['Username'];
+            $templateUser.='</option>';
+					endforeach;
+					 $templateUser.='</select>';
+				//$UserListFinal123='test';
+				//$Userlist= $this->Form->input('', array('options' => $UserListFinal, 'id' => 'UserId', 'name' => 'User[]', 'class' => 'form-control', 'style' => 'width:220px'));
+				$tbl_view.='<td>'.$templateUser.'</td>';
+				endforeach;
+				///dynamic td end////
+		   endforeach;
+	   }
+	   
+	   //$tbl_view.='<input type="hidden" name="pri_id[]" id="pri_id1" value="12" class="Prisub_ids">';
+	   //$tbl_view.='<input type="hidden" name="pri_id[]" id="pri_id2" value="13" class="Prisub_ids">';
+	   $tbl_view.="</table>";
+	   $tbl_view.='<input type="hidden" name="no_column" id="no_column" value="'.count($Module).'">';
+	   $tbl_view .='</form>'; 
+       //$tbl_view .=' <input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" >';	   
+	   echo $tbl_view;
+        exit;
+    }
+	function ajaxgetdatasubmit(){
+		$connection = ConnectionManager::get('default');
+		parse_str($_POST['userId'], $searcharray);
+		foreach($searcharray['pri_id'] as $key => $val):
+		  $queryUpdate = "update ProductionEntityMaster set priority='" . $val . "' where InputEntityId='" . $key . "'";	
+         $connection->execute($queryUpdate);
+		endforeach;
+		exit;
+	}
+	
 
 }
