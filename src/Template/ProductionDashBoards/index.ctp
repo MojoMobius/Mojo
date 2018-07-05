@@ -292,7 +292,9 @@ if (count($Production_dashboard) > 0) {
                                     <tr>
 
                                         <td hidden=""><?php echo $input['InputEntityId']; ?></td>
-                                        <td><input type="checkbox" class="Pri_ids" name="priority[]" id="priority.<?php echo $input['InputEntityId']; ?>" value="<?php echo $input['InputEntityId'];?>"></td>
+                                        <td><input type="checkbox" class="Pri_ids" name="priority[]" id="priority.<?php echo $input['Id']; ?>" value="<?php echo $input['Id'];?>">
+                                        <input type="hidden" class="domain_ids" name="domain[<?php echo $input['Id'];?>]" id="domain.<?php echo $input['domainId']; ?>" value="<?php echo $input['domainId'];?>">
+                                        </td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
                                         <td><?php echo $region[$input['RegionId']]; ?></td>
                                         <td><?php echo $input['domainId']; ?></td>
@@ -870,6 +872,7 @@ function priority(){
  //var n = $("input[name^='priority']").length;
  
  var arraydata = $('.Pri_ids:checked').serialize();
+ var arraydomain = $('.domain_ids').serialize();
  var Proid=$('#ProjectId').val();
  //console.log(arraydata);
 // var arr_value = '';
@@ -882,7 +885,7 @@ function priority(){
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdata')); ?>',
             
-            data: {ProductionEntityId: arraydata,ProjectId: Proid},
+            data: {ProductionEntityId: arraydata,ProjectId: Proid,domainId: arraydomain},
             type: 'POST',
             success: function (res) { 
 	     $(".hot").html(res);
@@ -914,7 +917,17 @@ function prioritysubmit(){
         });
         location.reload();
 }    
+
 function numericvalidation(id){
+var e = document.getElementById('pri_id'+id);
+
+if (!/^[0-9]+$/.test(e.value) && e !='') 
+{ 
+alert("Please enter only numbers.");
+e.value = e.value.substring(0,e.value.length-1);
+}
+}
+/*function numericvalidation123(id){
 $("#pri_id"+id).keypress(function (e) {
      //if the letter is not digit then display error and don't type anything
      
@@ -925,4 +938,5 @@ $("#pri_id"+id).keypress(function (e) {
     }
    });
 }
+*/
 </script>

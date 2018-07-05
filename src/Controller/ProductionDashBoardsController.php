@@ -539,23 +539,12 @@ class ProductionDashBoardsController extends AppController {
 					$Module_key[]=$key;
 				}
 			}
-				/*foreach($Module_key as $val):				
-				foreach($contentArr['ModuleUser'][$val] as $key => $value):
-				pr($value);
-				endforeach;
-				endforeach;
-				exit;*/
-		
-
-	 /* if(isset($_POST['ProductionEntityId']))
-		{
-			parse_str($_POST['ProductionEntityId'], $searcharray);		 
-			//echo json_encode($data);
-		}
-	*/	
+				
 	  parse_str($_POST['ProductionEntityId'], $searcharray);
+	  
+	  parse_str($_POST['domainId'], $domainarray);
 	
-       // echo $updateuser = $this->ProductionDashBoards->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
+	///html file start////////////
 	   $tbl_view='<form method="post" accept-charset="utf-8" class="form-horizontal allocateforms" id="projectforms">';
         
 		///title start///		
@@ -572,11 +561,13 @@ class ProductionDashBoardsController extends AppController {
 		   foreach($searcharray['priority'] as $row):	
 			$j=0;		   
 		    $i++;
-				$tbl_view.='<tr><td>'.$row.'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="" class="form-control " Onkeypress="numericvalidation('.$i.')"></td>';
+				$tbl_view.='<tr><td>'.$domainarray['domain'][$row].'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="" class="form-control " onkeyup="numericvalidation('.$row.');"></td>';
 				////dynamic td///////
 				foreach($Module_key as $val):
 				$j++;
+				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
 				
+				$tbl_view.='<input type="hidden" name="module['.$j.'][]" id="module" value="'.$val.'" class="form-control ">';
 				$UserListFinal = array('0' => '--Select Project--');
 				$templateUser="<select name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."'><option value=0>--Select--</option>";
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):
@@ -597,9 +588,12 @@ class ProductionDashBoardsController extends AppController {
 	   //$tbl_view.='<input type="hidden" name="pri_id[]" id="pri_id1" value="12" class="Prisub_ids">';
 	   //$tbl_view.='<input type="hidden" name="pri_id[]" id="pri_id2" value="13" class="Prisub_ids">';
 	   $tbl_view.="</table>";
-	   $tbl_view.='<input type="hidden" name="no_column" id="no_column" value="'.count($Module).'">';
+	   $tbl_view.='<input type="hidden" name="no_of_column" id="no_of_column" value="'.count($Module).'">';
+	   $tbl_view.='<input type="hidden" name="ProjectId" id="ProjectId" value="'.$ProjectId.'">';
 	   $tbl_view .='</form>'; 
-       //$tbl_view .=' <input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" >';	   
+	   
+	///html file end////////////
+       
 	   echo $tbl_view;
         exit;
     }
@@ -607,9 +601,20 @@ class ProductionDashBoardsController extends AppController {
 		$connection = ConnectionManager::get('default');
 		parse_str($_POST['userId'], $searcharray);
 		foreach($searcharray['pri_id'] as $key => $val):
-		  $queryUpdate = "update ProductionEntityMaster set priority='" . $val . "' where InputEntityId='" . $key . "'";	
+		  $queryUpdate = "update ProductionEntityMaster set priority='" . $val . "' where Id='" . $key . "'";	
          $connection->execute($queryUpdate);
 		endforeach;
+		
+		for($i=1; $i <= $searcharray['no_of_column']; $i++){
+		
+		foreach($searcharray['UserId'][$i] as $key =>$val):
+		 $queryUpdatetimemetric = "update ME_Production_TimeMetric set UserId='" . $val . "' where  ProductionEntityID ='" . $searcharray['entity'][$i][$key] . "' and  Module_Id='" . $searcharray['module'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
+         $connection->execute($queryUpdatetimemetric);
+		
+		endforeach;
+		
+		}//end for
+		
 		exit;
 	}
 	
