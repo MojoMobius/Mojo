@@ -14,7 +14,7 @@ $js_array = json_encode($ProdDB_PageLimit);
 echo "var mandatoryArr = " . $js_array . ";\n";
 //echo "var mandatoryArr = "10 ";\n";
 ?>
-        var projectId = 3346;
+        //var projectId = 3346;
         var pageCount = mandatoryArr;
 
         //$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
@@ -283,6 +283,7 @@ if (count($list) > 0) {
                             <table style='width:100%;' class="table table-striped table-center" id='example'>
                                 <thead>
                                     <tr class="Heading">
+                                        <th class="Cell" hidden="">Id</th> 
                                         <th class="Cell" width="10%">Project</th> 
                                         <th class="Cell" width="10%">Region</th> 
                                         <th class="Cell" width="10%">File Name</th>
@@ -305,6 +306,7 @@ if (count($list) > 0) {
                                         $basefilepath_file = $basefilepath.'/'.$input['FileName']; 
                                             ?>
                                     <tr>
+                                        <td hidden=""><?php echo $i; ?></td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
                                         <td><?php echo $RegionName; ?></td>
                                         <td><?php echo "<a href='$basefilepath_file'> ".$input['FileName']."</a>"; ?></td>

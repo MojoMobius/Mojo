@@ -61,12 +61,12 @@ class InputinitiateController extends AppController {
                     mkdir($uploadFolder, 0777, true);
                 }
                 $apendfilename = date("YmdHis") . "_";
-                if (!move_uploaded_file($_FILES['file']['tmp_name'], $uploadFolder . '/' . $apendfilename . $_FILES['file']['name'])) {
+                if (!move_uploaded_file($_FILES['file']['tmp_name'], $uploadFolder . '/' . $_FILES['file']['name'])) {
                     die('Error uploading file - check destination is writeable.');
                 }
                 $myfile = $file['tmp_name'];
                 //$inputFileName = $myfile;
-                $inputFileName = $apendfilename . $_FILES['file']['name'];
+                $inputFileName = $_FILES['file']['name'];
 
 
                 $insert = "INSERT INTO ME_InputInitiation (ProjectId,Region,FileName,InputToStatus,RecordStatus,CreatedBy,CreatedDate)values('$ProjectId','$RegionId','$inputFileName','$StatusId','1','$CreatedBy','$CreatedDate')";
@@ -100,7 +100,7 @@ class InputinitiateController extends AppController {
         $this->set(compact('ProList'));
 
         // get list
-        $select = "Select Top 100 ProjectId,Region,FileName,InputToStatus,CreatedDate from ME_InputInitiation  order by Id desc";
+        $select = "Select Top 100 ProjectId,Region,FileName,InputToStatus,CreatedDate from ME_InputInitiation  order by CreatedDate desc";
 
         $list = $connection->execute($select)->fetchAll('assoc');
 
