@@ -572,7 +572,7 @@ class ProductionDashBoardsController extends AppController {
 		   foreach($searcharray['priority'] as $row):	
 			$j=0;		   
 		    $i++;
-				$tbl_view.='<tr><td>'.$row.'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="'.$i.'" class="form-control P_priority" keypress="numericvalidation('.$i.')"></td>';
+				$tbl_view.='<tr><td>'.$row.'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="" class="form-control " Onkeypress="numericvalidation('.$i.')"></td>';
 				////dynamic td///////
 				foreach($Module_key as $val):
 				$j++;
