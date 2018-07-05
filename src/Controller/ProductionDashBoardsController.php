@@ -543,6 +543,7 @@ class ProductionDashBoardsController extends AppController {
 	  parse_str($_POST['ProductionEntityId'], $searcharray);
 	  
 	  parse_str($_POST['domainId'], $domainarray);
+	  parse_str($_POST['savedId'], $saved_priority);
 	
 	///html file start////////////
 	   $tbl_view='<form method="post" accept-charset="utf-8" class="form-horizontal allocateforms" id="projectforms">';
@@ -561,32 +562,43 @@ class ProductionDashBoardsController extends AppController {
 		   foreach($searcharray['priority'] as $row):	
 			$j=0;		   
 		    $i++;
-				$tbl_view.='<tr><td>'.$domainarray['domain'][$row].'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="" class="form-control " onkeyup="numericvalidation('.$row.');"></td>';
+				$tbl_view.='<tr><td>'.$domainarray['domain'][$row].'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="'.$saved_priority['pri_saved'][$row].'" class="form-control " onkeyup="numericvalidation('.$row.');"></td>';
 				////dynamic td///////
 				foreach($Module_key as $val):
 				$j++;
+				///selected user start////////////
+				//echo "select UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'";
+				 $SavedUser = $connection->execute("select UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
+				 $DbUser=$SavedUser[0]['UserId'];	 
+				///selected user end//////////////
+				
 				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
 				
 				$tbl_view.='<input type="hidden" name="module['.$j.'][]" id="module" value="'.$val.'" class="form-control ">';
 				$UserListFinal = array('0' => '--Select Project--');
 				$templateUser="<select name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."'><option value=0>--Select--</option>";
-					foreach($contentArr['ModuleUser'][$val] as $key => $values):
-						//$UserListFinal[$values['Id']] = $values['Username'];
-						$templateUser.='<option value="'.$values['Id'].'" >';
-            $templateUser.=$values['Username'];
-            $templateUser.='</option>';
+					
+				
+					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
+					 $selected_mode="";
+					 if($DbUser==$values['Id']){
+					    $selected_mode="selected";	 						 
+					 }					 
+							$templateUser.='<option value="'.$values['Id'].'" '.$selected_mode.'>';
+							$templateUser.=$values['Username'];
+							$templateUser.='</option>';
 					endforeach;
+					
+					
 					 $templateUser.='</select>';
-				//$UserListFinal123='test';
-				//$Userlist= $this->Form->input('', array('options' => $UserListFinal, 'id' => 'UserId', 'name' => 'User[]', 'class' => 'form-control', 'style' => 'width:220px'));
+				
 				$tbl_view.='<td>'.$templateUser.'</td>';
 				endforeach;
 				///dynamic td end////
+				
 		   endforeach;
-	   }
+	   }	   
 	   
-	   //$tbl_view.='<input type="hidden" name="pri_id[]" id="pri_id1" value="12" class="Prisub_ids">';
-	   //$tbl_view.='<input type="hidden" name="pri_id[]" id="pri_id2" value="13" class="Prisub_ids">';
 	   $tbl_view.="</table>";
 	   $tbl_view.='<input type="hidden" name="no_of_column" id="no_of_column" value="'.count($Module).'">';
 	   $tbl_view.='<input type="hidden" name="ProjectId" id="ProjectId" value="'.$ProjectId.'">';
@@ -600,6 +612,7 @@ class ProductionDashBoardsController extends AppController {
 	function ajaxgetdatasubmit(){
 		$connection = ConnectionManager::get('default');
 		parse_str($_POST['userId'], $searcharray);
+		
 		foreach($searcharray['pri_id'] as $key => $val):
 		  $queryUpdate = "update ProductionEntityMaster set priority='" . $val . "' where Id='" . $key . "'";	
          $connection->execute($queryUpdate);

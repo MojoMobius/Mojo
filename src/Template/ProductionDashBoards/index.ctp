@@ -294,6 +294,7 @@ if (count($Production_dashboard) > 0) {
                                         <td hidden=""><?php echo $input['InputEntityId']; ?></td>
                                         <td><input type="checkbox" class="Pri_ids" name="priority[]" id="priority.<?php echo $input['Id']; ?>" value="<?php echo $input['Id'];?>">
                                         <input type="hidden" class="domain_ids" name="domain[<?php echo $input['Id'];?>]" id="domain.<?php echo $input['domainId']; ?>" value="<?php echo $input['domainId'];?>">
+                                         <input type="hidden" class="pri_saved_ids" name="pri_saved[<?php echo $input['Id'];?>]" id="pri_saved.<?php echo $input['priority']; ?>" value="<?php echo $input['priority'];?>">
                                         </td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
                                         <td><?php echo $region[$input['RegionId']]; ?></td>
@@ -873,6 +874,7 @@ function priority(){
  
  var arraydata = $('.Pri_ids:checked').serialize();
  var arraydomain = $('.domain_ids').serialize();
+ var arraysaved = $('.pri_saved_ids').serialize();
  var Proid=$('#ProjectId').val();
  //console.log(arraydata);
 // var arr_value = '';
@@ -885,7 +887,7 @@ function priority(){
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdata')); ?>',
             
-            data: {ProductionEntityId: arraydata,ProjectId: Proid,domainId: arraydomain},
+            data: {ProductionEntityId: arraydata,ProjectId: Proid,domainId: arraydomain,savedId: arraysaved},
             type: 'POST',
             success: function (res) { 
 	     $(".hot").html(res);
