@@ -948,6 +948,7 @@ class GetjobcoreController extends AppController {
                 $oldone=1;
                 foreach ($groupwisearray as $key => $subGrp) {
                     foreach ($subGrp as $key2 => $subGrpAtt) {
+						$oldone=1;
                         foreach ($subGrpAtt as $key3 => $subGrpAtt3) {
                             $arryKeys = array_keys($finalprodValue[$subGrpAtt3['AttributeMasterId']]);
                              
