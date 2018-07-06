@@ -2393,7 +2393,7 @@ $(document).keydown(function(e) {
 							
                             gotattributeids = obj['attrid'];
                             gotattributemaingrpid = attrGrpid;
-                            checkAllUrlAtt();
+                            checkAllUrlAtt(sequence);
             }
         }
                 });
@@ -2435,7 +2435,7 @@ $(document).keydown(function(e) {
 				  $('.subgroupparentdivs').show();  
 				  $('.commonClass').show();  
 			}
-                        ShowUnVerifiedAtt();
+                        ShowUnVerifiedAtt(Seq);
 		}
 		function checkAllUrlAttPaginate(subgrp,Seq=1){
 		
@@ -2477,12 +2477,13 @@ $(document).keydown(function(e) {
 				  $('.commonClass').show();  
 			}
 		}
-                function ShowUnVerifiedAtt() {
+                function ShowUnVerifiedAtt(Seq) {
                     var projectid = $('#ProjectId').val();
                     var regionid = $('#RegionId').val();
                     var inputentityid = $('#InputEntityId').val();
                     var prodentityid = $('#ProductionEntity').val();
                     var sequence = $('#seq').val();
+					//alert(sequence);
                     var unverified = $("#chk-wid-Url2").prop("checked");
                     var subgroup='<?php echo json_encode($AttributeSubGroupMasterJSON); ?>';       
                     var subgrpArr=JSON.parse(subgroup);
@@ -2559,12 +2560,12 @@ $(document).keydown(function(e) {
                                        
                                         if(keyMatch==-1 )
                                            {
-                                             $( "#MultiSubGroup_" + key2 + "_" + 1).css("display", "none");
-                                             $( "#MultiSubGroup_" + key2 + "_" + 1).removeClass("showFilled");
+                                             $( "#MultiSubGroup_" + key2 + "_" + sequence).css("display", "none");
+                                             $( "#MultiSubGroup_" + key2 + "_" + sequence).removeClass("showFilled");
                                             }
                                             else{
-                                                    $( "#MultiSubGroup_" + key2 + "_" + 1).css("display", "block");
-                                                     $( "#MultiSubGroup_" + key2 + "_" + 1).addClass("showFilled");
+                                                    $( "#MultiSubGroup_" + key2 + "_" + sequence).css("display", "block");
+                                                     $( "#MultiSubGroup_" + key2 + "_" + sequence).addClass("showFilled");
                                                 }
                                                 
                                             }
@@ -2573,13 +2574,13 @@ $(document).keydown(function(e) {
                                         
                                         
                                  $.each(objAttr,function(key,value){
-                                        $( "#MultiField_" + value + "_" + 1).css("display", "none");
-                                             $( "#MultiField_" + value + "_" + 1).removeClass("showFilled");
+                                        $( "#MultiField_" + value + "_" + sequence).css("display", "none");
+                                             $( "#MultiField_" + value + "_" + sequence).removeClass("showFilled");
                                         }
                                  );       
                                 $.each(objshowAttr,function(key,value){
-                                        $( "#MultiField_" + value + "_" + 1).css("display", "block");
-                                             $( "#MultiField_" + value + "_" + 1).addClass("showFilled");
+                                        $( "#MultiField_" + value + "_" + sequence).css("display", "block");
+                                             $( "#MultiField_" + value + "_" + sequence).addClass("showFilled");
                                         }
                                  );
                                    
@@ -2596,8 +2597,8 @@ $(document).keydown(function(e) {
                             else {
                                     $.each( subgrpArr, function( key, value ) {
                                     $.each( value, function( key2, value2 ) {
-                                        $( "#MultiSubGroup_" + key2 + "_" + 1).css("display", "block");
-                                        $( "#MultiSubGroup_" + key2 + "_" + 1).addClass("showFilled");
+                                        $( "#MultiSubGroup_" + key2 + "_" + sequence).css("display", "block");
+                                        $( "#MultiSubGroup_" + key2 + "_" + sequence).addClass("showFilled");
                                      });
                                     }); 
                                     $(".subgroupparentdivs").each(function() {
@@ -2614,8 +2615,8 @@ $(document).keydown(function(e) {
                                     }
                                     
                                     $.each(objAttr,function(key,value){
-                                        $( "#MultiField_" + value + "_" + 1).css("display", "block");
-                                             $( "#MultiField_" + value + "_" + 1).addClass("showFilled");
+                                        $( "#MultiField_" + value + "_" + sequence).css("display", "block");
+                                             $( "#MultiField_" + value + "_" + sequence).addClass("showFilled");
                                         }
                                         );
                             }

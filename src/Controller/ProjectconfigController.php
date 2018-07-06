@@ -55,6 +55,7 @@ class ProjectconfigController extends AppController {
             $is_bulk = $this->request->data('is_bulk');
             $hygine_check = $this->request->data('hygine_check');
 			$CengageProject_check = $this->request->data('CengageProject');
+			$job_allocation = $this->request->data('job_allocation');
             $existing = array(
                 'ProjectId' => $ProjectId
             );
@@ -82,7 +83,8 @@ class ProjectconfigController extends AppController {
                 $Projectconfigmaster->InputCheck = $input_mandatory;
                 $Projectconfigmaster->isBulk = $is_bulk;
                 $Projectconfigmaster->HygineCheck = $hygine_check;
-		$Projectconfigmaster->CengageProject = $CengageProject_check;
+				$Projectconfigmaster->CengageProject = $CengageProject_check;
+				$Projectconfigmaster->joballocation_type = $job_allocation;
                 //$OptionMasterMap = $OptionMasterMaptable->patchEntity($OptionMasterMap, $data);
 
                 $Projectmastertable->save($Projectconfigmaster);
@@ -109,17 +111,23 @@ class ProjectconfigController extends AppController {
         $selectedbulkno = '';
         $selectedhyginecheckyes = '';
         $selectedhyginecheckno = '';
+		$selectedLease='';
+		$selectedCengage='';
+		$selectedothers='';
+		$selectedJobManual='';
+		$selectedJobAuto='';
         if ($Id != '') {
             $ProjectMaster = TableRegistry::get('Projectmaster');
             $ProEditList = $ProjectMaster->find();
             $ProEditList->where(['RecordStatus' => 1, 'Id' => $Id]);
-//            pr($ProEditList);
+  //          pr($ProEditList);
 //            exit;
             foreach ($ProEditList as $query):
                 $ProjectIdEdit = $query->ProjectId;
                 $ProjectNameEdit = $query->ProjectName;
                 $workflow_templateEdit = $query->ProjectTypeId;
                 $ProductionViewEdit = $query->ProductionView;
+				 $job_allocation=$query->joballocation_type; //exit;
                 if ($ProductionViewEdit == 1) {
                     $selectedvertical = "selected=selected";
                 } else if ($ProductionViewEdit == 2) {
@@ -151,11 +159,19 @@ class ProjectconfigController extends AppController {
                     $selectedhyginecheckno = "checked=checked";
                 }
 				
+                if ($job_allocation == 1) {
+                    $selectedJobManual = "checked=checked";
+                } else {
+                    $selectedJobAuto = "checked=checked";
+                }
 				$CengageProjectCheckEdit = $query->CengageProject;
                 if ($CengageProjectCheckEdit == 1) {
-                    $selectedCengageyes = "checked=checked";
-                } else {
-                    $selectedCengageno = "checked=checked";
+                    $selectedCengage = "selected=selected";
+                }
+				elseif ($CengageProjectCheckEdit == 2) {
+                    $selectedLease = "selected=selected";
+                }				else {
+                    $selectedOthers = "selected=selected";
                 }
             endforeach;
         }
@@ -164,6 +180,10 @@ class ProjectconfigController extends AppController {
         $this->set(compact('selectedvertical'));
         $this->set(compact('selectedhorizontal'));
         $this->set(compact('selectedCengage'));
+		$this->set(compact('selectedLease'));
+		$this->set(compact('selectedOthers'));
+		$this->set(compact('selectedJobAuto'));
+		$this->set(compact('selectedJobManual'));
         $this->set(compact('selectedyes'));
         $this->set(compact('selectedno'));
         $this->set(compact('selectedbulkyes'));

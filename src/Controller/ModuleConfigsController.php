@@ -30,7 +30,8 @@ class ModuleConfigsController extends AppController {
     }
 
     public function index() {
-
+		//echo '<pre>';
+//print_r(scandir('\\\\10.101.11.76\\html\\Lease Services\\4. IMPLEMENTATION PHASE\\CBRE\\4.2 Output Management\\B Input Files\\MoJo_Lease\\Lease documents\\CN003P01\\'));exit;
         $Projects = $this->projectmasters->find('ProjectOption');
         asort($Projects);
         $connection = ConnectionManager::get('default');
@@ -124,6 +125,7 @@ class ModuleConfigsController extends AppController {
         $this->set('Projects', $Projects);
         $TypeArr = array('0' => '--Select--', '1' => 'Yes', '2' => 'No');
         $Type = array('1' => 'Yes', '0' => 'No');
+		
         $ModuleType = array('0' => '--Select--', '1' => 'Production', '2' => 'QC Validation');
         $ModuleConfigs = $this->ModuleConfigs->get($id);
         $path = JSONPATH . '\\ProjectConfig_' . $ModuleConfigs['Project'] . '.json';
@@ -134,6 +136,14 @@ class ModuleConfigsController extends AppController {
         $this->set('ModuleType', $ModuleType);
         $Module = $contentArr['Module'];
         $level = (count($contentArr['Module']));
+		//$fromstatus='--Select--';
+		$statusArr=$contentArr['ModuleStatusList'][$ModuleConfigs['ModuleId']];
+		foreach($statusArr as $value){
+			
+		}
+		
+		$fromstatus=$contentArr['ModuleStatusList'][$ModuleConfigs['ModuleId']];
+		
         $temp = array();
 
         for ($i = 0; $i <= $level; $i++) {
@@ -165,6 +175,8 @@ class ModuleConfigsController extends AppController {
 
             $IsModuleValue = '0';
         }
+		$this->request->data['FromStatus']=implode(",", array_keys($this->request->data['FromStatus']));
+
 
         if ($this->request->is(['post', 'put'])) {
 
@@ -221,6 +233,9 @@ class ModuleConfigsController extends AppController {
             } else {
                 $selectedhyginecheckno = "checked=checked";
             }
+			 $selectedStatus=$query->FromStatus;
+			 $selectedStatusArr=explode(',',$selectedStatus);
+			 //pr($selectedStatusArr); exit;
         endforeach;
 
         $this->set('HygineCheckCnt', $HygineCheck);
@@ -230,12 +245,14 @@ class ModuleConfigsController extends AppController {
         $this->set('ModuleId', $ModuleId);
         $this->set('temp', $temp);
         $this->set('LevelId', $LevelId);
+		$this->set('selectedStatusArr', $selectedStatusArr);
         $this->set('IsHistoryTrackValue', $IsHistoryTrackValue);
         $this->set('IsInputMandatoryValue', $IsInputMandatoryValue);
         $this->set('IsVisibilityValue', $IsVisibilityValue);
         $this->set('IsModuleValue', $IsModuleValue);
         $this->set('IsUrlMonitoringValue', $IsUrlMonitoringValue);
         $this->set('IsHygineCheckValue', $IsHygineCheckValue);
+		$this->set('fromstatus', $fromstatus);
         $this->set(compact('selectedyes'));
         $this->set(compact('selectedno'));
         $this->set(compact('selectedbulkyes'));
