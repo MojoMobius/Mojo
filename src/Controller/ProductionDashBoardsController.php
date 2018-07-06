@@ -581,7 +581,7 @@ class ProductionDashBoardsController extends AppController {
 				
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
 					 $selected_mode="";
-					 if($DbUser==$values['Id']){
+					 if($DbUser == $values['Id']){
 					    $selected_mode="selected";	 						 
 					 }					 
 							$templateUser.='<option value="'.$values['Id'].'" '.$selected_mode.'>';

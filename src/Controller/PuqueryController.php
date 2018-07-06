@@ -186,6 +186,7 @@ class PuqueryController extends AppController {
                 $queryResult[$val['UserID']][$val['domainID']][$i]['TLComments'] = $val['TLComments'];
                 $queryResult[$val['UserID']][$val['domainID']][$i]['ModuleId'] = $val['ModuleId'];
                 $queryResult[$val['UserID']][$val['domainID']][$i]['ProductionEntityId'] = $val['ProductionEntityId'];
+                $queryResult[$val['UserID']][$val['domainID']][$i]['InputEntityId'] = $val['InputEntityId'];
             }
 
             $this->set('queryResult', $queryResult);
@@ -241,10 +242,77 @@ class PuqueryController extends AppController {
         $this->set('Puquery', $Puquery);
         $this->render('index');
     }
-
+   
     public function ajaxqueryinsert() {
-        $connection = ConnectionManager::get('default');
-        $session = $this->request->session();
+      
+         $connection = ConnectionManager::get('default');
+         $session = $this->request->session();        
+         $file = $this->request->data('file');
+         $ProjectId = $this->request->data('ProjectId');
+         $InputEntityId = $this->request->data('InputEntityId');
+         $RegionId = $this->request->data('RegionId');
+         $DomainId = $this->request->data('DomainId');
+         $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+         $content = file_get_contents($path);
+         $contentArr = json_decode($content, true);
+         $att_masterId =$contentArr['ProjectConfig']['DomainUrl'];
+            foreach($contentArr['AttributeOrder'][$RegionId] as $key => $value){
+                if($value['AttributeId'] == $att_masterId){
+                           $Projectatt_masterId =$key;
+                }
+            }
+           
+         ///get data//////
+             $selDependencyData = $connection->execute("SELECT TOP 1 Id FROM MC_DependencyTypeMaster where ProjectId=$ProjectId and FieldTypeName='After Normalized_Reference URL' order by Id desc")->fetchAll('assoc');
+           
+            
+           $selData = $connection->execute("SELECT TOP 1 Id,SequenceNumber,AttributeMainGroupId,AttributeSubGroupId FROM MC_CengageProcessInputData where ProjectId=$ProjectId and RegionId=$RegionId and ProductionEntityID='".$_POST['ProductionEntityId']."'  and InputEntityId=$InputEntityId order by Id desc")->fetchAll('assoc');
+           if($selData[0]['SequenceNumber'] > 0){
+               $SeqNumber=$selData[0]['SequenceNumber'] + 1;
+           }
+           else{
+               $SeqNumber=0;
+           }
+         
+         ///get data end//////
+        
+        ///file upload//////////////////////
+         $apendfilename="_".$DomainId."_".$ProjectId;
+        $uploadFolder = "htmlfiles";
+        $allowed = array('doc', 'pdf');
+        $filename = $file['name'];
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $file_info = pathinfo($filename, PATHINFO_FILENAME);
+              /* if (!file_exists($uploadFolder)) {
+                    mkdir($uploadFolder, 0777, true);
+                }
+                */
+       
+             if (in_array($ext, $allowed)) {
+                 
+                 $uploadFName=$file_info."_".$DomainId."_".$ProjectId.".".$ext;
+                 
+                if(!move_uploaded_file($_FILES['file']['tmp_name'], ''.$uploadFolder.'/' .$uploadFName))                        {
+                    $this->Flash->error('Invalid File .');
+                }
+                else{
+                  ///insert///
+                 $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0')";
+            $QryInStatus = $connection->execute($InsertQryStatus);
+                  ///insert end///  
+                }
+             }
+             else{
+                 if($ext !=""){
+                  $this->Flash->error('Invalid uploaded file format !');
+                 }
+                 else{
+                   $this->Flash->error('Upload File Not Choosen!');
+                 }
+             }
+       
+        
+        ///file upload end//////////////////////
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
         $UpdateQryStatus = "update ME_UserQuery set  TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";

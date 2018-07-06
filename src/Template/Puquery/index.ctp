@@ -118,6 +118,7 @@ use Cake\Routing\Router
                 <button type="button" name = 'clear'class="btn btn-primary btn-sm" onclick="return ClearFields();">Clear</button>
             </div>
         </div>
+		<?php echo $this->Form->end(); ?>
     </div>
 </div>
 
@@ -127,7 +128,8 @@ use Cake\Routing\Router
 //pr($queryResult);
 if(!empty($queryResult)){ ?>
 <div id="detail" class="col-sm-12">
-    <?php echo $this->Form->create('',array('name' => 'inputSearch2', 'id' => 'inputSearch2', 'class' => 'form-horizontal', 'type'=> 'post','style'=>'margin:0px !important;width:100%')); ?>
+   
+    <?php echo $this->Form->create('',array('name' => 'inputSearch2', 'id' => 'inputSearch2', 'class' => 'form-horizontal','enctype' => 'multipart/form-data', 'type'=> 'post','style'=>'margin:0px !important;width:100%')); ?>
 
     <!-- Code for collaps starts -->
     <div style="margin:5px;" class="col-sm-12">
@@ -188,8 +190,18 @@ if(!empty($queryResult)){ ?>
                                                     <option value="3">Query Completed</option>
                                                 </select>
                                             </div>
+											 <div class="form-group frmgrp_align">
+                                                <label class="comments">File</label>
+                                                <span><input type="file" name="upfile<?php echo $data3['Id']?>" id="upfile<?php echo $data3['Id']?>"  style="border:none;">
+												<input type="hidden" name="domainId" id="domainId" value="<?php echo $key2;?>">
+												<input type="hidden" name="InputEntityId" id="InputEntityId" value="<?php echo $data3['InputEntityId'];?>">
+												</span>
+												<br>(Allowed Formats: doc and pdf)
+                                            </div>
                                             <div class="form-group frmgrp_align">
                                                 <button name ='frmsubmit' type="button" onclick="return updateQuery('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">Submit</button>
+											   
+												
                                             </div>
 
                                         </div>
@@ -305,7 +317,17 @@ if(!empty($queryResult)){ ?>
         });
     }
 
+	
+	
     function updateQuery(att, ModuleId, ProductionEntityId) {
+		///
+    var file_data = $('#upfile'+att).prop('files')[0];   
+     var form_data = new FormData();                  
+    form_data.append('file', file_data);
+                                 
+   
+		///
+		
         if ($('#mobius_comments' + att).val() == '')
         {
             alert('Enter Comments!');
@@ -317,19 +339,37 @@ if(!empty($queryResult)){ ?>
         status = $('#status' + att).val();
         batchfrom = $('#batch_from').val();
         batchto = $('#batch_to').val();
+		ProjectId = $('#ProjectId').val();
+		RegionId = $('#RegionId').val();
+		DomainId = $('#domainId').val();
+		InputEntityId = $('#InputEntityId').val();
+
 
 
         var result = new Array();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller'=>'puquery','action'=>'ajaxqueryinsert'));?>",
-            data: ({mobiusComment: mobiusComment, queryID: att, status: status, ModuleId: ModuleId, ProductionEntityId: ProductionEntityId}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-                document.getElementById("projectforms").submit();
-            }
-        });
+		form_data.append('mobiusComment', mobiusComment);
+		form_data.append('queryID', att);
+		form_data.append('status', status);
+		form_data.append('ModuleId', ModuleId);
+		form_data.append('ProductionEntityId', ProductionEntityId);
+		form_data.append('ProjectId', ProjectId);
+		form_data.append('RegionId', RegionId);
+		form_data.append('DomainId', DomainId);
+		form_data.append('InputEntityId', InputEntityId);
+		 $.ajax({
+        url: "<?php echo Router::url(array('controller'=>'puquery','action'=>'ajaxqueryinsert'));?>",
+		dataType: 'text',  // what to expect back from the PHP script, if anything
+        cache: false,
+        contentType: false,
+        processData: false,           
+        data: form_data,                         
+        type: 'post',
+        success: function(php_script_response){
+            document.getElementById("projectforms").submit();
+        }
+      });
+		
+  
     }
 
     function formSubmitValidation() {
