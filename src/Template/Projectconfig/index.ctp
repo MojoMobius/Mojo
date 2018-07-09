@@ -231,13 +231,17 @@ use Cake\Routing\Router; ?>
         </div>
 	<div class="col-md-4">
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-6 control-label">Is Cengage Project?</label>
+                <label for="inputPassword3" class="col-sm-6 control-label"> Project Type</label>
                 <div class="col-sm-6">
-                    <div class="col-sm-2" style="margin-top: 3px;">Yes</div>
-                    <div class="col-sm-2" style="margin-top: -5px;"><input <?php echo $selectedCengageyes; ?> type="radio" class="form-control" id="cengage_project__yes" name="CengageProject" value="1"></div>
-                    <div class="col-sm-2" style="margin-top: 3px;">No</div>
-                    <div class="col-sm-2" style="margin-top: -5px;"><input <?php echo $selectedCengageno; ?> type="radio" class="form-control" id="cengage_project__no" name="CengageProject" value="0"></div>
+				
+                    <select name='CengageProject' class="form-control"> 
+						<option value="0" >--select--</option>
+						<option value=1 <?php echo $selectedCengage; ?>>Cengage</option>
+						<option value=2 <?php echo $selectedLease; ?>>Lease</option>
+						<option value="3" <?php echo $selectedOther; ?>>Others</option>
+					</select>
                 </div>
+                    
             </div>
         </div>
         <div class="col-md-4">
@@ -248,6 +252,17 @@ use Cake\Routing\Router; ?>
                 </div>
             </div>
         </div>
+		<div class="col-md-4">
+		<div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">Job Allocation</label>
+                <div class="col-sm-6">
+                    <div class="col-sm-2" style="margin-top: 3px;">Manual</div>
+                    <div class="col-sm-2" style="margin-top: -8px;margin-left:20px;"><input <?php echo $selectedJobManual; ?> type="radio" class="form-control" id="job_allocation_yes" name="job_allocation" value="1"></div>
+                    <div class="col-sm-2" style="margin-top: 3px;">Automated</div>
+                    <div class="col-sm-2" style="margin-top: -8px;margin-left:32px;"><input <?php echo $selectedJobAuto; ?> type="radio" class="form-control" id="job_allocation_no" name="job_allocation" value="0"></div>
+                </div>
+            </div>
+			</div>
         <div class="form-group" style="text-align:center;">
             <div class="col-sm-12">
                 <button type="button" class="btn btn-primary btn-sm" value="Submit" id="testbut" name="testbut" onclick="return validateForm()">Submit</button>

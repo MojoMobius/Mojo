@@ -93,6 +93,18 @@
                 </div>
             </div>
         </div>
+		<div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label"><b>Module From Status</b></label>
+                <div class="col-sm-6">
+                    <div class="col-sm-2" style="margin-top: -5px;">
+                    <?php
+					//pr($fromstatus); exit;
+                     echo $this->Form->select('fromstatus', $fromstatus, ['default'=>$selectedStatusArr,'multiple'=>true,'Id' => 'FromStatus','name' => 'FromStatus','class'=>'form-control','style'=>'width:200px;' ]);
+                    ?>
+               </div> </div>
+            </div>
+        </div>
         <?php if($HygineCheckCnt == '1') { ?>
         <div class="col-md-4">
             <div class="form-group">

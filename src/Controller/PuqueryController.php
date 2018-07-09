@@ -266,7 +266,7 @@ class PuqueryController extends AppController {
              $selDependencyData = $connection->execute("SELECT TOP 1 Id FROM MC_DependencyTypeMaster where ProjectId=$ProjectId and FieldTypeName='After Normalized_Reference URL' order by Id desc")->fetchAll('assoc');
            
             
-           $selData = $connection->execute("SELECT TOP 1 Id,SequenceNumber,AttributeMainGroupId,AttributeSubGroupId FROM MC_CengageProcessInputData where ProjectId=$ProjectId and RegionId=$RegionId and ProductionEntityID='".$_POST['ProductionEntityId']."'  and InputEntityId=$InputEntityId order by Id desc")->fetchAll('assoc');
+           $selData = $connection->execute("SELECT TOP 1 Id,SequenceNumber,AttributeMainGroupId,AttributeSubGroupId FROM MC_CengageProcessInputData where ProjectId=$ProjectId and RegionId=$RegionId and ProductionEntityID='".$_POST['ProductionEntityId']."'  and InputEntityId=$InputEntityId and AttributeMasterId=$att_masterId and DependencyTypeMasterId='".$selDependencyData[0]['Id']."' order by Id desc")->fetchAll('assoc');
            if($selData[0]['SequenceNumber'] > 0){
                $SeqNumber=$selData[0]['SequenceNumber'] + 1;
            }
