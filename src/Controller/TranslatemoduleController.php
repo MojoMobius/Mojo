@@ -77,9 +77,9 @@ class TranslatemoduleController extends AppController {
                 
 //            file_put_contents($uploadFolder.DS."sams.pdf", $mpdf->Output($uploadFolder.DS."sams.pdf"));
             $mpdf->Output($uploadFolder.DS."sams.pdf");
-             $this->Flash->error(__('No Record found for this combination!'));
+//             $this->Flash->error(__('No Record found for this combination!'));
              
-//             $this->Flash->success('The File has been saved.');
+             $this->Flash->success('The File has been saved.');
              return $this->redirect(['action' => 'index']);
             
         }
