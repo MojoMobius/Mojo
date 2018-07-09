@@ -84,10 +84,11 @@ $year2 = date('Y', $ts2);
 $month1 = date('m', $ts1);
 $month2 = date('m', $ts2);
 $countmonth = (($year2 - $year1) * 12) + ($month2 - $month1);
-
+/*
 if($month1 == $month2 && $year1 == $year2){
-    $countmonth = 1;
+    $countmonth = 0;
 }
+*/
 //seperate count end	
 
 $Setmonth=$Arrfdate[0];
@@ -115,12 +116,22 @@ $Arrmonthtitle=array();
 				 //end
 				 
 				  $Mnth="_".(int)$Setmonth."_".(int)$Setyear;
+				// Create a schema collection.
+				$collection = $connection->schemaCollection();
+				// Get the table names
+				$tables = $collection->listTables();
+				if(in_array("ProductionEntityMaster".$Mnth."",$tables)){//if table exist
+				   
 				  $cnt_report = $connection->execute("SELECT count(1) as cnt FROM ProductionEntityMaster".$Mnth."  WHERE StatusId!='' GROUP BY  InputEntityId")->fetchAll('assoc');
 				  $Arrcompleted[]=count($cnt_report);
 				  $f_chart.='{label: "'.date('F Y', strtotime($strdate)).'" , x: '.$j.', y: '.$target_report[0]['mon'].' },';
                                   $f2_chart.='{label: "'.date('F Y', strtotime($strdate)).'" , x: '.$j.', y: '.count($cnt_report).' },';
 				 /////Query end/////
-				 
+				
+				}///table is exist 
+				else{
+					$Arrcompleted[]=0;
+				}
 				 $Setmonth= $Setmonth + 1;
 			 }
 			 
@@ -174,7 +185,6 @@ $Arrmonthtitle=array();
 	    
                    // $this->set('QAreview', $QA_data);
 	  } //check_submit close
-	
 	
 	
 	
