@@ -544,6 +544,7 @@ class ProductionDashBoardsController extends AppController {
 	  
 	  parse_str($_POST['domainId'], $domainarray);
 	  parse_str($_POST['savedId'], $saved_priority);
+	  parse_str($_POST['statusId'], $statusarray);
 	
 	///html file start////////////
 	   $tbl_view='<form method="post" accept-charset="utf-8" class="form-horizontal allocateforms" id="projectforms">';
@@ -560,23 +561,32 @@ class ProductionDashBoardsController extends AppController {
 		   $i=0;
 		   
 		   foreach($searcharray['priority'] as $row):	
-			$j=0;		   
+		    $j=0;		   
 		    $i++;
+                    
 				$tbl_view.='<tr><td>'.$domainarray['domain'][$row].'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="'.$saved_priority['pri_saved'][$row].'" class="form-control " onkeyup="numericvalidation('.$row.');"></td>';
 				////dynamic td///////
 				foreach($Module_key as $val):
 				$j++;
 				///selected user start////////////
-				//echo "select UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'";
 				 $SavedUser = $connection->execute("select UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
 				 $DbUser=$SavedUser[0]['UserId'];	 
 				///selected user end//////////////
+                                ///status check//////////////
+                                 $StatusQuery = $connection->execute("select FromStatus from ME_Module_Level_Config  where ModuleId='" . $val . "' and Project='" . $ProjectId . "'")->fetchAll('assoc');
+                                 if(!empty($StatusQuery)){
+				 $Sts=$StatusQuery[0]['FromStatus'];
+                                 $CheckSts=explode(",",$Sts);
+                                   $readonly="";
+                                   //$statusarray['status'][$row]=2;
+                                  if(in_array($statusarray['status'][$row], $CheckSts)){
+                                  $readonly="disabled";
+                                  }
+                                 }
+                                 ///status check end//////////////
+                                 
 				
-				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
-				
-				$tbl_view.='<input type="hidden" name="module['.$j.'][]" id="module" value="'.$val.'" class="form-control ">';
-				$UserListFinal = array('0' => '--Select Project--');
-				$templateUser="<select name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."'><option value=0>--Select--</option>";
+                                $templateUser="<select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
 					
 				
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
@@ -591,7 +601,10 @@ class ProductionDashBoardsController extends AppController {
 					
 					
 					 $templateUser.='</select>';
+                                         
+				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
 				
+				$tbl_view.='<input type="hidden" name="module['.$j.'][]" id="module" value="'.$val.'" class="form-control ">';
 				$tbl_view.='<td>'.$templateUser.'</td>';
 				endforeach;
 				///dynamic td end////
