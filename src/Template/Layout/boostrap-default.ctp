@@ -58,7 +58,7 @@ $cakeDescription = 'MOJO 2.0';
 //----------------------------------
                 
 //        echo $this->Html->script(array('https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js'));
-        echo $this->Html->script(array('bootstrap/global/global/js/jquery.min.js'));
+//        echo $this->Html->script(array('bootstrap/global/js/jquery.min.js'));
         echo $this->Html->script(array('bootstrap/global/vendor/breakpoints/breakpoints.js'));
         echo $this->Html->script(array('bootstrap/global/vendor/babel-external-helpers/babel-external-helpers.js'));
         echo $this->Html->script(array('bootstrap/global/vendor/jquery/jquery.js'));
