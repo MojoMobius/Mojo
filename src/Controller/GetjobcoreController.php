@@ -48,11 +48,26 @@ class GetjobcoreController extends AppController {
         $moduleId = $session->read("moduleId");
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-        $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
-        $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-        $next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
-        $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
+		 $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
+		if($FromStatus==''){
+			$first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
+			$first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
+			$next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
+			$next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
+        }
+		else {
+			$first_Status_id=$FromStatus;
+			$FromStatusArr=explode(',',$FromStatus);
+			//pr($FromStatusArr);
+			foreach($FromStatusArr as $val){
+			
+			$next_status_idArr[] = $JsonArray['ModuleStatus_Navigation'][$val][1];	
+			}
+			$next_status_id	=implode(',',$next_status_idArr);		
+		}
+		
+		
         $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][12][$moduleId]['production']);
         $moduleName = $JsonArray['Module'][$moduleId];
         $this->set('moduleName', $moduleName);
@@ -61,6 +76,11 @@ class GetjobcoreController extends AppController {
         $frameType = $JsonArray['ProjectConfig']['ProductionView'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
         $domainUrl = $JsonArray['ProjectConfig']['DomainUrl'];
+		$joballocation_type = $JsonArray['ProjectConfig']['joballocation_type'];
+		$userCheck='';
+		if($joballocation_type==1) {
+		//	$userCheck=' AND UserId='.$user_id;
+		}
         if ($frameType == 1) {
             if (isset($this->request->query['job']))
                 $newJob = $this->request->query['job'];
@@ -301,7 +321,9 @@ class GetjobcoreController extends AppController {
             $this->set('session', $session);
             $this->render('/Getjobcore/index_vertical');
             /* GRID END******************************************************************************************************************************************************************* */
-        } elseif ($frameType == 2) {
+        } 
+		elseif ($frameType == 2) 
+		{
 
             if (isset($this->request->data['clicktoviewPre'])) {
                 $page = $this->request->data['page'] - 1;
@@ -669,7 +691,8 @@ class GetjobcoreController extends AppController {
             $this->set('session', $session);
             $dynamicData = $SequenceNumber[0];
             $this->set('dynamicData', $dynamicData);
-        } else {
+        } 
+		else {
 
             
             //----------------------------------$frameType == 3------------------------------//
@@ -754,7 +777,7 @@ class GetjobcoreController extends AppController {
             //exit;
           
             if (empty($InprogressProductionjob)) {
-                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') AND ProjectId=' . $ProjectId.' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') '.$userCheck.' AND ProjectId=' . $ProjectId.' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
                 $FirstStatusId[] =  $productionjob[0]['StatusId'];
                 $FirstStatus =  $productionjob[0]['StatusId'];
                 $NextStatusId = $JsonArray['ModuleStatus_Navigation'][$FirstStatus][1];
@@ -837,7 +860,7 @@ class GetjobcoreController extends AppController {
             $this->set('FirstProjAttrId', $FirstAttribute['ProjectAttributeMasterId']);
             $this->set('FirstGroupId', $FirstAttribute['MainGroupId']);
             $this->set('FirstSubGroupId', $FirstAttribute['SubGroupId']);
-	    $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production']);
+			$this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production']);
             $StaticFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['static'];
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
             $ReadOnlyFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['readonly'];

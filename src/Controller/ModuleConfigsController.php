@@ -139,10 +139,11 @@ class ModuleConfigsController extends AppController {
 		//$fromstatus='--Select--';
 		$statusArr=$contentArr['ModuleStatusList'][$ModuleConfigs['ModuleId']];
 		foreach($statusArr as $value){
-			
+			$statuskey=array_search($value,$contentArr['ProjectStatus']);
+			$fromstatus[$statuskey]=$value;
 		}
 		
-		$fromstatus=$contentArr['ModuleStatusList'][$ModuleConfigs['ModuleId']];
+		//$fromstatus=$contentArr['ModuleStatusList'][$ModuleConfigs['ModuleId']];
 		
         $temp = array();
 
@@ -177,7 +178,7 @@ class ModuleConfigsController extends AppController {
         }
 		$this->request->data['FromStatus']=implode(",", array_keys($this->request->data['FromStatus']));
 
-
+//pr($this->request->data['FromStatus']); exit;
         if ($this->request->is(['post', 'put'])) {
 
             $ModuleConfigs = $this->ModuleConfigs->patchEntity($ModuleConfigs, $this->request->data);
