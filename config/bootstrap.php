@@ -235,7 +235,7 @@ if (Configure::read('debug')) {
 }
 
 Plugin::load('Migrations');
-define("JSONPATH", 'D:\xampp\htdocs\mojoV2\JsonReferance');
+define("JSONPATH", 'D:\xampp\htdocs\mojo_git\JsonReferance');
 define("ProjectStatusProduction",'Production');
 define("ProjectStatusQC",'Validation');
 define("ReadyForQCIdentifier",'ReadyforQC');
