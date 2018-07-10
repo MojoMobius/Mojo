@@ -41,11 +41,11 @@ class ProjectconfigController extends AppController {
             $Id = '';
         }
         $connection = ConnectionManager::get('default');
-        $Cl_listarray = $connection->execute("select Id,ClienttName FROM ClientMaster")->fetchAll('assoc');
+        $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
 		 
         $Cl_list = array('0' => '--Select--');
         foreach ($Cl_listarray as $values):
-            $Cl_list[$values['Id']] = $values['ClienttName'];
+            $Cl_list[$values['Id']] = $values['ClientName'];
         endforeach;
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
         $this->set('Clients', $Cl_list);

@@ -68,7 +68,7 @@ class ProductionDashBoardsTable extends Table {
         $connection = ConnectionManager::get('default');
         
         
-         $modulesArr = $connection->execute("select Id,ClienttName FROM ClientMaster where Id='$ClientId'")->fetchAll('assoc');
+         $modulesArr = $connection->execute("select Id,ClientName FROM ClientMaster where Id='$ClientId'")->fetchAll('assoc');
         
        
       
@@ -84,7 +84,7 @@ class ProductionDashBoardsTable extends Table {
                     $selected = '';
                 }
                 $template.='<option ' . $selected . ' value="' . $value['Id'] . '">';
-                $template.=$value['ClienttName'];
+                $template.=$value['ClientName'];
                 $template.='</option>';
             }
             $template.='</select>';
