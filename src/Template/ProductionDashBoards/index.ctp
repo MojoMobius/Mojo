@@ -40,13 +40,35 @@ use Cake\Routing\Router
             <div id="collapseTw" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                <?php echo $this->Form->create('', array('class' => 'form-horizontal', 'id' => 'projectforms')); ?>
 
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client</label>
+                        <div class="col-sm-6" style="line-height: 0px;">
+                             <?php
+                    if ($ClientId == '') {
+                       
+                         echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId, 'onchange' => 'getProject(this.value)'));
+                       
+                    } else {
+                        echo $ClientId;
+                    }
+                    ?>
+                     
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Project</label>
                         <div class="col-sm-6" style="line-height: 0px;">
-                      <?php 
+                              <div id="LoadProject">
+                      
+                                  <?php 
                      echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getRegion(this.value);getStatus(this.value);getCengageProject(this.value);'));
+                      
+                      
                         ?>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -59,7 +81,7 @@ use Cake\Routing\Router
                     <?php
                     if ($RegionId == '') {
                         $Region = array(0 => '--Select--');
-                        echo $this->Form->input('', array('options' => $Region, 'id' => 'RegionId', 'name' => 'RegionId', 'class' => 'form-control', 'value' => $RegionId,'style' => 'width:220px', 'onchange' => 'getusergroupdetails(this.value)'));
+                        echo $this->Form->input('', array('options' => $Region, 'id' => 'RegionId', 'name' => 'RegionId', 'class' => 'form-control', 'value' => $RegionId,'style' => 'width:180px', 'onchange' => 'getusergroupdetails(this.value)'));
                     } else {
                         echo $RegionId;
                     }
@@ -92,7 +114,7 @@ use Cake\Routing\Router
                         <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">From</label>
                         <div class="col-sm-6" style="line-height: 0px;">
                       <?php
-                    echo $this->Form->input('', array('id' => 'batch_from', 'name' => 'batch_from', 'class' => 'form-control','style' => 'width:220px', 'value' => $postbatch_from));
+                    echo $this->Form->input('', array('id' => 'batch_from', 'name' => 'batch_from', 'class' => 'form-control','style' => 'width:180px', 'value' => $postbatch_from));
                     ?>
                         </div>
                     </div>
@@ -103,22 +125,13 @@ use Cake\Routing\Router
                         <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">To</label>
                         <div class="col-sm-6" style="line-height: 0px;">
                     <?php
-                    echo $this->Form->input('', array('id' => 'batch_to', 'name' => 'batch_to', 'class' => 'form-control','style' => 'width:220px', 'value' => $postbatch_to));
+                    echo $this->Form->input('', array('id' => 'batch_to', 'name' => 'batch_to', 'class' => 'form-control','style' => 'width:150px', 'value' => $postbatch_to));
                     ?>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Search</label>
-                        <div class="col-sm-6" style="line-height: 0px;">
-                  <?php
-            echo $this->Form->input('', array('id' => 'query', 'placeholder' => 'Search', 'name' => 'query', 'class' => 'form-control', 'value' => $postquery));
-            ?>
-                        </div>
-                    </div>
-                </div>
+               
 
 
                 <div class="col-md-4">
@@ -156,7 +169,16 @@ use Cake\Routing\Router
                         </div>
                     </div>
                 </div>
-
+ <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Search</label>
+                        <div class="col-sm-6" style="line-height: 0px;">
+                  <?php
+            echo $this->Form->input('', array('id' => 'query', 'placeholder' => 'Search', 'name' => 'query', 'class' => 'form-control', 'value' => $postquery));
+            ?>
+                        </div>
+                    </div>
+                </div>
 
 
                 <div class="form-group" style="text-align:center;">
@@ -741,7 +763,8 @@ echo "var mandatoryArr = " . $js_array . ";\n";
 
     function Mandatory()
     {
-        if ($('#query').val() == '') {
+        /*if ($('#query').val() == '') {
+        
             if ($('#ProjectId').val() == 0) {
                 alert('Select Project Name');
                 $('#ProjectId').focus();
@@ -760,6 +783,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
                 return false;
             }
         }
+        */
     }
 
 </script>

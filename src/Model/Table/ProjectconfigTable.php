@@ -28,6 +28,39 @@ class ProjectconfigTable extends Table {
     public static function defaultConnectionName() {
         return 'd2k';
     }
+     public function findClient(Query $query, array $options) {
+
+        $ClientId = $options['ClientId'];
+        $connection = ConnectionManager::get('default');
+        
+        
+         $modulesArr = $connection->execute("select Id,ClienttName FROM ClientMaster where Id='$ClientId'")->fetchAll('assoc');
+        
+       
+      
+        $template = '';
+        $template = '<select name="ClientId"  id="ClientId" class="form-control"><option value=0>--Select--</option>';
+        if (!empty($modulesArr)) {
+
+            foreach ($modulesArr as $key => $value) {
+             
+                if ($value['Id'] == $ClientId) {
+                    $selected = 'selected=' . $value['Id'];
+                } else {
+                    $selected = '';
+                }
+                $template.='<option ' . $selected . ' value="' . $value['Id'] . '">';
+                $template.=$value['ClienttName'];
+                $template.='</option>';
+            }
+            $template.='</select>';
+            return $template;
+            
+        } else {
+            $template.='</select>';
+            return $template;
+        }
+    }
 
     public function findProjectcheck(Query $query, array $options) {
         //$connection = ConnectionManager::get('d2k');

@@ -38,7 +38,7 @@ class ProductionDashBoardsController extends AppController {
         //$this->set('Projects', $ProListFinal);
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
-        $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
+        $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId']]);
         $ProListFinal = array('0' => '--Select Project--');
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
@@ -46,6 +46,24 @@ class ProductionDashBoardsController extends AppController {
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
         $this->set('Projects', $ProListFinal);
         $this->set('sessionProjectId', $sessionProjectId);
+        
+        $connection = ConnectionManager::get('default');
+        $Cl_listarray = $connection->execute("select Id,ClienttName FROM ClientMaster")->fetchAll('assoc');
+		 
+        $Cl_list = array('0' => '--Select--');
+        foreach ($Cl_listarray as $values):
+            $Cl_list[$values['Id']] = $values['ClienttName'];
+        endforeach;
+        //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+        $this->set('Clients', $Cl_list);
+        
+        if ($this->request->data['ClientId'] > 0) {
+                 $Clients = $this->ProductionDashBoards->find('client', ['ClientId' => $this->request->data['ClientId']]);
+                 $this->set('ClientId', $Clients);
+                } else {
+                   
+                    $this->set('ClientId', '');
+        }
         
 
         if (count($ProListFinal) == 2) {
@@ -579,7 +597,7 @@ class ProductionDashBoardsController extends AppController {
                                  $CheckSts=explode(",",$Sts);
                                    $readonly="";
                                    //$statusarray['status'][$row]=2;
-                                  if(in_array($statusarray['status'][$row], $CheckSts)){
+                                  if(!in_array($statusarray['status'][$row], $CheckSts)){
                                   $readonly="disabled";
                                   }
                                  }

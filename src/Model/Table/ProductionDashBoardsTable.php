@@ -62,7 +62,39 @@ class ProductionDashBoardsTable extends Table {
             return $template;
         }
     }
+ public function findClient(Query $query, array $options) {
 
+        $ClientId = $options['ClientId'];
+        $connection = ConnectionManager::get('default');
+        
+        
+         $modulesArr = $connection->execute("select Id,ClienttName FROM ClientMaster where Id='$ClientId'")->fetchAll('assoc');
+        
+       
+      
+        $template = '';
+        $template = '<select name="ClientId"  id="ClientId" class="form-control"><option value=0>--Select--</option>';
+        if (!empty($modulesArr)) {
+
+            foreach ($modulesArr as $key => $value) {
+             
+                if ($value['Id'] == $ClientId) {
+                    $selected = 'selected=' . $value['Id'];
+                } else {
+                    $selected = '';
+                }
+                $template.='<option ' . $selected . ' value="' . $value['Id'] . '">';
+                $template.=$value['ClienttName'];
+                $template.='</option>';
+            }
+            $template.='</select>';
+            return $template;
+            
+        } else {
+            $template.='</select>';
+            return $template;
+        }
+    }
     public function findStatuslist(Query $query, array $options) {
         $path = JSONPATH . '\\ProjectConfig_' . $options['ProjectId'] . '.json';
 
@@ -882,10 +914,15 @@ class ProductionDashBoardsTable extends Table {
 
     public function findGetMojoProjectNameList(Query $query, array $options) {
         $proId = $options['proId'];
+        $ClientId = $options['ClientId'];
+        $clientCheck="";
+        if($ClientId > 0){
+        $clientCheck="client_id ='".$ClientId."' and ";    
+        }
 
         $test = implode(',', $options['proId']);
         $connection = ConnectionManager::get('default');
-        $Field = $connection->execute('select ProjectName,ProjectId from ProjectMaster where ProjectId in (' . $test . ') AND RecordStatus = 1');
+        $Field = $connection->execute('select ProjectName,ProjectId from ProjectMaster where '.$clientCheck.' ProjectId in (' . $test . ') AND RecordStatus = 1');
         $Field = $Field->fetchAll('assoc');
         return $Field;
     }

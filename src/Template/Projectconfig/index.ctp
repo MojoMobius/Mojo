@@ -4,6 +4,11 @@
 <?php
 
 use Cake\Routing\Router; ?>
+<style>
+    .select{
+        margin-top: -18px !important;
+    }
+</style>
 <script type="text/javascript">
     function validateForm()
     {
@@ -141,6 +146,24 @@ use Cake\Routing\Router; ?>
     <div class="formcontent">
         <h4>Project Configuration</h4>
         <?php echo $this->Form->create($Projectconfig, array('class' => 'form-horizontal', 'id' => 'projectforms','name' => 'projectforms')); ?>
+       
+          <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">Client</label>
+                <div class="col-sm-6">
+                     <?php 
+                    if ($ClientIds == '') { ?>
+                         <?php 
+                     echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId));
+                        ?>
+
+                    <?php } else {
+                        echo $ClientIds;
+                    } ?>
+                 
+                </div>
+            </div>
+        </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Project Id</label>
