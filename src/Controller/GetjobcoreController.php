@@ -884,7 +884,6 @@ class GetjobcoreController extends AppController {
 		$InputEntityId=$productionjobNew[0]['InputEntityId'];
                 $maxSeq=array();$tempDep='';
                 $finalprodValue = array();
-             
                 
                 foreach ($productionjobNew as $key => $value) {
                     //pr($value);
@@ -897,7 +896,7 @@ class GetjobcoreController extends AppController {
                         //exit;
                         
                         //$specialArr=$this->xml2array($specialArr);
-                        
+                       
                         foreach($specialArr as $key2Temp=>$value2){
                             $key2=  str_replace('_x003', '', $key2Temp);
                             $key2=  str_replace('_', '', $key2);
@@ -936,7 +935,9 @@ class GetjobcoreController extends AppController {
 //                        }
                     //}
                 }
-               //pr($finalprodValue);
+//                echo '<pre>';
+//                print_r($StaticFields);
+//                exit;
                     $staticFields = array();$static=0;
                     foreach ($StaticFields as $key => $value) {
                         foreach($staticDepenIds as $depkey=>$depval) {
@@ -946,7 +947,6 @@ class GetjobcoreController extends AppController {
                             }
                         }
                     } 
-                       
                 //$DependancyId = $DependentMasterIds['InputValue']['Id'];
                 $DependancyId = $DependentMasterIds['InputValue'];
                  $getDomainUrlVal = $finalprodValue[$domainUrl][1][$DependancyId];
@@ -984,9 +984,10 @@ class GetjobcoreController extends AppController {
                         }
                     }
                 }
-                //echo $maxSeq;
-//                pr($finalprodValue);
-//               exit;
+                $ProjectId = $productionjobNew[0]['ProjectId'];
+                $ProjectName = $JsonArray[$ProjectId];
+                
+                $this->set('ProjectName', $ProjectName);
                 $this->set('DependentMasterIds', $DependentMasterIds);
                 $this->set('processinputdata', $finalprodValue);
                 $this->set('GrpSercntArr', $finalGrpprodValue);
@@ -1776,6 +1777,7 @@ class GetjobcoreController extends AppController {
         $connection = ConnectionManager::get('default');
         $ProjectId = $_POST['ProjectId'];
         $RegionId = $_POST['RegionId'];
+        $StatusId = $_POST['StatusId'];
         $InputEntityId = $_POST['InputEntityId'];
         $ProductionEntityID = $_POST['ProductionEntityID'];
         $moduleId = $session->read("moduleId");
@@ -1842,7 +1844,7 @@ class GetjobcoreController extends AppController {
                     }
                     }
                    // echo "INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$next_status_id,$ProductionEntityID)";
-                  $updateTable=$connection->execute("INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity,ActStartDate,BatchID,BatchCreated) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$next_status_id,$ProductionEntityID,'$ActStartDate','$BatchId','$BatchCreated')");    
+                  $updateTable=$connection->execute("INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity,ActStartDate,BatchID,BatchCreated) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$StatusId,$ProductionEntityID,'$ActStartDate','$BatchId','$BatchCreated')");    
                 }
             }
                 

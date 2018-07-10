@@ -453,7 +453,8 @@ if ($NoNewJob == 'NoNewJob') {
             <div class="col-xxl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="page-header p-l-0 p-r-0">
                     <div class="projet-details">
-                        <h3 class="page-title"><div class="col-md-8 font-size-14">
+                        <h3 class="page-title">
+                            <div class="col-md-4 font-size-14">
                         <?php 
                         $n= 0;
                         ?>
@@ -468,7 +469,10 @@ if ($NoNewJob == 'NoNewJob') {
                         ?></b></div>
 
                     </div>
-                            
+                            <div class="col-md-4 font-size-14">
+                        <?php echo "Project Name : ". $ProjectName; ?>
+
+                    </div> 
                             <label class="pull-right font-size-14">Timer 
                                 <span class="badge" id='countdown'>
                                     <div class="col-md-4">
@@ -2893,12 +2897,13 @@ $(document).keydown(function(e) {
             ProductionEntityID = $("#ProductionEntityID").val();
             InputEntityId = $("#InputEntityId").val();
             $("#save_btn").html("Please wait! Saving...");
+            var status = "<?php echo $productionjob['StatusId']; ?>";
             //$("#save_btn").attr("disabled", "disabled");
             
             $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsave')); ?>",
-                data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId}),
+                data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status}),
                 dataType: 'json',
                 async: false,
                 success: function (result) {
