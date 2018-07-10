@@ -763,7 +763,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
 
     function Mandatory()
     {
-        /*if ($('#query').val() == '') {
+        if ($('#query').val() == '') {
         
             if ($('#ProjectId').val() == 0) {
                 alert('Select Project Name');
@@ -783,7 +783,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
                 return false;
             }
         }
-        */
+        
     }
 
 </script>
@@ -968,4 +968,16 @@ $("#pri_id"+id).keypress(function (e) {
    });
 }
 */
+function getProject(id){
+  $("#LoadProject").html('Loading...');
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxProject')); ?>',
+            
+            data: {ClientId: id},
+            type: 'POST',
+            success: function (res) { 
+	     $("#LoadProject").html(res);
+            }
+        });
+}    
 </script>

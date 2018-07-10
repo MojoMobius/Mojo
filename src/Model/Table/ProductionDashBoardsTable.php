@@ -35,7 +35,7 @@ class ProductionDashBoardsTable extends Table {
         }
         $call = 'getModule();';
         $template = '';
-        $template.='<select name="RegionId" id="RegionId"  class="form-control" style="margin-top:5px;width:220px;" onchange="getusergroupdetails(this.value);"><option value=0>--Select--</option>';
+        $template.='<select name="RegionId" id="RegionId"  class="form-control" style="margin-top:5px;width:180px;" onchange="getusergroupdetails(this.value);"><option value=0>--Select--</option>';
         if (file_exists($path)) {
             $content = file_get_contents($path);
             $contentArr = json_decode($content, true);
@@ -105,7 +105,7 @@ class ProductionDashBoardsTable extends Table {
 
         $call = 'getModule();';
         $template = '';
-        $template.='<select name="status[]" multiple=true id="status"  class="form-control" style="height:120px;width:220px">';
+        $template.='<select name="status[]" multiple=true id="status"  class="form-control" style="height:120px;width:180px">';
         if (file_exists($path)) {
             $content = file_get_contents($path);
             $contentArr = json_decode($content, true);
@@ -187,7 +187,7 @@ class ProductionDashBoardsTable extends Table {
         $queries = $queries->fetchAll('assoc');
 
         $template = '';
-        $template.='<select multiple=true name="user_id[]" id="user_id"  class="form-control" style="height:120px;width:220px">';
+        $template.='<select multiple=true name="user_id[]" id="user_id"  class="form-control" style="height:120px;width:180px">';
         if (!empty($queries)) {
             foreach ($queries as $key => $val):
                 if ($key == $UserId) {
@@ -925,6 +925,40 @@ class ProductionDashBoardsTable extends Table {
         $Field = $connection->execute('select ProjectName,ProjectId from ProjectMaster where '.$clientCheck.' ProjectId in (' . $test . ') AND RecordStatus = 1');
         $Field = $Field->fetchAll('assoc');
         return $Field;
+    }
+    public function findajaxProjectNameList(Query $query, array $options) {
+         $proId = $options['proId'];
+         $ClientId = $options['ClientId'];
+        $clientCheck="";
+        if($ClientId > 0){
+        $clientCheck="client_id ='".$ClientId."' and ";    
+        }
+         $test = implode(',', $options['proId']);
+        $connection = ConnectionManager::get('default');
+        
+        
+         $modulesArr =  $connection->execute('select ProjectName,ProjectId from ProjectMaster where '.$clientCheck.' ProjectId in (' . $test . ') AND RecordStatus = 1');
+        
+       
+      
+        $template = '';
+        $template = '<select name="ProjectId"  id="ProjectId" class="form-control"><option value=0>--Select--</option>';
+        if (!empty($modulesArr)) {
+
+            foreach ($modulesArr as $key => $value) {
+             
+               
+                $template.='<option  value="' . $value['ProjectId'] . '">';
+                $template.=$value['ProjectName'];
+                $template.='</option>';
+            }
+            $template.='</select>';
+            return $template;
+            
+        } else {
+            $template.='</select>';
+            return $template;
+        }
     }
 
     public function Periods($st, $ed) {
