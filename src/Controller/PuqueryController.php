@@ -305,6 +305,7 @@ class PuqueryController extends AppController {
              else{
                  if($ext !=""){
                   $this->Flash->error('Invalid uploaded file format !');
+				  exit;
                  }
                  else{
                   //  $this->Flash->error('Upload File Not Choosen!');
