@@ -2896,6 +2896,7 @@ $(document).keydown(function(e) {
             RegionId = $("#RegionId").val();
             ProductionEntityID = $("#ProductionEntityID").val();
             InputEntityId = $("#InputEntityId").val();
+			TimeTaken = $("#TimeTaken").val();
             $("#save_btn").html("Please wait! Saving...");
             var status = "<?php echo $productionjob['StatusId']; ?>";
             //$("#save_btn").attr("disabled", "disabled");
@@ -2903,7 +2904,7 @@ $(document).keydown(function(e) {
             $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsave')); ?>",
-                data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status}),
+                data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status,TimeTaken:TimeTaken}),
                 dataType: 'json',
                 async: false,
                 success: function (result) {

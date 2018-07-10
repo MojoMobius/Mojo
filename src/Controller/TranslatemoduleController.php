@@ -8,7 +8,9 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
 //require_once __DIR__ . '/vendor/autoload.php';
-require_once(ROOT . DS . 'vendor' . DS . 'mpdf' . DS . 'library_vendor' . DS . 'autoload.php');
+//require_once(ROOT . DS . 'vendor' . DS . 'mpdf' . DS . 'vendor' . DS . 'autoload.php');
+//require_once(ROOT .'/vendor/mpdf/mpdf.php');
+
 
 /**
  * Bookmarks Controller
@@ -37,7 +39,7 @@ class TranslatemoduleController extends AppController {
     }
 
     public function index() {
-
+     
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -66,22 +68,21 @@ class TranslatemoduleController extends AppController {
 
             $mpdf = new \Mpdf\Mpdf();
             $strContent = $this->request->data['translatehtml'];
-           //$mpdf->WriteHTML('<h1>Hello world!</h1>');
+            //$mpdf->WriteHTML('<h1>Hello world!</h1>');
             $mpdf->WriteHTML($strContent);
             $uploadFolder = "InputFiles";
-//            $mpdf->Output();
-            
-             if (!file_exists($uploadFolder)) {
-                    mkdir($uploadFolder, 0777, true);
-                }
-                
+
+
+            if (!file_exists($uploadFolder)) {
+                mkdir($uploadFolder, 0777, true);
+            }
+
 //            file_put_contents($uploadFolder.DS."sams.pdf", $mpdf->Output($uploadFolder.DS."sams.pdf"));
-            $mpdf->Output($uploadFolder.DS."sams.pdf");
+            $mpdf->Output($uploadFolder . DS . "sams.pdf");
 //             $this->Flash->error(__('No Record found for this combination!'));
-             
-             $this->Flash->success('The File has been saved.');
-             return $this->redirect(['action' => 'index']);
-            
+
+            $this->Flash->success('The File has been saved.');
+            return $this->redirect(['action' => 'index']);
         }
 
 

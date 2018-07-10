@@ -79,7 +79,7 @@ class GetjobcoreController extends AppController {
 		$joballocation_type = $JsonArray['ProjectConfig']['joballocation_type'];
 		$userCheck='';
 		if($joballocation_type==1) {
-		//	$userCheck=' AND UserId='.$user_id;
+			$userCheck=' AND UserId='.$user_id;
 		}
         if ($frameType == 1) {
             if (isset($this->request->query['job']))
