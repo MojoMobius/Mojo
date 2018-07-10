@@ -71,7 +71,7 @@ class TranslatemoduleController extends AppController {
             //$mpdf->WriteHTML('<h1>Hello world!</h1>');
             $mpdf->WriteHTML($strContent);
             $uploadFolder = "InputFiles";
-//            $mpdf->Output();
+
 
             if (!file_exists($uploadFolder)) {
                 mkdir($uploadFolder, 0777, true);
