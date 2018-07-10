@@ -777,7 +777,7 @@ class GetjobcoreController extends AppController {
             //exit;
           
             if (empty($InprogressProductionjob)) {
-                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') '.$userCheck.' AND ProjectId=' . $ProjectId.' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') '.$userCheck.' AND ProjectId=' . $ProjectId.' Order by Priority desc,ProductionEntity,StatusId Desc')->fetchAll('assoc');
                 $FirstStatusId[] =  $productionjob[0]['StatusId'];
                 $FirstStatus =  $productionjob[0]['StatusId'];
                 $NextStatusId = $JsonArray['ModuleStatus_Navigation'][$FirstStatus][1];
