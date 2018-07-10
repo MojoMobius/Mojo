@@ -40,6 +40,16 @@ class ProjectconfigController extends AppController {
         } else {
             $Id = '';
         }
+        $connection = ConnectionManager::get('default');
+        $Cl_listarray = $connection->execute("select Id,ClienttName FROM ClientMaster")->fetchAll('assoc');
+		 
+        $Cl_list = array('0' => '--Select--');
+        foreach ($Cl_listarray as $values):
+            $Cl_list[$values['Id']] = $values['ClienttName'];
+        endforeach;
+        //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+        $this->set('Clients', $Cl_list);
+        
         //echo $Id;
         //exit;
         if ($this->request->is('post')) {
@@ -51,6 +61,7 @@ class ProjectconfigController extends AppController {
             $default_dashboard_count = $this->request->data('default_dashboard_count');
             $quality_limit = $this->request->data('quality_limit');
             $monthly_target = $this->request->data('monthly_target');
+            $ClientId = $this->request->data('ClientId');
             $input_mandatory = $this->request->data('input_mandatory');
             $is_bulk = $this->request->data('is_bulk');
             $hygine_check = $this->request->data('hygine_check');
@@ -80,6 +91,7 @@ class ProjectconfigController extends AppController {
                 $Projectconfigmaster->ProductionView = $default_prod_view;
                 $Projectconfigmaster->QualityLimit = $quality_limit;
                 $Projectconfigmaster->MonthlyTarget = $monthly_target;
+                $Projectconfigmaster->client_id = $ClientId;
                 $Projectconfigmaster->InputCheck = $input_mandatory;
                 $Projectconfigmaster->isBulk = $is_bulk;
                 $Projectconfigmaster->HygineCheck = $hygine_check;
@@ -123,6 +135,9 @@ class ProjectconfigController extends AppController {
   //          pr($ProEditList);
 //            exit;
             foreach ($ProEditList as $query):
+                $ClientId = $query->client_id;
+           
+                
                 $ProjectIdEdit = $query->ProjectId;
                 $ProjectNameEdit = $query->ProjectName;
                 $workflow_templateEdit = $query->ProjectTypeId;
@@ -174,6 +189,14 @@ class ProjectconfigController extends AppController {
                     $selectedOthers = "selected=selected";
                 }
             endforeach;
+             if ($ClientId > 0) {
+                 $Clients = $this->Projectconfig->find('client', ['ClientId' => $ClientId]);
+                 $this->set('ClientIds', $Clients);
+                } else {
+                    $this->set('ClientIds', 0);
+                }
+        
+        
         }
         $this->set(compact('ProjectIdEdit'));
         $this->set(compact('ProjectNameEdit'));
