@@ -38,7 +38,7 @@ class ProductionDashBoardsController extends AppController {
         //$this->set('Projects', $ProListFinal);
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
-        $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId']]);
+        $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
         $ProListFinal = array('0' => '--Select Project--');
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
@@ -48,11 +48,11 @@ class ProductionDashBoardsController extends AppController {
         $this->set('sessionProjectId', $sessionProjectId);
         
         $connection = ConnectionManager::get('default');
-        $Cl_listarray = $connection->execute("select Id,ClienttName FROM ClientMaster")->fetchAll('assoc');
+        $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
 		 
         $Cl_list = array('0' => '--Select--');
         foreach ($Cl_listarray as $values):
-            $Cl_list[$values['Id']] = $values['ClienttName'];
+            $Cl_list[$values['Id']] = $values['ClientName'];
         endforeach;
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
         $this->set('Clients', $Cl_list);
@@ -661,6 +661,19 @@ class ProductionDashBoardsController extends AppController {
 		
 		exit;
 	}
-	
+	public function ajaxProject() {        
+        $session = $this->request->session();
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+        $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+        $ProList = $this->ProductionDashBoards->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId']]);
+       echo $ProList;
+       exit;
+        
+   }
 
 }
