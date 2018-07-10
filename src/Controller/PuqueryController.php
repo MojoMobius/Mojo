@@ -322,7 +322,12 @@ class PuqueryController extends AppController {
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
             $first_Status_name = $JsonArray['ModuleStatusList'][$_POST['ModuleId']][0];
             $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-            $UpdateQryStatus = "update $moduleTable set  StatusId='" . $first_Status_id . "',QueryResolved=1 ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ";
+            $SelectQryStatus = $connection->execute("Select StatusId from $moduleTable where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ")->fetchAll('assoc');
+            $QryStatus = $SelectQryStatus[0]['StatusId'];
+            $Status_Id = $JsonArray['ModuleStatus_Navigation'][$QryStatus][1];
+            //print_r($QryStatus);
+           // exit;
+            $UpdateQryStatus = "update $moduleTable set  StatusId='" . $Status_Id . "',QueryResolved=1 ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ";
             $QryStatus = $connection->execute($UpdateQryStatus);
             $UpdateQryStatus = "update ME_Production_TimeMetric set StatusId='" . $first_Status_id . "' where ProductionEntityID='" . $_POST['ProductionEntityId'] . "' AND Module_Id=" . $_POST['ModuleId'];
             $QryStatus = $connection->execute($UpdateQryStatus);
