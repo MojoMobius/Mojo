@@ -600,6 +600,7 @@ class ProductionDashBoardsController extends AppController {
                                   if(!in_array($statusarray['status'][$row], $CheckSts)){
                                   $readonly="disabled";
                                   }
+								  
                                  }
                                  ///status check end//////////////
                                  
