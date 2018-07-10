@@ -942,7 +942,7 @@ class ProductionDashBoardsTable extends Table {
        
       
         $template = '';
-        $template = '<select name="ProjectId"  id="ProjectId" class="form-control"><option value=0>--Select--</option>';
+        $template = '<select name="ProjectId"  id="ProjectId" class="form-control" onchange="getRegion(this.value);getStatus(this.value);getCengageProject(this.value);"><option value=0>--Select--</option>';
         if (!empty($modulesArr)) {
 
             foreach ($modulesArr as $key => $value) {
