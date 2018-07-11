@@ -865,7 +865,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 </div>
                                                                 <div class="col-md-3 form-status">
                                                                 <div class="form-group status">
-                                                                    <select id="<?php echo $key.'_'.$keysub.'_'.$valprodFields["AttributeMasterId"].'_'.$tempSq;?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName_Disposition; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect subGrpDisp_<?php echo $key; ?>_<?php echo $keysub; ?>">
+                                                                    <select style="padding-RIGHT:59px" id="<?php echo $key.'_'.$keysub.'_'.$valprodFields["AttributeMasterId"].'_'.$tempSq;?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName_Disposition; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect subGrpDisp_<?php echo $key; ?>_<?php echo $keysub; ?>">
                                                                         <option value="">--</option>
                                                                         <option value="A" <?php
                                                                        // echo "DispositionFieldsValue_".$DispositionFieldsValue;
@@ -2167,7 +2167,7 @@ $(document).keydown(function(e) {
 //                                            var htmlfile = element['HtmlFileName'];
 //                                            cols += '<a href="#" title=' + element['AttributeValue'] + ' value="' + htmlfile + '" id="' + htmlfile + '" onclick="loadPDF(this.id,1);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
 //                                        } else {
-                                            cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDF(this.id);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
+                                            cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title="' + element['AttributeValue'] + '" value="' + element['AttributeValue'] + '" id="' + element['AttributeValue'] + '" onclick="loadPDF(this.id);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
                                        // }
                                         cols += '</div>';
                                         cols += '</div>';
@@ -2668,7 +2668,7 @@ $(document).keydown(function(e) {
 //                                        var htmlfile = element['HtmlFileName'];
 //                                        cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value="' + htmlfile + '" id="' + htmlfile + '" onclick="loadPDF(this.id,0);"  class="current text-center text update-cart info_link">' + element['AttributeValue'].substring(0, 45) + '</a>';
 //                                    } else if (element['AttributeValue'] != '' && element['AttributeValue'] != null) {
-                                        cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDFUrl(this.id);" class="current text-center text">' + element['AttributeValue'].substring(0, 45) + '</a>';
+                                        cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title="' + element['AttributeValue'] + '" value="' + element['AttributeValue'] + '" id="' + element['AttributeValue'] + '" onclick="loadPDFUrl(this.id);" class="current text-center text">' + element['AttributeValue'].substring(0, 45) + '</a>';
                                   //  }
                                     cols += '</div>';
                                     cols += '</div>';
