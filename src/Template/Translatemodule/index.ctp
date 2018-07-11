@@ -178,7 +178,8 @@ if ($NoNewJob == 'NoNewJob') {
                                 <input type="hidden" name="ProjattrId" id="ProjattrId">
                                 <input type="hidden" name="seq" id="seq">
                                 <input type="hidden" name="refUrl" id="refUrl">
-                                  <?php 
+                                <input type="text" name="pdffilename" id="pdffilename">
+                                  <?php
 //                                    $path = JSONPATH . '\\filenews.htm';
                                    // $path = JSONPATH . '\\sample.html';
                                     //$content = file_get_contents($path);
@@ -681,7 +682,7 @@ if ($NoNewJob == 'NoNewJob') {
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
                             $('#exampleTabsOne').show();
                             var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-                            
+                            $("#pdffilename").val(obj['attrinitialhtml']);
                             loadhtmlforeditor(htmlfileinitial);
     
                             document.getElementById('frame1').data = htmlfileinitial;
@@ -1046,6 +1047,7 @@ if ($NoNewJob == 'NoNewJob') {
                                 $('#exampleTabsOne').show();
                                 var htmlfile = "<?php echo HTMLfilesPath; ?>" + obj['htmlfile'];
                                 // call for html loader
+                                $("#pdffilename").val(obj['htmlfile']);
                                 loadhtmlforeditor(htmlfile);
                                 
                                 document.getElementById('frame1').data = htmlfile;
