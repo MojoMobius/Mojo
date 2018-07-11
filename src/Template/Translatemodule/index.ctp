@@ -238,6 +238,7 @@ if ($NoNewJob == 'NoNewJob') {
             }
 
             function loadhtmlforeditor(filename) {
+				alert(filename);
                 $.ajax({
                     url: filename,
                     context: document.body,
@@ -653,6 +654,7 @@ if ($NoNewJob == 'NoNewJob') {
 
 
         $(document).ready(function () {
+			
 
             $('#multiplelinkbutton').hide();
             //$('.chk-wid-Url').hide();
@@ -904,7 +906,7 @@ if ($NoNewJob == 'NoNewJob') {
     //                                        if (element['HtmlFileName'] != '' && element['HtmlFileName'] != null) {
     //                                           
     //                                        } else {
-                                    cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDF(this.id);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
+                                    cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title="' + element['AttributeValue'] + '" value="' + element['AttributeValue'] + '" id="' + element['AttributeValue'] + '" onclick="loadPDF(this.id);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
                                     // }
                                     cols += '</div>';
                                     cols += '</div>';
@@ -1040,6 +1042,7 @@ if ($NoNewJob == 'NoNewJob') {
                     dataType: 'text',
                     async: true,
                     success: function (result) {
+						alert(result);
                         if (result != '' && result != null) {
                             $('.CntBadge').hide();
                             $('#exampleFillIn').modal('hide');
@@ -1314,7 +1317,7 @@ if ($NoNewJob == 'NoNewJob') {
                                     cols += '<div class="col-xs-12 col-xl-4">';
                                     cols += '<div class="srcblock box1 update-cart" id="demo" data-dismiss="modal">';
 
-                                    cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDFUrl(this.id);" class="current text-center text">' + element['AttributeValue'].substring(0, 45) + '</a>';
+                                    cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title="' + element['AttributeValue'] + '" value="' + element['AttributeValue'] + '" id="' + element['AttributeValue'] + '" onclick="loadPDFUrl(this.id);" class="current text-center text">' + element['AttributeValue'].substring(0, 45) + '</a>';
 
                                     cols += '</div>';
                                     cols += '</div>';
