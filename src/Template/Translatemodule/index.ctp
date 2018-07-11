@@ -238,7 +238,6 @@ if ($NoNewJob == 'NoNewJob') {
             }
 
             function loadhtmlforeditor(filename) {
-				alert(filename);
                 $.ajax({
                     url: filename,
                     context: document.body,
@@ -688,9 +687,10 @@ if ($NoNewJob == 'NoNewJob') {
                             $('#exampleTabsOne').show();
                             var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
 
-var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslateOutput/"+obj['attrinitialhtml'].replace(/\..+$/, '')+".html";
+var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj['attrinitialhtml'].replace(/\..+$/, '')+".html";
 
                             $("#pdffilename").val(obj['attrinitialhtml']);
+                            $("#pdffilename").val('12 3.html');
                             loadhtmlforeditor(xhtmlfileinitial);
     
                             document.getElementById('frame1').data = htmlfileinitial;
