@@ -14,13 +14,15 @@
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">-->
 
+
 <script src="webroot/ckeditor/ckeditor.js"></script>
 <script src="webroot/ckeditor/samples/js/sample.js"></script>
+<?php
+use Cake\Routing\Router;
+?>
 
 
 <?php
-
-use Cake\Routing\Router;
 
 if ($NoNewJob == 'NoNewJob') {
     ?>
@@ -67,388 +69,7 @@ if ($NoNewJob == 'NoNewJob') {
 <!--    <div id="example" class="container-fluid" style="margin-bottom:-10px;">-->
 <!-- Project List Starts -->
 
-<script>
-    //  Breakpoints();
-</script>
-<style type="text/css">
-    .modal-footer{border-top: 1px solid #e4eaec;}
-    .modal-header{border-bottom: 1px solid #e4eaec;}
-    .query{vertical-align:top;margin-right:30px;}
-    body{padding-top:60px !important;}
-
-    .site-menu-sub .site-menu-item > a{padding:0 !important;}
-    .nav.navbar-toolbar.navbar-right.navbar-toolbar-right .dropdown-menu{left:auto !important;}
-    .navbar-mega .dropdown-menu{left: 0px !important;width: 200px !important;}
-    ul.site-menu-sub.site-menu-normal-list{    padding-left: 20px !important;}
-    .site-menu-sub .site-menu-item > a:hover {
-        color: rgba(179, 174, 174, 0.8) !important;
-        background-color: rgba(255, 255, 255, .02);
-    }
-    .vsplitbar {
-        width: 4px;
-        background: #e4eaec;
-    }
-    textarea{border:1px solid #e4eaec;resize:none;}
-
-    /*        iframe{border:none;width:100%;height: 369px;}*/
-    object{height: 81% !important;
-           position: absolute;}
-    /*    object{border:none;width:100%;height: 369px;}*/
-
-    .badge{display: inline-block;
-           min-width: 10px;
-           padding: 3px 7px;
-           font-size: 12px;
-           font-weight: 700;
-           line-height: 1;
-           color: #fff;
-           text-align: center;
-           white-space: nowrap;
-           vertical-align: middle;
-           background-color: #777;
-           border-radius: 10px;}
-
-    .lblcolor{color:#b7b7b7 !important;}
-
-    /* ----------------------------------------------- */
-    /* Fold out side bar using Canvas starts */
-    /* ----------------------------------------------- */
-
-    .offcanvas {
-        position: fixed;
-        z-index: 9999;
-        display: none;
-        transform: translate3d(0, 0, 0);
-        transition: transform 800ms cubic-bezier(0.645, 0.045, 0.355, 1)
-    }
-
-    .offcanvas--top {
-        top: -360px;
-        left: 0;
-        width: 100vw;
-        height: 360px
-    }
-
-    .offcanvas--top--active { transform: translate3d(0, 360px, 0) }
-
-    .offcanvas--right {
-        top: 67px;
-        right: -466px;
-        width: 460px;
-        height: 100vh;
-    }
-
-    .offcanvas--right--active { transform: translate3d(-466px, 0, 0);right:-466px; }
-
-    .offcanvas--bottom {
-        bottom: -360px;
-        left: 0;
-        width: 100vw;
-        height: 360px
-    }
-
-    .offcanvas--bottom--active { transform: translate3d(0, -360px, 0) }
-
-    .offcanvas--left {
-        top: 0;
-        left: -360px;
-        width: 360px;
-        height: 100vh;
-    }
-
-    .offcanvas--left--active { transform: translate3d(360px, 0, 0) }
-
-    .offcanvas--initialized { display: block }
-    #document-tag, #page-tag {
-        /*        color: #fff;*/
-        text-align: left;
-        background-color: #f4f7f8;
-        border: 1px solid #fff;
-        box-shadow: 0px 0px 10px #5f5d5d;
-    }
-
-    .fa-chevron-circle-right{position:absolute;}
-    .srcblock{border:1px solid #f4f7f8;padding:15px;margin-bottom:10px;word-wrap:break-word;}
-    /*.panel-height{overflow: auto;
-    max-height: 350px;}*/
-    .hide{display:none;}
-
-    .editable {
-        border-color: #a0b6bd;
-        box-shadow: inset 0 0 10px #a0b6bd;
-        background: #ffffff;
-    }
-
-    .text {
-        outline: none;
-    }
-    .text1{
-        outline: none;
-    }
-    .text2{
-        outline: none;
-    }
-    .multiple-height{
-        min-height: 120px;
-        max-height: 200px;
-        overflow-y: auto;
-    }
-    .edit, .save {
-        width: 30px;
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 10px;
-        padding: 4px 0px;
-        border-top-right-radius: 2px;
-        border-bottom-left-radius: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
-    .edit1, .save1 {
-        width: 30px;
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 10px;
-        padding: 4px 0px;
-        border-top-right-radius: 2px;
-        border-bottom-left-radius: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
-    .edit2, .save2 {
-        width: 30px;
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 10px;
-        padding: 4px 0px;
-        border-top-right-radius: 2px;
-        border-bottom-left-radius: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
-    .edit { 
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-    }
-    .edit1{ 
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-    }
-    .edit2{ 
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-    }
-    .save {
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-    }
-    /*    .save1 {
-                display: none;
-            }
-            .save2 {
-                display: none;
-        }*/
-    .box:hover .save {
-        opacity: 1;
-    }
-    .box1:hover .edit1 {
-        opacity: 1;
-    }
-    .box2:hover .edit2 {
-        opacity: 1;
-    }
-
-
-    .spliticon{width:6px;height:45px;background:#000;right:0;margin-right: -5px;
-               z-index: 999;top:40%;}
-    .vsplitbar{z-index:0 !important;}
-    .fixed-bottom{position: absolute;bottom: 0;width: 95%;}
-    .view-sourcelink{line-height: 45px;
-                     margin: 4px 0px;
-                     position: fixed;
-                     border-top: 1px solid #e4eaec;
-                     bottom: 40px;
-                     background: #fff;
-                     width: 100%;
-                     padding: 0px !important;
-                     z-index: 999;}
-    .fa-angle-double-left,.fa-angle-double-right{font-size:14px;background:#f2f2f2;border:1px solid #ccc;padding:3px 10px;margin-top:3px;cursor:pointer;margin-right:0 !important;}
-
-    .form-control{ display: inline-block !important;width:94%;}
-    .icon.fa.fa-user{ position: relative;
-                      top: 0px;}
-
-    li{display:inline;}
-
-    #slidetrigger{
-        width: 100px;
-        height: 100px;
-        background: grey;
-        float: left;
-        line-height: 100px;
-        text-align: center;
-        color: white;
-        margin-bottom: 20px;
-    }
-
-    #slidecontent{
-        width: 200px;
-        display: none;
-        height: 100px;
-        float: left;
-        padding-left: 10px;
-        background: #F6953D;
-        line-height: 100px;
-        text-align: center;
-    }
-
-    .lighttext {
-        font-size: 12px;
-        color: #b1afaf;
-        white-space: nowrap;
-        width: 23em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        float:left;
-    }
-
-
-
-
-    /* CSS for spliter*/
-    dt {
-        font: bold 14px Consolas, "Courier New", Courier, mono;
-        color: steelblue;
-        background-color: #f0f0f0;
-        margin-top: 1.5em;
-        padding: 0.2em 0.5em;
-    }
-
-    dd {
-    }
-
-    dd code {
-        font: bold 12px Consolas, "Courier New", Courier, mono;
-    }
-
-    dd > code {
-        display: block;
-        color: #666666;
-    }
-
-    dd > code.default {
-        color: #007700;
-    }
-
-    pre.codesample {
-        font: bold 12px Consolas, "Courier New", Courier, mono;
-        background: #ffffff;
-        overflow: auto;
-        width: 75%;
-        border: solid gray;
-        border-width: .1em .1em .1em .8em;
-        padding: .2em .6em;
-        margin: 0 auto;
-        line-height: 125%
-    }
-
-    .splitter_panel > div {
-        padding: 0 1em;
-    }
-
-    #splitter {
-
-        height: 500px;
-        border: 0px solid #666;
-    }
-    #splitter-left, #splitter-right{ padding:0px;}
-    .splitter_container > .splitter_panel > :not(.splitter_container){overflow: none !important;}
-    .panel-footer{height: 55px;
-                  margin-top: 16px;}
-
-
-    .splitter-vertical > .splitter_bar{width:4px !important;}
-    .splitter_bar > .splitter_handle{    background-color: #000 !important;}
-
-
-    /*Scrollbar customization for all page*/
-    .scroll-wrapper {
-        overflow: hidden !important;
-        padding: 0 !important;
-        position: relative;
-    }
-    .scroll-wrapper > .scroll-content {
-        border: none !important;
-        box-sizing: content-box !important;
-        height: auto;
-        left: 0;
-        margin: 0;
-        max-height: none !important;
-        max-width: none !important;
-        overflow: scroll !important;
-        padding: 0;
-        position: relative !important;
-        top: 0;
-        width: auto !important;}
-
-    .scroll-wrapper > .scroll-content::-webkit-scrollbar {
-        height: 0;
-        width: 0;
-    }
-    .scroll-element {
-        display: none;
-    }
-    .scroll-element, .scroll-element div {
-        box-sizing: content-box;
-    }
-    .scroll-element .scroll-bar,
-    .scroll-element .scroll-arrow {
-        cursor: default;
-    }
-    ::-webkit-scrollbar { width: 7px; height: 10px;}
-    /* Track */ ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); -webkit-border-radius: 10px; border-radius: 10px; }
-    /* Handle */ ::-webkit-scrollbar-thumb { -webkit-border-radius: 5px; border-radius: 5px;
-                                             background: rgba(128, 128, 128,0.46);}
-
-    .validationerrorcnt{
-        display: block;
-        text-align: right;
-        color: red;
-        padding: 1px 51px 7px 7px;
-        font-size: 16px;
-    }   
-
-    .validationloader {
-        border: 8px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 8px solid #62A8EA;
-        border-bottom: 8px solid #62A8EA;
-        width: 60px;
-        height: 60px;
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-        display: block;
-        position: absolute;
-        z-index: 9999;
-        margin: 130px 355px 0px 355px;
-    }
-
-    @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    #cke_editor{
-        margin-left: 10px;
-    }
-</style>
+<link rel="stylesheet" href="webroot/css/translatehead.css">
 
 <body class="animsition site-navbar-small app-work">
     <!-- Project List Starts -->
@@ -559,19 +180,19 @@ if ($NoNewJob == 'NoNewJob') {
                                 <input type="hidden" name="refUrl" id="refUrl">
                                   <?php 
 //                                    $path = JSONPATH . '\\filenews.htm';
-                                    $path = JSONPATH . '\\sample.html';
-                                    $content = file_get_contents($path);
+                                   // $path = JSONPATH . '\\sample.html';
+                                    //$content = file_get_contents($path);
+                                 
                                   ?>
-                                
+
                                 <div class="panel-group panel-group-continuous" id="exampleAccordionContinuous" aria-multiselectable="true" role="tablist">
 
                                     <div class="adjoined-bottom">
                                         <div class="grid-container">
                                             <div class="grid-width-100">
                                                 <div id="editor" style="height:800px;">
-                                                    <?php echo $content;?>
-                                                    <h1>Hello world!</h1>
-                                                    <p>I'm an instance of <a href="https://ckeditor.com">CKEditor</a>.</p>
+                                                    <?php //echo $content;?>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -593,31 +214,44 @@ if ($NoNewJob == 'NoNewJob') {
             </div>
             <!-- Splitter Ends -->
         </div>
-        
-    <script>
-       // initSample();
-     $( document ).ready(function() {
-         CKEDITOR.replace( 'editor', {
-			width: '98%',
-			height: 312
-		} );
-    });
-		
 
-        
-        function translatemod() {
-            var data = CKEDITOR.instances.editor.getData();
-            console.log(data);
-            $("#textid").val(CKEDITOR.instances.editor.getData());
-        }
-    </script>
-    <!-- Project List Ends -->	
-    <div class="view-sourcelink p-l-0 p-r-0">
-        <!-- <a href="#" class="current button offcanvas__trigger--open m-l-10" data-rel="page-tag">View Source Link</a> -->
-        <div class="col-lg-6" align="left">
-            <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
-            <!--                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>-->
-        </div>
+        <script>
+
+
+            function ckeditorcall() {
+                CKEDITOR.replace('editor', {
+                    width: '98%',
+                    height: 312
+                });
+            }
+            ckeditorcall();
+
+            function translatemod() {
+                var data = CKEDITOR.instances.editor.getData();
+
+                console.log(data);
+                $("#textid").val(CKEDITOR.instances.editor.getData());
+            }
+
+            function loadhtmlforeditor(filename) {
+                $.ajax({
+                    url: filename,
+                    context: document.body,
+                    success: function (response) {
+                        CKEDITOR.instances.editor.setData(response);
+                    }
+                });
+
+            }
+
+        </script>
+        <!-- Project List Ends -->	
+        <div class="view-sourcelink p-l-0 p-r-0">
+            <!-- <a href="#" class="current button offcanvas__trigger--open m-l-10" data-rel="page-tag">View Source Link</a> -->
+            <div class="col-lg-6" align="left">
+                <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
+                <!--                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>-->
+            </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
                         //$style_endisble = "display:none;";
@@ -626,121 +260,122 @@ if ($NoNewJob == 'NoNewJob') {
                         }
                ?>
 
-        <div class="col-lg-6 pull-right m-t-5 m-b-5">		
-            <button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5 formsubmit_validation_endisable" style="<?php echo $style_endisble;?>" onclick="return formSubmit();"> Submit & Exit </button>
-            <button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right formsubmit_validation_endisable" onclick="return formSubmit();" style="margin-right: 5px;<?php echo $style_endisble;?>"> Submit & Continue </button>
-            <!--<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right " onclick="return skipformSubmit();" style="margin-right: 5px;"> Skip & Continue </button> -->
-            <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>
-            <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>
-            <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
-            <button type="submit" name='translate' value="translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();">Translate</button>
-           
-            
+            <div class="col-lg-6 pull-right m-t-5 m-b-5">		
+                <button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5 formsubmit_validation_endisable" style="<?php echo $style_endisble;?>" onclick="return formSubmit();"> Submit & Exit </button>
+                <button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right formsubmit_validation_endisable" onclick="return formSubmit();" style="margin-right: 5px;<?php echo $style_endisble;?>"> Submit & Continue </button>
+                <!--<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right " onclick="return skipformSubmit();" style="margin-right: 5px;"> Skip & Continue </button> -->
+                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>
+                <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>
+                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
+                <button type="submit" name='translate' value="translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();">Translate</button>
 
+
+
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+    <div id="editor1" style="widht:200px;height:200px;"> testing 1 </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-right-0 padding-left-0">
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-right-0 padding-left-0">
 
+        <div class="modal fade modal-fill-in" id="exampleFillIn" aria-hidden="false" aria-labelledby="exampleFillIn" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleFillInModalTitle">All Source Links</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-xs-12 col-xl-12 p-l-10" id="multiplelinkbutton">
+                            <span><h4 style="
+                                      display: inline-block;
+                                      ">Attribute source link</h4></span>
+                            <span style="
+                                  float: right;
+                                  "><button type="button" class="btn btn-primary m-r-5" data-rel="page-tag" onclick="addReferenceUrl();">Add</button></span>
+                            <div class="panel">
+                                <div class="panel-body panel-height multiple-height p-0  p-t-30">
+                                    <!-- <a class="panel-action fa fa-cog pull-right" data-toggle="panel-fullscreen" aria-hidden="true" style="color:red;"></a> -->
+                                    <div class="col-xs-12 col-xl-12" id="addnewurl" style="display: none;"> 
+                                        <div class="col-xs-12 col-xl-4">
+                                            <div class="srcblock box">
+                <!--                           <i class="fa fa-times-circle save"></i>-->
+                                                <i class="fa fa-save save"></i>
+                                                <input autocomplete="off" type="text" class="form-control" id="addurl" placeholder="Enter Url..">
 
-    <div class="modal fade modal-fill-in" id="exampleFillIn" aria-hidden="false" aria-labelledby="exampleFillIn" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="exampleFillInModalTitle">All Source Links</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="col-xs-12 col-xl-12 p-l-10" id="multiplelinkbutton">
-                        <span><h4 style="
-                                  display: inline-block;
-                                  ">Attribute source link</h4></span>
-                        <span style="
-                              float: right;
-                              "><button type="button" class="btn btn-primary m-r-5" data-rel="page-tag" onclick="addReferenceUrl();">Add</button></span>
-                        <div class="panel">
-                            <div class="panel-body panel-height multiple-height p-0  p-t-30">
-                                <!-- <a class="panel-action fa fa-cog pull-right" data-toggle="panel-fullscreen" aria-hidden="true" style="color:red;"></a> -->
-                                <div class="col-xs-12 col-xl-12" id="addnewurl" style="display: none;"> 
-                                    <div class="col-xs-12 col-xl-4">
-                                        <div class="srcblock box">
-            <!--                           <i class="fa fa-times-circle save"></i>-->
-                                            <i class="fa fa-save save"></i>
-                                            <input autocomplete="off" type="text" class="form-control" id="addurl" placeholder="Enter Url..">
-
-                                        </div> </div> </div>
-                                <div class="col-xs-12 col-xl-12">
-                                    <div id="LoadAttrValue">
+                                            </div> </div> </div>
+                                    <div class="col-xs-12 col-xl-12">
+                                        <div id="LoadAttrValue">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-xl-12 p-b-20 p-l-10 ">
-                        <h4>Other links</h4>
-                        <div class="col-xs-12 col-xl-12 panel p-t-30 p-b-20">
-                            <div id="LoadGroupAttrValue"> 
                             </div>
                         </div>
-                        <div class="col-xs-12 col-xl-12 m-t-30 hide">
-                            <button type="button" class="btn btn-default pull-right m-r-5" data-dismiss="modal">Cancel</button>
+                        <div class="col-xs-12 col-xl-12 p-b-20 p-l-10 ">
+                            <h4>Other links</h4>
+                            <div class="col-xs-12 col-xl-12 panel p-t-30 p-b-20">
+                                <div id="LoadGroupAttrValue"> 
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-xl-12 m-t-30 hide">
+                                <button type="button" class="btn btn-default pull-right m-r-5" data-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Modal -->
+        <!-- End Modal -->
 
 
 
-    <!-- Help Modal Starts-->
-    <div class="modal fade" id="helpmodal" aria-hidden="true" aria-labelledby="helpmodal" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <!-- Help Modal Starts-->
+        <div class="modal fade" id="helpmodal" aria-hidden="true" aria-labelledby="helpmodal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
     <?php //foreach (){   ?>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="HelpModelAttribute"></h4>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <span id='HelpModelContent'>
-
-                        </span>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="HelpModelAttribute"></h4>
                     </div>
-                </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <span id='HelpModelContent'>
+
+                            </span>
+                        </div>
+                    </div>
     <?php // }   ?>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Help Modal End-->
+        <!-- Help Modal End-->
 
-    <!-- Handson Modal -->
+        <!-- Handson Modal -->
 
-    <div class="modal fade modal-fill-in" id="exampleFillInHandson" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
-                </div>
-                <div class="modal-body">
-                    <div id="example" class="container-fluid" style="margin-bottom:-10px;">
-                        <div id="vertical">
-                            <div id="top-pane">
-                                <div id="horizontal" style="height: 100%; width: 100%;">
-                                    <div id="right-pane">
-                                        <div id="example1" class="hot handsontable htColumnHeaders"></div>
+        <div class="modal fade modal-fill-in" id="exampleFillInHandson" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="example" class="container-fluid" style="margin-bottom:-10px;">
+                            <div id="vertical">
+                                <div id="top-pane">
+                                    <div id="horizontal" style="height: 100%; width: 100%;">
+                                        <div id="right-pane">
+                                            <div id="example1" class="hot handsontable htColumnHeaders"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -749,1032 +384,1043 @@ if ($NoNewJob == 'NoNewJob') {
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Handson Modal -->
+        <!-- Handson Modal -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="querymodal" aria-hidden="true" aria-labelledby="querymodal" role="dialog" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <!-- Modal -->
+        <div class="modal fade" id="querymodal" aria-hidden="true" aria-labelledby="querymodal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
     <?php
     if ($QueryDetails['StatusID'] == 1) {
         ?>
 
-                <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="exampleModalTitle">Query</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-inline" action="/action_page.php">
-                        <div class="form-group">
-                            <label for="Query" class="query">Query</label>
-                            <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline" action="/action_page.php">
+                            <div class="form-group">
+                                <label for="Query" class="query">Query</label>
+                                <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQuery();")) . ' '; ?>
-                    <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
-                </div>
+                        <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
+                    </div>
 
         <?php
     } else if ($QueryDetails['StatusID'] == 3) {
         ?>
 
-                <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="exampleModalTitle">Query</h4>
-                </div>
-                <div class="modal-body">
-                    <table style="width:100%">
-                        <tr>
-                            <td >User Query</td>
-                            <td>TL Comments</td></tr>
-                        <tr>
-                        <tr>
-                            <td><textarea name="query" id="query" rows="4" cols="30"><?php echo $QueryDetails['Query']; ?></textarea></td>
-                            <td><textarea name="query" id="query" rows="4" cols="30"><?php echo $QueryDetails['TLComments']; ?></textarea></td></tr>
-                    </table>
-                </div>
+                    <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table style="width:100%">
+                            <tr>
+                                <td >User Query</td>
+                                <td>TL Comments</td></tr>
+                            <tr>
+                            <tr>
+                                <td><textarea name="query" id="query" rows="4" cols="30"><?php echo $QueryDetails['Query']; ?></textarea></td>
+                                <td><textarea name="query" id="query" rows="4" cols="30"><?php echo $QueryDetails['TLComments']; ?></textarea></td></tr>
+                        </table>
+                    </div>
 
         <?php
     } else {
         ?>
 
-                <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="exampleModalTitle">Query</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-inline" action="/action_page.php">
-                        <div class="form-group">
-                            <label for="Query" class="query">Query</label>
-                            <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div id='successMessage' align='center' style='display:none;color:green'><b>Query Successfully Posted!</b></div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Query</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline" action="/action_page.php">
+                            <div class="form-group">
+                                <label for="Query" class="query">Query</label>
+                                <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQuery();")) . ' '; ?>
-                    <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
-                </div>
+                        <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
+                    </div>
 
         <?php
       
     }
      
     ?>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- End Modal -->		
-</div>	
+        <!-- End Modal -->		
+    </div>	
+
 <?php //exit; ?>
-<script type="text/javascript">
 
-    function checkAll(grp, subgrp) {
-        var select_all_Disp = document.getElementById("subgrp_" + grp + "_" + subgrp).value;
-        //   var Disp_Url = document.getElementsByClassName("subGrpDisp_"+grp+"_"+subgrp); 
 
-        $(".subGrpDisp_" + grp + "_" + subgrp).val(select_all_Disp);
 
-        if (select_all_Disp === 'D') {
-            $(".inputsubGrp_" + grp + "_" + subgrp).val('');
-        }
 
-        if (select_all_Disp === 'V') {
-            var subGrpArr = '<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
-            var subGrpAtt = JSON.parse(subGrpArr);
+    <script type="text/javascript">
 
-            var subGrpAttArr = subGrpAtt[grp][subgrp];
-            var maxSeqCntsub = $('.GroupSeq_' + subgrp).attr("data");
-            var inpId = <?php echo $DependentMasterIds['ProductionField']; ?>;
-            for (i = 1; i <= maxSeqCntsub; i++) {
-                $.each(subGrpAttArr, function (key, val) {
-                    var data = $("#beforeText_" + grp + "_" + subgrp + "_" + val['AttributeMasterId'] + "_" + i).text();
-                    $("#ProductionFields_" + val['AttributeMasterId'] + "_" + inpId + "_" + i).val(data);
+        function checkAll(grp, subgrp) {
+            var select_all_Disp = document.getElementById("subgrp_" + grp + "_" + subgrp).value;
+            //   var Disp_Url = document.getElementsByClassName("subGrpDisp_"+grp+"_"+subgrp); 
 
-                    var maxSeqCnt = $('.ShowingSeqDiv_' + val['AttributeMasterId']).attr("data");
-                    if (maxSeqCnt > 1) {
-                        for (j = 1; j <= maxSeqCnt; j++) {
-                            var data = $("#beforeText_" + grp + "_" + subgrp + "_" + val['AttributeMasterId'] + "_" + j).text();
-                            $("#ProductionFields_" + val['AttributeMasterId'] + "_" + inpId + "_" + j).val(data);
-                        }
-                    }
-                });
+            $(".subGrpDisp_" + grp + "_" + subgrp).val(select_all_Disp);
+
+            if (select_all_Disp === 'D') {
+                $(".inputsubGrp_" + grp + "_" + subgrp).val('');
             }
-        }
-    }
 
-    function checkLength(el, id, depd, seq, minval) {
-        if (el.value.length > 0) {
-            if (el.value.length < minval) {
-                alert("make sure the input is " + minval + " characters long");
-                setTimeout(function () {
-                    document.getElementById('ProductionFields_' + id + '_' + depd + '_' + seq).focus();
-                }, 10);
-                return false;
-            }
-        }
-    }
+            if (select_all_Disp === 'V') {
+                var subGrpArr = '<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
+                var subGrpAtt = JSON.parse(subGrpArr);
 
-    $(document).keydown(function (e) {
-        if (e.which == 65) {
+                var subGrpAttArr = subGrpAtt[grp][subgrp];
+                var maxSeqCntsub = $('.GroupSeq_' + subgrp).attr("data");
+                var inpId = <?php echo $DependentMasterIds['ProductionField']; ?>;
+                for (i = 1; i <= maxSeqCntsub; i++) {
+                    $.each(subGrpAttArr, function (key, val) {
+                        var data = $("#beforeText_" + grp + "_" + subgrp + "_" + val['AttributeMasterId'] + "_" + i).text();
+                        $("#ProductionFields_" + val['AttributeMasterId'] + "_" + inpId + "_" + i).val(data);
 
-
-        }
-    });
-    $(document).ready(function () {
-        baseinfodivcount = 1;
-        $("#MySplitter").splitter();
-        $("#MySplitter").trigger("resize", [320]);
-        $('#myCarousel').carousel({
-            interval: 40000
-        });
-
-
-
-    });
-
-    // Script for bottom side flip canvas starts
-    $(document).ready(function () {
-        $('#document-tag, #page-tag').iptOffCanvas({
-            baseClass: 'offcanvas',
-            type: 'bottom' // top, right, bottom, left.
-        });
-    });
-    // Script for bottom side flip canvas ends
-
-    //-------------------------ondblclick html start-----------------//
-
-    function getThisId(thiss) {
-        //alert(name);
-        AttrcopyId = $(thiss).focus();
-    }
-
-    jQuery(function ($) {
-        $('object').bind('load', function () {
-            var childFrame = $(this).contents().find('body');
-            childFrame.on('dblclick', function () {
-                var iframe = document.getElementById('frame1');
-                var idoc = iframe.contentDocument || iframe.contentWindow.document;
-                var seltext = idoc.getSelection();
-                $(AttrcopyId).val(seltext);
-            });
-
-            childFrame.bind('mouseup', function () {
-                var iframe = document.getElementById('frame1');
-                var idoc = iframe.contentDocument || iframe.contentWindow.document;
-                var seltext = idoc.getSelection();
-                if (seltext.rangeCount && seltext.getRangeAt) {
-                    range = seltext.getRangeAt(0);
-                }
-                idoc.designMode = "on";     // Set design mode to on
-                if (range) {
-                    seltext.removeAllRanges();
-                    seltext.addRange(range);
-                }
-                //alert(AttrcopyId);
-                if (seltext != "" && typeof AttrcopyId != 'undefined')
-                    $(AttrcopyId).val(seltext);
-                idoc.execCommand("hiliteColor", false, "yellow" || 'transparent');
-                idoc.designMode = "off";
-                //  idoc.designMode = "on";  
-
-                // Set design mode to off
-                //  $('#frame1 span:contains(' + seltext + ')').addClass('highlight');
-
-
-            });
-
-
-
-        });
-    });
-
-//            (function($) {
-//                $(function() {
-//                    $('.testmulti').fSelect();
-//                });
-//            })(jQuery);
-
-    //---------------Local Storage------------------
-    $(document).ready(function (e) {
-
-
-        // Load_totalAttInThisGrpCnt();
-        //localStorage.clear();
-        $(".UpdateFields").blur(function (e) {
-            AttValue = $(this).val();
-            Attname = $(this).attr("name");
-
-            localStorage.setItem(Attname, AttValue);
-
-
-
-        });
-
-        $(".InsertFields").blur(function (e) {
-            AttValue = $(this).val();
-            Attname = $(this).attr("name");
-
-            localStorage.setItem(Attname, AttValue);
-
-
-
-        });
-
-
-    });
-    function addslashes(str) {
-        str = str.replace(/'/g, "\\'");
-        str = str.replace(/"/g, '\\"');
-        return str;
-    }
-
-
-
-    //-------------------------ondblclick html end-----------------//
-
-
-    $(document).ready(function () {
-
-        $('#multiplelinkbutton').hide();
-        //$('.chk-wid-Url').hide();
-
-        var FirstAttrId = '<?php echo $FirstAttrId; ?>';
-        var FirstProjAttrId = '<?php echo $FirstProjAttrId; ?>';
-        var FirstGroupId = '<?php echo $FirstGroupId; ?>';
-        var FirstSubGroupId = '<?php echo $FirstSubGroupId; ?>';
-
-        var projectid = $('#ProjectId').val();
-        var regionid = $('#RegionId').val();
-        var inputentityid = $('#InputEntityId').val();
-        var prodentityid = $('#ProductionEntity').val();
-
-        i = 0;
-        var spanArr = [];
-        var sequence = 1;
-
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxLoadfirstattribute')); ?>",
-            data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, groupId: FirstGroupId, seq: sequence}),
-            dataType: 'text',
-            async: true,
-            success: function (result) {
-                if (result != '' && result != null) {
-                    $('.CntBadge').hide();
-                    var obj = JSON.parse(result);
-
-                    if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
-                        $('#exampleTabsOne').show();
-                        var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-                        document.getElementById('frame1').data = htmlfileinitial;
-
-                        var object = document.getElementById("frame1");
-                        object.onload = function () {
-                            //spanArr = $("object").contents().find('span');
-                            $("object").contents().find('.annotated').each(function () {
-                                var $span = $(this);
-                                var spanId = $span.attr('data');
-                                if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
-                                    $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
-                                    $span.attr('id', spanId);
-                                }
-                            });
-                        };
-
-                    } else if (obj['attrinitiallink'] != '' && obj['attrinitiallink'] != null) {
-                        $('#exampleTabsOne').show();
-                        document.getElementById('frame1').data = obj['attrinitiallink'];
-                    }
-
-                    if (typeof obj['attrcnt'] !== 'undefined' && obj['attrcnt'] != null) {
-                        obj['attrcnt'].forEach(function (element) {
-
-                            if (element['cnt'] > 0) {
-                                $('#CntBadge_' + element['AttributeMainGroupId']).show();
-                                $('#CntBadge_' + element['AttributeMainGroupId']).text(element['cnt']);
-                                //document.getElementById('CntBadge_' + element['AttributeMainGroupId']).innerHTML = ;
+                        var maxSeqCnt = $('.ShowingSeqDiv_' + val['AttributeMasterId']).attr("data");
+                        if (maxSeqCnt > 1) {
+                            for (j = 1; j <= maxSeqCnt; j++) {
+                                var data = $("#beforeText_" + grp + "_" + subgrp + "_" + val['AttributeMasterId'] + "_" + j).text();
+                                $("#ProductionFields_" + val['AttributeMasterId'] + "_" + inpId + "_" + j).val(data);
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
-        });
+        }
 
-    });
+        function checkLength(el, id, depd, seq, minval) {
+            if (el.value.length > 0) {
+                if (el.value.length < minval) {
+                    alert("make sure the input is " + minval + " characters long");
+                    setTimeout(function () {
+                        document.getElementById('ProductionFields_' + id + '_' + depd + '_' + seq).focus();
+                    }, 10);
+                    return false;
+                }
+            }
+        }
+
+        $(document).keydown(function (e) {
+            if (e.which == 65) {
 
 
-    function focusProjeId(projId) {
-
-        var projArr = projId.split('(');
-        var ProjAttribute = projArr[0];
-        var jsonArr = '<?php echo str_replace("'", "\\'",json_encode($ModuleAttributes)); ?>';
-        jsonArr = JSON.parse(jsonArr);
-        var proKey;
-        var mainGrp;
-        var subgroup;
-        var sequence;
-        var projattr;
-        jQuery.each(jsonArr, function (i, val) {
-            if (val['AttributeName'] == ProjAttribute) {
-                proKey = val['AttributeMasterId'];
-                projattr = val['ProjectAttributeMasterId'];
-                mainGrp = val['MainGroupId'];
-                subgroup = val['SubGroupId'];
-                sequence = 1;
             }
         });
+        $(document).ready(function () {
+            baseinfodivcount = 1;
+            $("#MySplitter").splitter();
+            $("#MySplitter").trigger("resize", [320]);
+            $('#myCarousel').carousel({
+                interval: 40000
+            });
 
 
 
-        // $('#exampleAccordionContinuous').collapse('');
-        $("#exampleAccordionContinuous>div>div>a.panel-title").addClass("collapsed");
-        $("#exampleAccordionContinuous>div>div>a.panel-title").attr("aria-expanded", "false");
-
-        $("#exampleAccordionContinuous>div>div.in").attr("aria-expanded", "false");
-        ;
-        $("#exampleAccordionContinuous>div>div.in").removeClass("in");
-
-
-
-        $("#" + mainGrp).attr("aria-expanded", "true");
-        $('#' + mainGrp).removeClass("collapsed");
-        var href = $("#" + mainGrp).attr("href");
-        $(href).attr("aria-expanded", "true");
-        $(href).addClass("in");
-        //$(href).attr( "style:4500!important" );
-        depen = '<?php echo $dependency; ?>';
-        //alert(depen);
-        document.getElementById('ProductionFields_' + proKey + '_' + depen + '_1').focus();
-        $(href).height("auto");
-        //loadWebpage(proKey, projattr, mainGrp, subgroup, sequence, 0);
-
-    }
-    // Script for bottom side flip canvas starts
-    $(document).ready(function () {
-        $('#document-tag, #page-tag').iptOffCanvas({
-            baseClass: 'offcanvas',
-            type: 'bottom' // top, right, bottom, left.
         });
-    });
-    // Script for bottom side flip canvas ends
 
-    // Script for bottom side flip canvas starts
-    $(document).ready(function () {
-        $('#document-tag, #page-tag').iptOffCanvas({
-            baseClass: 'offcanvas',
-            type: 'bottom' // top, right, bottom, left.
+        // Script for bottom side flip canvas starts
+        $(document).ready(function () {
+            $('#document-tag, #page-tag').iptOffCanvas({
+                baseClass: 'offcanvas',
+                type: 'bottom' // top, right, bottom, left.
+            });
         });
-    });
-    // Script for bottom side flip canvas ends
+        // Script for bottom side flip canvas ends
 
-    function loadHelpContent(AttributeMasterId, DisplayAttributeName) {
-        var attributeId = AttributeMasterId;
-        var projectid = $('#ProjectId').val();
-        var regionid = $('#RegionId').val();
+        //-------------------------ondblclick html start-----------------//
 
-        //            alert(projectid+"_"+regionid+"_"+attributeId);
+        function getThisId(thiss) {
+            //alert(name);
+            AttrcopyId = $(thiss).focus();
+        }
 
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxhelptooltip')); ?>",
-            data: ({ProjectId: projectid, RegionId: regionid, attributeId: attributeId}),
-            dataType: 'text',
-            async: true,
-            success: function (result) {
-                $("#HelpModelContent").html(result);
-                $("#HelpModelAttribute").html(DisplayAttributeName);
-            }
+        jQuery(function ($) {
+            $('object').bind('load', function () {
+                var childFrame = $(this).contents().find('body');
+                childFrame.on('dblclick', function () {
+                    var iframe = document.getElementById('frame1');
+                    var idoc = iframe.contentDocument || iframe.contentWindow.document;
+                    var seltext = idoc.getSelection();
+                    $(AttrcopyId).val(seltext);
+                });
+
+                childFrame.bind('mouseup', function () {
+                    var iframe = document.getElementById('frame1');
+                    var idoc = iframe.contentDocument || iframe.contentWindow.document;
+                    var seltext = idoc.getSelection();
+                    if (seltext.rangeCount && seltext.getRangeAt) {
+                        range = seltext.getRangeAt(0);
+                    }
+                    idoc.designMode = "on";     // Set design mode to on
+                    if (range) {
+                        seltext.removeAllRanges();
+                        seltext.addRange(range);
+                    }
+                    //alert(AttrcopyId);
+                    if (seltext != "" && typeof AttrcopyId != 'undefined')
+                        $(AttrcopyId).val(seltext);
+                    idoc.execCommand("hiliteColor", false, "yellow" || 'transparent');
+                    idoc.designMode = "off";
+                    //  idoc.designMode = "on";  
+
+                    // Set design mode to off
+                    //  $('#frame1 span:contains(' + seltext + ')').addClass('highlight');
+
+
+                });
+
+
+
+            });
         });
-    }
 
-    $('.save').click(function () {
+    //            (function($) {
+    //                $(function() {
+    //                    $('.testmulti').fSelect();
+    //                });
+    //            })(jQuery);
 
-        var text = $('#addurl').val();
-        if (text == '') {
-            alert("Enter Url..");
-            $('#addurl').focus();
-            return false;
-        } else {
-            var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
-            if (!re.test(text)) {
-                alert("Enter Valid Url");
-                $('#addurl').focus();
-                return false;
-            }
+        //---------------Local Storage------------------
+        $(document).ready(function (e) {
+
+
+            // Load_totalAttInThisGrpCnt();
+            //localStorage.clear();
+            $(".UpdateFields").blur(function (e) {
+                AttValue = $(this).val();
+                Attname = $(this).attr("name");
+
+                localStorage.setItem(Attname, AttValue);
+
+
+
+            });
+
+            $(".InsertFields").blur(function (e) {
+                AttValue = $(this).val();
+                Attname = $(this).attr("name");
+
+                localStorage.setItem(Attname, AttValue);
+
+
+
+            });
+
+
+        });
+        function addslashes(str) {
+            str = str.replace(/'/g, "\\'");
+            str = str.replace(/"/g, '\\"');
+            return str;
+        }
+
+
+
+        //-------------------------ondblclick html end-----------------//
+
+
+        $(document).ready(function () {
+
+            $('#multiplelinkbutton').hide();
+            //$('.chk-wid-Url').hide();
+
+            var FirstAttrId = '<?php echo $FirstAttrId; ?>';
+            var FirstProjAttrId = '<?php echo $FirstProjAttrId; ?>';
+            var FirstGroupId = '<?php echo $FirstGroupId; ?>';
+            var FirstSubGroupId = '<?php echo $FirstSubGroupId; ?>';
+
             var projectid = $('#ProjectId').val();
             var regionid = $('#RegionId').val();
             var inputentityid = $('#InputEntityId').val();
             var prodentityid = $('#ProductionEntity').val();
+
+            i = 0;
+            var spanArr = [];
+            var sequence = 1;
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxLoadfirstattribute')); ?>",
+                data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, groupId: FirstGroupId, seq: sequence}),
+                dataType: 'text',
+                async: true,
+                success: function (result) {
+                    if (result != '' && result != null) {
+                        $('.CntBadge').hide();
+                        var obj = JSON.parse(result);
+
+                        if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
+                            $('#exampleTabsOne').show();
+                            var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
+                            
+                            loadhtmlforeditor(htmlfileinitial);
+    
+                            document.getElementById('frame1').data = htmlfileinitial;
+
+                            var object = document.getElementById("frame1");
+                            object.onload = function () {
+                                //spanArr = $("object").contents().find('span');
+                                $("object").contents().find('.annotated').each(function () {
+                                    var $span = $(this);
+                                    var spanId = $span.attr('data');
+                                    if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
+                                        $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
+                                        $span.attr('id', spanId);
+                                    }
+                                });
+                            };
+
+                        } else if (obj['attrinitiallink'] != '' && obj['attrinitiallink'] != null) {
+                            $('#exampleTabsOne').show();
+                            document.getElementById('frame1').data = obj['attrinitiallink'];
+                        }
+
+                        if (typeof obj['attrcnt'] !== 'undefined' && obj['attrcnt'] != null) {
+                            obj['attrcnt'].forEach(function (element) {
+
+                                if (element['cnt'] > 0) {
+                                    $('#CntBadge_' + element['AttributeMainGroupId']).show();
+                                    $('#CntBadge_' + element['AttributeMainGroupId']).text(element['cnt']);
+                                    //document.getElementById('CntBadge_' + element['AttributeMainGroupId']).innerHTML = ;
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+        });
+
+
+        function focusProjeId(projId) {
+
+            var projArr = projId.split('(');
+            var ProjAttribute = projArr[0];
+            var jsonArr = '<?php echo str_replace("'", "\\'",json_encode($ModuleAttributes)); ?>';
+            jsonArr = JSON.parse(jsonArr);
+            var proKey;
+            var mainGrp;
+            var subgroup;
+            var sequence;
+            var projattr;
+            jQuery.each(jsonArr, function (i, val) {
+                if (val['AttributeName'] == ProjAttribute) {
+                    proKey = val['AttributeMasterId'];
+                    projattr = val['ProjectAttributeMasterId'];
+                    mainGrp = val['MainGroupId'];
+                    subgroup = val['SubGroupId'];
+                    sequence = 1;
+                }
+            });
+
+
+
+            // $('#exampleAccordionContinuous').collapse('');
+            $("#exampleAccordionContinuous>div>div>a.panel-title").addClass("collapsed");
+            $("#exampleAccordionContinuous>div>div>a.panel-title").attr("aria-expanded", "false");
+
+            $("#exampleAccordionContinuous>div>div.in").attr("aria-expanded", "false");
+            ;
+            $("#exampleAccordionContinuous>div>div.in").removeClass("in");
+
+
+
+            $("#" + mainGrp).attr("aria-expanded", "true");
+            $('#' + mainGrp).removeClass("collapsed");
+            var href = $("#" + mainGrp).attr("href");
+            $(href).attr("aria-expanded", "true");
+            $(href).addClass("in");
+            //$(href).attr( "style:4500!important" );
+            depen = '<?php echo $dependency; ?>';
+            //alert(depen);
+            document.getElementById('ProductionFields_' + proKey + '_' + depen + '_1').focus();
+            $(href).height("auto");
+            //loadWebpage(proKey, projattr, mainGrp, subgroup, sequence, 0);
+
+        }
+        // Script for bottom side flip canvas starts
+        $(document).ready(function () {
+            $('#document-tag, #page-tag').iptOffCanvas({
+                baseClass: 'offcanvas',
+                type: 'bottom' // top, right, bottom, left.
+            });
+        });
+        // Script for bottom side flip canvas ends
+
+        // Script for bottom side flip canvas starts
+        $(document).ready(function () {
+            $('#document-tag, #page-tag').iptOffCanvas({
+                baseClass: 'offcanvas',
+                type: 'bottom' // top, right, bottom, left.
+            });
+        });
+        // Script for bottom side flip canvas ends
+
+        function loadHelpContent(AttributeMasterId, DisplayAttributeName) {
+            var attributeId = AttributeMasterId;
+            var projectid = $('#ProjectId').val();
+            var regionid = $('#RegionId').val();
+
+            //            alert(projectid+"_"+regionid+"_"+attributeId);
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxhelptooltip')); ?>",
+                data: ({ProjectId: projectid, RegionId: regionid, attributeId: attributeId}),
+                dataType: 'text',
+                async: true,
+                success: function (result) {
+                    $("#HelpModelContent").html(result);
+                    $("#HelpModelAttribute").html(DisplayAttributeName);
+                }
+            });
+        }
+
+        $('.save').click(function () {
+
+            var text = $('#addurl').val();
+            if (text == '') {
+                alert("Enter Url..");
+                $('#addurl').focus();
+                return false;
+            } else {
+                var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+                if (!re.test(text)) {
+                    alert("Enter Valid Url");
+                    $('#addurl').focus();
+                    return false;
+                }
+                var projectid = $('#ProjectId').val();
+                var regionid = $('#RegionId').val();
+                var inputentityid = $('#InputEntityId').val();
+                var prodentityid = $('#ProductionEntity').val();
+                var attrGrpid = $('#attrGroupId').val();
+                var attrSubGrpid = $('#attrSubGroupId').val();
+                var attrid = $('#attrId').val();
+                var Projattrid = $('#ProjattrId').val();
+                var sequence = $('#seq').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxinsertreferenceurl')); ?>",
+                    data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, Seq: sequence}),
+                    dataType: 'text',
+                    async: true,
+                    success: function (result) {
+                        if (result === 'Inserted') {
+                            //alert("Inserted Successfully");
+                            // loadWebpage(attrid, Projattrid, attrGrpid, attrSubGrpid, sequence, 1);
+                            loadReferenceUrl();
+
+                        }
+                    }
+                });
+                $('#addnewurl').hide();
+            }
+        });
+
+
+
+
+        // Script for enhsplitter Starts
+        jQuery(function ($) {
+            //$('#splitter-block').enhsplitter();
+            $('#splitter-block').enhsplitter({handle: 'bar', position: 350, leftMinSize: 0, fixed: false});
+        });
+        // Script for enhsplitter Ends
+
+        // onclick website
+        function loadWebpage(attr, projattr, maingroup, subgroup, seq, val) {
+
             var attrGrpid = $('#attrGroupId').val();
             var attrSubGrpid = $('#attrSubGroupId').val();
             var attrid = $('#attrId').val();
             var Projattrid = $('#ProjattrId').val();
+
+            var projectid = $('#ProjectId').val();
+            var regionid = $('#RegionId').val();
+            var inputentityid = $('#InputEntityId').val();
+            var prodentityid = $('#ProductionEntity').val();
             var sequence = $('#seq').val();
 
+            //AttrcopyId = $( "#prodInput_"+attr ).focus();
+
+
+            $('#multiplelinkbutton').show();
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxinsertreferenceurl')); ?>",
-                data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, Seq: sequence}),
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetafterreferenceurl')); ?>",
+                data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, Attr: attr, ProjAttr: projattr, MainGrp: maingroup, SubGrp: subgroup, seq: seq}),
                 dataType: 'text',
                 async: true,
                 success: function (result) {
-                    if (result === 'Inserted') {
-                        //alert("Inserted Successfully");
-                        // loadWebpage(attrid, Projattrid, attrGrpid, attrSubGrpid, sequence, 1);
-                        loadReferenceUrl();
 
-                    }
-                }
-            });
-            $('#addnewurl').hide();
-        }
-    });
-
-
-
-
-    // Script for enhsplitter Starts
-    jQuery(function ($) {
-        //$('#splitter-block').enhsplitter();
-        $('#splitter-block').enhsplitter({handle: 'bar', position: 350, leftMinSize: 0, fixed: false});
-    });
-    // Script for enhsplitter Ends
-
-    // onclick website
-    function loadWebpage(attr, projattr, maingroup, subgroup, seq, val) {
-
-        var attrGrpid = $('#attrGroupId').val();
-        var attrSubGrpid = $('#attrSubGroupId').val();
-        var attrid = $('#attrId').val();
-        var Projattrid = $('#ProjattrId').val();
-
-        var projectid = $('#ProjectId').val();
-        var regionid = $('#RegionId').val();
-        var inputentityid = $('#InputEntityId').val();
-        var prodentityid = $('#ProductionEntity').val();
-        var sequence = $('#seq').val();
-
-        //AttrcopyId = $( "#prodInput_"+attr ).focus();
-
-
-        $('#multiplelinkbutton').show();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetafterreferenceurl')); ?>",
-            data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, Attr: attr, ProjAttr: projattr, MainGrp: maingroup, SubGrp: subgroup, seq: seq}),
-            dataType: 'text',
-            async: true,
-            success: function (result) {
-
-                $("#LoadAttrValue").empty();
-
-                if (result != '' && result != null) {
                     $("#LoadAttrValue").empty();
-                    var obj = JSON.parse(result);
-                    if (obj['attrval'] != '' && obj['attrval'] != null) {
-                        obj['attrval'].forEach(function (element) {
-                            if (element['AttributeValue'] != '' && element['AttributeValue'] != null) {
-                                var cols = "";
-                                cols += '<div class="col-xs-12 col-xl-4">';
-                                cols += '<div class="srcblock box1 update-cart offcanvas__trigger--close" id="demo">';
-                                cols += '<i class="fa fa-times-circle edit1 lite-blue" onclick="DeleteUrl(' + attr + ',' + projattr + ',' + maingroup + ',' + subgroup + ',' + element['Id'] + ');"></i>';
-//                                        if (element['HtmlFileName'] != '' && element['HtmlFileName'] != null) {
-//                                           
-//                                        } else {
-                                cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDF(this.id);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
-                                // }
-                                cols += '</div>';
-                                cols += '</div>';
-                                $("#LoadAttrValue").append(cols);
-                            } else {
-                                var colsEmpty = "";
-                                colsEmpty += "No URL found";
-                                $("#LoadAttrValue").append(colsEmpty);
-                            }
-                        });
+
+                    if (result != '' && result != null) {
+                        $("#LoadAttrValue").empty();
+                        var obj = JSON.parse(result);
+                        if (obj['attrval'] != '' && obj['attrval'] != null) {
+                            obj['attrval'].forEach(function (element) {
+                                if (element['AttributeValue'] != '' && element['AttributeValue'] != null) {
+                                    var cols = "";
+                                    cols += '<div class="col-xs-12 col-xl-4">';
+                                    cols += '<div class="srcblock box1 update-cart offcanvas__trigger--close" id="demo">';
+                                    cols += '<i class="fa fa-times-circle edit1 lite-blue" onclick="DeleteUrl(' + attr + ',' + projattr + ',' + maingroup + ',' + subgroup + ',' + element['Id'] + ');"></i>';
+    //                                        if (element['HtmlFileName'] != '' && element['HtmlFileName'] != null) {
+    //                                           
+    //                                        } else {
+                                    cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDF(this.id);" class="current text-center text update-cart">' + element['AttributeValue'].substring(0, 45) + '</a>';
+                                    // }
+                                    cols += '</div>';
+                                    cols += '</div>';
+                                    $("#LoadAttrValue").append(cols);
+                                } else {
+                                    var colsEmpty = "";
+                                    colsEmpty += "No URL found";
+                                    $("#LoadAttrValue").append(colsEmpty);
+                                }
+                            });
+                        } else {
+                            var colsEmpty = "";
+                            colsEmpty += "No URL found";
+                            $("#LoadAttrValue").append(colsEmpty);
+                        }
+
                     } else {
                         var colsEmpty = "";
                         colsEmpty += "No URL found";
                         $("#LoadAttrValue").append(colsEmpty);
                     }
-
-                } else {
-                    var colsEmpty = "";
-                    colsEmpty += "No URL found";
-                    $("#LoadAttrValue").append(colsEmpty);
-                }
-            }
-        });
-
-
-        $('#attrGroupId').val(maingroup);
-        $('#attrSubGroupId').val(subgroup);
-        $('#attrId').val(attr);
-        $('#ProjattrId').val(projattr);
-        $('#seq').val(seq);
-
-    }
-
-
-    function loadPDF(file)
-    {
-        $('#exampleTabsOne').show();
-        $('#refUrl').val(file);
-
-        var text = file;
-        if (text == '') {
-            return false;
-        } else {
-            var projectid = $('#ProjectId').val();
-            var regionid = $('#RegionId').val();
-            var inputentityid = $('#InputEntityId').val();
-            var prodentityid = $('#ProductionEntity').val();
-            var attrGrpid = $('#attrGroupId').val();
-            var attrSubGrpid = $('#attrSubGroupId').val();
-            var attrid = $('#attrId').val();
-            var Projattrid = $('#ProjattrId').val();
-            var sequence = $('#seq').val();
-
-            $.ajax({
-                type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxloadmultipleurl')); ?>",
-                data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
-                dataType: 'text',
-                async: true,
-                success: function (result) {
-                    if (result != '' && result != null) {
-                        var obj = JSON.parse(result);
-                        $('.CntBadge').hide();
-                        $('#exampleFillIn').modal('hide');
-                        $(".multisorcedivclose").trigger("click");
-                        if (obj['htmlfile'] != '' && obj['htmlfile'] != null) {
-                            $('#exampleTabsOne').show();
-                            var htmlfile = "<?php echo HTMLfilesPath; ?>" + obj['htmlfile'];
-                            document.getElementById('frame1').data = htmlfile;
-
-                            var object = document.getElementById("frame1");
-                            object.onload = function () {
-                                //spanArr = $("object").contents().find('span');
-                                $("object").contents().find('.annotated').each(function () {
-                                    var $span = $(this);
-                                    var spanId = $span.attr('data');
-                                    if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
-                                        $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
-                                    }
-                                });
-                            };
-
-                        } else {
-                            $('#exampleTabsOne').show();
-                            document.getElementById('frame1').data = text;
-                        }
-
-                        obj['attrCount'].forEach(function (element) {
-                            if (element['cnt'] > 0) {
-                                $('#CntBadge_' + element['AttributeMainGroupId']).show();
-                                document.getElementById('CntBadge_' + element['AttributeMainGroupId']).innerHTML = element['cnt'];
-                            }
-                        });
-
-
-                        gotattributeids = obj['attrid'];
-                        gotattributemaingrpid = attrGrpid;
-                        checkAllUrlAtt();
-                    }
                 }
             });
+
+
+            $('#attrGroupId').val(maingroup);
+            $('#attrSubGroupId').val(subgroup);
+            $('#attrId').val(attr);
+            $('#ProjattrId').val(projattr);
+            $('#seq').val(seq);
+
         }
-    }
 
-    function loadPDFUrl(file) {
 
-        $('#exampleTabsOne').show();
-        $('#refUrl').val(file);
-        $('.update-cart').click(function (e) {
-            e.preventDefault();
-            return false;
-        });
-        //$("#frame1").attr('data', file).hide().show();
-        var text = file;
-        if (text == '') {
-            return false;
-        } else {
-            var projectid = $('#ProjectId').val();
-            var regionid = $('#RegionId').val();
-            var inputentityid = $('#InputEntityId').val();
-            var prodentityid = $('#ProductionEntity').val();
-            var attrGrpid = $('#attrGroupId').val();
-            var attrSubGrpid = $('#attrSubGroupId').val();
-            var attrid = $('#attrId').val();
-            var Projattrid = $('#ProjattrId').val();
-            var sequence = $('#seq').val();
+        function loadPDF(file)
+        {
+            $('#exampleTabsOne').show();
+            $('#refUrl').val(file);
 
-            $.ajax({
-                type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxloadgroupurl')); ?>",
-                data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
-                dataType: 'text',
-                async: true,
-                success: function (result) {
-                    if (result != '' && result != null) {
-                        $('.CntBadge').hide();
-                        $('#exampleFillIn').modal('hide');
-                        $(".multisorcedivclose").trigger("click");
+            var text = file;
+            if (text == '') {
+                return false;
+            } else {
+                var projectid = $('#ProjectId').val();
+                var regionid = $('#RegionId').val();
+                var inputentityid = $('#InputEntityId').val();
+                var prodentityid = $('#ProductionEntity').val();
+                var attrGrpid = $('#attrGroupId').val();
+                var attrSubGrpid = $('#attrSubGroupId').val();
+                var attrid = $('#attrId').val();
+                var Projattrid = $('#ProjattrId').val();
+                var sequence = $('#seq').val();
 
-                        var obj = JSON.parse(result);
-                        if (obj['htmlfile'] != '' && obj['htmlfile'] != null) {
-                            $('#exampleTabsOne').show();
-                            var htmlfile = "<?php echo HTMLfilesPath; ?>" + obj['htmlfile'];
-                            document.getElementById('frame1').data = htmlfile;
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxloadmultipleurl')); ?>",
+                    data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
+                    dataType: 'text',
+                    async: true,
+                    success: function (result) {
+                        if (result != '' && result != null) {
+                            var obj = JSON.parse(result);
+                            $('.CntBadge').hide();
+                            $('#exampleFillIn').modal('hide');
+                            $(".multisorcedivclose").trigger("click");
+                            if (obj['htmlfile'] != '' && obj['htmlfile'] != null) {
+                                $('#exampleTabsOne').show();
+                                var htmlfile = "<?php echo HTMLfilesPath; ?>" + obj['htmlfile'];
+                                document.getElementById('frame1').data = htmlfile;
 
-                            var object = document.getElementById("frame1");
-                            object.onload = function () {
-                                //spanArr = $("object").contents().find('span');
-                                $("object").contents().find('.annotated').each(function () {
-                                    var $span = $(this);
-                                    var spanId = $span.attr('data');
-                                    if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
-                                        $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
-                                    }
-                                });
-                            };
+                                var object = document.getElementById("frame1");
+                                object.onload = function () {
+                                    //spanArr = $("object").contents().find('span');
+                                    $("object").contents().find('.annotated').each(function () {
+                                        var $span = $(this);
+                                        var spanId = $span.attr('data');
+                                        if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
+                                            $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
+                                        }
+                                    });
+                                };
 
-                        } else {
-                            $('#exampleTabsOne').show();
-                            document.getElementById('frame1').data = text;
-                        }
-
-                        obj['attrCount'].forEach(function (element) {
-                            if (element['cnt'] > 0) {
-                                $('#CntBadge_' + element['AttributeMainGroupId']).show();
-                                document.getElementById('CntBadge_' + element['AttributeMainGroupId']).innerHTML = element['cnt'];
+                            } else {
+                                $('#exampleTabsOne').show();
+                                document.getElementById('frame1').data = text;
                             }
-                        });
 
-                        gotattributeids = obj['attrid'];
-                        gotattributemaingrpid = attrGrpid;
-                        checkAllUrlAtt();
-                    }
-                }
-            });
-        }
-    }
+                            obj['attrCount'].forEach(function (element) {
+                                if (element['cnt'] > 0) {
+                                    $('#CntBadge_' + element['AttributeMainGroupId']).show();
+                                    document.getElementById('CntBadge_' + element['AttributeMainGroupId']).innerHTML = element['cnt'];
+                                }
+                            });
 
-    function checkAllUrlAtt(Seq = 1){
 
-        //alert(gotattributeids);
-        $('.subgroupparentdivs').show();
-        $('.commonClass').show();
-        $('.commonClass').removeClass("myyourclass");
-        var sat = $("#chk-wid-Url").prop("checked");
-        if (sat) {
-            //alert('dfdf');
-            //$('.commonclass_'+gotattributemaingrpid).hide(); 
-            if (gotattributeids.length > 0) {
-                $('.commonClass').hide();
-                gotattributeids.forEach(function (element) {
-                    //alert(element['AttributeMasterId']);
-                    if (element['AttributeMasterId'] > 0) {
-
-                        $('#groupAttr_' + element['AttributeMasterId'] + '_' + Seq).css("display", "block");
-                        $('#groupAttr_' + element['AttributeMasterId'] + '_' + Seq).addClass("myyourclass");
-                    }
-                });
-
-                //$(".subgroupparentdivs_"+gotattributemaingrpid).each(function() {
-                $(".subgroupparentdivs").each(function () {
-                    var count = $(this).find(".myyourclass").length;
-                    if (count <= 0) {
-                        $(this).hide();
+                            gotattributeids = obj['attrid'];
+                            gotattributemaingrpid = attrGrpid;
+                            checkAllUrlAtt();
+                        }
                     }
                 });
             }
-
         }
-        else {
+
+
+        function loadPDFUrl(file) {
+
+            $('#exampleTabsOne').show();
+            $('#refUrl').val(file);
+            $('.update-cart').click(function (e) {
+                e.preventDefault();
+                return false;
+            });
+            //$("#frame1").attr('data', file).hide().show();
+            var text = file;
+            if (text == '') {
+                return false;
+            } else {
+                var projectid = $('#ProjectId').val();
+                var regionid = $('#RegionId').val();
+                var inputentityid = $('#InputEntityId').val();
+                var prodentityid = $('#ProductionEntity').val();
+                var attrGrpid = $('#attrGroupId').val();
+                var attrSubGrpid = $('#attrSubGroupId').val();
+                var attrid = $('#attrId').val();
+                var Projattrid = $('#ProjattrId').val();
+                var sequence = $('#seq').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxloadgroupurl')); ?>",
+                    data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
+                    dataType: 'text',
+                    async: true,
+                    success: function (result) {
+                        if (result != '' && result != null) {
+                            $('.CntBadge').hide();
+                            $('#exampleFillIn').modal('hide');
+                            $(".multisorcedivclose").trigger("click");
+
+                            var obj = JSON.parse(result);
+    //                        console.log(htmlfile);debugger;
+                            if (obj['htmlfile'] != '' && obj['htmlfile'] != null) {
+                                $('#exampleTabsOne').show();
+                                var htmlfile = "<?php echo HTMLfilesPath; ?>" + obj['htmlfile'];
+                                // call for html loader
+                                loadhtmlforeditor(htmlfile);
+                                
+                                document.getElementById('frame1').data = htmlfile;
+                                var object = document.getElementById("frame1");
+    //                            object.onload = function () {
+    //                                //spanArr = $("object").contents().find('span');
+    //                                $("object").contents().find('.annotated').each(function () {
+    //                                    var $span = $(this);
+    //                                    var spanId = $span.attr('data');
+    //                                    if (typeof (spanId) != "undefined" && spanId !== null && $(this).text() != '') {
+    //                                        $span.attr('onClick', "parent.focusProjeId('" + spanId + "');");
+    //                                    }
+    //                                });
+    //                            };
+
+                            } else {
+                                $('#exampleTabsOne').show();
+                                document.getElementById('frame1').data = text;
+                            }
+
+    //                        obj['attrCount'].forEach(function (element) {
+    //                            if (element['cnt'] > 0) {
+    ////                                $('#CntBadge_' + element['AttributeMainGroupId']).show();
+    ////                                document.getElementById('CntBadge_' + element['AttributeMainGroupId']).innerHTML = element['cnt'];
+    //                            }
+    //                        });
+
+                            gotattributeids = obj['attrid'];
+                            gotattributemaingrpid = attrGrpid;
+                            checkAllUrlAtt();
+                        }
+                    }
+                });
+            }
+        }
+
+        function checkAllUrlAtt(Seq = 1){
+
+            //alert(gotattributeids);
             $('.subgroupparentdivs').show();
             $('.commonClass').show();
-        }
-        ShowUnVerifiedAtt();
-    }
+            $('.commonClass').removeClass("myyourclass");
+            var sat = $("#chk-wid-Url").prop("checked");
+            if (sat) {
+                //alert('dfdf');
+                //$('.commonclass_'+gotattributemaingrpid).hide(); 
+                if (gotattributeids.length > 0) {
+                    $('.commonClass').hide();
+                    gotattributeids.forEach(function (element) {
+                        //alert(element['AttributeMasterId']);
+                        if (element['AttributeMasterId'] > 0) {
 
-    function ShowUnVerifiedAtt() {
-        var projectid = $('#ProjectId').val();
-        var regionid = $('#RegionId').val();
-        var inputentityid = $('#InputEntityId').val();
-        var prodentityid = $('#ProductionEntity').val();
-        var sequence = $('#seq').val();
-        var unverified = $("#chk-wid-Url2").prop("checked");
-        var subgroup = '<?php echo json_encode($AttributeSubGroupMasterJSON); ?>';
-        var subgrpArr = JSON.parse(subgroup);
-        var distinct = '<?php echo json_encode($distinct)?>';
-        var distinctArr = JSON.parse(distinct);
-        //alert(distinct);
-        obj = [];
-        i = 0;
-        objAttr = [];
-        j = 0;
-        objshowAttr = [];
-        k = 0;
-        var sat = $("#chk-wid-Url").prop("checked");
-
-        if (sat) {
-            $('.myyourclass').find('.dispositionSelect').each(function () {
-
-                var selectedId = $(this).attr('id')
-
-                var selected = $('#' + selectedId).find(":selected").text();
-                var selectedIdArr = selectedId.split('_');
-                var distMatch = jQuery.inArray(selectedIdArr[1], distinctArr)
-                if (distMatch == -1)
-                {
-                    if (selected != "--") {
-                        objAttr[j] = selectedIdArr[2];
-                        j++;
-                    }
-                    else {
-                        objshowAttr[k] = selectedIdArr[2];
-                        k++;
-                    }
-                }
-                else {
-                    if (selected == "--") {
-                        obj[i] = selectedIdArr[1];
-                        i++;
-                    }
-                }
-            });
-
-        }
-        else {
-            $('.dispositionSelect').each(function () {
-                var selectedId = $(this).attr('id')
-                // alert(selectedId);
-                var selected = $('#' + selectedId).find(":selected").text();
-                var selectedIdArr = selectedId.split('_');
-                var distMatch = jQuery.inArray(selectedIdArr[1], distinctArr)
-                if (distMatch == -1)
-                {
-                    if (selected != "--") {
-                        objAttr[j] = selectedIdArr[2];
-                        j++;
-                    }
-                    else {
-                        objshowAttr[k] = selectedIdArr[2];
-                        k++;
-                    }
-                }
-                else {
-                    if (selected == "--") {
-                        obj[i] = selectedIdArr[1];
-                        i++;
-                    }
-                }
-            });
-        }
-
-        $.unique(obj);
-        $.unique(objAttr);
-        //alert(JSON.stringify(obj));
-        if (unverified) {
-            $.each(subgrpArr, function (key, value) {
-                $.each(value, function (key2, value2) {
-                    var keyMatch = jQuery.inArray(key2, obj)
-                    var distMatch3 = jQuery.inArray(key2, distinctArr)
-                    if (distMatch3 != -1) {
-
-                        if (keyMatch == -1)
-                        {
-                            $("#MultiSubGroup_" + key2 + "_" + 1).css("display", "none");
-                            $("#MultiSubGroup_" + key2 + "_" + 1).removeClass("showFilled");
+                            $('#groupAttr_' + element['AttributeMasterId'] + '_' + Seq).css("display", "block");
+                            $('#groupAttr_' + element['AttributeMasterId'] + '_' + Seq).addClass("myyourclass");
                         }
-                        else {
-                            $("#MultiSubGroup_" + key2 + "_" + 1).css("display", "block");
-                            $("#MultiSubGroup_" + key2 + "_" + 1).addClass("showFilled");
+                    });
+
+                    //$(".subgroupparentdivs_"+gotattributemaingrpid).each(function() {
+                    $(".subgroupparentdivs").each(function () {
+                        var count = $(this).find(".myyourclass").length;
+                        if (count <= 0) {
+                            $(this).hide();
                         }
-
-                    }
-                });
-            });
-
-
-            $.each(objAttr, function (key, value) {
-                $("#MultiField_" + value + "_" + 1).css("display", "none");
-                $("#MultiField_" + value + "_" + 1).removeClass("showFilled");
-            }
-            );
-            $.each(objshowAttr, function (key, value) {
-                $("#MultiField_" + value + "_" + 1).css("display", "block");
-                $("#MultiField_" + value + "_" + 1).addClass("showFilled");
-            }
-            );
-
-            $(".subgroupparentdivs").each(function () {
-                var count = $(this).find(".showFilled").length;
-                if (count <= 0) {
-                    $(this).hide();
+                    });
                 }
-                else {
-                    $(this).show();
-                }
-            });
+
+            }
+            else {
+                $('.subgroupparentdivs').show();
+                $('.commonClass').show();
+            }
+            ShowUnVerifiedAtt();
         }
-        else {
-            $.each(subgrpArr, function (key, value) {
-                $.each(value, function (key2, value2) {
-                    $("#MultiSubGroup_" + key2 + "_" + 1).css("display", "block");
-                    $("#MultiSubGroup_" + key2 + "_" + 1).addClass("showFilled");
-                });
-            });
-            $(".subgroupparentdivs").each(function () {
-                $(this).css("display", "block");
-            });
+
+        function ShowUnVerifiedAtt() {
+            var projectid = $('#ProjectId').val();
+            var regionid = $('#RegionId').val();
+            var inputentityid = $('#InputEntityId').val();
+            var prodentityid = $('#ProductionEntity').val();
+            var sequence = $('#seq').val();
+            var unverified = $("#chk-wid-Url2").prop("checked");
+            var subgroup = '<?php echo json_encode($AttributeSubGroupMasterJSON); ?>';
+            var subgrpArr = JSON.parse(subgroup);
+            var distinct = '<?php echo json_encode($distinct)?>';
+            var distinctArr = JSON.parse(distinct);
+            //alert(distinct);
+            obj = [];
+            i = 0;
+            objAttr = [];
+            j = 0;
+            objshowAttr = [];
+            k = 0;
+            var sat = $("#chk-wid-Url").prop("checked");
 
             if (sat) {
+                $('.myyourclass').find('.dispositionSelect').each(function () {
+
+                    var selectedId = $(this).attr('id')
+
+                    var selected = $('#' + selectedId).find(":selected").text();
+                    var selectedIdArr = selectedId.split('_');
+                    var distMatch = jQuery.inArray(selectedIdArr[1], distinctArr)
+                    if (distMatch == -1)
+                    {
+                        if (selected != "--") {
+                            objAttr[j] = selectedIdArr[2];
+                            j++;
+                        }
+                        else {
+                            objshowAttr[k] = selectedIdArr[2];
+                            k++;
+                        }
+                    }
+                    else {
+                        if (selected == "--") {
+                            obj[i] = selectedIdArr[1];
+                            i++;
+                        }
+                    }
+                });
+
+            }
+            else {
+                $('.dispositionSelect').each(function () {
+                    var selectedId = $(this).attr('id')
+                    // alert(selectedId);
+                    var selected = $('#' + selectedId).find(":selected").text();
+                    var selectedIdArr = selectedId.split('_');
+                    var distMatch = jQuery.inArray(selectedIdArr[1], distinctArr)
+                    if (distMatch == -1)
+                    {
+                        if (selected != "--") {
+                            objAttr[j] = selectedIdArr[2];
+                            j++;
+                        }
+                        else {
+                            objshowAttr[k] = selectedIdArr[2];
+                            k++;
+                        }
+                    }
+                    else {
+                        if (selected == "--") {
+                            obj[i] = selectedIdArr[1];
+                            i++;
+                        }
+                    }
+                });
+            }
+
+            $.unique(obj);
+            $.unique(objAttr);
+            //alert(JSON.stringify(obj));
+            if (unverified) {
+                $.each(subgrpArr, function (key, value) {
+                    $.each(value, function (key2, value2) {
+                        var keyMatch = jQuery.inArray(key2, obj)
+                        var distMatch3 = jQuery.inArray(key2, distinctArr)
+                        if (distMatch3 != -1) {
+
+                            if (keyMatch == -1)
+                            {
+                                $("#MultiSubGroup_" + key2 + "_" + 1).css("display", "none");
+                                $("#MultiSubGroup_" + key2 + "_" + 1).removeClass("showFilled");
+                            }
+                            else {
+                                $("#MultiSubGroup_" + key2 + "_" + 1).css("display", "block");
+                                $("#MultiSubGroup_" + key2 + "_" + 1).addClass("showFilled");
+                            }
+
+                        }
+                    });
+                });
+
+
+                $.each(objAttr, function (key, value) {
+                    $("#MultiField_" + value + "_" + 1).css("display", "none");
+                    $("#MultiField_" + value + "_" + 1).removeClass("showFilled");
+                }
+                );
+                $.each(objshowAttr, function (key, value) {
+                    $("#MultiField_" + value + "_" + 1).css("display", "block");
+                    $("#MultiField_" + value + "_" + 1).addClass("showFilled");
+                }
+                );
+
                 $(".subgroupparentdivs").each(function () {
-                    var count = $(this).find(".myyourclass").length;
+                    var count = $(this).find(".showFilled").length;
                     if (count <= 0) {
                         $(this).hide();
                     }
+                    else {
+                        $(this).show();
+                    }
                 });
             }
+            else {
+                $.each(subgrpArr, function (key, value) {
+                    $.each(value, function (key2, value2) {
+                        $("#MultiSubGroup_" + key2 + "_" + 1).css("display", "block");
+                        $("#MultiSubGroup_" + key2 + "_" + 1).addClass("showFilled");
+                    });
+                });
+                $(".subgroupparentdivs").each(function () {
+                    $(this).css("display", "block");
+                });
 
-            $.each(objAttr, function (key, value) {
-                $("#MultiField_" + value + "_" + 1).css("display", "block");
-                $("#MultiField_" + value + "_" + 1).addClass("showFilled");
+                if (sat) {
+                    $(".subgroupparentdivs").each(function () {
+                        var count = $(this).find(".myyourclass").length;
+                        if (count <= 0) {
+                            $(this).hide();
+                        }
+                    });
+                }
+
+                $.each(objAttr, function (key, value) {
+                    $("#MultiField_" + value + "_" + 1).css("display", "block");
+                    $("#MultiField_" + value + "_" + 1).addClass("showFilled");
+                }
+                );
             }
-            );
         }
-    }
-    function addReferenceUrl() {
-        $('#addnewurl').show();
-        $('#addurl').val('');
+        function addReferenceUrl() {
+            $('#addnewurl').show();
+            $('#addurl').val('');
 
-    }
+        }
 
-    function loadReferenceUrl() {
+        function loadReferenceUrl() {
 
 
-        $('#addnewurl').hide();
-        $('.chk-wid-Url').parent().show();
-        var projectid = $('#ProjectId').val();
-        var regionid = $('#RegionId').val();
-        var inputentityid = $('#InputEntityId').val();
-        var prodentityid = $('#ProductionEntity').val();
+            $('#addnewurl').hide();
+            $('.chk-wid-Url').parent().show();
+            var projectid = $('#ProjectId').val();
+            var regionid = $('#RegionId').val();
+            var inputentityid = $('#InputEntityId').val();
+            var prodentityid = $('#ProductionEntity').val();
 
-        var attrGrpid = $('#attrGroupId').val();
-        var attrSubGrpid = $('#attrSubGroupId').val();
-        var attrid = $('#attrId').val();
-        var Projattrid = $('#ProjattrId').val();
-        var sequence = $('#seq').val();
+            var attrGrpid = $('#attrGroupId').val();
+            var attrSubGrpid = $('#attrSubGroupId').val();
+            var attrid = $('#attrId').val();
+            var Projattrid = $('#ProjattrId').val();
+            var sequence = $('#seq').val();
 
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetgroupurl')); ?>",
-            data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
-            dataType: 'text',
-            async: true,
-            success: function (result) {
-                $("#LoadGroupAttrValue").empty();
-                if (result != '' && result != null) {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetgroupurl')); ?>",
+                data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
+                dataType: 'text',
+                async: true,
+                success: function (result) {
                     $("#LoadGroupAttrValue").empty();
-                    var obj = JSON.parse(result);
-                    if (obj['attrval'] != '' && obj['attrval'] != null) {
-                        obj['attrval'].forEach(function (element) {
-                            if (element['AttributeValue'] != '' && element['AttributeValue'] != null) {
-                                var cols = "";
-                                cols += '<div class="col-xs-12 col-xl-4">';
-                                cols += '<div class="srcblock box1 update-cart" id="demo" data-dismiss="modal">';
+                    if (result != '' && result != null) {
+                        $("#LoadGroupAttrValue").empty();
+                        var obj = JSON.parse(result);
+                        if (obj['attrval'] != '' && obj['attrval'] != null) {
+                            obj['attrval'].forEach(function (element) {
+                                if (element['AttributeValue'] != '' && element['AttributeValue'] != null) {
+                                    var cols = "";
+                                    cols += '<div class="col-xs-12 col-xl-4">';
+                                    cols += '<div class="srcblock box1 update-cart" id="demo" data-dismiss="modal">';
 
-                                cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDFUrl(this.id);" class="current text-center text">' + element['AttributeValue'].substring(0, 45) + '</a>';
+                                    cols += '<span class="badge CntBadge" style="display: inline-block;">' + element['attrcnt'] + '</span> <a href="#" title=' + element['AttributeValue'] + ' value=' + element['AttributeValue'] + ' id=' + element['AttributeValue'] + ' onclick="loadPDFUrl(this.id);" class="current text-center text">' + element['AttributeValue'].substring(0, 45) + '</a>';
 
-                                cols += '</div>';
-                                cols += '</div>';
-                                $("#LoadGroupAttrValue").append(cols);
-                            } else {
-                                var colsEmpty = "";
-                                colsEmpty += "No URL found";
-                                $("#LoadGroupAttrValue").append(colsEmpty);
-                            }
-                        });
+                                    cols += '</div>';
+                                    cols += '</div>';
+                                    $("#LoadGroupAttrValue").append(cols);
+                                } else {
+                                    var colsEmpty = "";
+                                    colsEmpty += "No URL found";
+                                    $("#LoadGroupAttrValue").append(colsEmpty);
+                                }
+                            });
+                        } else {
+                            var colsEmpty = "";
+                            colsEmpty += "No URL found";
+                            $("#LoadGroupAttrValue").append(colsEmpty);
+                        }
                     } else {
                         var colsEmpty = "";
                         colsEmpty += "No URL found";
                         $("#LoadGroupAttrValue").append(colsEmpty);
                     }
-                } else {
-                    var colsEmpty = "";
-                    colsEmpty += "No URL found";
-                    $("#LoadGroupAttrValue").append(colsEmpty);
                 }
-            }
-        });
-    }
-
-//        function multipleUrl() {
-//            $('#addnewurl').hide();
-//        }
-    //  Query posting
-    function valicateQuery() {
-        if ($("#query").val() == '')
-        {
-            alert('Enter Query');
-            $("#query").focus();
-            return false;
+            });
         }
-        var regionid = $('#RegionId').val();
-        query = $("#query").val();
-        InputEntyId = $("#ProductionEntity").val();
 
-        var result = new Array();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxqueryposing')); ?>",
-            data: ({query: query, InputEntyId: InputEntyId, RegionId: regionid}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-                document.getElementById('successMessage').style.display = 'block';
-                setTimeout(function () {
-                    $(".formsubmit_validation_endisable").show(); // code added 
-                    document.getElementById('successMessage').style.display = 'none';
-                    $("#query").val(result);
-                }, 2000);
+    //        function multipleUrl() {
+    //            $('#addnewurl').hide();
+    //        }
+        //  Query posting
+        function valicateQuery() {
+            if ($("#query").val() == '')
+            {
+                alert('Enter Query');
+                $("#query").focus();
+                return false;
             }
-        });
-    }
+            var regionid = $('#RegionId').val();
+            query = $("#query").val();
+            InputEntyId = $("#ProductionEntity").val();
+
+            var result = new Array();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxqueryposing')); ?>",
+                data: ({query: query, InputEntyId: InputEntyId, RegionId: regionid}),
+                dataType: 'text',
+                async: false,
+                success: function (result) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    setTimeout(function () {
+                        $(".formsubmit_validation_endisable").show(); // code added 
+                        document.getElementById('successMessage').style.display = 'none';
+                        $("#query").val(result);
+                    }, 2000);
+                }
+            });
+        }
 
 
-    function formSubmit() {
+        function formSubmit() {
 
-        var ret = true;
-//        ret = AjaxSave('');
-//        $(".removeinputclass").remove();
+            var ret = true;
+    //        ret = AjaxSave('');
+    //        $(".removeinputclass").remove();
             var data = CKEDITOR.instances.editor.getData();
-//            console.log(data);
+    //            console.log(data);
             $("#textid").val(data);
 
-        return ret;
-    }
+            return ret;
+        }
 
-    function skipformSubmit() {
-        var ret = true;
-        $(".removeinputclass").remove();
-        return ret;
-    }
+        function skipformSubmit() {
+            var ret = true;
+            $(".removeinputclass").remove();
+            return ret;
+        }
 
-    function AjaxSave(addnewpagesave) {
-        Updatedata = $(".UpdateFields").serialize();
-        Inputdata = $(".InsertFields").serialize();
-        ProjectId = $("#ProjectId").val();
-        RegionId = $("#RegionId").val();
-        ProductionEntityID = $("#ProductionEntityID").val();
-        InputEntityId = $("#InputEntityId").val();
-        $("#save_btn").html("Please wait! Saving...");
-        //$("#save_btn").attr("disabled", "disabled");
+        function AjaxSave(addnewpagesave) {
+            Updatedata = $(".UpdateFields").serialize();
+            Inputdata = $(".InsertFields").serialize();
+            ProjectId = $("#ProjectId").val();
+            RegionId = $("#RegionId").val();
+            ProductionEntityID = $("#ProductionEntityID").val();
+            InputEntityId = $("#InputEntityId").val();
+            $("#save_btn").html("Please wait! Saving...");
+            //$("#save_btn").attr("disabled", "disabled");
 
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsave')); ?>",
-            data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId}),
-            dataType: 'json',
-            async: false,
-            success: function (result) {
-                //alert(result);
-                if (result == 'saved') {
-                    //alert('Save successfully!');
-                } else {
-                    alert('Error while saving data, please try again later.');
+            $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsave')); ?>",
+                data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId}),
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                    //alert(result);
+                    if (result == 'saved') {
+                        //alert('Save successfully!');
+                    } else {
+                        alert('Error while saving data, please try again later.');
+                    }
+                    $("#save_btn").removeAttr("disabled");
+                    $("#save_btn").html("Save");
+                    $(".InsertFields").addClass("UpdateFields").removeClass("InsertFields");
+                    return true;
                 }
-                $("#save_btn").removeAttr("disabled");
-                $("#save_btn").html("Save");
-                $(".InsertFields").addClass("UpdateFields").removeClass("InsertFields");
-                return true;
-            }
-        });
-        localStorage.clear();
-        return true;
-    }
+            });
+            localStorage.clear();
+            return true;
+        }
 
 
 
-</script>
+    </script>
 </body>
 <?php //exit; ?>
 <div id="fade" class="black_overlay"></div>
