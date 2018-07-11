@@ -690,7 +690,7 @@ if ($NoNewJob == 'NoNewJob') {
 var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj['attrinitialhtml'].replace(/\..+$/, '')+".html";
 
                             $("#pdffilename").val(obj['attrinitialhtml']);
-                            $("#pdffilename").val('12 3.html');
+                          //  $("#pdffilename").val('12 3.html');
                             loadhtmlforeditor(xhtmlfileinitial);
     
                             document.getElementById('frame1').data = htmlfileinitial;
@@ -1058,7 +1058,7 @@ var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj
                                 // call for html loader
                                 $("#pdffilename").val(obj['htmlfile']);
 
-var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslateOutput/"+obj['htmlfile'].replace(/\..+$/, '')+".html";
+var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj['htmlfile'].replace(/\..+$/, '')+".html";
                                 loadhtmlforeditor(xhtmlfileinitial);
                                 
                                 document.getElementById('frame1').data = htmlfile;
