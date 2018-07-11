@@ -337,8 +337,6 @@ class TranslatemoduleController extends AppController {
             $QcCompletedCount = $QcCompletedCount + 1;
         }
 
-
-
         if (isset($this->request->data['translate']) || isset($this->request->data['viewpdf']) || isset($this->request->data['save'])) {
 
             $mpdf = new \Mpdf\Mpdf();
@@ -409,7 +407,6 @@ class TranslatemoduleController extends AppController {
         }
 
 
-
         if (empty($InprogressProductionjob) && $this->request->data['NewJob'] != 'NewJob' && !isset($this->request->data['Submit']) && $this->request->query['job'] != 'newjob') {
             $this->set('getNewJOb', 'getNewJOb');
         } else {
@@ -420,7 +417,6 @@ class TranslatemoduleController extends AppController {
         $this->set('QcErrorComments', $QcErrorComments);
         $this->set('validate', $validate);
         $this->set('ProductionFields', $ProductionFields);
-
 
 
         $this->set('session', $session);
@@ -434,6 +430,7 @@ class TranslatemoduleController extends AppController {
                 $this->render('/Getjobcore/index_rework');
             }
         }
+        
     }
 
     function ajaxgeapivalidationremovekey($project_scope_id, $listdata) {
