@@ -70,7 +70,7 @@ class TranslatemoduleController extends AppController {
             $pdffilename = $pdffilename . '.pdf';
 
             $mpdf->WriteHTML($strContent);
-            $uploadFolder = "InputFiles";
+            $uploadFolder = "htmlfiles".DS."TranslationOutput";
 
             if (!file_exists($uploadFolder)) {
                 mkdir($uploadFolder, 0777, true);
@@ -867,7 +867,37 @@ class TranslatemoduleController extends AppController {
                 $maxSeq = array();
                 $tempDep = '';
                 $finalprodValue = array();
-
+				foreach ($productionjobNew as $key => $value) {
+                    //pr($value);
+                    
+                    if($value['special']!=''){
+                        $special='<xml>'.$value['special'].'</xml>';
+                        $specialArr=  simplexml_load_string($special);
+                        $specialArr = json_decode( json_encode($specialArr) , 1);
+                      //  pr($productionjobNew);
+                        //exit;
+                        
+                        //$specialArr=$this->xml2array($specialArr);
+                       
+                        foreach($specialArr as $key2Temp=>$value2){
+                            $key2=  str_replace('_x003', '', $key2Temp);
+                            $key2=  str_replace('_', '', $key2);
+                            if(is_array($value2) && count($value2)==0)
+                                $value2='';
+                            $finalprodValue[$key2][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = $value2;
+                        }
+                        if($value['SequenceNumber']>$maxSeq[$value['DependencyTypeMasterId']] && $tempDep==$value['DependencyTypeMasterId']) {
+                                $maxSeq[$value['DependencyTypeMasterId']]=$value['SequenceNumber'];
+                                $tempDep=$value['DependencyTypeMasterId'];
+                            }
+                            else {
+                                if(!isset($maxSeq[$value['DependencyTypeMasterId']]))
+                                $maxSeq[$value['DependencyTypeMasterId']]=1;
+                                $tempDep=$value['DependencyTypeMasterId'];
+                            }
+                    }
+                   
+                }
                 //pr($finalprodValue);
                 $staticFields = array();
                 $static = 0;
