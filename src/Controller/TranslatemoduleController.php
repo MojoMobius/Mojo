@@ -59,32 +59,30 @@ class TranslatemoduleController extends AppController {
         $frameType = $JsonArray['ProjectConfig']['ProductionView'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
         $domainUrl = $JsonArray['ProjectConfig']['DomainUrl'];
-        
-        $jsonpath = JSONPATH;
-         $this->set('basepath', $jsonpath);
-            
 
-        if (isset($this->request->data['translate'])) {
 
+        if (isset($this->request->data['translate']) || isset($this->request->data['viewpdf'])) {
 
             $mpdf = new \Mpdf\Mpdf();
             $strContent = $this->request->data['translatehtml'];
-           //$mpdf->WriteHTML('<h1>Hello world!</h1>');
+            $pdffilename = $this->request->data['pdffilename'];
+            $pdffilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $pdffilename);
+            $pdffilename = $pdffilename . '.pdf';
+
             $mpdf->WriteHTML($strContent);
             $uploadFolder = "InputFiles";
-//            $mpdf->Output();
-            
-             if (!file_exists($uploadFolder)) {
-                    mkdir($uploadFolder, 0777, true);
-                }
-                
-//            file_put_contents($uploadFolder.DS."sams.pdf", $mpdf->Output($uploadFolder.DS."sams.pdf"));
-            $mpdf->Output($uploadFolder.DS."sams.pdf");
-//             $this->Flash->error(__('No Record found for this combination!'));
-             
-             $this->Flash->success('The File has been saved.');
-             return $this->redirect(['action' => 'index']);
-            
+
+            if (!file_exists($uploadFolder)) {
+                mkdir($uploadFolder, 0777, true);
+            }
+            $mpdf->Output($uploadFolder . DS . $pdffilename);
+            if (isset($this->request->data['viewpdf'])) {
+                $link = DS . $uploadFolder . DS . $pdffilename;
+                return $this->redirect($link);
+            }
+
+            $this->Flash->success('The File has been saved.');
+            return $this->redirect(['action' => 'index']);
         }
 
 

@@ -14,13 +14,7 @@
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">-->
 
-<script>
-$(document).ready(function () {
-setTimeout(function() {
-   $('.success_msg').fadeOut('fast');
-}, 2500);
-})
-</script>
+
 <script src="webroot/ckeditor/ckeditor.js"></script>
 <script src="webroot/ckeditor/samples/js/sample.js"></script>
 <?php
@@ -184,7 +178,7 @@ if ($NoNewJob == 'NoNewJob') {
                                 <input type="hidden" name="ProjattrId" id="ProjattrId">
                                 <input type="hidden" name="seq" id="seq">
                                 <input type="hidden" name="refUrl" id="refUrl">
-                                <input type="hidden" name="pdffilename" id="pdffilename">
+                                <input type="text" name="pdffilename" id="pdffilename">
                                   <?php
 //                                    $path = JSONPATH . '\\filenews.htm';
                                    // $path = JSONPATH . '\\sample.html';
@@ -208,6 +202,9 @@ if ($NoNewJob == 'NoNewJob') {
                                     <textarea class="hide" name="translatehtml" id="textid" cols="100" width="300" >
                                         
                                     </textarea>
+
+
+                                    <a href="InputFiles/sams.pdf" target="_blank">View PDF </a>
 
                                 </div>
                             </div>
@@ -268,17 +265,17 @@ if ($NoNewJob == 'NoNewJob') {
                 <button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5 formsubmit_validation_endisable" style="<?php echo $style_endisble;?>" onclick="return formSubmit();"> Submit & Exit </button>
                 <button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right formsubmit_validation_endisable" onclick="return formSubmit();" style="margin-right: 5px;<?php echo $style_endisble;?>"> Submit & Continue </button>
                 <!--<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right " onclick="return skipformSubmit();" style="margin-right: 5px;"> Skip & Continue </button> -->
-<!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
-<!--                <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>-->
+                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>
+                <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>
                 <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
-                <button type="submit" name='translate' value="Translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save Translate</button>
+                <button type="submit" name='translate' value="translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();">Translate</button>
 
-   <button type="submit" name='viewpdf' value="viewpdf" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" formtarget="_blank">View pdf</button>
+
 
             </div>
         </div>
     </form>
-   
+    <div id="editor1" style="widht:200px;height:200px;"> testing 1 </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-right-0 padding-left-0">
 
 
@@ -685,7 +682,6 @@ if ($NoNewJob == 'NoNewJob') {
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
                             $('#exampleTabsOne').show();
                             var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-                            
                             $("#pdffilename").val(obj['attrinitialhtml']);
                             loadhtmlforeditor(htmlfileinitial);
     
