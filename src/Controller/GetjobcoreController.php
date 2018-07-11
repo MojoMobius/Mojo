@@ -79,7 +79,7 @@ class GetjobcoreController extends AppController {
 		$joballocation_type = $JsonArray['ProjectConfig']['joballocation_type'];
 		$userCheck='';
 		if($joballocation_type==1) {
-		//	$userCheck=' AND UserId='.$user_id;
+			$userCheck=' AND UserId='.$user_id;
 		}
         if ($frameType == 1) {
             if (isset($this->request->query['job']))
@@ -777,7 +777,7 @@ class GetjobcoreController extends AppController {
             //exit;
           
             if (empty($InprogressProductionjob)) {
-                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') '.$userCheck.' AND ProjectId=' . $ProjectId.' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN ('.$first_Status_id.') '.$userCheck.' AND ProjectId=' . $ProjectId.' Order by Priority desc,ProductionEntity,StatusId Desc')->fetchAll('assoc');
                 $FirstStatusId[] =  $productionjob[0]['StatusId'];
                 $FirstStatus =  $productionjob[0]['StatusId'];
                 $NextStatusId = $JsonArray['ModuleStatus_Navigation'][$FirstStatus][1];
@@ -1778,6 +1778,7 @@ class GetjobcoreController extends AppController {
         $ProjectId = $_POST['ProjectId'];
         $RegionId = $_POST['RegionId'];
         $StatusId = $_POST['StatusId'];
+		$TimeTaken=$_POST['TimeTaken'];
         $InputEntityId = $_POST['InputEntityId'];
         $ProductionEntityID = $_POST['ProductionEntityID'];
         $moduleId = $session->read("moduleId");
@@ -1813,8 +1814,8 @@ class GetjobcoreController extends AppController {
                     }
                     }
                     
-                    
-                  $updateTable=$connection->execute("UPDATE Staging_".$moduleId."_Data SET $updateFields UserId='" . $user_id . "' where  DependencyTypeMasterId='" . $depKey . "' AND SequenceNumber='" . $seqKey . "' AND ProjectId='" . $ProjectId . "' AND RegionId='" . $RegionId . "' AND InputEntityId='" . $InputEntityId . "'");    
+                  
+                  $updateTable=$connection->execute("UPDATE Staging_".$moduleId."_Data SET $updateFields UserId='" . $user_id . "',TimeTaken='".$TimeTaken."' where  DependencyTypeMasterId='" . $depKey . "' AND SequenceNumber='" . $seqKey . "' AND ProjectId='" . $ProjectId . "' AND RegionId='" . $RegionId . "' AND InputEntityId='" . $InputEntityId . "'");    
                 }
             }
             
@@ -1844,11 +1845,12 @@ class GetjobcoreController extends AppController {
                     }
                     }
                    // echo "INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$next_status_id,$ProductionEntityID)";
-                  $updateTable=$connection->execute("INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity,ActStartDate,BatchID,BatchCreated) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$StatusId,$ProductionEntityID,'$ActStartDate','$BatchId','$BatchCreated')");    
+                  $updateTable=$connection->execute("INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity,ActStartDate,BatchID,BatchCreated,TimeTaken) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$StatusId,$ProductionEntityID,'$ActStartDate','$BatchId','$BatchCreated','$TimeTaken')");    
                 }
             }
                 
             }
+			$updateTable=$connection->execute("UPDATE Staging_".$moduleId."_Data SET  UserId='" . $user_id . "',TimeTaken='".$TimeTaken."' where  ProjectId='" . $ProjectId . "' AND RegionId='" . $RegionId . "' AND InputEntityId='" . $InputEntityId . "'");    
             echo (json_encode("saved"));
             exit;
         }

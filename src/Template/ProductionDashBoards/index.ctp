@@ -64,8 +64,7 @@ use Cake\Routing\Router
                               <div id="LoadProject">
                       
                                   <?php 
-                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getRegion(this.value);getStatus(this.value);getCengageProject(this.value);'));
-                      
+                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getRegion(this.value);getStatus(this.value);getCengageProject(this.value);'));                      
                       
                         ?>
                               </div>
@@ -910,7 +909,7 @@ function priority(){
 //    
 // var arr_value+='_' + arraydata[i].value;
 //}
-
+ $(".hot").html("Loading...");
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdata')); ?>',
             

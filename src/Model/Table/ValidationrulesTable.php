@@ -200,22 +200,11 @@ class ValidationrulesTable extends Table {
             if($MappedAttribute[$i]['DateFormat']==''){
              $selected ='selected';
              
-<<<<<<< .mine
-             $templatenew.='<option value="MM-dd-yy">MM-DD-YY</option>'; 
-             $templatenew.='<option value="y-M-d">YYYY-MM-DD</option>';
-             $templatenew.='<option value="M/d/y">M/D/Y</option>';
-             $templatenew.='<option value="M/d/y H:m">M/D/Y H:S</option>';
-||||||| .r24064
-             $templatenew.='<option value="MM-dd-yy">MM-DD-YY</option>'; 
-             $templatenew.='<option value="y-M-d">Y-M-D</option>';
-             $templatenew.='<option value="M/d/y">M/D/Y</option>';
-             $templatenew.='<option value="M/d/y H:m">M/D/Y H:S</option>';
-=======
-             $templatenew.='<option value="MM-dd-yy">MM-DD-YYYY</option>'; 
+              $templatenew.='<option value="MM-dd-yy">MM-DD-YYYY</option>'; 
              $templatenew.='<option value="y-M-d">YYYY-MM-DD</option>';
              $templatenew.='<option value="M/d/y">MM/DD/YYYY</option>';
              $templatenew.='<option value="M/d/y H:m">MM/DD/YYYY H:M</option>';
->>>>>>> .r24152
+             
             }else{
             if($MappedAttribute[$i]['DateFormat']=='MM-dd-yy'){
                 $selected ='selected';
