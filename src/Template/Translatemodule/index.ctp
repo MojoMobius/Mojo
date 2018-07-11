@@ -685,9 +685,11 @@ if ($NoNewJob == 'NoNewJob') {
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
                             $('#exampleTabsOne').show();
                             var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-                            
+
+var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslateOutput/"+obj['attrinitialhtml'].replace(/\..+$/, '')+".html";
+
                             $("#pdffilename").val(obj['attrinitialhtml']);
-                            loadhtmlforeditor(htmlfileinitial);
+                            loadhtmlforeditor(xhtmlfileinitial);
     
                             document.getElementById('frame1').data = htmlfileinitial;
 
@@ -1052,7 +1054,9 @@ if ($NoNewJob == 'NoNewJob') {
                                 var htmlfile = "<?php echo HTMLfilesPath; ?>" + obj['htmlfile'];
                                 // call for html loader
                                 $("#pdffilename").val(obj['htmlfile']);
-                                loadhtmlforeditor(htmlfile);
+
+var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslateOutput/"+obj['htmlfile'].replace(/\..+$/, '')+".html";
+                                loadhtmlforeditor(xhtmlfileinitial);
                                 
                                 document.getElementById('frame1').data = htmlfile;
                                 var object = document.getElementById("frame1");
