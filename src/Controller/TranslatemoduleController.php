@@ -8,9 +8,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
 //require_once __DIR__ . '/vendor/autoload.php';
-//require_once(ROOT . DS . 'vendor' . DS . 'mpdf' . DS . 'vendor' . DS . 'autoload.php');
-//require_once(ROOT .'/vendor/mpdf/mpdf.php');
-
+//require_once(ROOT . DS . 'vendor' . DS . 'mpdf' . DS . 'library_vendor' . DS . 'autoload.php');
 
 /**
  * Bookmarks Controller
@@ -39,7 +37,7 @@ class TranslatemoduleController extends AppController {
     }
 
     public function index() {
-     
+
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -63,23 +61,25 @@ class TranslatemoduleController extends AppController {
         $domainUrl = $JsonArray['ProjectConfig']['DomainUrl'];
 
 
-        if (isset($this->request->data['translate'])) {
-
+        if (isset($this->request->data['translate']) || isset($this->request->data['viewpdf'])) {
 
             $mpdf = new \Mpdf\Mpdf();
             $strContent = $this->request->data['translatehtml'];
-            //$mpdf->WriteHTML('<h1>Hello world!</h1>');
+            $pdffilename = $this->request->data['pdffilename'];
+            $pdffilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $pdffilename);
+            $pdffilename = $pdffilename . '.pdf';
+
             $mpdf->WriteHTML($strContent);
             $uploadFolder = "InputFiles";
-
 
             if (!file_exists($uploadFolder)) {
                 mkdir($uploadFolder, 0777, true);
             }
-
-//            file_put_contents($uploadFolder.DS."sams.pdf", $mpdf->Output($uploadFolder.DS."sams.pdf"));
-            $mpdf->Output($uploadFolder . DS . "sams.pdf");
-//             $this->Flash->error(__('No Record found for this combination!'));
+            $mpdf->Output($uploadFolder . DS . $pdffilename);
+            if (isset($this->request->data['viewpdf'])) {
+                $link = DS . $uploadFolder . DS . $pdffilename;
+                return $this->redirect($link);
+            }
 
             $this->Flash->success('The File has been saved.');
             return $this->redirect(['action' => 'index']);
