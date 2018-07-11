@@ -18,6 +18,7 @@
 $(document).ready(function () {
 setTimeout(function() {
    $('.success_msg').fadeOut('fast');
+   $('.error_msg').fadeOut('fast');
 }, 2500);
 })
 </script>
@@ -271,7 +272,10 @@ if ($NoNewJob == 'NoNewJob') {
 <!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
 <!--                <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>-->
                 <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
-                <button type="submit" name='translate' value="Translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save Translate</button>
+
+ <button type="submit" name='save' value="save" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save</button>
+
+                <button type="submit" name='translate' value="Translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save & submit</button>
 
    <button type="submit" name='viewpdf' value="viewpdf" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" formtarget="_blank">View pdf</button>
 
@@ -686,11 +690,10 @@ if ($NoNewJob == 'NoNewJob') {
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
                             $('#exampleTabsOne').show();
                             var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-
+ 
 var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj['attrinitialhtml'].replace(/\..+$/, '')+".html";
 
                             $("#pdffilename").val(obj['attrinitialhtml']);
-                          //  $("#pdffilename").val('12 3.html');
                             loadhtmlforeditor(xhtmlfileinitial);
     
                             document.getElementById('frame1').data = htmlfileinitial;
