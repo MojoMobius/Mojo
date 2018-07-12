@@ -2899,13 +2899,13 @@ function ajaxgetafterreferenceurl() {
         $Comments = $_POST['comment'];
         $SequenceNumber = $_POST['SequenceNumber'];
         
-		echo "Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'";
-        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' and SequenceNumber=$SequenceNumber WHERE Id='".$Id."'");
+		//echo "Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'";
+        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."'  WHERE Id='".$Id."' and SequenceNumber=$SequenceNumber");
         
    } 
-   function Checkcomment(){
-	   echo "hello";
-   }
+//   function Checkcomment(){
+//	   echo "hello";
+//   }
    
    function ajaxformsubmit(){
        
