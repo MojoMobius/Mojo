@@ -2901,7 +2901,7 @@ function ajaxgetafterreferenceurl() {
         $Id = $_POST['Id'];
         $Comments = $_POST['comment'];
         $SequenceNumber = $_POST['SequenceNumber'];
-       
+        
 		//echo "Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'";
       
         $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."' and SequenceNumber='$SequenceNumber'");
@@ -2909,7 +2909,6 @@ function ajaxgetafterreferenceurl() {
         echo json_encode($getdata);
         exit;
    }
-  
    
    function ajaxformsubmit(){
        
