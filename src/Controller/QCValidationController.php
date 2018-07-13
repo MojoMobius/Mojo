@@ -2890,26 +2890,28 @@ function ajaxgetafterreferenceurl() {
         $connection = ConnectionManager::get('default');
         $Id = $_POST['Id'];
         $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 8 WHERE Id='".$Id."'");
-        
+        $getdata['result'] = "success";
+        echo json_encode($getdata);
+        exit;
 }
    
     function ajaxupdaterejectstatus(){
+       
         $connection = ConnectionManager::get('default');
         $Id = $_POST['Id'];
         $Comments = $_POST['comment'];
         $SequenceNumber = $_POST['SequenceNumber'];
         
-		echo "Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'";
-        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' and SequenceNumber=$SequenceNumber WHERE Id='".$Id."'");
-        
-   } 
-   function Checkcomment(){
-	   echo "hello";
+		//echo "Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."'";
+      
+        $updateStatus = $connection->execute("Update MV_QC_Comments set StatusId = 9,QCComments='".$Comments."' WHERE Id='".$Id."' and SequenceNumber='$SequenceNumber'");
+        $getdata['result'] = "success";
+        echo json_encode($getdata);
+        exit;
    }
    
    function ajaxformsubmit(){
        
-      
         $connectiond2k = ConnectionManager::get('d2k');
         $statusIdentifier = ReadyforPUReworkIdentifier;
         $session = $this->request->session();

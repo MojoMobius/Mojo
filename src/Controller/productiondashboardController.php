@@ -555,6 +555,7 @@ class productiondashboardController extends AppController {
                             // get input ids based on start & end date.
                             $get_InputEntityIds = $connection->execute("SELECT DISTINCT pm.InputEntityId FROM $table_rep as pm  WHERE $Datecheck pm.ProjectId='$ProjectId' ")->fetchAll('assoc');
                            
+                            
                             // if having inputentityids count error info level 3
                             // no ids empty result
                             if (!empty($get_InputEntityIds)) {
@@ -564,7 +565,7 @@ class productiondashboardController extends AppController {
                                 $check_Inputentityids = " mc.InputEntityId IN ($get_InputEntityId_ids)";
 
                                 // get count info errror
-                                $Error_cnt_report = $connection->execute("SELECT count(Id) as count FROM MV_QC_Comments as mc  WHERE mc.ProjectId='$ProjectId' AND $check_Attributes AND $check_Inputentityids")->fetchAll('assoc'); 
+                                $Error_cnt_report = $connection->execute("SELECT count(Id) as count FROM MV_QC_Comments as mc  WHERE mc.ProjectId='$ProjectId' AND $check_Attributes AND $check_Inputentityids AND StatusId = 9")->fetchAll('assoc'); 
                             if(!empty($Error_cnt_report[0]['count'])){
                                     $count = intval($Error_cnt_report[0]['count']);
 //                                    $count = intval(97);
