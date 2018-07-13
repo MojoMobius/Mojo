@@ -856,6 +856,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                                     }
                                                                                     ?>
                                                                     <span class="lighttext" value="<?php echo $InpValueFieldsValue; ?>" id="beforeText_<?php echo $key; ?>_<?php echo $keysub; ?>_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $tempSq; ?>" data-toggle="tooltip" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span><?php //echo $ScoreFieldsValue; ?>
+																	<span style="color:red;display:none;" class="lighttext validation_error" data-toggle="tooltip" id="<?php echo $ProdFieldsId."_error";?>"></span>
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-md-2 form-text">
