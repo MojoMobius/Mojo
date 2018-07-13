@@ -1268,7 +1268,7 @@ if(!empty($attr_array)){
     
        function AjaxValidation(){
 $(".formsubmit_validation_endisable").show();
-	   return true; 
+	
             $(".validationloader").show();
             $(".validation_error").hide();
              $(".validationerrorcnt").hide();
@@ -1317,32 +1317,36 @@ $(".formsubmit_validation_endisable").show();
                     success: function (result) {
                        
                         resultarray = JSON.parse(result);
-                        listerror = resultarray['Validation Output'];
+                          if(resultarray['status'] ==1){
+                               listerror = resultarray['Validation Output'];
                         error_count = resultarray['Errors Count'];
                        $("#validationerrorcnt").html(error_count);
                        $(".validationerrorcnt").show();
-                       if(error_count > 0){
-                             $.each( listerror, function( key, val ) {
-                            $.each( val, function( skey, sval ) {
-                                $.each( sval, function( sskey, ssval ) {
-                                    strArray = ssval.ext.split(",");
-                                    for (i = 0; i < strArray.length; i++) {
-                                          if(strArray[i] > 1){
-                                              $("."+ssval.pagination_key).css("color", "red");
-                                          }
-                                        
-                                        if(strArray[i].length > 0){
-                                          $("#"+ssval.key+'_'+strArray[i]+"_error").html(ssval[strArray[i]]["error_txt"]);
-                                          $("#"+ssval.key+'_'+strArray[i]+"_error").show();
-                                    }
-                                    }
-                                });
+                        if(error_count > 0){
+                              $.each( listerror, function( key, val ) {
+                             $.each( val, function( skey, sval ) {
+                                 $.each( sval, function( sskey, ssval ) {
+                                     strArray = ssval.ext.split(",");
+                                     for (i = 0; i < strArray.length; i++) {
+                                           if(strArray[i] > 1){
+                                               $("."+ssval.pagination_key).css("color", "red");
+                                           }
 
-                                });
-                        });
-                       }else{
-                            $(".formsubmit_validation_endisable").show(); // code added 
-                       }
+                                         if(strArray[i].length > 0){
+                                           $("#"+ssval.key+"_"+strArray[i]+"_error").html(ssval[strArray[i]]["error_txt"]);
+                                           $("#"+ssval.key+"_"+strArray[i]+"_error").show();
+                                     }
+                                     }
+                                 });
+
+                                 });
+                         });
+                        }else{
+                             $(".formsubmit_validation_endisable").show(); // code added 
+                        }
+                        
+                          }
+                       
                           $(".panel-group").css("opacity","");
                           $(".validationloader").css({"display": "none"});
                 }

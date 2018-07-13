@@ -1244,7 +1244,8 @@ class GetjobcoreController extends AppController {
      }
      
      function ajaxgeapivalidation() {
-       $connection = ConnectionManager::get('default');
+         try {  
+             $connection = ConnectionManager::get('default');
        $listdata = $_POST['listdata'];
        $listdata_back = $_POST['listdata'];
        $project_scope_id = $_POST['project_scope_id'];
@@ -1269,7 +1270,8 @@ class GetjobcoreController extends AppController {
      
         curl_close ($ch);
         $result = json_decode($server_output,true);
-        $res_array = $result["Validation Output"];
+      if(!empty($result)){
+          $res_array = $result["Validation Output"];
          if(!empty($res_array)){
               foreach($res_array as $key =>$val){
                 foreach($val as $key1 =>$val1){
@@ -1292,6 +1294,16 @@ class GetjobcoreController extends AppController {
          }
         
         $result["Validation Output"] = $res_array;
+        $result["status"] = 1;
+      }else{
+          $result["status"] = 0;
+      }
+             
+         } catch (\Exception $e) {
+              $result["status"] = 0;
+               
+            }
+       
        echo json_encode($result);
        exit;
      }
