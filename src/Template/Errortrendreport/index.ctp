@@ -87,10 +87,10 @@ table.dataTable tbody tr {
                 <label for="inputPassword4" class="col-sm-6 control-label">Campaign</label>
                 <div class="col-sm-6">
                   <?php
-                    if ($CampaignId == '') {
+                    if (empty($CampaignId )) {
                         //$Campaign = array(0 => '--Select--');
                         echo '<div id="LoadCampaign">';
-                         echo $this->Form->input('', array('options' => $Campaign, 'class' => 'form-control', 'selected' => $CampaignId, 'value' => $CampaignId, 'id' => 'CampaignId', 'name' => 'CampaignId', 'style' => 'height:100px; margin-top:-15px;', 'multiple' => true));
+                         echo $this->Form->input('', array('options' => $Campaign, 'class' => 'form-control', 'selected' => $CampaignId, 'value' => $CampaignId, 'id' => 'CampaignId', 'name' => 'CampaignId[]', 'style' => 'height:100px; margin-top:-15px;', 'multiple' => true));
                         echo '</div>';
                     } else {
                         echo $CampaignId;
@@ -202,8 +202,6 @@ else{
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
                                 
                                 </tr>									
                                 </tbody>
@@ -273,7 +271,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
             //"scrollY": 300,
             //            "scrollX": true,
             "aoColumnDefs": [
-                {"bSearchable": false, "aTargets": [6]}
+                {"bSearchable": false, "aTargets": [5]}
             ]
         });
         //{ "bSearchable":false, "aTargets": [0,6,7] }

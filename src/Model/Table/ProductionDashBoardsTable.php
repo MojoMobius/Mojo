@@ -73,7 +73,7 @@ class ProductionDashBoardsTable extends Table {
        
       
         $template = '';
-        $template = '<select name="ClientId"  id="ClientId" class="form-control"><option value=0>--Select--</option>';
+        $template = '<select name="ClientId"  id="ClientId" class="form-control" onchange= "getProject(this.value);"><option value=0>--Select--</option>';
         if (!empty($modulesArr)) {
 
             foreach ($modulesArr as $key => $value) {
@@ -166,7 +166,6 @@ class ProductionDashBoardsTable extends Table {
     function findResourcedetails(Query $query, array $options) {
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
-        $UserGroupId = $options['UserGroupId'];
 
         if ($options['UserId'] != '') {
             $UserId = $options['UserId'];
@@ -179,7 +178,7 @@ class ProductionDashBoardsTable extends Table {
 
         $connection = ConnectionManager::get('default');
         $queries = $connection->execute("select UGMapping.UserId from MV_UserGroupMapping as UGMapping"
-                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
+                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . "  AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
                 . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
                    FROM (SELECT CAST('<M>' + REPLACE([RoleId], ',', '</M><M>') + '</M>' AS XML) AS String  
                         FROM ME_ProjectRoleMapping where ProjectId = " . $ProjectId . " AND ModuleId = 1 AND RecordStatus = 1) AS A CROSS APPLY String.nodes ('/M') AS Split(a)"
@@ -210,7 +209,7 @@ class ProductionDashBoardsTable extends Table {
     function findResourceDetailsArrayOnly(Query $query, array $options) {
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
-        $UserGroupId = $options['UserGroupId'];
+        //$UserGroupId = $options['UserGroupId'];
 
         $path = JSONPATH . '\\ProjectConfig_' . $options['ProjectId'] . '.json';
         $content = file_get_contents($path);
@@ -219,7 +218,7 @@ class ProductionDashBoardsTable extends Table {
 
         $connection = ConnectionManager::get('default');
         $queries = $connection->execute("select UGMapping.UserId from MV_UserGroupMapping as UGMapping"
-                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
+                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . "  AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
                 . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
                    FROM (SELECT CAST('<M>' + REPLACE([RoleId], ',', '</M><M>') + '</M>' AS XML) AS String  
                         FROM ME_ProjectRoleMapping where ProjectId = " . $ProjectId . " AND ModuleId = 1 AND RecordStatus = 1) AS A CROSS APPLY String.nodes ('/M') AS Split(a)"
@@ -280,6 +279,7 @@ class ProductionDashBoardsTable extends Table {
         $timeMetric = array();
         $timeMetrics = array();
         foreach ($GetPeriodArray as $dt) {
+           
             $DataExistsCount = $this->DataExistsInMonthwiseCheck($options['Project_Id'], $dt);
             if ($DataExistsCount != "") {
                 $CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
@@ -331,7 +331,7 @@ class ProductionDashBoardsTable extends Table {
                 }
             }
         }
-
+        
         //// Get Get Ready data///////////////////////////////////////
         $inputentityidNotIn = '';
         if (!empty($productionIdarrayNotIn)) {
@@ -349,15 +349,15 @@ class ProductionDashBoardsTable extends Table {
             }
         }
 
+
         if ($IsItOkay) {
             //echo "select production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]";
-           
+
 			
-             $querie4 = $connection->execute("select   production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]");
+             $querie4 = $connection->execute("select  production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]");
 		 
             $querie4 = $querie4->fetchAll('assoc');
-            //pr($querie4);
-            //exit;
+          
             $queries = array_merge($queries, $querie4);
             $productionIdarraylast = array();
             $prodlast = 0;
@@ -377,14 +377,15 @@ class ProductionDashBoardsTable extends Table {
             if (!empty($productionIdarraylast)) {
                 foreach ($module as $key => $value) {
 
-                    $staging_table = 'Staging_' . $key . '_Data';
+                    $staging_table = 'ME_Production_TimeMetric';//Staging_' . $key . '_Data';
                     $connection = ConnectionManager::get('default');
                     $CountQry = $connection->execute("select count(*) tabexists from INFORMATION_SCHEMA.TABLES where TABLE_NAME='$staging_table'");
                     $CountQrys = $CountQry->fetch('assoc');
                     $tablexists = $CountQrys['tabexists'];
                     if ($tablexists != '0') {
                         //echo "SELECT max(ActStartDate) as Start_Date,max(ActEnddate) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntity as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $conditions_timemetric group by ProductionEntity , UserId";
-                        $timeMetricsdata = $connection->execute("SELECT max(ActStartDate) as Start_Date,max(ActEnddate) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntity as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $conditions_timemetric group by ProductionEntity , UserId")->fetchAll("assoc");
+                    
+                        $timeMetricsdata = $connection->execute("SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast). ") $conditions_timemetric group by ProductionEntityID , UserId")->fetchAll("assoc");
                         //pr($timeMetricsdata);
                         //$timeMetricdata = array_merge($timeMetricdata, $timeMetricsdata);
                         //pr($timeMetricsdata);
@@ -929,6 +930,7 @@ class ProductionDashBoardsTable extends Table {
     public function findajaxProjectNameList(Query $query, array $options) {
          $proId = $options['proId'];
          $ClientId = $options['ClientId'];
+         $RegionId =$options['RegionId'];
         $clientCheck="";
         if($ClientId > 0){
         $clientCheck="client_id ='".$ClientId."' and ";    
@@ -942,7 +944,7 @@ class ProductionDashBoardsTable extends Table {
        
       
         $template = '';
-        $template = '<select name="ProjectId"  id="ProjectId" class="form-control" onchange="getRegion(this.value);getStatus(this.value);getCengageProject(this.value);"><option value=0>--Select--</option>';
+        $template = '<select name="ProjectId"  id="ProjectId" class="form-control" onchange="getresourcedetails('.$RegionId.');getStatus(this.value);"><option value=0>--Select--</option>';
         if (!empty($modulesArr)) {
 
             foreach ($modulesArr as $key => $value) {
