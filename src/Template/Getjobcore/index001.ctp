@@ -465,7 +465,7 @@ if ($NoNewJob == 'NoNewJob') {
                             $prefix = ' | '; 
                             }
                              $n++; 
-                        }
+                        }  
                         ?></b></div>
 
                     </div>
@@ -570,8 +570,8 @@ if ($NoNewJob == 'NoNewJob') {
                                             <?php
                                             $i = 0;
                                             
-//                                        $AttributeGroupMaster = array();
-//                                        $AttributeGroupMaster[168] = "Base Information";
+                                        $AttributeGroupMaster = array();
+                                        $AttributeGroupMaster[168] = "Base Information";
                                             
                                             foreach ($AttributeGroupMaster as $key => $GroupName) {
                                                 if ($i < 0) {
@@ -1235,6 +1235,30 @@ if ($NoNewJob == 'NoNewJob') {
     }
      
     
+function getattrsubgroupmasterid($json,$mastid,$subid){
+    return $json[$mastid][$subid];
+}
+//echo "<pre>s";print_r($attr_array);exit;
+if(!empty($attr_array)){
+    $list_data[$productionjob['ProjectId']] = array();
+    $list_data_main = array();
+    foreach($attr_array as $key=>$val){
+        // header1 - name 
+        foreach($val['sub'] as $subkey=>$subvalue){
+            // header2 sub-key get name
+            $subtitle = getattrsubgroupmasterid($AttributeSubGroupMasterJSON,$val['id'],$subkey);
+            foreach($subvalue as $sskey=>$ssvalue){
+                $ssattrname = $ssvalue['AttributeName']; // get header name 3
+                $list_data_main[$val['name']][$subtitle][$ssattrname][1]=null;
+                $list_data_main[$val['name']][$subtitle][$ssattrname]['key']="ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
+//                $list_data_main[$val['name']][$subtitle][$ssattrname]['cunt']=count($processinputdata[$ssvalue['AttributeMasterId']]);
+            
+
+            }
+        }
+    }
+}
+//echo "<pre>s";print_r($list_data_main);exit;
     ?>
                 </div>
             </div>
@@ -1243,13 +1267,15 @@ if ($NoNewJob == 'NoNewJob') {
     </div>	
 <?php //exit; ?>
     <script type="text/javascript">
-       
-         var attr_array = JSON.parse('<?php echo json_encode($attr_array); ?>' );
+          var jsnlist = JSON.parse('<?php echo json_encode($list_data_main); ?>' );
+          var attr_array = JSON.parse('<?php echo json_encode($attr_array); ?>' );
+          console.log(attr_array);
          var project_scope_id = "<?php echo $staticFields[0]; ?>";
     
        function AjaxValidation(){
             console.log(attr_array);
-            $(".formsubmit_validation_endisable").show();
+$(".formsubmit_validation_endisable").show();
+	
             $(".validationloader").show();
             $(".validation_error").hide();
              $(".validationerrorcnt").hide();
@@ -1267,10 +1293,31 @@ if ($NoNewJob == 'NoNewJob') {
          var txt = "";
          var cunt = 1;
          var itemkey ="";
-//         var listdata = jsnlist;
+         var listdata = jsnlist;
          var listerror = "";
          var strArray ="";
          var error_count ="";
+       
+//    $.each( jsnlist, function( key, val ) {
+//        $.each( val, function( skey, sval ) {
+//            $.each( sval, function( sskey, ssval ) {
+//                itemkey = jsnlist[key][skey][sskey].key;
+//                cunt = $(":input[id^="+itemkey+"]").length;
+//                for (i = 1; i <= cunt; i++) {
+//                    txt = $("#"+jsnlist[key][skey][sskey].key+'_'+i).val();
+//                    if(txt){
+//                        listdata[key][skey][sskey][i] = txt;
+//                    }else{
+//                        listdata[key][skey][sskey][i] = null;
+//                    }
+//                }
+//            });
+//            });
+//        });
+          
+          //console.log(listdata);debugger;
+           Updatedata = $(".UpdateFields").serialize();
+            Inputdata = $(".InsertFields").serialize();
             ProjectId = $("#ProjectId").val();
             RegionId = $("#RegionId").val();
             ProductionEntityID = $("#ProductionEntityID").val();
@@ -1283,13 +1330,36 @@ if ($NoNewJob == 'NoNewJob') {
             $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxapidatapreparation')); ?>",
-                data: ({ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status,TimeTaken:TimeTaken,attr_array:attr_array,project_scope_id:project_scope_id}),
+                data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status,TimeTaken:TimeTaken,jsnlist:jsnlist,attr_array:attr_array}),
                 dataType: 'json',
-                async: true,
+                async: false,
                 success: function (result) {
-                       var resultarray = jQuery.parseJSON(JSON.stringify(result));
-//                        resultarray = JSON.parse(result);
-                      
+                    //alert(result);
+                    if (result == 'saved') {
+                        //alert('Save successfully!');
+                    } else {
+                        alert('Error while saving data, please try again later.');
+                    }
+                    $("#save_btn").removeAttr("disabled");
+                    $("#save_btn").html("Save");
+                    $(".InsertFields").addClass("UpdateFields").removeClass("InsertFields");
+					return true;
+                }
+            });
+          
+          
+          
+          return 1;
+          
+         $.ajax({
+                    type: "POST",
+                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgeapivalidation')); ?>",
+                    data: ({listdata: listdata,project_scope_id:project_scope_id}),
+                    dataType: 'text',
+                    async: true,
+                    success: function (result) {
+                       
+                        resultarray = JSON.parse(result);
                           if(resultarray['status'] ==1){
                                listerror = resultarray['Validation Output'];
                         error_count = resultarray['Errors Count'];
@@ -1324,8 +1394,6 @@ if ($NoNewJob == 'NoNewJob') {
                           $(".validationloader").css({"display": "none"});
                 }
             });
-          
-          return true;
              
          }
          

@@ -140,10 +140,10 @@ class ProductionDashBoardsTable extends Table {
 
         $connection = ConnectionManager::get('default');
         $queries = $connection->execute("select UGMapping.UserGroupId,UGMaster.GroupName from MV_UserGroupMapping as UGMapping INNER JOIN MV_UserGroupMaster as UGMaster ON UGMapping.UserGroupId = UGMaster.Id"
-                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserId = " . $UserId . " AND UGMapping.RecordStatus = 1 AND UGMaster.RecordStatus = 1 GROUP BY UGMapping.UserGroupId,UGMaster.GroupName");
+                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . "  AND UGMapping.UserId = " . $UserId . " AND UGMapping.RecordStatus = 1 AND UGMaster.RecordStatus = 1 GROUP BY UGMapping.UserGroupId,UGMaster.GroupName");
         $queries = $queries->fetchAll('assoc');
         $template = '';
-        $template.='<select name="UserGroupId" id="UserGroupId" style="margin-top:5px;" class="form-control" onchange="getresourcedetails()">';
+        $template.='<select name="UserGroupId" id="UserGroupId" style="margin-top:5px;" class="form-control" onchange="getresourcedetails('.$RegionId.')">';
         if (!empty($queries)) {
             foreach ($queries as $key => $val):
                 if ($key == $UserGroupId) {
@@ -166,20 +166,25 @@ class ProductionDashBoardsTable extends Table {
     function findResourcedetails(Query $query, array $options) {
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
+		
         $UserGroupId = $options['UserGroupId'];
 
         if ($options['UserId'] != '') {
             $UserId = $options['UserId'];
-        }
-
+        } 
         $path = JSONPATH . '\\ProjectConfig_' . $options['ProjectId'] . '.json';
         $content = file_get_contents($path);
         $contentArr = json_decode($content, true);
         $user_list = $contentArr['UserList'];
-
+/*echo "select UGMapping.UserId from MV_UserGroupMapping as UGMapping"
+                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (".$UserGroupId.")  AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
+                . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
+                   FROM (SELECT CAST('<M>' + REPLACE([RoleId], ',', '</M><M>') + '</M>' AS XML) AS String  
+                        FROM ME_ProjectRoleMapping where ProjectId = " . $ProjectId . " AND ModuleId = 1 AND RecordStatus = 1) AS A CROSS APPLY String.nodes ('/M') AS Split(a)"
+                . ") GROUP BY UGMapping.UserId";exit;*/
         $connection = ConnectionManager::get('default');
         $queries = $connection->execute("select UGMapping.UserId from MV_UserGroupMapping as UGMapping"
-                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
+                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (".$UserGroupId.")  AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
                 . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
                    FROM (SELECT CAST('<M>' + REPLACE([RoleId], ',', '</M><M>') + '</M>' AS XML) AS String  
                         FROM ME_ProjectRoleMapping where ProjectId = " . $ProjectId . " AND ModuleId = 1 AND RecordStatus = 1) AS A CROSS APPLY String.nodes ('/M') AS Split(a)"
@@ -352,7 +357,6 @@ class ProductionDashBoardsTable extends Table {
         if ($IsItOkay) {
             //echo "select production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]";
            
-			
              $querie4 = $connection->execute("select   production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]");
 		 
             $querie4 = $querie4->fetchAll('assoc');
@@ -928,7 +932,8 @@ class ProductionDashBoardsTable extends Table {
     }
     public function findajaxProjectNameList(Query $query, array $options) {
          $proId = $options['proId'];
-         $ClientId = $options['ClientId'];
+         $ClientId = $options['ClientId']; 
+		 $RegionId = $options['RegionId'];
         $clientCheck="";
         if($ClientId > 0){
         $clientCheck="client_id ='".$ClientId."' and ";    
@@ -942,11 +947,10 @@ class ProductionDashBoardsTable extends Table {
        
       
         $template = '';
-        $template = '<select name="ProjectId"  id="ProjectId" class="form-control" onchange="getRegion(this.value);getStatus(this.value);getCengageProject(this.value);"><option value=0>--Select--</option>';
+        $template = '<select name="ProjectId"  id="ProjectId" class="form-control" onchange="getusergroupdetails('.$RegionId.');getStatus(this.value);"><option value=0>--Select--</option>';
         if (!empty($modulesArr)) {
 
-            foreach ($modulesArr as $key => $value) {
-             
+            foreach ($modulesArr as $key => $value) {             
                
                 $template.='<option  value="' . $value['ProjectId'] . '">';
                 $template.=$value['ProjectName'];

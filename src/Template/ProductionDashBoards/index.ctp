@@ -45,6 +45,7 @@ use Cake\Routing\Router
                         <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client</label>
                         <div class="col-sm-6" style="line-height: 0px;">
                              <?php
+                             
                     if ($ClientId == '') {
                        
                          echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId, 'onchange' => 'getProject(this.value)'));
@@ -53,6 +54,7 @@ use Cake\Routing\Router
                         echo $ClientId;
                     }
                     ?>
+                     <input type="hidden" name="RegionId" id="RegionId" value="<?php echo  $SessionRegionId;?>">
                      
                         </div>
                     </div>
@@ -64,14 +66,14 @@ use Cake\Routing\Router
                               <div id="LoadProject">
                       
                                   <?php 
-                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getRegion(this.value);getStatus(this.value);getCengageProject(this.value);'));                      
+                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getusergroupdetails('.$SessionRegionId.');getStatus(this.value);'));  
                       
                         ?>
                               </div>
                         </div>
                     </div>
                 </div>
-
+<!--
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Region</label>
@@ -80,7 +82,7 @@ use Cake\Routing\Router
                     <?php
                     if ($RegionId == '') {
                         $Region = array(0 => '--Select--');
-                        echo $this->Form->input('', array('options' => $Region, 'id' => 'RegionId', 'name' => 'RegionId', 'class' => 'form-control', 'value' => $RegionId,'style' => 'width:180px', 'onchange' => 'getusergroupdetails(this.value)'));
+                        echo $this->Form->input('', array('options' => $Region, 'id' => 'RegionId', 'name' => 'RegionId', 'class' => 'form-control', 'value' => $SessionRegionId,'style' => 'width:180px', 'onchange' => 'getusergroupdetails(this.value)'));
                     } else {
                         echo $RegionId;
                     }
@@ -88,7 +90,19 @@ use Cake\Routing\Router
                             </div>
                         </div>
                     </div>
+                </div>-->
+
+ <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Search</label>
+                        <div class="col-sm-6" style="line-height: 0px;">
+                  <?php
+            echo $this->Form->input('', array('id' => 'query', 'placeholder' => 'Search', 'name' => 'query', 'class' => 'form-control', 'value' => $postquery));
+            ?>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="col-md-4">
                     <div class="form-group">
@@ -98,7 +112,7 @@ use Cake\Routing\Router
                       <?php
                     if ($UserGroupId == '') {
                         $UserGroup = array(0 => '--Select--');
-                        echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails'));
+                        echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails('.$SessionRegionId.')'));
                     } else {
                         echo $UserGroupId;
                     }
@@ -168,16 +182,7 @@ use Cake\Routing\Router
                         </div>
                     </div>
                 </div>
- <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Search</label>
-                        <div class="col-sm-6" style="line-height: 0px;">
-                  <?php
-            echo $this->Form->input('', array('id' => 'query', 'placeholder' => 'Search', 'name' => 'query', 'class' => 'form-control', 'value' => $postquery));
-            ?>
-                        </div>
-                    </div>
-                </div>
+
 
 
                 <div class="form-group" style="text-align:center;">
@@ -274,7 +279,7 @@ if (count($Production_dashboard) > 0) {
                                         <th class="Cell" width="10%">End Date</th>
                                         <th class="Cell" width="10%">Time Taken</th>
                                         <th class="Cell" width="10%">User Id</th>
-                                        <th class="Cell" width="10%">User Group</th>
+                                       <!-- <th class="Cell" width="10%">User Group</th>-->
                                                         <?php
                                                 }
                                             }
@@ -331,8 +336,9 @@ if (count($Production_dashboard) > 0) {
                                             <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['Start_Date'] ?></td>
                                             <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['End_Date'] ?></td>
                                             <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['TimeTaken'] ?></td>
-                                            <td class="Cell" width="10%"><?php echo $User[$timeDetails[$key][$input['Id']]['UserId']]; ?></td>
-                                            <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['UserGroupId']; ?></td>
+                                            <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['UserId']; ?></td>
+                                           <!--  <td class="Cell" width="10%"><?php echo $User[$timeDetails[$key][$input['Id']]['UserId']]; ?></td>
+                                           <td class="Cell" width="10%"><?php //echo $timeDetails[$key][$input['Id']]['UserGroupId']; ?></td>-->
                                             <?php
                                             }
                                         }
@@ -548,7 +554,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         });
 //{ "bSearchable":false, "aTargets": [0,6,7] }
 //{ "bSortable": false, "aTargets": [0,6,7] },
-        var id = $('#RegionId').val();
+       // var id = $('#RegionId').val();
 
 //        if ($('#ProjectId').val() != '') {
 //            getRegion();
@@ -596,15 +602,15 @@ echo "var mandatoryArr = " . $js_array . ";\n";
                 });
                 optionValues.join(',')
                 $('#UserGroupId').prepend('<option selected value="' + optionValues + '">All</option>');
-                getresourcedetails();
+                getresourcedetails(RegionId);
 
             }
         });
     }
 
-    function getresourcedetails() {
+    function getresourcedetails(RegionId) {
         var ProjectId = $('#ProjectId').val();
-        var RegionId = $('#RegionId').val();
+        //var RegionId = $('#RegionId').val();
         var UserGroupId = $('#UserGroupId').val();
 
         $.ajax({
@@ -675,6 +681,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         $('#UserGroupId').val('');
         $('#status').val('');
         $('#query').val('');
+		$('#ClientId').val('0');
         $('#detail').hide();
         $('#pagination').hide();
         $('#xlscnt').hide();
@@ -769,11 +776,11 @@ echo "var mandatoryArr = " . $js_array . ";\n";
                 $('#ProjectId').focus();
                 return false;
             }
-            if ($('#RegionId').val() == 0) {
+           /* if ($('#RegionId').val() == 0) {
                 alert('Select Region Name');
                 $('#RegionId').focus();
                 return false;
-            }
+            }*/
 
             if (($('#batch_from').val() == '') && ($('#batch_to').val() == '') && ($('#user').val() == null))
             {
@@ -968,11 +975,13 @@ $("#pri_id"+id).keypress(function (e) {
 }
 */
 function getProject(id){
+    
+  var RegionId=$("#RegionId").val();
   $("#LoadProject").html('Loading...');
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxProject')); ?>',
             
-            data: {ClientId: id},
+            data: {ClientId: id,RegionId: RegionId},
             type: 'POST',
             success: function (res) { 
 	     $("#LoadProject").html(res);

@@ -24,10 +24,11 @@ class AgenterrorTable extends Table {
     public function initialize(array $config) {
         $this->table('MV_QC_BatchMaster');
     }
- public function findCampaign(Query $query, array $options) {
+
+    public function findCampaign(Query $query, array $options) {
         $path = JSONPATH . '\\ProjectConfig_' . $options['ProjectId'] . '.json';
         if ($options['CampaignId'] != '') {
-            $CampaignId = $options['CampaignId'];
+            $postCampaignId = $options['CampaignId'];
         }
         //$call = 'getModule();getusergroupdetails(this.value);';
         $template = '';
@@ -42,8 +43,8 @@ class AgenterrorTable extends Table {
             }
 
             foreach ($Campaign as $key => $val):
-                if ($key == $CampaignId) {
-                    $selected = 'selected=' . $RegionId;
+                if ($key == $postCampaignId) {
+                    $selected = 'selected=';
                 } else {
                     $selected = '';
                 }
@@ -54,10 +55,11 @@ class AgenterrorTable extends Table {
             $template.='</select>';
             return $template;
         } else {
-            $template.='</select>';
+            $template.='</select>';           
             return $template;
         }
     }
+ 
         function findExport(Query $query, array $options) {
         // pr($options); 
             $ProjectId = $options['ProjectId'];           

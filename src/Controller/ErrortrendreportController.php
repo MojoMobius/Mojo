@@ -84,8 +84,14 @@ class ErrortrendreportController extends AppController {
             $user_id = $session->read("user_id");
             $moduleId = $session->read("moduleId");
 
-            $ProjectId = $this->request->data('ProjectId');
+             $ProjectId = $this->request->data('ProjectId');
             $CampaignId = $this->request->data('CampaignId');
+           
+             if(!empty($CampaignId)){ 
+                $Campaign_dropdown = $this->Errortrendreport->find('Campaign', ['ProjectId' => $_POST['ProjectId'],'CampaignId' => $_POST['CampaignId']]);                
+            $this->set('CampaignId', $Campaign_dropdown);
+             }
+            
             $connection = ConnectionManager::get('default');
 
             $stagingTable = 'Staging_' . $moduleId . '_Data';
@@ -105,6 +111,10 @@ class ErrortrendreportController extends AppController {
                     $ProName = $values['ProjectName'];
                 }
             endforeach;
+              $Arrfdate=explode("-",$fdate);
+              $Arrtdate=explode("-",$tdate);
+              $fdateformat = $Arrfdate[2]."-".$Arrfdate[1]."-".$Arrfdate[0];
+              $tdateformat = $Arrtdate[2]."-".$Arrtdate[1]."-".$Arrtdate[0];
 //seperate count///
 
             /*
@@ -203,30 +213,36 @@ class ErrortrendreportController extends AppController {
                 
             }
             
+            
          
            foreach($groupwisearray as $arkey => $resval){
+              
               foreach($resval as $key => $newresval){      
                if($newresval['AttributeMasterId']!="")
+                 
                   $ArrAtributes_all[$arkey][]= $newresval['AttributeMasterId']; //if end
                 }
               
             }
+          
             
              $checkAttributes="";
-			 $ListArr=array();
+	     $ListArr=array();
              if(!empty($CampaignId)){ 
-
+        
 					foreach($CampaignId as $result){
+                                           
                      $ListArr[]=implode(",",$ArrAtributes_all[$result]);
 					}
-					 $ListAttributes=implode(",",$ListArr);
+                                        
+		     $ListAttributes=implode(",",$ListArr);
                      $checkAttributes="AND  mc.AttributeMasterId IN (".$ListAttributes.")";
              }
           
           ///////////campaign end/////////////  
 
             foreach ($months as $CountMonth) {
-
+               
                 /////Query start/////
                 $Arrdatetitle = explode("_", $CountMonth);
                 $strdate = $Arrdatetitle[2] . "-" . $Arrdatetitle[1] . "-01";
@@ -236,12 +252,12 @@ class ErrortrendreportController extends AppController {
 /*
  echo "SELECT DISTINCT pm.InputEntityId,$Prod_Module ,ec.ErrorCategoryName,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId LEFT JOIN MV_QC_ErrorCategoryMaster as ec ON ec.ID = mc.ErrorCategoryMasterId WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ";
 */
-
-                $cnt_report = $connection->execute("SELECT DISTINCT pm.InputEntityId,$Prod_Module ,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId  WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ")->fetchAll('assoc');
+//echo "SELECT DISTINCT pm.InputEntityId,$Prod_Module ,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId,mc.ModuleId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId  WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ";exit;
+                
+                $cnt_report = $connection->execute("SELECT DISTINCT pm.InputEntityId,$Prod_Module ,mc.ProjectAttributeMasterId,mc.AttributeMasterId,mc.ErrorCategoryMasterId,mc.ModuleId FROM Report_ProductionEntityMaster" . $Mnth . " as pm LEFT JOIN Report_ProductionTimeMetric" . $Mnth . " as tm ON pm.InputEntityId =tm.InputEntityId LEFT JOIN MV_QC_Comments as mc ON pm.InputEntityId =mc.InputEntityId  WHERE " . $Datecheck . "  pm.ProjectId='" . $ProjectId . "' " . $checkAttributes . " ")->fetchAll('assoc');
 
 
                 foreach ($cnt_report as $val) {
-
 
                     ///campaign name///
                     foreach ($ArrAtributes_all as $key => $value) {
@@ -276,10 +292,11 @@ class ErrortrendreportController extends AppController {
                             
                             
                             ////Aoq calculate/////////////////     
-                            $Selectaoqweight = $connection->execute("select InputEntityId from MV_QC_Comments where ProjectId='" . $ProjectId . "' AND ErrorCategoryMasterId ='" . $val['ErrorCategoryMasterId'] . "' AND AttributeMasterId IN(" . $aoqAttributes . ")")->fetchAll('assoc');
-                            $Tot_Category = count($Selectaoqweight);
+                            $Selectaoqweightcheck = $connection->execute("select InputEntityId from MV_QC_Comments where ProjectId='" . $ProjectId . "' AND ErrorCategoryMasterId ='" . $val['ErrorCategoryMasterId'] . "' AND AttributeMasterId IN(" . $aoqAttributes . ")")->fetchAll('assoc');
+                            
+                            $Tot_Category = count($Selectaoqweightcheck);
                             $Arraoq = array();
-                            foreach ($Selectaoqweight as $res) {
+                            foreach ($Selectaoqweightcheck as $res) {
                                 
                            /////////////AOQ start/////////////////
 
@@ -305,11 +322,12 @@ class ErrortrendreportController extends AppController {
 
                                 ///error weightage//////////
                                 $Selectaoqweight = $connection->execute("select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory  where InputEntityId='" . $res['InputEntityId'] . "' GROUP BY cm.InputEntityId")->fetchAll('assoc');
+                                 $Selectaoqweight = $connection->execute("select SUM(wm.Weightage) as weightage from MV_QC_Comments as cm LEFT JOIN MC_WeightageMaster as wm ON cm.ErrorCategoryMasterId=wm.ErrorCategory   where cm.ModuleId=".$val['ModuleId']." and InputEntityId in (" . $res['InputEntityId'] . ") and cm.StatusId=2 GROUP BY cm.InputEntityId")->fetchAll('assoc');
                                 $totweight = $Selectaoqweight[0]['weightage'];
 
                                 ///////end/////////////////
                                 $totAttributes = $totAttrFilled + $totAttrMissed;
-                                $AOQ_Calc = 100 - ($totweight / $totAttributes);
+                                $AOQ_Calc = 100 - (($totweight / $totAttributes) * 100);
 
                                 $Arraoq[] = $AOQ_Calc;
                                 /////////////AOQ end/////////////////  

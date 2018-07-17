@@ -29,7 +29,7 @@ class ProductionDashBoardsController extends AppController {
     }
 
     public function index() {
-        
+      
         $session = $this->request->session();
         $sessionProjectId = $session->read("ProjectId");
         $userid = $session->read('user_id');
@@ -40,10 +40,13 @@ class ProductionDashBoardsController extends AppController {
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
         $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
         $ProListFinal = array('0' => '--Select Project--');
+		
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
+			
         endforeach;
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+		
         $this->set('Projects', $ProListFinal);
         $this->set('sessionProjectId', $sessionProjectId);
         
@@ -78,11 +81,14 @@ class ProductionDashBoardsController extends AppController {
             $ProjectId = 0;
         }
 
-
-        $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+        $path = JSONPATH . '\\ProjectConfig_' . $sessionProjectId . '.json';
         $content = file_get_contents($path);
-        $contentArr = json_decode($content, true);
+        $contentArr = json_decode($content, true);        
         $region = $regionMainList = $contentArr['RegionList'];
+       foreach($region as $key => $value){
+           $sessionRegion = $key;
+       }
+       // echo $sessionRegion;exit;
 //        $status_list = $contentArr['ProjectGroupStatus'][ProjectStatusProduction];
         //  $status_list = $contentArr['ProjectGroupStatus']['Production'];
         $status_list = $contentArr['ProjectStatus'];
@@ -107,7 +113,7 @@ class ProductionDashBoardsController extends AppController {
         }
     }
 
-      //pr($queryStatus);  
+   //pr($queryStatus);  
    // exit;
         //pr($status_list); 
         $second_condition_status_list = $completed_status_ids = [];
@@ -136,11 +142,11 @@ class ProductionDashBoardsController extends AppController {
         $readyforprod = implode(',', $completed_status_idsss);
         
        
-    
+      
         $this->set('ProdDB_PageLimit', $ProdDB_PageLimit);
         $this->set('status_list_module', $status_list_module);
         $this->set('module_ids', $module_ids);
-        $this->set('region', $region);
+        $this->set('SessionRegionId', $sessionRegion);
         $this->set('Status', $status_list);
         $this->set('module', $module);
         $this->set('moduleConfig', $moduleConfig);
@@ -167,13 +173,14 @@ class ProductionDashBoardsController extends AppController {
             $UserGroupId = '';
             $this->set('UserGroupId', '');
         }
-
+		
 //       if(isset($this->request->data['reportSP_data']))
 //        {
 //            $this->ProductionDashBoards->SpRunFuncRPEMMonthWise();
 //            $this->Flash->success(__('Report generate has been completed!'));
 //            return $this->redirect(['action' => 'index']);
 //        }
+
 
         if (isset($this->request->data['load_data'])) {
             $this->ProductionDashBoards->getLoadData();
@@ -215,14 +222,18 @@ class ProductionDashBoardsController extends AppController {
             $this->set('postbatch_UserGroupId', '');
 
 
+		
         if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
 
             $CheckSPDone = $this->ProductionDashBoards->find('CheckSPDone', ['ProjectId' => $_POST['ProjectId']]);
 
             $conditions = '';
-
-            if ($this->request->data['UserGroupId'] != "") {
-                $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
+		
+            if ($this->request->data['UserGroupId'] > 0) {
+				
+                $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'],'UserGroupId' =>$this->request->data['UserGroupId'], 'UserId' => $session->read('user_id')]);
+				
+              
                 $this->set('User', $user_id_list);
             }
 
@@ -268,6 +279,7 @@ class ProductionDashBoardsController extends AppController {
                     $batch_from = $batch_to;
                 }
 
+
                 $conditions.="  ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
                 //$conditionsIs.="  ActStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ActStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
 
@@ -300,7 +312,7 @@ class ProductionDashBoardsController extends AppController {
                     $conditions.= " AND [" . $domainId . "] LIKE '%" . $query . "%' ";
                     $conditions_status.= " AND [" . $domainId . "] LIKE '%" . $query . "%' ";
                 }
-
+				
                 $ProductionDashboard = $this->ProductionDashBoards->find('users', ['condition' => $conditions, 'Module' => $ModuleStatus, 'conditionsIs' => $conditionsIs,'conditions_timemetric' => $conditions_timemetric, 'Project_Id' => $ProjectId, 'domainId' => $domainId, 'RegionId' => $RegionId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'AttributeIds' => $attributeIds, 'CheckSPDone' => $CheckSPDone]);
 //                pr($ProductionDashboard);
 //                exit;
@@ -518,20 +530,22 @@ class ProductionDashBoardsController extends AppController {
         exit;
     }
 
-    function ajaxcengageproject() {
+  /*  function ajaxcengageproject() {
         echo $CengageCnt = $this->ProductionDashBoards->find('cengageproject', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
-
+*/
     function getusergroupdetails() {
+      
         $session = $this->request->session();
         echo $module = $this->ProductionDashBoards->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
 
-    function getresourcedetails() {
+    function getresourcedetails() {		
+     
         $session = $this->request->session();
-        echo $module = $this->ProductionDashBoards->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
+        echo $module = $this->ProductionDashBoards->find('resourcedetails', ['ProjectId' => $_POST['projectId'],'UserGroupId' => $_POST['userGroupId'], 'RegionId' => $_POST['regionId']]);
         exit;
     }
 
@@ -555,6 +569,8 @@ class ProductionDashBoardsController extends AppController {
 				if($value['IsModuleGroup'] > 0){
 					$Module[]=$contentArr['Module'][$key];
 					$Module_key[]=$key;
+                                        $Curlevel[$key]=$value['Level'];
+                                        
 				}
 			}
 				
@@ -588,16 +604,33 @@ class ProductionDashBoardsController extends AppController {
 				$j++;
 				///selected user start////////////
 				 $SavedUser = $connection->execute("select UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
+                                 
+                                 
 				 $DbUser=$SavedUser[0]['UserId'];	 
 				///selected user end//////////////
                                 ///status check//////////////
-                                 $StatusQuery = $connection->execute("select FromStatus from ME_Module_Level_Config  where ModuleId='" . $val . "' and Project='" . $ProjectId . "'")->fetchAll('assoc');
+                                 $readonly="";
+                                
+                                 
+                                 $EntityResult = $connection->execute("select StatusId from ProductionEntityMaster  where  Id ='" . $row . "'")->fetchAll('assoc');
+                                 $Status_id=$EntityResult[0]['StatusId'];
+                                
+                                 foreach($contentArr['ModuleStatus'] as $key => $value){
+                                      foreach($value as $inkey => $invalue){
+                                        if($invalue ==  $contentArr['ProjectStatus'][$Status_id]){
+                                           $Levelmodule=$Curlevel[$key];     
+
+                                        }
+                                      }
+			         }
+                                 
                                  if(!empty($StatusQuery)){
-				 $Sts=$StatusQuery[0]['FromStatus'];
-                                 $CheckSts=explode(",",$Sts);
-                                   $readonly="";
+				 
+                                /* $CheckSts=explode(",",$Sts);
+                                 if(!in_array($statusarray['status'][$row], $CheckSts)){*/
                                    //$statusarray['status'][$row]=2;
-                                  if(!in_array($statusarray['status'][$row], $CheckSts)){
+                                 
+                                 if($Levelmodule > $Curlevel[$val]){
                                   $readonly="disabled";
                                   }
 								  
@@ -662,7 +695,7 @@ class ProductionDashBoardsController extends AppController {
 		
 		exit;
 	}
-	public function ajaxProject() {        
+	public function ajaxProject() {
         $session = $this->request->session();
         $sessionProjectId = $session->read("ProjectId");
         $userid = $session->read('user_id');
@@ -671,7 +704,7 @@ class ProductionDashBoardsController extends AppController {
         //$this->set('Projects', $ProListFinal);
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
-        $ProList = $this->ProductionDashBoards->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId']]);
+        $ProList = $this->ProductionDashBoards->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId'],'RegionId' => $_POST['RegionId']]);
        echo $ProList;
        exit;
         

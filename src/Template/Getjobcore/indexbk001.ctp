@@ -465,7 +465,7 @@ if ($NoNewJob == 'NoNewJob') {
                             $prefix = ' | '; 
                             }
                              $n++; 
-                        }
+                        }  
                         ?></b></div>
 
                     </div>
@@ -569,10 +569,7 @@ if ($NoNewJob == 'NoNewJob') {
                                       </div>
                                             <?php
                                             $i = 0;
-                                            
-//                                        $AttributeGroupMaster = array();
-//                                        $AttributeGroupMaster[168] = "Base Information";
-                                            
+											
                                             foreach ($AttributeGroupMaster as $key => $GroupName) {
                                                 if ($i < 0) {
                                                     $ariaexpanded = 'aria-expanded="true"';
@@ -859,7 +856,6 @@ if ($NoNewJob == 'NoNewJob') {
                                                                                     }
                                                                                     ?>
                                                                     <span class="lighttext" value="<?php echo $InpValueFieldsValue; ?>" id="beforeText_<?php echo $key; ?>_<?php echo $keysub; ?>_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $tempSq; ?>" data-toggle="tooltip" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span><?php //echo $ScoreFieldsValue; ?>
-																	<span style="color:red;display:none;" class="lighttext validation_error" data-toggle="tooltip" id="<?php echo $ProdFieldsId."_error";?>"></span>
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-md-2 form-text">
@@ -942,7 +938,6 @@ if ($NoNewJob == 'NoNewJob') {
                                                    
                                                                 <?php // code for validation
                                                                  $attr3 = $valprodFields;
-                                                                 $attr3['GroupSeqCnt'] = $GroupSeqCnt;
                                                                   unset($attr3['Options']);
                                                                   $attr3_ar[] = $attr3;
                                                                   
@@ -1235,6 +1230,30 @@ if ($NoNewJob == 'NoNewJob') {
     }
      
     
+function getattrsubgroupmasterid($json,$mastid,$subid){
+    return $json[$mastid][$subid];
+}
+
+if(!empty($attr_array)){
+    $list_data[$productionjob['ProjectId']] = array();
+    $list_data_main = array();
+    foreach($attr_array as $key=>$val){
+        // header1 - name 
+        foreach($val['sub'] as $subkey=>$subvalue){
+            // header2 sub-key get name
+            $subtitle = getattrsubgroupmasterid($AttributeSubGroupMasterJSON,$val['id'],$subkey);
+            foreach($subvalue as $sskey=>$ssvalue){
+                $ssattrname = $ssvalue['AttributeName']; // get header name 3
+                $list_data_main[$val['name']][$subtitle][$ssattrname][1]=null;
+                $list_data_main[$val['name']][$subtitle][$ssattrname]['key']="ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
+//                $list_data_main[$val['name']][$subtitle][$ssattrname]['cunt']=count($processinputdata[$ssvalue['AttributeMasterId']]);
+            
+
+            }
+        }
+    }
+}
+//echo "<pre>s";print_r($list_data_main);exit;
     ?>
                 </div>
             </div>
@@ -1243,13 +1262,13 @@ if ($NoNewJob == 'NoNewJob') {
     </div>	
 <?php //exit; ?>
     <script type="text/javascript">
-       
-         var attr_array = JSON.parse('<?php echo json_encode($attr_array); ?>' );
+          var jsnlist = JSON.parse('<?php echo json_encode($list_data_main); ?>' );
          var project_scope_id = "<?php echo $staticFields[0]; ?>";
     
        function AjaxValidation(){
-            console.log(attr_array);
+
             $(".formsubmit_validation_endisable").show();
+
             $(".validationloader").show();
             $(".validation_error").hide();
              $(".validationerrorcnt").hide();
@@ -1258,7 +1277,7 @@ if ($NoNewJob == 'NoNewJob') {
          
             setTimeout(function(){
                 AjaxValidationstart(); 
-            }, 500);
+            }, 100);
             
     }
     
@@ -1267,66 +1286,86 @@ if ($NoNewJob == 'NoNewJob') {
          var txt = "";
          var cunt = 1;
          var itemkey ="";
-//         var listdata = jsnlist;
+         var listdata = jsnlist;
          var listerror = "";
          var strArray ="";
          var error_count ="";
-            ProjectId = $("#ProjectId").val();
-            RegionId = $("#RegionId").val();
-            ProductionEntityID = $("#ProductionEntityID").val();
-            InputEntityId = $("#InputEntityId").val();
-	    TimeTaken = $("#TimeTaken").val();
-            $("#save_btn").html("Please wait! Saving...");
-            var status = "<?php echo $productionjob['StatusId']; ?>";
-            //$("#save_btn").attr("disabled", "disabled");
-            
-            $.ajax({
-                type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxapidatapreparation')); ?>",
-                data: ({ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status,TimeTaken:TimeTaken,attr_array:attr_array,project_scope_id:project_scope_id}),
-                dataType: 'json',
-                async: true,
-                success: function (result) {
-                       var resultarray = jQuery.parseJSON(JSON.stringify(result));
-//                        resultarray = JSON.parse(result);
-                      
-                          if(resultarray['status'] ==1){
-                               listerror = resultarray['Validation Output'];
+       console.log("in");
+    $.each( jsnlist, function( key, val ) {
+        $.each( val, function( skey, sval ) {
+            $.each( sval, function( sskey, ssval ) {
+
+console.log(jsnlist[key][skey][sskey]);
+                debugger;
+                itemkey = jsnlist[key][skey][sskey].key;
+                cunt = $(":input[id^="+itemkey+"]").length;
+
+                
+
+                for (i = 1; i <= cunt; i++) {
+                    txt = $("#"+jsnlist[key][skey][sskey].key+'_'+i).val();
+                    if(txt){
+                        listdata[key][skey][sskey][i] = txt;
+                    }else{
+                        listdata[key][skey][sskey][i] = null;
+                    }
+                }
+            });
+            });
+        });
+
+console.log("out");
+console.log(listdata);
+
+        /** 
+         $.ajax({
+                    type: "POST",
+                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgeapivalidation')); ?>",
+                    data: ({listdata: listdata,project_scope_id:project_scope_id}),
+                    dataType: 'text',
+                    async: true,
+                    success: function (result) {
+                       
+                        resultarray = JSON.parse(result);
+                        if(resultarray['status'] ==1){
+                        listerror = resultarray['Validation Output'];
                         error_count = resultarray['Errors Count'];
                        $("#validationerrorcnt").html(error_count);
                        $(".validationerrorcnt").show();
-                        if(error_count > 0){
-                              $.each( listerror, function( key, val ) {
-                             $.each( val, function( skey, sval ) {
-                                 $.each( sval, function( sskey, ssval ) {
-                                     strArray = ssval.ext.split(",");
-                                     for (i = 0; i < strArray.length; i++) {
-                                           if(strArray[i] > 1){
-                                               $("."+ssval.pagination_key).css("color", "red");
-                                           }
+                       if(error_count > 0){
+                      
+                             $.each( listerror, function( key, val ) {
+                            $.each( val, function( skey, sval ) {
+                                $.each( sval, function( sskey, ssval ) {
+                                    strArray = ssval.ext.split(",");
+  
+                                    for (i = 0; i < strArray.length; i++) {
+                                          if(strArray[i] > 1){
+                                              $("."+ssval.pagination_key).css("color", "red");
+                                          }
+                                        
+                                        if(strArray[i].length > 0){
 
-                                         if(strArray[i].length > 0){
-                                           $("#"+ssval.key+"_"+strArray[i]+"_error").html(ssval[strArray[i]]["error_txt"]);
-                                           $("#"+ssval.key+"_"+strArray[i]+"_error").show();
-                                     }
-                                     }
-                                 });
+                                          $("#"+ssval.key+'_'+strArray[i]+"_error").html(ssval[strArray[i]]["error_txt"]);
+                                          $("#"+ssval.key+'_'+strArray[i]+"_error").show();
+                                    }
+                                    }
+                                });
 
-                                 });
-                         });
-                        }else{
-                             $(".formsubmit_validation_endisable").show(); // code added 
-                        }
-                        
-                          }
+                                });
+                        });
+                       }else{
+                            $(".formsubmit_validation_endisable").show(); // code added 
+                       }
+}
                        
                           $(".panel-group").css("opacity","");
                           $(".validationloader").css({"display": "none"});
                 }
             });
-          
-          return true;
-             
+             **/  
+                          $(".panel-group").css("opacity","");
+                          $(".validationloader").css({"display": "none"});
          }
          
         function checkAll(grp,subgrp){

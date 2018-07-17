@@ -86,6 +86,12 @@ class AgenterrorController extends AppController {
 
             $ProjectId = $this->request->data('ProjectId');
             $CampaignId = $this->request->data('CampaignId');
+            if(!empty($CampaignId)){ 
+                $Campaign_dropdown = $this->Agenterror->find('Campaign', ['ProjectId' => $_POST['ProjectId'],'CampaignId' => $_POST['CampaignId']]);                
+            $this->set('CampaignId', $Campaign_dropdown);
+             }
+            
+            
             $connection = ConnectionManager::get('default');
 
             $stagingTable = 'Staging_' . $moduleId . '_Data';

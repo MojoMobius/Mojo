@@ -24,14 +24,16 @@ class ErrortrendreportTable extends Table {
     public function initialize(array $config) {
         $this->table('MV_QC_BatchMaster');
     }
- public function findCampaign(Query $query, array $options) {
+    public function findCampaign(Query $query, array $options) {
+       
         $path = JSONPATH . '\\ProjectConfig_' . $options['ProjectId'] . '.json';
         if ($options['CampaignId'] != '') {
-            $CampaignId = $options['CampaignId'];
+            $postCampaignId = $options['CampaignId'];
         }
+      //  pr($options['ProjectId']);exit;
         //$call = 'getModule();getusergroupdetails(this.value);';
         $template = '';
-        $template.='<select name="CampaignId" id="CampaignId" class="form-control" multiple="multiple" style ="height:100px;" >';
+        $template.='<select name="CampaignId[]" id="CampaignId" class="form-control" multiple="multiple" style ="height:100px;" >';
         if (file_exists($path)) {
             $content = file_get_contents($path);
             $contentArr = json_decode($content, true);
@@ -40,24 +42,28 @@ class ErrortrendreportTable extends Table {
             if (count($Campaign) == 1 && isset($options['SetIfOneRow'])) {
                 $CampaignId = array_keys($Campaign)[0];
             }
-
+            $i=0;
+           
             foreach ($Campaign as $key => $val):
-                if ($key == $CampaignId) {
-                    $selected = 'selected=' . $RegionId;
+               
+                if (in_array($key,$postCampaignId)) {                   
+                    $selected = 'selected';
                 } else {
                     $selected = '';
                 }
                 $template.='<option ' . $selected . ' value="' . $key . '" >';
                 $template.=$val;
                 $template.='</option>';
+               
             endforeach;
-            $template.='</select>';
+            $template.='</select>';           
             return $template;
         } else {
             $template.='</select>';
             return $template;
         }
     }
+ 
 	function findExport(Query $query, array $options) {
         // pr($options); 
             $ProjectId = $options['ProjectId'];           
