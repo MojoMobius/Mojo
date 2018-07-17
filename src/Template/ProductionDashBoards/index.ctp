@@ -66,7 +66,7 @@ use Cake\Routing\Router
                               <div id="LoadProject">
                       
                                   <?php 
-                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getresourcedetails('.$RegionId.');getStatus(this.value);'));  
+                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getresourcedetails('.$SessionRegionId.');getStatus(this.value);'));  
                       
                         ?>
                               </div>
