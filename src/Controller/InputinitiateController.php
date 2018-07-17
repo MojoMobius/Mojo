@@ -100,7 +100,7 @@ class InputinitiateController extends AppController {
         $this->set(compact('ProList'));
 
         // get list
-        $select = "Select Top 100 ProjectId,Region,FileName,InputToStatus,CreatedDate,ResponseData from ME_InputInitiation  order by CreatedDate desc";
+        $select = "Select Top 100 ProjectId,Region,FileName,InputToStatus,CreatedDate from ME_InputInitiation  order by CreatedDate desc";
 
         $list = $connection->execute($select)->fetchAll('assoc');
 

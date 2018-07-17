@@ -9,7 +9,7 @@ use Cake\Utility\Hash;
 
 //require_once __DIR__ . '/vendor/autoload.php';
 //require_once(ROOT . DS . 'vendor' . DS . 'mpdf' . DS . 'library_vendor' . DS . 'autoload.php');
-require_once(ROOT . '\vendor' . DS . 'mpdf' . DS . 'mpdf.php');
+
 /**
  * Bookmarks Controller
  *
@@ -37,8 +37,7 @@ class TranslatemoduleController extends AppController {
     }
 
     public function index() {
-      
-  
+
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -61,7 +60,7 @@ class TranslatemoduleController extends AppController {
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
         $domainUrl = $JsonArray['ProjectConfig']['DomainUrl'];
 
-      
+
         //----------------------------------$frameType == 3------------------------------//
         $distinct = $this->GetJob->find('getDistinct', ['ProjectId' => $ProjectId]);
         $this->set('distinct', $distinct);
@@ -132,7 +131,7 @@ class TranslatemoduleController extends AppController {
         }
 
         $connection = ConnectionManager::get('default');
-        $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE  ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+        $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
         //pr($InprogressProductionjob);
 
         if (empty($InprogressProductionjob)) {
@@ -167,7 +166,7 @@ class TranslatemoduleController extends AppController {
             }
         } else {
 
-            $InprogressProductionjob = $connection->execute('SELECT top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId  ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . 'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+            $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ')  AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . 'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
             $this->set('getNewJOb', '');
             $this->set('productionjob', $InprogressProductionjob[0]);
             $productionjobNew = $InprogressProductionjob;
@@ -340,7 +339,7 @@ class TranslatemoduleController extends AppController {
 
         if (isset($this->request->data['translate']) || isset($this->request->data['viewpdf']) || isset($this->request->data['save'])) {
 
-            $mpdf = new \Mpdf();
+            $mpdf = new \Mpdf\Mpdf();
             $strContent = $this->request->data['translatehtml'];
             $pdffilename = $this->request->data['pdffilename'];
             $pdffilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $pdffilename);
