@@ -1,0 +1,1178 @@
+{
+    "3369": "MoJo_Lease",
+    "UserList": {
+        "1": "admin",
+        "99846": "leaseuser",
+        "99847": "leasetl",
+        "99909": "transuser"
+    },
+    "UserListRole": {
+        "99846_31": "leaseuser (Production User)",
+        "99847_3": "leasetl (Team Leader)",
+        "99909_39": "transuser (Translation User)"
+    },
+    "RegionList": {
+        "1011": "No Region"
+    },
+    "AttributeList": {
+        "1011": [
+            11756,
+            11757,
+            11758,
+            11759,
+            11760,
+            11761,
+            11762,
+            11765,
+            11766,
+            11767,
+            11770,
+            11771,
+            11772,
+            11773,
+            11774,
+            11775,
+            11700,
+            11779,
+            11780,
+            11601,
+            11781,
+            11783
+        ]
+    },
+    "AttributeOrder": {
+        "1011": {
+            "11756": {
+                "DispalyOrder": "1",
+                "ProjectAttributeId": 11756,
+                "AttributeName": "Received_multiple_Leases",
+                "AttributeId": 5201,
+                "DisplayAttributeName": "Received multiple Leases?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163005": "Yes",
+                    "163006": "No"
+                }
+            },
+            "11757": {
+                "DispalyOrder": "2",
+                "ProjectAttributeId": 11757,
+                "AttributeName": "LeaseAmendmentsAddendums_are_executed",
+                "AttributeId": 5202,
+                "DisplayAttributeName": "Lease Amendments Addendums are executed?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163007": "Yes",
+                    "163008": "No"
+                }
+            },
+            "11758": {
+                "DispalyOrder": "3",
+                "ProjectAttributeId": 11758,
+                "AttributeName": "Is_the_Client_available_in_the_Lease",
+                "AttributeId": 5203,
+                "DisplayAttributeName": "Is the Client available in the Lease?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163009": "Yes",
+                    "163010": "No"
+                }
+            },
+            "11759": {
+                "DispalyOrder": "4",
+                "ProjectAttributeId": 11759,
+                "AttributeName": "Is_it_an_intercompany_Lease",
+                "AttributeId": 5204,
+                "DisplayAttributeName": "Is it an intercompany Lease?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163011": "Yes",
+                    "163012": "No"
+                }
+            },
+            "11760": {
+                "DispalyOrder": "5",
+                "ProjectAttributeId": 11760,
+                "AttributeName": "Premises_Address_available_in_the_Lease",
+                "AttributeId": 5205,
+                "DisplayAttributeName": "Premises Address available in the Lease?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163013": "Yes",
+                    "163014": "No"
+                }
+            },
+            "11761": {
+                "DispalyOrder": "6",
+                "ProjectAttributeId": 11761,
+                "AttributeName": "Premises_Area_available_in_the_Lease",
+                "AttributeId": 5206,
+                "DisplayAttributeName": "Premises Area available in the Lease?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163015": "Yes",
+                    "163016": "No"
+                }
+            },
+            "11762": {
+                "DispalyOrder": "7",
+                "ProjectAttributeId": 11762,
+                "AttributeName": "Lease_Term_available",
+                "AttributeId": 5207,
+                "DisplayAttributeName": "Lease Term available?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163017": "Yes",
+                    "163018": "No"
+                }
+            },
+            "11765": {
+                "DispalyOrder": "10",
+                "ProjectAttributeId": 11765,
+                "AttributeName": "Rent_Commencement_Date_conditional",
+                "AttributeId": 5210,
+                "DisplayAttributeName": "Rent Commencement Date conditional?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163019": "Yes",
+                    "163020": "No"
+                }
+            },
+            "11766": {
+                "DispalyOrder": "11",
+                "ProjectAttributeId": 11766,
+                "AttributeName": "Base_Rent_and_its_frequency_available_in_the_Lease",
+                "AttributeId": 5211,
+                "DisplayAttributeName": "Base Rent and its frequency available in the Lease?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163021": "Yes",
+                    "163022": "No"
+                }
+            },
+            "11767": {
+                "DispalyOrder": "12",
+                "ProjectAttributeId": 11767,
+                "AttributeName": "Base_Rent_based_on_the_Premises_Area_which_is_missing",
+                "AttributeId": 5212,
+                "DisplayAttributeName": "Base Rent based on the Premises Area which is missing?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163023": "Yes",
+                    "163024": "No"
+                }
+            },
+            "11770": {
+                "DispalyOrder": "15",
+                "ProjectAttributeId": 11770,
+                "AttributeName": "Document_legible",
+                "AttributeId": 5215,
+                "DisplayAttributeName": "Document legible?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163025": "Yes",
+                    "163026": "No"
+                }
+            },
+            "11771": {
+                "DispalyOrder": "16",
+                "ProjectAttributeId": 11771,
+                "AttributeName": "All_the_documents_referred_in_the_Lease_available_Missing_documents",
+                "AttributeId": 5216,
+                "DisplayAttributeName": "All the documents referred in the Lease available? (Missing documents)",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163027": "Yes",
+                    "163028": "No"
+                }
+            },
+            "11772": {
+                "DispalyOrder": "17",
+                "ProjectAttributeId": 11772,
+                "AttributeName": "Tenancy_Gap_exists",
+                "AttributeId": 5217,
+                "DisplayAttributeName": "Tenancy Gap exists?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163029": "Yes",
+                    "163030": "No"
+                }
+            },
+            "11773": {
+                "DispalyOrder": "18",
+                "ProjectAttributeId": 11773,
+                "AttributeName": "Is_Master_Lease_and_Sublease_are_present_within_single_File_ID_based_on_Client_availability_in_both_the_Lease",
+                "AttributeId": 5218,
+                "DisplayAttributeName": "Is Master Lease and Sublease are present within single File ID, based on Client availability in both the Lease?",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163031": "Yes",
+                    "163032": "No"
+                }
+            },
+            "11774": {
+                "DispalyOrder": "19",
+                "ProjectAttributeId": 11774,
+                "AttributeName": "Unable_to_open_any_file",
+                "AttributeId": 5219,
+                "DisplayAttributeName": "Unable to open any file",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163033": "Yes",
+                    "163034": "No"
+                }
+            },
+            "11775": {
+                "DispalyOrder": "20",
+                "ProjectAttributeId": 11775,
+                "AttributeName": "DOC_QC_Status",
+                "AttributeId": 5220,
+                "DisplayAttributeName": "DOC QC Status",
+                "IsDistinct": 1,
+                "ControlName": "DropDownList",
+                "Options": [
+                    "Yes",
+                    "No"
+                ],
+                "OptionsWithKey": {
+                    "163035": "Yes",
+                    "163036": "No"
+                }
+            },
+            "11700": {
+                "DispalyOrder": "21",
+                "ProjectAttributeId": 11700,
+                "AttributeName": "FDRID",
+                "AttributeId": 3263,
+                "DisplayAttributeName": "Lease ID",
+                "IsDistinct": 1,
+                "ControlName": "Label"
+            },
+            "11779": {
+                "DispalyOrder": "22",
+                "ProjectAttributeId": 11779,
+                "AttributeName": "Lease_ID",
+                "AttributeId": 5224,
+                "DisplayAttributeName": "Lease ID",
+                "IsDistinct": 1,
+                "ControlName": "Label"
+            },
+            "11780": {
+                "DispalyOrder": "23",
+                "ProjectAttributeId": 11780,
+                "AttributeName": "Work_Type",
+                "AttributeId": 5225,
+                "DisplayAttributeName": "Work Type",
+                "IsDistinct": 1,
+                "ControlName": "Label"
+            },
+            "11601": {
+                "DispalyOrder": "24",
+                "ProjectAttributeId": 11601,
+                "AttributeName": "Lease_Type",
+                "AttributeId": 5061,
+                "DisplayAttributeName": "Lease Type",
+                "IsDistinct": 1,
+                "ControlName": "Label"
+            },
+            "11781": {
+                "DispalyOrder": "25",
+                "ProjectAttributeId": 11781,
+                "AttributeName": "Language",
+                "AttributeId": 438,
+                "DisplayAttributeName": "Language",
+                "IsDistinct": 1,
+                "ControlName": "Label"
+            },
+            "11783": {
+                "DispalyOrder": "26",
+                "ProjectAttributeId": 11783,
+                "AttributeName": "Fetch_Botminds",
+                "AttributeId": 5226,
+                "DisplayAttributeName": "Fetch Botminds?",
+                "IsDistinct": 1,
+                "ControlName": "Label"
+            }
+        }
+    },
+    "ModuleAttributes": {
+        "1011": {
+            "6694031": {
+                "production": {
+                    "1": {
+                        "AttributeMasterId": 5201,
+                        "ProjectAttributeMasterId": 11756,
+                        "DispalyOrder": "1",
+                        "DisplayAttributeName": "Received multiple Leases?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Received_multiple_Leases",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "2": {
+                        "AttributeMasterId": 5202,
+                        "ProjectAttributeMasterId": 11757,
+                        "DispalyOrder": "2",
+                        "DisplayAttributeName": "Lease Amendments Addendums are executed?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "LeaseAmendmentsAddendums_are_executed",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "3": {
+                        "AttributeMasterId": 5203,
+                        "ProjectAttributeMasterId": 11758,
+                        "DispalyOrder": "3",
+                        "DisplayAttributeName": "Is the Client available in the Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Is_the_Client_available_in_the_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "4": {
+                        "AttributeMasterId": 5204,
+                        "ProjectAttributeMasterId": 11759,
+                        "DispalyOrder": "4",
+                        "DisplayAttributeName": "Is it an intercompany Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Is_it_an_intercompany_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "5": {
+                        "AttributeMasterId": 5205,
+                        "ProjectAttributeMasterId": 11760,
+                        "DispalyOrder": "5",
+                        "DisplayAttributeName": "Premises Address available in the Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Premises_Address_available_in_the_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "6": {
+                        "AttributeMasterId": 5206,
+                        "ProjectAttributeMasterId": 11761,
+                        "DispalyOrder": "6",
+                        "DisplayAttributeName": "Premises Area available in the Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Premises_Area_available_in_the_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "7": {
+                        "AttributeMasterId": 5207,
+                        "ProjectAttributeMasterId": 11762,
+                        "DispalyOrder": "7",
+                        "DisplayAttributeName": "Lease Term available?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Lease_Term_available",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "10": {
+                        "AttributeMasterId": 5210,
+                        "ProjectAttributeMasterId": 11765,
+                        "DispalyOrder": "10",
+                        "DisplayAttributeName": "Rent Commencement Date conditional?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Rent_Commencement_Date_conditional",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "11": {
+                        "AttributeMasterId": 5211,
+                        "ProjectAttributeMasterId": 11766,
+                        "DispalyOrder": "11",
+                        "DisplayAttributeName": "Base Rent and its frequency available in the Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Base_Rent_and_its_frequency_available_in_the_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "12": {
+                        "AttributeMasterId": 5212,
+                        "ProjectAttributeMasterId": 11767,
+                        "DispalyOrder": "12",
+                        "DisplayAttributeName": "Base Rent based on the Premises Area which is missing?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Base_Rent_based_on_the_Premises_Area_which_is_missing",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "15": {
+                        "AttributeMasterId": 5215,
+                        "ProjectAttributeMasterId": 11770,
+                        "DispalyOrder": "15",
+                        "DisplayAttributeName": "Document legible?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Document_legible",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "16": {
+                        "AttributeMasterId": 5216,
+                        "ProjectAttributeMasterId": 11771,
+                        "DispalyOrder": "16",
+                        "DisplayAttributeName": "All the documents referred in the Lease available? (Missing documents)",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "All_the_documents_referred_in_the_Lease_available_Missing_documents",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "17": {
+                        "AttributeMasterId": 5217,
+                        "ProjectAttributeMasterId": 11772,
+                        "DispalyOrder": "17",
+                        "DisplayAttributeName": "Tenancy Gap exists?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Tenancy_Gap_exists",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "18": {
+                        "AttributeMasterId": 5218,
+                        "ProjectAttributeMasterId": 11773,
+                        "DispalyOrder": "18",
+                        "DisplayAttributeName": "Is Master Lease and Sublease are present within single File ID, based on Client availability in both the Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Is_Master_Lease_and_Sublease_are_present_within_single_File_ID_based_on_Client_availability_in_both_the_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "19": {
+                        "AttributeMasterId": 5219,
+                        "ProjectAttributeMasterId": 11774,
+                        "DispalyOrder": "19",
+                        "DisplayAttributeName": "Unable to open any file",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Unable_to_open_any_file",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "20": {
+                        "AttributeMasterId": 5220,
+                        "ProjectAttributeMasterId": 11775,
+                        "DispalyOrder": "20",
+                        "DisplayAttributeName": "DOC QC Status",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "DOC_QC_Status",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    }
+                },
+                "static": {
+                    "22": {
+                        "AttributeMasterId": 5224,
+                        "ProjectAttributeMasterId": 11779,
+                        "DispalyOrder": "22",
+                        "DisplayAttributeName": "Lease ID",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Lease_ID",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "23": {
+                        "AttributeMasterId": 5225,
+                        "ProjectAttributeMasterId": 11780,
+                        "DispalyOrder": "23",
+                        "DisplayAttributeName": "Work Type",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Work_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "24": {
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
+                        "DispalyOrder": "24",
+                        "DisplayAttributeName": "Lease Type",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Lease_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "25": {
+                        "AttributeMasterId": 438,
+                        "ProjectAttributeMasterId": 11781,
+                        "DispalyOrder": "25",
+                        "DisplayAttributeName": "Language",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Language",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "26": {
+                        "AttributeMasterId": 5226,
+                        "ProjectAttributeMasterId": 11783,
+                        "DispalyOrder": "26",
+                        "DisplayAttributeName": "Fetch Botminds?",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Fetch_Botminds",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    }
+                }
+            },
+            "6694035": {
+                "production": {
+                    "4": {
+                        "AttributeMasterId": 5204,
+                        "ProjectAttributeMasterId": 11759,
+                        "DispalyOrder": "4",
+                        "DisplayAttributeName": "Is it an intercompany Lease?",
+                        "IsDistinct": 1,
+                        "ControlName": "DropDownList",
+                        "Options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "AttributeName": "Is_it_an_intercompany_Lease",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    }
+                },
+                "static": {
+                    "22": {
+                        "AttributeMasterId": 5224,
+                        "ProjectAttributeMasterId": 11779,
+                        "DispalyOrder": "22",
+                        "DisplayAttributeName": "Lease ID",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Lease_ID",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "23": {
+                        "AttributeMasterId": 5225,
+                        "ProjectAttributeMasterId": 11780,
+                        "DispalyOrder": "23",
+                        "DisplayAttributeName": "Work Type",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Work_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "24": {
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
+                        "DispalyOrder": "24",
+                        "DisplayAttributeName": "Lease Type",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Lease_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "25": {
+                        "AttributeMasterId": 438,
+                        "ProjectAttributeMasterId": 11781,
+                        "DispalyOrder": "25",
+                        "DisplayAttributeName": "Language",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Language",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    }
+                }
+            }
+        }
+    },
+    "AttributeGroupMaster": {
+        "6694031": {
+            "41": "ProductAttributes"
+        },
+        "6694035": {
+            "41": "ProductAttributes"
+        }
+    },
+    "AttributeGroupMasterDirect": {
+        "41": "ProductAttributes"
+    },
+    "ExportAttributeGroupMaster": {
+        "5201": "ProductAttributes",
+        "5202": "ProductAttributes",
+        "5203": "ProductAttributes",
+        "5204": "ProductAttributes",
+        "5205": "ProductAttributes",
+        "5206": "ProductAttributes",
+        "5207": "ProductAttributes",
+        "5210": "ProductAttributes",
+        "5211": "ProductAttributes",
+        "5212": "ProductAttributes",
+        "5215": "ProductAttributes",
+        "5216": "ProductAttributes",
+        "5217": "ProductAttributes",
+        "5218": "ProductAttributes",
+        "5219": "ProductAttributes",
+        "5220": "ProductAttributes",
+        "5224": "ProductAttributes",
+        "5225": "ProductAttributes",
+        "5061": "ProductAttributes",
+        "438": "ProductAttributes",
+        "5226": "ProductAttributes"
+    },
+    "ExportAttributeSubGroupMaster": [],
+    "Menu": {
+        "3": {
+            "Manage Project": {
+                "Production Dashboard": "ProductionDashBoards",
+                "Import Initiate": "Inputinitiate"
+            }
+        },
+        "31": {
+            "DQC": {
+                "Production": "getjobcore"
+            },
+            "Abstraction": {
+                "Production": "getjobcore"
+            }
+        },
+        "39": {
+            "Translation": {
+                "Production": "Translatemodule"
+            }
+        }
+    },
+    "ProjectStatus": {
+        "1": "Ready for Manual DQC English",
+        "2": "Ready for DQC NonEnglish",
+        "3": "Ready for DQC English",
+        "4": "Submitted",
+        "5": "Manual DQC Completed English",
+        "6": "Manual DQC Inprogress NonEnglish",
+        "7": "Manual DQC Inprogress English",
+        "8": "Ready for Manual DQC NonEnglish",
+        "9": "Manual DQC Completed NonEglish",
+        "10": "Ready for abstraction",
+        "11": "Translation Completed",
+        "12": "Translation Inprogress",
+        "13": "Ready For Translation",
+        "14": "Consolidation Completed",
+        "15": "Consolidation Inprogress",
+        "16": "DQC Non English Query",
+        "17": "DQC English Query"
+    },
+    "ProjectGroupStatus": {
+        "Production": {
+            "1": "Ready for Manual DQC English",
+            "2": "Ready for DQC NonEnglish",
+            "3": "Ready for DQC English",
+            "4": "Submitted",
+            "5": "Manual DQC Completed English",
+            "6": "Manual DQC Inprogress NonEnglish",
+            "7": "Manual DQC Inprogress English",
+            "8": "Ready for Manual DQC NonEnglish",
+            "9": "Manual DQC Completed NonEglish",
+            "10": "Ready for abstraction",
+            "11": "Translation Completed",
+            "12": "Translation Inprogress",
+            "13": "Ready For Translation",
+            "14": "Consolidation Completed",
+            "15": "Consolidation Inprogress",
+            "16": "DQC Non English Query",
+            "17": "DQC English Query"
+        }
+    },
+    "Module": {
+        "141": "Manage Project",
+        "6694031": "DQC",
+        "6694033": "Review",
+        "6694034": "Sense Check",
+        "6694035": "Translation",
+        "145": "Abstraction"
+    },
+    "ModuleConfig": {
+        "141": {
+            "IsInputMandatory": 2,
+            "IsHistoryTrack": 2,
+            "IsUrlMonitoring": null,
+            "IsAllowedToDisplay": null,
+            "IsModuleGroup": null,
+            "IsHygineCheck": 0,
+            "FromStatus": null
+        },
+        "6694031": {
+            "IsInputMandatory": 1,
+            "IsHistoryTrack": 1,
+            "IsUrlMonitoring": null,
+            "IsAllowedToDisplay": 1,
+            "IsModuleGroup": 1,
+            "IsHygineCheck": null,
+            "FromStatus": "1,8"
+        },
+        "6694033": {
+            "IsInputMandatory": 1,
+            "IsHistoryTrack": 1,
+            "IsUrlMonitoring": null,
+            "IsAllowedToDisplay": 1,
+            "IsModuleGroup": null,
+            "IsHygineCheck": 0,
+            "FromStatus": null
+        },
+        "6694034": {
+            "IsInputMandatory": 1,
+            "IsHistoryTrack": 1,
+            "IsUrlMonitoring": null,
+            "IsAllowedToDisplay": 1,
+            "IsModuleGroup": null,
+            "IsHygineCheck": 0,
+            "FromStatus": null
+        },
+        "6694035": {
+            "IsInputMandatory": 1,
+            "IsHistoryTrack": 1,
+            "IsUrlMonitoring": null,
+            "IsAllowedToDisplay": 1,
+            "IsModuleGroup": 1,
+            "IsHygineCheck": null,
+            "FromStatus": "0"
+        },
+        "145": {
+            "IsInputMandatory": 1,
+            "IsHistoryTrack": 1,
+            "IsUrlMonitoring": null,
+            "IsAllowedToDisplay": 1,
+            "IsModuleGroup": 1,
+            "IsHygineCheck": null,
+            "FromStatus": null
+        }
+    },
+    "ModuleUser": {
+        "141": {
+            "99847": {
+                "Id": 99847,
+                "Username": "leasetl"
+            }
+        },
+        "6694031": {
+            "99846": {
+                "Id": 99846,
+                "Username": "leaseuser"
+            }
+        },
+        "6694035": {
+            "99909": {
+                "Id": 99909,
+                "Username": "transuser"
+            }
+        },
+        "145": {
+            "99846": {
+                "Id": 99846,
+                "Username": "leaseuser"
+            }
+        }
+    },
+    "ModuleStatusList": {
+        "6694031": [
+            "Submitted",
+            "Ready for DQC English",
+            "Ready for DQC NonEnglish",
+            "Ready for Manual DQC English",
+            "Ready for Manual DQC NonEnglish",
+            "Manual DQC Inprogress English",
+            "Manual DQC Inprogress NonEnglish",
+            "Manual DQC Completed English",
+            "Manual DQC Completed NonEglish",
+            "DQC English Query",
+            "DQC Non English Query"
+        ],
+        "6694033": [
+            "Ready for Review",
+            "Review WIP",
+            "Review Completed",
+            "Review On-Hold"
+        ],
+        "6694034": [
+            "Ready for Sense Check",
+            "Sense Check WIP",
+            "Sense Check Completed",
+            "Sense Check On-Hold"
+        ],
+        "6694035": [
+            "Ready For Translation",
+            "Translation Inprogress",
+            "Translation Completed"
+        ],
+        "145": [
+            "Ready for Abstraction",
+            "Input Consolidation Pending",
+            "Abstraction WIP",
+            "Abstraction Completed",
+            "Abstraction On-Hold"
+        ]
+    },
+    "ModuleStatus": {
+        "6694031": {
+            "4": {
+                "ModuleId": 6694031,
+                "ModStatus": "Ready for DQC NonEnglish",
+                "ModuleStatusIdentifier": "DQCWIP",
+                "StatusId": 4,
+                "FromStatus": "Submitted"
+            },
+            "3": {
+                "ModuleId": 6694031,
+                "ModStatus": "Ready for Manual DQC English",
+                "ModuleStatusIdentifier": "DQCCompleted",
+                "StatusId": 3,
+                "FromStatus": "Ready for DQC English"
+            },
+            "2": {
+                "ModuleId": 6694031,
+                "ModStatus": "Ready for Manual DQC NonEnglish",
+                "ModuleStatusIdentifier": "DQCOnHold",
+                "StatusId": 2,
+                "FromStatus": "Ready for DQC NonEnglish"
+            },
+            "1": {
+                "ModuleId": 6694031,
+                "ModStatus": "Manual DQC Inprogress English",
+                "ModuleStatusIdentifier": "ManualDQCInprogressEnglish",
+                "StatusId": 1,
+                "FromStatus": "Ready for Manual DQC English"
+            },
+            "8": {
+                "ModuleId": 6694031,
+                "ModStatus": "Manual DQC Inprogress NonEnglish",
+                "ModuleStatusIdentifier": "ManualDQCInprogressNonEnglish",
+                "StatusId": 8,
+                "FromStatus": "Ready for Manual DQC NonEnglish"
+            },
+            "7": {
+                "ModuleId": 6694031,
+                "ModStatus": "DQC English Query",
+                "ModuleStatusIdentifier": "DQCEnglishQuery",
+                "StatusId": 7,
+                "FromStatus": "Manual DQC Inprogress English"
+            },
+            "6": {
+                "ModuleId": 6694031,
+                "ModStatus": "DQC Non English Query",
+                "ModuleStatusIdentifier": "DQCNonEnglishQuery",
+                "StatusId": 6,
+                "FromStatus": "Manual DQC Inprogress NonEnglish"
+            },
+            "17": {
+                "ModuleId": 6694031,
+                "ModStatus": "Ready for Manual DQC English",
+                "ModuleStatusIdentifier": "DQCCompleted",
+                "StatusId": 17,
+                "FromStatus": "DQC English Query"
+            },
+            "16": {
+                "ModuleId": 6694031,
+                "ModStatus": "Ready for Manual DQC NonEnglish",
+                "ModuleStatusIdentifier": "DQCOnHold",
+                "StatusId": 16,
+                "FromStatus": "DQC Non English Query"
+            }
+        },
+        "6694035": {
+            "9": {
+                "ModuleId": 6694035,
+                "ModStatus": "Ready For Translation",
+                "ModuleStatusIdentifier": "ReadyForTranslation",
+                "StatusId": 9,
+                "FromStatus": "Manual DQC Completed NonEglish"
+            },
+            "13": {
+                "ModuleId": 6694035,
+                "ModStatus": "Translation Inprogress",
+                "ModuleStatusIdentifier": "TranslationInprogress",
+                "StatusId": 13,
+                "FromStatus": "Ready For Translation"
+            },
+            "12": {
+                "ModuleId": 6694035,
+                "ModStatus": "Translation Completed",
+                "ModuleStatusIdentifier": "TranslationCompleted",
+                "StatusId": 12,
+                "FromStatus": "Translation Inprogress"
+            }
+        },
+        "145": {
+            "5": {
+                "ModuleId": 145,
+                "ModStatus": "Ready for Abstraction",
+                "ModuleStatusIdentifier": "ReadyforAbstraction",
+                "StatusId": 5,
+                "FromStatus": "Manual DQC Completed English"
+            },
+            "11": {
+                "ModuleId": 145,
+                "ModStatus": "Ready for Abstraction",
+                "ModuleStatusIdentifier": "ReadyforAbstraction",
+                "StatusId": 11,
+                "FromStatus": "Translation Completed"
+            }
+        }
+    },
+    "ModuleStatus_Navigation": {
+        "4": [
+            "Ready for DQC English",
+            3,
+            [
+                "Ready for DQC NonEnglish",
+                2
+            ]
+        ],
+        "3": [
+            "Ready for Manual DQC English",
+            1
+        ],
+        "2": [
+            "Ready for Manual DQC NonEnglish",
+            8
+        ],
+        "1": [
+            "Manual DQC Inprogress English",
+            7
+        ],
+        "8": [
+            "Manual DQC Inprogress NonEnglish",
+            6
+        ],
+        "7": [
+            "Manual DQC Completed English",
+            5,
+            [
+                "DQC English Query",
+                17
+            ]
+        ],
+        "6": [
+            "Manual DQC Completed NonEglish",
+            9,
+            [
+                "DQC Non English Query",
+                16
+            ]
+        ],
+        "17": [
+            "Ready for Manual DQC English",
+            1
+        ],
+        "16": [
+            "Ready for Manual DQC NonEnglish",
+            8
+        ],
+        "9": [
+            "Ready For Translation",
+            13
+        ],
+        "13": [
+            "Translation Inprogress",
+            12
+        ],
+        "12": [
+            "Translation Completed",
+            11
+        ],
+        "5": [
+            "Ready for Abstraction",
+            10
+        ],
+        "11": [
+            "Ready for Abstraction",
+            10
+        ]
+    },
+    "ProjectConfig": {
+        "DomainId": "5224",
+        "DomainUrl": "5204",
+        "InputId": "5201",
+        "ProdDB_PageLimit": "20",
+        "ProductionView": "3",
+        "HygineCheck": "2",
+        "joballocation_type": "1"
+    },
+    "UserGroups": {
+        "6": "Team 1",
+        "7": "Team 2",
+        "8": "YP Group",
+        "1008": "Factset Group",
+        "1009": "LE Group",
+        "1010": "cengagenpo",
+        "1011": "NPO",
+        "1012": "MojoCengage",
+        "1013": "Content Aggregation Group",
+        "1014": "Vessel Enrichment Group",
+        "1015": "LN Advance Non Sub Group",
+        "1016": "LN Advance Judges Group",
+        "1017": "DQC Users",
+        "1018": "MoJo Trinet Group"
+    }
+}
