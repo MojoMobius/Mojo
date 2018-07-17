@@ -40,10 +40,13 @@ class ProductionDashBoardsController extends AppController {
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
         $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
         $ProListFinal = array('0' => '--Select Project--');
+		
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
+			
         endforeach;
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+		
         $this->set('Projects', $ProListFinal);
         $this->set('sessionProjectId', $sessionProjectId);
         
@@ -110,7 +113,7 @@ class ProductionDashBoardsController extends AppController {
         }
     }
 
-      //pr($queryStatus);  
+   //pr($queryStatus);  
    // exit;
         //pr($status_list); 
         $second_condition_status_list = $completed_status_ids = [];
@@ -531,18 +534,18 @@ class ProductionDashBoardsController extends AppController {
         echo $CengageCnt = $this->ProductionDashBoards->find('cengageproject', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
-
+*/
     function getusergroupdetails() {
       
         $session = $this->request->session();
         echo $module = $this->ProductionDashBoards->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
-    }*/
+    }
 
     function getresourcedetails() {		
-       
+     
         $session = $this->request->session();
-        echo $module = $this->ProductionDashBoards->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId']]);
+        echo $module = $this->ProductionDashBoards->find('resourcedetails', ['ProjectId' => $_POST['projectId'],'UserGroupId' => $_POST['userGroupId'], 'RegionId' => $_POST['regionId']]);
         exit;
     }
 

@@ -66,7 +66,7 @@ use Cake\Routing\Router
                               <div id="LoadProject">
                       
                                   <?php 
-                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getresourcedetails('.$SessionRegionId.');getStatus(this.value);'));  
+                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px', 'onchange' => 'getusergroupdetails('.$SessionRegionId.');getStatus(this.value);'));  
                       
                         ?>
                               </div>
@@ -112,7 +112,7 @@ use Cake\Routing\Router
                       <?php
                     if ($UserGroupId == '') {
                         $UserGroup = array(0 => '--Select--');
-                        echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails'));
+                        echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails('.$SessionRegionId.')'));
                     } else {
                         echo $UserGroupId;
                     }
