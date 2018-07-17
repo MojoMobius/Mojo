@@ -681,6 +681,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         $('#UserGroupId').val('');
         $('#status').val('');
         $('#query').val('');
+		$('#ClientId').val('0');
         $('#detail').hide();
         $('#pagination').hide();
         $('#xlscnt').hide();
