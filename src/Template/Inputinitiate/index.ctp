@@ -306,6 +306,7 @@ if (count($list) > 0) {
                                         $CreatedDate = $input['CreatedDate']; 
                                         $newCreatedDate = date('d-m-Y H:i:s', strtotime($CreatedDate));
                                         $basefilepath_file =  $this->request->webroot.$basefilepath.'/'.$input['FileName'];
+                                        $basefilepath_file =  'webroot/'.$basefilepath.'/'.$input['FileName'];
                                         
                                             ?>
                                     <tr>
