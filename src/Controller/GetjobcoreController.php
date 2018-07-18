@@ -1363,7 +1363,7 @@ class GetjobcoreController extends AppController {
                     foreach ($subvalue as $sskey => $ssvalue) {
                         $ssattrname = $ssvalue['AttributeName']; // get header name 3
                         $list_data_main[$val['name']][$subtitle][$ssattrname] = $this->getattrvalue($ProjectId, $ssvalue['AttributeMasterId'], $DependentMasterIds['ProductionField'], $InputEntityId, $moduleId, $RegionId);
-                        $listdata[$val['name']][$subtitle][$ssattrname] = $this->getattrvalue($ProjectId, $ssvalue['AttributeMasterId'], $DependentMasterIds['ProductionField'], $InputEntityId, $moduleId, $RegionId);
+                        $listdata[$val['name']][$subtitle][$ssattrname] = $list_data_main[$val['name']][$subtitle][$ssattrname];
                         
 
                         $list_data_main[$val['name']][$subtitle][$ssattrname]['key'] = "ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];

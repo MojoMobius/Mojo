@@ -28,7 +28,6 @@ setTimeout(function() {
 use Cake\Routing\Router;
 ?>
 
-
 <?php
 
 if ($NoNewJob == 'NoNewJob') {
