@@ -266,18 +266,18 @@ if ($NoNewJob == 'NoNewJob') {
                ?>
 
             <div class="col-lg-6 pull-right m-t-5 m-b-5">		
-                <button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5 formsubmit_validation_endisable" style="<?php echo $style_endisble;?>" onclick="return formSubmit();"> Submit & Exit </button>
-                <button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right formsubmit_validation_endisable" onclick="return formSubmit();" style="margin-right: 5px;<?php echo $style_endisble;?>"> Submit & Continue </button>
-                <!--<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right " onclick="return skipformSubmit();" style="margin-right: 5px;"> Skip & Continue </button> -->
-<!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
-<!--                <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>-->
-                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
+               
+
+
+<button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" > Submit & Exit </button>
+
+<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" > Submit & Continue </button>
 
  <button type="submit" name='save' value="save" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save</button>
 
-                <button type="submit" name='translate' value="Translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save & submit</button>
-
    <button type="submit" name='viewpdf' value="viewpdf" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" formtarget="_blank">View pdf</button>
+
+                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
 
             </div>
         </div>

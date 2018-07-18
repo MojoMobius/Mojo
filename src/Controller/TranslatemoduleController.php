@@ -337,7 +337,7 @@ class TranslatemoduleController extends AppController {
             $QcCompletedCount = $QcCompletedCount + 1;
         }
 
-        if (isset($this->request->data['translate']) || isset($this->request->data['viewpdf']) || isset($this->request->data['save'])) {
+        if (isset($this->request->data['Submit']) || isset($this->request->data['viewpdf']) || isset($this->request->data['save'])) {
 
             $mpdf = new \Mpdf();
             $strContent = $this->request->data['translatehtml'];
@@ -350,6 +350,7 @@ class TranslatemoduleController extends AppController {
             $uploadFolder = "htmlfiles/TranslationOutput/";
 
             if (empty($basepdffilename)) {
+//                $basepdffilename = "test.html";
                 $this->Flash->error(__('Missing File name!'));
                 return $this->redirect(['action' => 'index']);
             }
