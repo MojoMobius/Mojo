@@ -257,7 +257,7 @@ if (count($Production_dashboard) > 0) {
                                                 foreach ($module as $key => $val) {
                                                 if(($moduleConfig[$key]['IsAllowedToDisplay']==1) && ($moduleConfig[$key]['IsModuleGroup']==1)){
                                             ?>
-                                                <th colspan="7" align='center'><?php echo $val; ?></th>
+                                                <th colspan="4" align='center'><?php echo $val; ?></th>
                                             <?php
                                                 }
                                             }
