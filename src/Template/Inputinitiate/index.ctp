@@ -3,7 +3,9 @@
   Created On: Sep 20 2016 -->
 <?php
 
-use Cake\Routing\Router; ?>
+use Cake\Routing\Router; 
+
+?>
 
 
 <script type="text/javascript">
@@ -303,7 +305,8 @@ if (count($list) > 0) {
 
                                         $CreatedDate = $input['CreatedDate']; 
                                         $newCreatedDate = date('d-m-Y H:i:s', strtotime($CreatedDate));
-                                        $basefilepath_file = $basefilepath.'/'.$input['FileName']; 
+                                        $basefilepath_file =  $this->request->webroot.$basefilepath.'/'.$input['FileName'];
+                                        
                                             ?>
                                     <tr>
                                         <td hidden=""><?php echo $i; ?></td>
