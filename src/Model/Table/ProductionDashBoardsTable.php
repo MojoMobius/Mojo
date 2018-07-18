@@ -245,7 +245,7 @@ class ProductionDashBoardsTable extends Table {
         $connection2 = ConnectionManager::get('default');
         $from = strtotime($options['batch_from']);
 		$batch_from=$options['batch_from'];
-		$batch_to=$options['batch_from'];
+		$batch_to=$options['batch_to'];
         $month = date("n", $from);
         $year = date("Y", $from);
         $to = strtotime($options['batch_to']);
@@ -367,13 +367,15 @@ class ProductionDashBoardsTable extends Table {
         }
 
         if ($IsItOkay) {
+			
+				
             //echo "select production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]";
            
              $querie4 = $connection->execute("select   production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]");
 		 
             $querie4 = $querie4->fetchAll('assoc');
-            //pr($querie4);
-            //exit;
+           // pr($querie4);
+           // exit;
             $queries = array_merge($queries, $querie4);
             $productionIdarraylast = array();
             $prodlast = 0;
@@ -393,7 +395,7 @@ class ProductionDashBoardsTable extends Table {
             if (!empty($productionIdarraylast)) {
                 foreach ($module as $key => $value) {
 
-                    $staging_table = 'Staging_' . $key . '_Data';
+                    $staging_table = 'ME_Production_TimeMetric';
                     $connection = ConnectionManager::get('default');
                     $CountQry = $connection->execute("select count(*) tabexists from INFORMATION_SCHEMA.TABLES where TABLE_NAME='$staging_table'");
                     $CountQrys = $CountQry->fetch('assoc');
@@ -403,20 +405,20 @@ class ProductionDashBoardsTable extends Table {
                         //echo "SELECT max(ActStartDate) as Start_Date,max(ActEnddate) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntity as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $conditions_timemetric group by ProductionEntity , UserId";
 						$DateCond="";
 						if($batch_from !=""){
-						$DateCond =" AND CONVERT(char(10), ActStartDate, 120) >=  '".date('Y-m-d', strtotime($batch_from))."'";
+						$DateCond =" AND CONVERT(char(10), Start_Date, 120) >=  '".date('Y-m-d', strtotime($batch_from))."'";
 						}
 					
 						if($batch_to !=""){
-						$DateCond =" $DateCond AND CONVERT(char(10), ActStartDate, 120) <= '".date('Y-m-d', strtotime($batch_to))."'";	
+						$DateCond =" $DateCond AND CONVERT(char(10), Start_Date, 120) <= '".date('Y-m-d', strtotime($batch_to))."'";	
 						}
-						/*echo "SELECT max(ActStartDate) as Start_Date,max(ActEnddate) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntity as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntity , UserId";exit;
-						*/
 						
-                        $timeMetricsdata = $connection->execute("SELECT max(ActStartDate) as Start_Date,max(ActEnddate) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntity as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntity , UserId")->fetchAll("assoc");
-                        //pr($timeMetricsdata);
+						//echo "SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID , UserId";exit;
+						
+						
+                        $timeMetricsdata = $connection->execute("SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID , UserId")->fetchAll("assoc");
+                        //pr($timeMetricsdata);exit;
                         //$timeMetricdata = array_merge($timeMetricdata, $timeMetricsdata);
-                        //pr($timeMetricsdata);
-                        //pr($timeMetricsdata);
+                        
                         foreach ($timeMetricsdata as $time):
                             if (!empty($time['Start_Date'])) {
                                 $timeDetails[$key][$time['ProductionEntityID']]['Start_Date'] = date("d-m-Y H:i:s", strtotime($time['Start_Date']));
