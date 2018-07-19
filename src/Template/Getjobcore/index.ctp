@@ -1276,7 +1276,7 @@ if ($NoNewJob == 'NoNewJob') {
             ProductionEntityID = $("#ProductionEntityID").val();
             InputEntityId = $("#InputEntityId").val();
 	    TimeTaken = $("#TimeTaken").val();
-            $("#save_btn").html("Please wait! Saving...");
+            //$("#save_btn").html("Please wait! Saving...");
             var status = "<?php echo $productionjob['StatusId']; ?>";
             //$("#save_btn").attr("disabled", "disabled");
             

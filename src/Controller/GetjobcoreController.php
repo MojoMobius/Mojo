@@ -1315,6 +1315,27 @@ class GetjobcoreController extends AppController {
         return $arr;
     }
 
+    public function arrayfilters($array,$attid) {
+        
+        $attr = array_column($array, $attid);
+         if(!empty($attr)){
+             $ar = array();
+              $i = 0;
+         foreach($attr as $key=>$val){
+            if(!is_null($val)){
+                $i++;
+                $ar[$i] = $val;
+            }
+        }
+        $ar['cnt'] = count($ar);
+        
+         }else{
+             $ar[1] = null;
+             $ar['cnt'] = 1;
+         }
+        return $ar;
+    }
+    
     public function ajaxapidatapreparation() {
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -1334,6 +1355,7 @@ class GetjobcoreController extends AppController {
         $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
         $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
 
+        $staging = "Staging_" . $moduleId . "_Data";
 
         $DependentMasterIdsQuery = $connection->execute("SELECT Id,Type,DisplayInProdScreen,FieldTypeName FROM MC_DependencyTypeMaster where ProjectId='$ProjectId'")->fetchAll('assoc');
         $DependentMasterIds = $staticDepenIds = array();
@@ -1355,6 +1377,13 @@ class GetjobcoreController extends AppController {
             $list_data[$ProjectId] = array();
             $list_data_main = $listdata = array();
            
+            $AttributeMasterlists = array_column($ProductionFields, 'AttributeMasterId');
+            $AttributeMasterids = "[".implode('],[', $AttributeMasterlists)."]";
+            $ProductionField =$DependentMasterIds['ProductionField'];
+             
+            
+        $getQuery = $connection->execute("select distinct SequenceNumber, $AttributeMasterids from $staging where DependencyTypeMasterId='$ProductionField'  AND ProjectId='$ProjectId' AND RegionId='$RegionId' AND InputEntityId='$InputEntityId' order by SequenceNumber")->fetchAll('assoc');
+            
             foreach ($attr_array as $key => $val) {
                 // header1 - name 
                 foreach ($val['sub'] as $subkey => $subvalue) {
@@ -1362,9 +1391,10 @@ class GetjobcoreController extends AppController {
                     $subtitle = $this->getattrsubgroupmasterid($JsonArray['AttributeSubGroupMaster'], $val['id'], $subkey);
                     foreach ($subvalue as $sskey => $ssvalue) {
                         $ssattrname = $ssvalue['AttributeName']; // get header name 3
-                        $list_data_main[$val['name']][$subtitle][$ssattrname] = $this->getattrvalue($ProjectId, $ssvalue['AttributeMasterId'], $DependentMasterIds['ProductionField'], $InputEntityId, $moduleId, $RegionId);
-                        $listdata[$val['name']][$subtitle][$ssattrname] = $list_data_main[$val['name']][$subtitle][$ssattrname];
                         
+                         $list_data_main[$val['name']][$subtitle][$ssattrname] = $this->arrayfilters($getQuery, intval($ssvalue['AttributeMasterId']));
+                         
+                        $listdata[$val['name']][$subtitle][$ssattrname] = $list_data_main[$val['name']][$subtitle][$ssattrname];
 
                         $list_data_main[$val['name']][$subtitle][$ssattrname]['key'] = "ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
                     }
@@ -1372,10 +1402,9 @@ class GetjobcoreController extends AppController {
             }
         }
         
-         $list[$project_scope_id] = $listdata;
+        $list[$project_scope_id] = $listdata;
         $lists['array'] = $list;
         
-       
         $result = $this->ajaxgeapivalidation($lists,$list_data_main, $project_scope_id);
         echo json_encode($result);
         exit;
