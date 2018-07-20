@@ -290,6 +290,7 @@ if (count($list) > 0) {
                                         <th class="Cell" width="10%">Region</th> 
                                         <th class="Cell" width="10%">File Name</th>
                                         <th class="Cell" width="10%">Status</th>
+                                         <th class="Cell" width="10%">Response Data</th>
                                         <th class="Cell" width="10%">Created Date</th>
                                     </tr>
                                 </thead>
@@ -314,7 +315,8 @@ if (count($list) > 0) {
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
                                         <td><?php echo $RegionName; ?></td>
                                         <td><?php echo "<a href='$basefilepath_file'> ".$input['FileName']."</a>"; ?></td>
-                                        <td><?php echo $input['ResponseData']; ?></td>
+                                         <td><?php echo $StatusType[$input['InputToStatus']]; ?></td>
+                                          <td><?php echo $input['ResponseData']; ?></td>
                                         <td><?php echo $newCreatedDate; ?></td>
                                     </tr>
                                     <?php
