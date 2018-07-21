@@ -894,6 +894,14 @@ if ($NoNewJob == 'NoNewJob') {
                                                                                                 ?>>V</option>
                                                                     </select>
                                                                     <div>
+																	<!---- Sivachidambaram on 21 July 2018 --->
+																	<a href="javascript: void(0);"
+																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
+																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
+																	</a>	
+																	
+																	
+																	<!---- Sivachidambaram ends--->
                                                                         <?php
                                                                 $array1 = $valprodFields['AttributeMasterId'];
                                                                 $array2 = $HelpContantDetails;
@@ -4017,6 +4025,13 @@ if ($this->request->query['continue'] == 'yes') {
 function GetFrameData(val){
 goToMsg(val);
 }
+
+		function setValue(id, oVal) {
+			//alert(id+oVal);
+            document.getElementById(id).value = oVal;
+
+        }
+		
 function goToMsg(id){
       var iframe = document.getElementById("frame1");
       var elem = iframe.contentWindow.document.getElementById(id);

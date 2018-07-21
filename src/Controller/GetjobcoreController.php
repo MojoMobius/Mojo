@@ -2911,5 +2911,9 @@ class GetjobcoreController extends AppController {
         echo json_encode($getdata);
         exit;
     }
+	
+	function datecalculator() {
+		
+	}
 
 }
