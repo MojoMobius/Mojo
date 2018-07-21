@@ -956,6 +956,9 @@ class GetjobcoreController extends AppController {
                     // echo 'coming';
                     $SelDomainUrl = "";
                 }
+				if($moduleId==145){
+					 $SelDomainUrl = 'http://mojolease.botminds.ai/login';
+				}
                 //echo $SelDomainUrl; exit;
                 $oldone = 1;
                 foreach ($groupwisearray as $key => $subGrp) {
