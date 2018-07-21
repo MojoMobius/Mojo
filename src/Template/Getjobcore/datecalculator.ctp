@@ -1,0 +1,114 @@
+<br>
+<p ALIGN=CENTER><b>Date Calculator</b></p>
+<table align='center'>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>Start Date</td>
+	<td><input type="text" value="" id="startDate" class="getdate"></td>
+</tr>
+<tr>
+	<td>Years</td>
+	<td><input type="text" value="0" id="years" class="getdate onlyno"></td>
+</tr>
+<tr>
+	<td>Months</td>
+	<td><input type="text" value="0" id="months" class="getdate onlyno"></td>
+</tr>
+<tr>
+	<td>Days</td>
+	<td><input type="text" value="0" id="days" class="getdate onlyno"></td>
+</tr>
+<tr>
+	<td>New Date</td>
+	<td><input type="text" value="" readonly id="newDate"></td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td><input type="button" value="Update" id="update" onclick="update_parent();"></td>
+	<td><input type="button" value="Close" id="winclose" onclick="window.close();"></td>
+</tr>
+</table>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			inpuId = '<?php echo urldecode($_GET['inputid']); ?>'; 
+			var arr1 = inpuId.split('"');
+			inpuId = arr1[1];
+				
+			$('#startDate').Zebra_DatePicker({
+				format: 'd-m-Y',
+				onSelect: function (dateText, inst) {
+					humanise();
+				}
+			});
+			
+			$(".getdate").keyup(function(){
+				humanise();
+			});
+			
+			$(".onlyno").keydown(function (e) {
+				//alert(e.keyCode);
+				// Allow: backspace, delete, tab, escape, enter and .
+				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 173]) !== -1 ||
+					 // Allow: Ctrl+A, Command+A
+					(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+					 // Allow: home, end, left, right, down, up
+					(e.keyCode >= 35 && e.keyCode <= 40)) {
+						 // let it happen, don't do anything
+						 return;
+				}
+				// Ensure that it is a number and stop the keypress
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
+			});
+			
+		});
+		
+		function update_parent() {
+			//alert('child');
+			var vals = $("#newDate").val();
+            window.opener.setValue(inpuId, vals);
+            window.close();
+            return false;
+		}
+
+		function humanise() {
+			var startDate = $("#startDate").val();
+			var years = $("#years").val();
+			var months = $("#months").val();
+			var days = $("#days").val();
+			
+			if(startDate=="") {
+				alert('Please select Start Date first');
+				$("#startDate").focus();
+				return false;
+			}
+			
+			if(years=="")
+				years = 0;
+			if(months=="")
+				months = 0;
+			if(days=="")
+				days = 0;
+			
+			var arr = startDate.split("-");
+			startDatenew = arr[2]+'-'+arr[1]+'-'+arr[0];
+			var lastDate = new Date(startDatenew);
+			
+			lastDate.setYear(lastDate.getFullYear() + parseInt(years));
+			lastDate.setMonth(lastDate.getMonth() + parseInt(months)+1);
+			lastDate.setDate(lastDate.getDate() + parseInt(days));  
+			var displayDate = lastDate.getDate()+'-'+lastDate.getMonth()+'-'+lastDate.getFullYear();
+			//alert(lastDate);
+			$("#newDate").val(displayDate);
+		}
+	</script>
+
+        
