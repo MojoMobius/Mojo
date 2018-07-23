@@ -106,7 +106,7 @@ class InputinitiateController extends AppController {
 
         $this->set('list', $list);
         $this->set('Projects', $Projects);
-        $this->set('basefilepath', $uploadFolder);
+        $this->set('basefilepath', 'inputfiles');
         $ProdDB_PageLimit = 20;
 
         $this->set('ProdDB_PageLimit', $ProdDB_PageLimit);

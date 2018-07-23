@@ -22,6 +22,103 @@ setTimeout(function() {
 }, 2500);
 })
 </script>
+<style>
+    /* CSS for spliter*/
+    dt {
+        font: bold 14px Consolas, "Courier New", Courier, mono;
+        color: steelblue;
+        background-color: #f0f0f0;
+        margin-top: 1.5em;
+        padding: 0.2em 0.5em;
+    }
+
+    dd {
+    }
+
+    dd code {
+        font: bold 12px Consolas, "Courier New", Courier, mono;
+    }
+
+    dd > code {
+        display: block;
+        color: #666666;
+    }
+
+    dd > code.default {
+        color: #007700;
+    }
+
+    pre.codesample {
+        font: bold 12px Consolas, "Courier New", Courier, mono;
+        background: #ffffff;
+        overflow: auto;
+        width: 75%;
+        border: solid gray;
+        border-width: .1em .1em .1em .8em;
+        padding: .2em .6em;
+        margin: 0 auto;
+        line-height: 125%
+    }
+
+    .splitter_panel > div {
+        padding: 0 1em;
+    }
+
+    #splitter {
+
+        height: 500px;
+        border: 0px solid #666;
+    }
+    #splitter-left, #splitter-right{ padding:0px;}
+    .splitter_container > .splitter_panel > :not(.splitter_container){overflow: none !important;}
+    .panel-footer{height: 55px;
+                  margin-top: 16px;}
+   
+    
+    .splitter-vertical > .splitter_bar{width:4px !important;}
+    .splitter_bar > .splitter_handle{    background-color: #000 !important;}
+
+
+    /*Scrollbar customization for all page*/
+    .scroll-wrapper {
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: relative;
+    }
+    .scroll-wrapper > .scroll-content {
+        border: none !important;
+        box-sizing: content-box !important;
+        height: auto;
+        left: 0;
+        margin: 0;
+        max-height: none !important;
+        max-width: none !important;
+        overflow: scroll !important;
+        padding: 0;
+        position: relative !important;
+        top: 0;
+        width: auto !important;}
+
+    .scroll-wrapper > .scroll-content::-webkit-scrollbar {
+        height: 0;
+        width: 0;
+    }
+    .scroll-element {
+        display: none;
+    }
+    .scroll-element, .scroll-element div {
+        box-sizing: content-box;
+    }
+    .scroll-element .scroll-bar,
+    .scroll-element .scroll-arrow {
+        cursor: default;
+    }
+    ::-webkit-scrollbar { width: 7px; height: 10px;}
+    /* Track */ ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); -webkit-border-radius: 10px; border-radius: 10px; }
+    /* Handle */ ::-webkit-scrollbar-thumb { -webkit-border-radius: 5px; border-radius: 5px;
+                                             background: rgba(128, 128, 128,0.46);}
+    
+</style>
 <script src="webroot/ckeditor/ckeditor.js"></script>
 <script src="webroot/ckeditor/samples/js/sample.js"></script>
 <?php
@@ -145,7 +242,7 @@ if ($NoNewJob == 'NoNewJob') {
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="leftpane">
-                                        <div class="tab-pane active" id="exampleTabsOne" role="tabpanel" style="display:none !important;">
+                                        <div class="tab-pane active" id="exampleTabsOne" role="tabpanel" style="display:none !important; height:450px;">
                                             <object width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" data="" width="auto" height="auto"></object>
 
                                         </div>
@@ -265,18 +362,18 @@ if ($NoNewJob == 'NoNewJob') {
                ?>
 
             <div class="col-lg-6 pull-right m-t-5 m-b-5">		
-                <button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5 formsubmit_validation_endisable" style="<?php echo $style_endisble;?>" onclick="return formSubmit();"> Submit & Exit </button>
-                <button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right formsubmit_validation_endisable" onclick="return formSubmit();" style="margin-right: 5px;<?php echo $style_endisble;?>"> Submit & Continue </button>
-                <!--<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right " onclick="return skipformSubmit();" style="margin-right: 5px;"> Skip & Continue </button> -->
-<!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
-<!--                <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>-->
-                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
+               
+
+
+<button type="submit" name='Submit' value="saveandexit" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" > Submit & Exit </button>
+
+<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" > Submit & Continue </button>
 
  <button type="submit" name='save' value="save" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save</button>
 
-                <button type="submit" name='translate' value="Translate" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" >Save & submit</button>
-
    <button type="submit" name='viewpdf' value="viewpdf" class="btn btn-primary pull-right m-r-5" onclick="translatemod();" formtarget="_blank">View pdf</button>
+
+                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
 
             </div>
         </div>
@@ -866,6 +963,7 @@ var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj
         jQuery(function ($) {
             //$('#splitter-block').enhsplitter();
             $('#splitter-block').enhsplitter({handle: 'bar', position: 350, leftMinSize: 0, fixed: false});
+			
         });
         // Script for enhsplitter Ends
 
