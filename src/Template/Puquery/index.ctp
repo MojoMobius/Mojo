@@ -6,54 +6,19 @@ use Cake\Routing\Router
     <div class="formcontent">
         <h4>PU Queries</h4>
             <?php echo $this->Form->create('',array('class'=>'form-horizontal','id'=>'projectforms')); ?>
-
-
-        <div class="col-md-3">
+<?php $SessionRegionId='1011'; ?>
+        
+                     <input type="hidden" name="RegionId" id="RegionId" value="<?php echo  $SessionRegionId;?>">
+        <div class="row">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
                 <div class="col-sm-6 prodash-txt">
-                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getRegion(this.value);getModule(this.value);'));?>  
+                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getusergroupdetails('.$SessionRegionId.');getModule(this.value);'));?>  
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="RegionId" class="col-sm-6 control-label">Region Name</label>
-                <div class="col-sm-6 prodash-txt">
-                    <div id="LoadRegion">
-                        <?php
-                        if ($RegionId == '') {
-                            $Region = array(0 => '--Select--');
-                            echo $this->Form->input('', array('options' => $Region, 'id' => 'RegionId', 'name' => 'RegionId', 'class' => 'form-control', 'value' => $RegionId, 'onchange' => 'getusergroupdetails(this.value)'));
-                        } else {
-                            echo $RegionId;
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="UserGroupId" class="col-sm-6 control-label">User Group</label>
-                <div class="col-sm-6 prodash-txt">
-                    <?php
-                        if ($UserGroupId == '') {
-                            $UserGroup = array(0 => '--Select--');
-                            echo '<div id="LoadUserGroup">';
-                            echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails'));
-                            echo '</div>';
-                        } else {
-                            echo $UserGroupId;
-                        }
-                    ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
+            <div class="col-md-4">
             <div class="form-group">
                 <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Module</label>
                 <div class="col-sm-6" style="margin-top:3px;">
@@ -74,8 +39,50 @@ use Cake\Routing\Router
                 </div>
             </div>
         </div>
-
+        
+<!--
         <div class="col-md-3">
+            <div class="form-group">
+                <label for="RegionId" class="col-sm-6 control-label">Region Name</label>
+                <div class="col-sm-6 prodash-txt">
+                    <div id="LoadRegion">
+                        <?php
+                        if ($RegionId == '') {
+                            $Region = array(0 => '--Select--');
+                            echo $this->Form->input('', array('options' => $Region, 'id' => 'RegionId', 'name' => 'RegionId', 'class' => 'form-control', 'value' => $RegionId, 'onchange' => 'getusergroupdetails(this.value)'));
+                        } else {
+                            echo $RegionId;
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+-->
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="UserGroupId" class="col-sm-6 control-label">User Group</label>
+                <div class="col-sm-6 prodash-txt">
+                    <?php
+                        if ($UserGroupId == '') {
+                            $UserGroup = array(0 => '--Select--');
+                            echo '<div id="LoadUserGroup">';
+                            echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails'));
+                            echo '</div>';
+                        } else {
+                            echo $UserGroupId;
+                        }
+                    ?>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+
+
+
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-6 control-label">Query Date From:</label>
                 <div class="col-sm-6 prodash-txt">
@@ -86,7 +93,7 @@ use Cake\Routing\Router
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-6 control-label">To:</label>
                 <div class="col-sm-6 prodash-txt">
@@ -97,7 +104,7 @@ use Cake\Routing\Router
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
                 <div class="col-sm-6">
@@ -108,6 +115,7 @@ use Cake\Routing\Router
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
 
@@ -149,12 +157,17 @@ if(!empty($queryResult)){ ?>
                     ?>
                     <!-- Second Inner Collpse Starts-->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading row">
+        <div class="col-md-10">
                             <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse99<?php echo $i;?><?php echo $j;?>"><img src="img/insert-object.png" style="margin-bottom:3px;"> 
                                     <label class="comments"><b>Domain Id:</b></label>
                                     <label class="comments"><span style="text-align:left"><?php echo $key2;?></span></label>
                                 </a>
                             </h4>
+        </div>
+                   <div class="col-md-2">
+                             <button name ='frmsubmit' type="button" onclick="return updateQuerydqc('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">dqc Completed</button>
+        </div>
                         </div>
 
                         <div id="collapse99<?php echo $i;?><?php echo $j;?>" class="panel-collapse collapse in">
@@ -190,7 +203,20 @@ if(!empty($queryResult)){ ?>
                                                     <option value="3">Query Completed</option>
                                                 </select>
                                             </div>
-											 <div class="form-group frmgrp_align">
+                                            
+                                            <div class="form-group frmgrp_align">
+                                                <label class="comments">Client Response</label>
+                                                <textarea name='cl_resp<?php echo $data3['Id']?>' rows="2" id='cl_resp<?php echo $data3['Id']?>' class="form-controls puq-cmt" title="<?php echo $data3['Client_Response'];?>"><?php echo $data3['Client_Response'];?></textarea>
+                                                
+                                            </div>
+                                            
+                                            <div class="form-group frmgrp_align">
+                                                <label class="comments">Client Response Date</label>
+                                              <?php 
+                                            echo $this->Form->input('', array('id' => 'respDate'.$data3['Id'].'', 'name' => 'respDate'.$data3['Id'].'', 'class'=>'form-control' , 'value'=>date("d-m-Y", strtotime($data3['Client_Response_Date']) ) )); 
+                                        ?>
+                                            </div>
+						<div class="form-group frmgrp_align">
                                                 <label class="comments">File</label>
                                                 <span><input type="file" name="upfile<?php echo $data3['Id']?>" id="upfile<?php echo $data3['Id']?>"  style="border:none;">
 												<input type="hidden" name="domainId" id="domainId" value="<?php echo $key2;?>">
@@ -200,6 +226,7 @@ if(!empty($queryResult)){ ?>
                                             </div>
                                             <div class="form-group frmgrp_align">
                                                 <button name ='frmsubmit' type="button" onclick="return updateQuery('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">Submit</button>
+                                               
 											   
 												
                                             </div>
@@ -317,9 +344,7 @@ if(!empty($queryResult)){ ?>
         });
     }
 
-	
-	
-    function updateQuery(att, ModuleId, ProductionEntityId) {
+	   function updateQuery(att, ModuleId, ProductionEntityId) {
 		///
     var file_data = $('#upfile'+att).prop('files')[0];   
      var form_data = new FormData();                  
@@ -339,6 +364,65 @@ if(!empty($queryResult)){ ?>
         status = $('#status' + att).val();
         batchfrom = $('#batch_from').val();
         batchto = $('#batch_to').val();
+        cl_resp = $('#cl_resp' + att).val();
+        respDate = $('#respDate'+ att).val();
+		ProjectId = $('#ProjectId').val();
+		RegionId = $('#RegionId').val();
+		DomainId = $('#domainId').val();
+		InputEntityId = $('#InputEntityId').val();
+
+
+
+        var result = new Array();
+		form_data.append('mobiusComment', mobiusComment);
+		form_data.append('queryID', att);
+		form_data.append('status', status);
+		form_data.append('cl_resp', cl_resp);
+		form_data.append('cl_resp_date', respDate);
+		form_data.append('ModuleId', ModuleId);
+		form_data.append('ProductionEntityId', ProductionEntityId);
+		form_data.append('ProjectId', ProjectId);
+		form_data.append('RegionId', RegionId);
+		form_data.append('DomainId', DomainId);
+		form_data.append('InputEntityId', InputEntityId);
+		 $.ajax({
+        url: "<?php echo Router::url(array('controller'=>'puquery','action'=>'ajaxqueryinsert'));?>",
+		dataType: 'text',  // what to expect back from the PHP script, if anything
+        cache: false,
+        contentType: false,
+        processData: false,           
+        data: form_data,                         
+        type: 'post',
+        success: function(php_script_response){
+            document.getElementById("projectforms").submit();
+        }
+      });
+		
+  
+    }
+	
+    function updateQuerydqc(att, ModuleId, ProductionEntityId) {
+		///
+    var file_data = $('#upfile'+att).prop('files')[0];   
+     var form_data = new FormData();                  
+    form_data.append('file', file_data);
+                                 
+   
+		///
+		
+        if ($('#mobius_comments' + att).val() == '')
+        {
+            alert('Enter Comments!');
+            $('#mobius_comments' + att).focus();
+            return false;
+        }
+
+        mobiusComment = $("#mobius_comments" + att).val();
+        status = $('#status' + att).val();
+        batchfrom = $('#batch_from').val();
+        batchto = $('#batch_to').val();
+        cl_resp = $('#cl_resp' + att).val();
+        respDate = $('#respDate'+ att).val();
 		ProjectId = $('#ProjectId').val();
 		RegionId = $('#RegionId').val();
 		DomainId = $('#domainId').val();
@@ -351,13 +435,15 @@ if(!empty($queryResult)){ ?>
 		form_data.append('queryID', att);
 		form_data.append('status', status);
 		form_data.append('ModuleId', ModuleId);
+		form_data.append('cl_resp', cl_resp);
+		form_data.append('cl_resp_date', respDate);
 		form_data.append('ProductionEntityId', ProductionEntityId);
 		form_data.append('ProjectId', ProjectId);
 		form_data.append('RegionId', RegionId);
 		form_data.append('DomainId', DomainId);
 		form_data.append('InputEntityId', InputEntityId);
 		 $.ajax({
-        url: "<?php echo Router::url(array('controller'=>'puquery','action'=>'ajaxqueryinsert'));?>",
+        url: "<?php echo Router::url(array('controller'=>'puquery','action'=>'ajaxqueryinsert_dqc'));?>",
 		dataType: 'text',  // what to expect back from the PHP script, if anything
         cache: false,
         contentType: false,
@@ -401,7 +487,7 @@ if(!empty($queryResult)){ ?>
 
     function ClearFields() {
         $('#ProjectId').val('0');
-        $('#RegionId').val('0');
+        //$('#RegionId').val('0');
         $('#UserGroupId').val('');
         $('#ModuleId').val('0');
         $('#QueryDateFrom').val('');
@@ -440,3 +526,21 @@ if ($CallUserGroupFunctions == 'yes') {
     <?php
 }
 ?>
+<?php
+            foreach($queryResult as $key=>$data){              
+                    foreach($data as $key2=>$data2){
+                       foreach($data2 as $key3=>$data3){
+                          
+ ?>
+<script>
+  $('#respDate<?php echo $data3['Id'];?>').Zebra_DatePicker({
+          format: 'd-m-Y',
+          direction: true,
+          });
+     
+</script>
+        <?php 
+              }     
+            }  
+          }
+        ?>
