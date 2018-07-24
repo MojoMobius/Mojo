@@ -40,6 +40,31 @@ class GetjobcoreTable extends Table {
         }
         return $options['query'];
     }
+	 public function findQuerypostAll(Query $query, array $options) {
+
+        $connection = ConnectionManager::get('default');
+        //echo "SELECT Id FROM ME_UserQuery WHERE InputEntityId='".$options['ProductionEntity']."' AND RecordStatus=1";
+		$Multiquery=$options['comments'];
+		//print_r($Multiquery['query']);exit;
+		foreach($Multiquery['query'] as $key => $value):
+		//echo "SELECT Id FROM ME_UserQuery WHERE AttributeMasterID='" . $key . "' AND  ProductionEntityId='" . $options['ProductionEntity'] . "' AND RecordStatus=1";exit;
+		
+        $count = $connection->execute("SELECT Id FROM ME_UserQuery WHERE AttributeMasterID='" . $key . "' AND  ProductionEntityId='" . $options['ProductionEntity'] . "' AND RecordStatus=1")->fetchAll('assoc');
+        $QueryValue = str_replace("'", "''", trim($value));
+		
+		
+
+        if (!empty($count)) {
+            $queryUpdate = "update ME_UserQuery set Query='" . $QueryValue . "'  where AttributeMasterID='" . $key . "' and ProductionEntityId='" . $options['ProductionEntity'] . "' and ModuleId='" . $options['moduleId'] . "'";
+            $connection->execute($queryUpdate);
+        } else {
+            $queryInsert = "Insert into ME_UserQuery (ProjectId,RegionId,UserID,ProductionEntityId,ModuleId,Query,QueryRaisedDate,StatusID,RecordStatus,CreatedDate,CreatedBy,AttributeMasterID) values('" . $options['ProjectId'] . "','" . $options['RegionId'] . "','" . $options['user'] . "','" . $options['ProductionEntity'] . "','" . $options['moduleId'] . "','" . $QueryValue . "','" . date('Y-m-d H:i:s') . "',1,1,'" . date('Y-m-d H:i:s') . "','" . $options['user'] . "','" . $key . "')";
+            $connection->execute($queryInsert);
+        }
+		endforeach;
+		
+        return $options;
+    }
 
     public function findSavedata(Query $query, array $options) {
         $user_id = $this->request->session()->read('user_id');
