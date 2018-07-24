@@ -4,12 +4,30 @@
         "1": "admin",
         "99846": "leaseuser",
         "99847": "leasetl",
-        "99909": "transuser"
+        "99909": "transuser",
+        "99968": "leasetestuser",
+        "99969": "leasetesttl",
+        "99970": "transtest",
+        "99971": "Absuser",
+        "99972": "senuser",
+        "99973": "Revuser",
+        "101000": "Abstuser",
+        "101001": "Revuuser",
+        "101002": "Senckuser"
     },
     "UserListRole": {
         "99846_31": "leaseuser (Production User)",
         "99847_3": "leasetl (Team Leader)",
-        "99909_39": "transuser (Translation User)"
+        "99909_39": "transuser (Translation User)",
+        "99968_31": "leasetestuser (Production User)",
+        "99969_3": "leasetesttl (Team Leader)",
+        "99970_39": "transtest (Translation User)",
+        "99971_39": "Absuser (Translation User)",
+        "99972_39": "senuser (Translation User)",
+        "99973_39": "Revuser (Translation User)",
+        "101000_40": "Abstuser (Abstraction User)",
+        "101001_41": "Revuuser (Review User)",
+        "101002_42": "Senckuser (Sensecheck User)"
     },
     "RegionList": {
         "1011": "No Region"
@@ -17,27 +35,150 @@
     "AttributeList": {
         "1011": [
             11756,
+            11577,
+            11578,
             11757,
             11758,
+            11579,
+            11580,
             11759,
             11760,
+            11581,
+            11582,
             11761,
             11762,
+            11583,
+            11584,
+            11585,
             11765,
+            11586,
             11766,
+            11587,
+            11588,
             11767,
+            11589,
+            11590,
             11770,
+            11591,
             11771,
+            11592,
             11772,
+            11593,
+            11594,
             11773,
             11774,
+            11595,
+            11596,
             11775,
             11700,
+            11597,
+            11598,
             11779,
             11780,
+            11599,
             11601,
-            11781,
-            11783
+            11600,
+            11601,
+            11783,
+            11602,
+            11603,
+            11604,
+            11605,
+            11606,
+            11607,
+            11608,
+            11609,
+            11610,
+            11611,
+            11612,
+            11613,
+            11614,
+            11615,
+            11616,
+            11617,
+            11618,
+            11619,
+            11620,
+            11621,
+            11622,
+            11623,
+            11624,
+            11625,
+            11626,
+            11627,
+            11628,
+            11629,
+            11630,
+            11631,
+            11632,
+            11633,
+            11634,
+            11635,
+            11636,
+            11637,
+            11638,
+            11639,
+            11640,
+            11641,
+            11642,
+            11643,
+            11644,
+            11645,
+            11646,
+            11647,
+            11648,
+            11649,
+            11650,
+            11651,
+            11652,
+            11653,
+            11654,
+            11655,
+            11656,
+            11657,
+            11658,
+            11659,
+            11660,
+            11661,
+            11662,
+            11663,
+            11664,
+            11665,
+            11666,
+            11667,
+            11668,
+            11669,
+            11670,
+            11671,
+            11672,
+            11673,
+            11674,
+            11675,
+            11676,
+            11677,
+            11678,
+            11679,
+            11680,
+            11681,
+            11682,
+            11683,
+            11684,
+            11685,
+            11686,
+            11687,
+            11688,
+            11689,
+            11690,
+            11691,
+            11692,
+            11693,
+            11694,
+            11695,
+            11696,
+            11697,
+            11698,
+            11699,
+            11779
         ]
     },
     "AttributeOrder": {
@@ -58,6 +199,24 @@
                     "163005": "Yes",
                     "163006": "No"
                 }
+            },
+            "11577": {
+                "DispalyOrder": "1",
+                "ProjectAttributeId": 11577,
+                "AttributeName": "Site_Info_UOM",
+                "AttributeId": 5040,
+                "DisplayAttributeName": "UOM",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11578": {
+                "DispalyOrder": "2",
+                "ProjectAttributeId": 11578,
+                "AttributeName": "Site_Info_CUR",
+                "AttributeId": 5041,
+                "DisplayAttributeName": "CUR",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
             },
             "11757": {
                 "DispalyOrder": "2",
@@ -93,6 +252,24 @@
                     "163010": "No"
                 }
             },
+            "11579": {
+                "DispalyOrder": "3",
+                "ProjectAttributeId": 11579,
+                "AttributeName": "Address_1",
+                "AttributeId": 5042,
+                "DisplayAttributeName": "Address 1",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11580": {
+                "DispalyOrder": "4",
+                "ProjectAttributeId": 11580,
+                "AttributeName": "Address_2",
+                "AttributeId": 5043,
+                "DisplayAttributeName": "Address 2",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11759": {
                 "DispalyOrder": "4",
                 "ProjectAttributeId": 11759,
@@ -126,6 +303,24 @@
                     "163013": "Yes",
                     "163014": "No"
                 }
+            },
+            "11581": {
+                "DispalyOrder": "5",
+                "ProjectAttributeId": 11581,
+                "AttributeName": "Address_3",
+                "AttributeId": 5044,
+                "DisplayAttributeName": "Address 3",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11582": {
+                "DispalyOrder": "6",
+                "ProjectAttributeId": 11582,
+                "AttributeName": "Building_Info_City",
+                "AttributeId": 5045,
+                "DisplayAttributeName": "City",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
             },
             "11761": {
                 "DispalyOrder": "6",
@@ -161,6 +356,33 @@
                     "163018": "No"
                 }
             },
+            "11583": {
+                "DispalyOrder": "7",
+                "ProjectAttributeId": 11583,
+                "AttributeName": "Building_Info_State",
+                "AttributeId": 5046,
+                "DisplayAttributeName": "State",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11584": {
+                "DispalyOrder": "8",
+                "ProjectAttributeId": 11584,
+                "AttributeName": "Postal_Code",
+                "AttributeId": 591,
+                "DisplayAttributeName": "Postal Code",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11585": {
+                "DispalyOrder": "9",
+                "ProjectAttributeId": 11585,
+                "AttributeName": "County",
+                "AttributeId": 267,
+                "DisplayAttributeName": "County",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11765": {
                 "DispalyOrder": "10",
                 "ProjectAttributeId": 11765,
@@ -177,6 +399,15 @@
                     "163019": "Yes",
                     "163020": "No"
                 }
+            },
+            "11586": {
+                "DispalyOrder": "10",
+                "ProjectAttributeId": 11586,
+                "AttributeName": "Building_Info_Country",
+                "AttributeId": 5047,
+                "DisplayAttributeName": "Country",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
             },
             "11766": {
                 "DispalyOrder": "11",
@@ -195,6 +426,24 @@
                     "163022": "No"
                 }
             },
+            "11587": {
+                "DispalyOrder": "11",
+                "ProjectAttributeId": 11587,
+                "AttributeName": "Override_Latitude",
+                "AttributeId": 5048,
+                "DisplayAttributeName": "Override Latitude",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11588": {
+                "DispalyOrder": "12",
+                "ProjectAttributeId": 11588,
+                "AttributeName": "Override_Longitude",
+                "AttributeId": 5049,
+                "DisplayAttributeName": "Override Longitude",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11767": {
                 "DispalyOrder": "12",
                 "ProjectAttributeId": 11767,
@@ -211,6 +460,24 @@
                     "163023": "Yes",
                     "163024": "No"
                 }
+            },
+            "11589": {
+                "DispalyOrder": "13",
+                "ProjectAttributeId": 11589,
+                "AttributeName": "Building_Type",
+                "AttributeId": 5050,
+                "DisplayAttributeName": "Building Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11590": {
+                "DispalyOrder": "14",
+                "ProjectAttributeId": 11590,
+                "AttributeName": "OwnershipType",
+                "AttributeId": 5051,
+                "DisplayAttributeName": "OwnershipType",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
             },
             "11770": {
                 "DispalyOrder": "15",
@@ -229,6 +496,15 @@
                     "163026": "No"
                 }
             },
+            "11591": {
+                "DispalyOrder": "15",
+                "ProjectAttributeId": 11591,
+                "AttributeName": "Building_Info_UOM",
+                "AttributeId": 5052,
+                "DisplayAttributeName": "UOM",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11771": {
                 "DispalyOrder": "16",
                 "ProjectAttributeId": 11771,
@@ -246,6 +522,15 @@
                     "163028": "No"
                 }
             },
+            "11592": {
+                "DispalyOrder": "16",
+                "ProjectAttributeId": 11592,
+                "AttributeName": "Building_Description",
+                "AttributeId": 5053,
+                "DisplayAttributeName": "Building Description",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11772": {
                 "DispalyOrder": "17",
                 "ProjectAttributeId": 11772,
@@ -262,6 +547,24 @@
                     "163029": "Yes",
                     "163030": "No"
                 }
+            },
+            "11593": {
+                "DispalyOrder": "17",
+                "ProjectAttributeId": 11593,
+                "AttributeName": "Record_Info_Held_By",
+                "AttributeId": 5054,
+                "DisplayAttributeName": "Held By",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11594": {
+                "DispalyOrder": "18",
+                "ProjectAttributeId": 11594,
+                "AttributeName": "Suite",
+                "AttributeId": 1869,
+                "DisplayAttributeName": "Suite",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
             },
             "11773": {
                 "DispalyOrder": "18",
@@ -297,6 +600,24 @@
                     "163034": "No"
                 }
             },
+            "11595": {
+                "DispalyOrder": "19",
+                "ProjectAttributeId": 11595,
+                "AttributeName": "Lease_Status",
+                "AttributeId": 5055,
+                "DisplayAttributeName": "Lease Status",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11596": {
+                "DispalyOrder": "20",
+                "ProjectAttributeId": 11596,
+                "AttributeName": "Record_Type",
+                "AttributeId": 5056,
+                "DisplayAttributeName": "Record Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11775": {
                 "DispalyOrder": "20",
                 "ProjectAttributeId": 11775,
@@ -323,14 +644,32 @@
                 "IsDistinct": 1,
                 "ControlName": "Label"
             },
-            "11779": {
+            "11597": {
+                "DispalyOrder": "21",
+                "ProjectAttributeId": 11597,
+                "AttributeName": "Rent_Type",
+                "AttributeId": 5057,
+                "DisplayAttributeName": "Rent Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11598": {
                 "DispalyOrder": "22",
+                "ProjectAttributeId": 11598,
+                "AttributeName": "Pro_Rata_Share",
+                "AttributeId": 5058,
+                "DisplayAttributeName": "Pro Rata Share",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11779": {
+                "DispalyOrder": "124",
                 "ProjectAttributeId": 11779,
                 "AttributeName": "Lease_ID",
                 "AttributeId": 5224,
                 "DisplayAttributeName": "Lease ID",
                 "IsDistinct": 1,
-                "ControlName": "Label"
+                "ControlName": "TextBox"
             },
             "11780": {
                 "DispalyOrder": "23",
@@ -341,23 +680,32 @@
                 "IsDistinct": 1,
                 "ControlName": "Label"
             },
+            "11599": {
+                "DispalyOrder": "23",
+                "ProjectAttributeId": 11599,
+                "AttributeName": "Base_Year",
+                "AttributeId": 5059,
+                "DisplayAttributeName": "Base Year",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
             "11601": {
-                "DispalyOrder": "24",
+                "DispalyOrder": "25",
                 "ProjectAttributeId": 11601,
                 "AttributeName": "Lease_Type",
                 "AttributeId": 5061,
                 "DisplayAttributeName": "Lease Type",
                 "IsDistinct": 1,
-                "ControlName": "Label"
+                "ControlName": "TextBox"
             },
-            "11781": {
-                "DispalyOrder": "25",
-                "ProjectAttributeId": 11781,
-                "AttributeName": "Language",
-                "AttributeId": 438,
-                "DisplayAttributeName": "Language",
+            "11600": {
+                "DispalyOrder": "24",
+                "ProjectAttributeId": 11600,
+                "AttributeName": "Reconciliations_Required",
+                "AttributeId": 5060,
+                "DisplayAttributeName": "Reconciliations Required",
                 "IsDistinct": 1,
-                "ControlName": "Label"
+                "ControlName": "TextBox"
             },
             "11783": {
                 "DispalyOrder": "26",
@@ -367,6 +715,888 @@
                 "DisplayAttributeName": "Fetch Botminds?",
                 "IsDistinct": 1,
                 "ControlName": "Label"
+            },
+            "11602": {
+                "DispalyOrder": "26",
+                "ProjectAttributeId": 11602,
+                "AttributeName": "Record_Info_CUR",
+                "AttributeId": 5062,
+                "DisplayAttributeName": "CUR",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11603": {
+                "DispalyOrder": "27",
+                "ProjectAttributeId": 11603,
+                "AttributeName": "Record_Info_UOM",
+                "AttributeId": 5063,
+                "DisplayAttributeName": "UOM",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11604": {
+                "DispalyOrder": "28",
+                "ProjectAttributeId": 11604,
+                "AttributeName": "Pay_Rent",
+                "AttributeId": 5064,
+                "DisplayAttributeName": "Pay Rent",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11605": {
+                "DispalyOrder": "29",
+                "ProjectAttributeId": 11605,
+                "AttributeName": "Original_Term_Commencement",
+                "AttributeId": 5065,
+                "DisplayAttributeName": "Original Term Commencement",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11606": {
+                "DispalyOrder": "30",
+                "ProjectAttributeId": 11606,
+                "AttributeName": "Original_Term_End_Date",
+                "AttributeId": 5066,
+                "DisplayAttributeName": "Original Term End Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11607": {
+                "DispalyOrder": "31",
+                "ProjectAttributeId": 11607,
+                "AttributeName": "MoveIn_Date",
+                "AttributeId": 5067,
+                "DisplayAttributeName": "Move-In Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11608": {
+                "DispalyOrder": "32",
+                "ProjectAttributeId": 11608,
+                "AttributeName": "Record_Info_Current_Term_Commencement",
+                "AttributeId": 5068,
+                "DisplayAttributeName": "Current Term Commencement",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11609": {
+                "DispalyOrder": "33",
+                "ProjectAttributeId": 11609,
+                "AttributeName": "Record_Info_Current_Term_End_Date",
+                "AttributeId": 5069,
+                "DisplayAttributeName": "Current Term End Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11610": {
+                "DispalyOrder": "34",
+                "ProjectAttributeId": 11610,
+                "AttributeName": "Record_Info_Rentable_Area",
+                "AttributeId": 5070,
+                "DisplayAttributeName": "Rentable Area",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11611": {
+                "DispalyOrder": "35",
+                "ProjectAttributeId": 11611,
+                "AttributeName": "Record_Info_Start_reason",
+                "AttributeId": 5071,
+                "DisplayAttributeName": "Start reason",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11612": {
+                "DispalyOrder": "36",
+                "ProjectAttributeId": 11612,
+                "AttributeName": "Record_Info_Comments",
+                "AttributeId": 5072,
+                "DisplayAttributeName": "Comments",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11613": {
+                "DispalyOrder": "37",
+                "ProjectAttributeId": 11613,
+                "AttributeName": "Property_Terms_Current_Term_Commencement",
+                "AttributeId": 5073,
+                "DisplayAttributeName": "Current Term Commencement",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11614": {
+                "DispalyOrder": "38",
+                "ProjectAttributeId": 11614,
+                "AttributeName": "Property_Terms_Current_Term_End_Date",
+                "AttributeId": 5074,
+                "DisplayAttributeName": "Current Term End Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11615": {
+                "DispalyOrder": "39",
+                "ProjectAttributeId": 11615,
+                "AttributeName": "Property_Terms_Held_By",
+                "AttributeId": 5075,
+                "DisplayAttributeName": "Held By",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11616": {
+                "DispalyOrder": "40",
+                "ProjectAttributeId": 11616,
+                "AttributeName": "Property_Terms_Rentable_Area",
+                "AttributeId": 5076,
+                "DisplayAttributeName": "Rentable Area",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11617": {
+                "DispalyOrder": "41",
+                "ProjectAttributeId": 11617,
+                "AttributeName": "Property_Terms_Start_reason",
+                "AttributeId": 5077,
+                "DisplayAttributeName": "Start reason",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11618": {
+                "DispalyOrder": "42",
+                "ProjectAttributeId": 11618,
+                "AttributeName": "MTM",
+                "AttributeId": 5078,
+                "DisplayAttributeName": "MTM",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11619": {
+                "DispalyOrder": "43",
+                "ProjectAttributeId": 11619,
+                "AttributeName": "Auto_renewal",
+                "AttributeId": 5079,
+                "DisplayAttributeName": "Auto renewal",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11620": {
+                "DispalyOrder": "44",
+                "ProjectAttributeId": 11620,
+                "AttributeName": "Usable_Area",
+                "AttributeId": 5080,
+                "DisplayAttributeName": "Usable Area",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11621": {
+                "DispalyOrder": "45",
+                "ProjectAttributeId": 11621,
+                "AttributeName": "Expense_Type",
+                "AttributeId": 5081,
+                "DisplayAttributeName": "Expense Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11622": {
+                "DispalyOrder": "46",
+                "ProjectAttributeId": 11622,
+                "AttributeName": "Start_Date",
+                "AttributeId": 4898,
+                "DisplayAttributeName": "Start Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11623": {
+                "DispalyOrder": "47",
+                "ProjectAttributeId": 11623,
+                "AttributeName": "End_Date",
+                "AttributeId": 4899,
+                "DisplayAttributeName": "End Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11624": {
+                "DispalyOrder": "48",
+                "ProjectAttributeId": 11624,
+                "AttributeName": "Is_income",
+                "AttributeId": 5082,
+                "DisplayAttributeName": "Is income",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11625": {
+                "DispalyOrder": "49",
+                "ProjectAttributeId": 11625,
+                "AttributeName": "Description",
+                "AttributeId": 278,
+                "DisplayAttributeName": "Description",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11626": {
+                "DispalyOrder": "50",
+                "ProjectAttributeId": 11626,
+                "AttributeName": "End_Date_Same_As_Lease_Expiration",
+                "AttributeId": 5083,
+                "DisplayAttributeName": "End Date Same As Lease Expiration",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11627": {
+                "DispalyOrder": "51",
+                "ProjectAttributeId": 11627,
+                "AttributeName": "Amount",
+                "AttributeId": 2035,
+                "DisplayAttributeName": "Amount",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11628": {
+                "DispalyOrder": "52",
+                "ProjectAttributeId": 11628,
+                "AttributeName": "Amount_Type",
+                "AttributeId": 5084,
+                "DisplayAttributeName": "Amount Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11629": {
+                "DispalyOrder": "53",
+                "ProjectAttributeId": 11629,
+                "AttributeName": "Recurrence",
+                "AttributeId": 5085,
+                "DisplayAttributeName": "Recurrence",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11630": {
+                "DispalyOrder": "54",
+                "ProjectAttributeId": 11630,
+                "AttributeName": "Enable",
+                "AttributeId": 5086,
+                "DisplayAttributeName": "Enable",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11631": {
+                "DispalyOrder": "55",
+                "ProjectAttributeId": 11631,
+                "AttributeName": "Repeats_Every",
+                "AttributeId": 5087,
+                "DisplayAttributeName": "Repeats Every",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11632": {
+                "DispalyOrder": "56",
+                "ProjectAttributeId": 11632,
+                "AttributeName": "First_Expense_Date",
+                "AttributeId": 5088,
+                "DisplayAttributeName": "First Expense Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11633": {
+                "DispalyOrder": "57",
+                "ProjectAttributeId": 11633,
+                "AttributeName": "On_day",
+                "AttributeId": 5089,
+                "DisplayAttributeName": "On day",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11634": {
+                "DispalyOrder": "58",
+                "ProjectAttributeId": 11634,
+                "AttributeName": "Key_Dates_Type",
+                "AttributeId": 5090,
+                "DisplayAttributeName": "Key Dates Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11635": {
+                "DispalyOrder": "59",
+                "ProjectAttributeId": 11635,
+                "AttributeName": "Key_Dates_Summary",
+                "AttributeId": 5091,
+                "DisplayAttributeName": "Summary",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11636": {
+                "DispalyOrder": "60",
+                "ProjectAttributeId": 11636,
+                "AttributeName": "Key_Dates_Status",
+                "AttributeId": 5092,
+                "DisplayAttributeName": "Status",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11637": {
+                "DispalyOrder": "61",
+                "ProjectAttributeId": 11637,
+                "AttributeName": "Key_Dates_Effective",
+                "AttributeId": 5093,
+                "DisplayAttributeName": "Effective",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11638": {
+                "DispalyOrder": "62",
+                "ProjectAttributeId": 11638,
+                "AttributeName": "Key_Dates_Is_Effective_Same_As_Lease_Expiration?",
+                "AttributeId": 5094,
+                "DisplayAttributeName": "Is Effective Same As Lease Expiration?",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11639": {
+                "DispalyOrder": "63",
+                "ProjectAttributeId": 11639,
+                "AttributeName": "Key_Dates_Expiration",
+                "AttributeId": 5095,
+                "DisplayAttributeName": "Expiration",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11640": {
+                "DispalyOrder": "64",
+                "ProjectAttributeId": 11640,
+                "AttributeName": "Key_Dates_Specify_a_different_Notify_From_Date",
+                "AttributeId": 5096,
+                "DisplayAttributeName": "Specify a different Notify From Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11641": {
+                "DispalyOrder": "65",
+                "ProjectAttributeId": 11641,
+                "AttributeName": "Key_Dates_Notify_From",
+                "AttributeId": 5097,
+                "DisplayAttributeName": "Notify From",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11642": {
+                "DispalyOrder": "66",
+                "ProjectAttributeId": 11642,
+                "AttributeName": "Key_Dates_Set_Earliest",
+                "AttributeId": 5098,
+                "DisplayAttributeName": "Set Earliest",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11643": {
+                "DispalyOrder": "67",
+                "ProjectAttributeId": 11643,
+                "AttributeName": "Key_Dates_Range1",
+                "AttributeId": 5099,
+                "DisplayAttributeName": "Range",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11644": {
+                "DispalyOrder": "68",
+                "ProjectAttributeId": 11644,
+                "AttributeName": "Key_Dates_Resulting_Date1",
+                "AttributeId": 5100,
+                "DisplayAttributeName": "Resulting Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11645": {
+                "DispalyOrder": "69",
+                "ProjectAttributeId": 11645,
+                "AttributeName": "Key_Dates_Set_Latest",
+                "AttributeId": 5101,
+                "DisplayAttributeName": "Set Latest",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11646": {
+                "DispalyOrder": "70",
+                "ProjectAttributeId": 11646,
+                "AttributeName": "Key_Dates_Range2",
+                "AttributeId": 5102,
+                "DisplayAttributeName": "Range",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11647": {
+                "DispalyOrder": "71",
+                "ProjectAttributeId": 11647,
+                "AttributeName": "Key_Dates_Resulting_Date2",
+                "AttributeId": 5103,
+                "DisplayAttributeName": "Resulting Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11648": {
+                "DispalyOrder": "72",
+                "ProjectAttributeId": 11648,
+                "AttributeName": "Key_Dates_Document",
+                "AttributeId": 5104,
+                "DisplayAttributeName": "Document",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11649": {
+                "DispalyOrder": "73",
+                "ProjectAttributeId": 11649,
+                "AttributeName": "Key_Dates_Reference_PDF_Page",
+                "AttributeId": 5105,
+                "DisplayAttributeName": "Reference -PDF Page",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11650": {
+                "DispalyOrder": "74",
+                "ProjectAttributeId": 11650,
+                "AttributeName": "Key_Dates_Reference_Lease_Page",
+                "AttributeId": 5106,
+                "DisplayAttributeName": "Reference - Lease Page",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11651": {
+                "DispalyOrder": "75",
+                "ProjectAttributeId": 11651,
+                "AttributeName": "Key_Dates_Reference_Section",
+                "AttributeId": 5107,
+                "DisplayAttributeName": "Reference - Section",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11652": {
+                "DispalyOrder": "76",
+                "ProjectAttributeId": 11652,
+                "AttributeName": "Option_Type",
+                "AttributeId": 5108,
+                "DisplayAttributeName": "Option Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11653": {
+                "DispalyOrder": "77",
+                "ProjectAttributeId": 11653,
+                "AttributeName": "Options_Summary",
+                "AttributeId": 5109,
+                "DisplayAttributeName": "Summary",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11654": {
+                "DispalyOrder": "78",
+                "ProjectAttributeId": 11654,
+                "AttributeName": "Options_Status",
+                "AttributeId": 5110,
+                "DisplayAttributeName": "Status",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11655": {
+                "DispalyOrder": "79",
+                "ProjectAttributeId": 11655,
+                "AttributeName": "Options_Effective",
+                "AttributeId": 5111,
+                "DisplayAttributeName": "Effective",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11656": {
+                "DispalyOrder": "80",
+                "ProjectAttributeId": 11656,
+                "AttributeName": "Options_Is_Effective_Same_As_Lease_Expiration?",
+                "AttributeId": 5112,
+                "DisplayAttributeName": "Is Effective Same As Lease Expiration?",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11657": {
+                "DispalyOrder": "81",
+                "ProjectAttributeId": 11657,
+                "AttributeName": "Options_Expiration",
+                "AttributeId": 5113,
+                "DisplayAttributeName": "Expiration",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11658": {
+                "DispalyOrder": "82",
+                "ProjectAttributeId": 11658,
+                "AttributeName": "Options_Specify_a_different_Notify_From_Date",
+                "AttributeId": 5114,
+                "DisplayAttributeName": "Specify a different Notify From Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11659": {
+                "DispalyOrder": "83",
+                "ProjectAttributeId": 11659,
+                "AttributeName": "Options_Notify_From",
+                "AttributeId": 5115,
+                "DisplayAttributeName": "Notify From",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11660": {
+                "DispalyOrder": "84",
+                "ProjectAttributeId": 11660,
+                "AttributeName": "Options_Set_Earliest",
+                "AttributeId": 5116,
+                "DisplayAttributeName": "Set Earliest",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11661": {
+                "DispalyOrder": "85",
+                "ProjectAttributeId": 11661,
+                "AttributeName": "Options_Range1",
+                "AttributeId": 5117,
+                "DisplayAttributeName": "Range",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11662": {
+                "DispalyOrder": "86",
+                "ProjectAttributeId": 11662,
+                "AttributeName": "Options_Resulting_Date1",
+                "AttributeId": 5118,
+                "DisplayAttributeName": "Resulting Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11663": {
+                "DispalyOrder": "87",
+                "ProjectAttributeId": 11663,
+                "AttributeName": "Options_Set_Latest",
+                "AttributeId": 5119,
+                "DisplayAttributeName": "Set Latest",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11664": {
+                "DispalyOrder": "88",
+                "ProjectAttributeId": 11664,
+                "AttributeName": "Options_Range2",
+                "AttributeId": 5120,
+                "DisplayAttributeName": "Range",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11665": {
+                "DispalyOrder": "89",
+                "ProjectAttributeId": 11665,
+                "AttributeName": "Options_Resulting_Date2",
+                "AttributeId": 5121,
+                "DisplayAttributeName": "Resulting Date",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11666": {
+                "DispalyOrder": "90",
+                "ProjectAttributeId": 11666,
+                "AttributeName": "Options_Document",
+                "AttributeId": 5122,
+                "DisplayAttributeName": "Document",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11667": {
+                "DispalyOrder": "91",
+                "ProjectAttributeId": 11667,
+                "AttributeName": "Options_Reference_PDF_Page",
+                "AttributeId": 5123,
+                "DisplayAttributeName": "Reference -PDF Page",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11668": {
+                "DispalyOrder": "92",
+                "ProjectAttributeId": 11668,
+                "AttributeName": "Options_Reference_Lease_Page",
+                "AttributeId": 5124,
+                "DisplayAttributeName": "Reference - Lease Page",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11669": {
+                "DispalyOrder": "93",
+                "ProjectAttributeId": 11669,
+                "AttributeName": "Options_Reference_Section",
+                "AttributeId": 5125,
+                "DisplayAttributeName": "Reference - Section",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11670": {
+                "DispalyOrder": "94",
+                "ProjectAttributeId": 11670,
+                "AttributeName": "Contact_Type",
+                "AttributeId": 5126,
+                "DisplayAttributeName": "Contact Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11671": {
+                "DispalyOrder": "95",
+                "ProjectAttributeId": 11671,
+                "AttributeName": "Company",
+                "AttributeId": 2026,
+                "DisplayAttributeName": "Company",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11672": {
+                "DispalyOrder": "96",
+                "ProjectAttributeId": 11672,
+                "AttributeName": "Sal",
+                "AttributeId": 5127,
+                "DisplayAttributeName": "Sal",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11673": {
+                "DispalyOrder": "97",
+                "ProjectAttributeId": 11673,
+                "AttributeName": "First_Name",
+                "AttributeId": 3542,
+                "DisplayAttributeName": "First Name",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11674": {
+                "DispalyOrder": "98",
+                "ProjectAttributeId": 11674,
+                "AttributeName": "Middle_Name",
+                "AttributeId": 2061,
+                "DisplayAttributeName": "Middle Name",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11675": {
+                "DispalyOrder": "99",
+                "ProjectAttributeId": 11675,
+                "AttributeName": "Last_Name",
+                "AttributeId": 2062,
+                "DisplayAttributeName": "Last Name",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11676": {
+                "DispalyOrder": "100",
+                "ProjectAttributeId": 11676,
+                "AttributeName": "Title",
+                "AttributeId": 761,
+                "DisplayAttributeName": "Title",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11677": {
+                "DispalyOrder": "101",
+                "ProjectAttributeId": 11677,
+                "AttributeName": "Care_Of",
+                "AttributeId": 5128,
+                "DisplayAttributeName": "Care Of",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11678": {
+                "DispalyOrder": "102",
+                "ProjectAttributeId": 11678,
+                "AttributeName": "Email",
+                "AttributeId": 3363,
+                "DisplayAttributeName": "Email",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11679": {
+                "DispalyOrder": "103",
+                "ProjectAttributeId": 11679,
+                "AttributeName": "Tel",
+                "AttributeId": 5129,
+                "DisplayAttributeName": "Tel",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11680": {
+                "DispalyOrder": "104",
+                "ProjectAttributeId": 11680,
+                "AttributeName": "Fax",
+                "AttributeId": 2073,
+                "DisplayAttributeName": "Fax",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11681": {
+                "DispalyOrder": "105",
+                "ProjectAttributeId": 11681,
+                "AttributeName": "Address1",
+                "AttributeId": 3248,
+                "DisplayAttributeName": "Address1",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11682": {
+                "DispalyOrder": "106",
+                "ProjectAttributeId": 11682,
+                "AttributeName": "Address2",
+                "AttributeId": 3296,
+                "DisplayAttributeName": "Address2",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11683": {
+                "DispalyOrder": "107",
+                "ProjectAttributeId": 11683,
+                "AttributeName": "Contacts_City",
+                "AttributeId": 5130,
+                "DisplayAttributeName": "City",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11684": {
+                "DispalyOrder": "108",
+                "ProjectAttributeId": 11684,
+                "AttributeName": "Contacts_Country",
+                "AttributeId": 5131,
+                "DisplayAttributeName": "Country",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11685": {
+                "DispalyOrder": "109",
+                "ProjectAttributeId": 11685,
+                "AttributeName": "Contacts_State",
+                "AttributeId": 5132,
+                "DisplayAttributeName": "State",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11686": {
+                "DispalyOrder": "110",
+                "ProjectAttributeId": 11686,
+                "AttributeName": "Zip_Code",
+                "AttributeId": 3358,
+                "DisplayAttributeName": "Zip Code",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11687": {
+                "DispalyOrder": "111",
+                "ProjectAttributeId": 11687,
+                "AttributeName": "Clauses_Type",
+                "AttributeId": 5133,
+                "DisplayAttributeName": "Clauses Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11688": {
+                "DispalyOrder": "112",
+                "ProjectAttributeId": 11688,
+                "AttributeName": "Lease_Clauses_Document",
+                "AttributeId": 5134,
+                "DisplayAttributeName": "Document",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11689": {
+                "DispalyOrder": "113",
+                "ProjectAttributeId": 11689,
+                "AttributeName": "Lease_Clauses_Reference_PDF_Page",
+                "AttributeId": 5135,
+                "DisplayAttributeName": "Reference -PDF Page",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11690": {
+                "DispalyOrder": "114",
+                "ProjectAttributeId": 11690,
+                "AttributeName": "Lease_Clauses_Reference_Lease_Page",
+                "AttributeId": 5136,
+                "DisplayAttributeName": "Reference - Lease Page",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11691": {
+                "DispalyOrder": "115",
+                "ProjectAttributeId": 11691,
+                "AttributeName": "Lease_Clauses_Reference_Section",
+                "AttributeId": 5137,
+                "DisplayAttributeName": "Reference - Section",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11692": {
+                "DispalyOrder": "116",
+                "ProjectAttributeId": 11692,
+                "AttributeName": "Lease_Clauses_Comments",
+                "AttributeId": 5138,
+                "DisplayAttributeName": "Comments",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11693": {
+                "DispalyOrder": "117",
+                "ProjectAttributeId": 11693,
+                "AttributeName": "Attachment_Subject",
+                "AttributeId": 5139,
+                "DisplayAttributeName": "Subject",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11694": {
+                "DispalyOrder": "118",
+                "ProjectAttributeId": 11694,
+                "AttributeName": "Attachment_Comments",
+                "AttributeId": 5140,
+                "DisplayAttributeName": "Comments",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11695": {
+                "DispalyOrder": "119",
+                "ProjectAttributeId": 11695,
+                "AttributeName": "Attachment_Comments_Type",
+                "AttributeId": 5141,
+                "DisplayAttributeName": "Comments Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11696": {
+                "DispalyOrder": "120",
+                "ProjectAttributeId": 11696,
+                "AttributeName": "File",
+                "AttributeId": 5142,
+                "DisplayAttributeName": "File",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11697": {
+                "DispalyOrder": "121",
+                "ProjectAttributeId": 11697,
+                "AttributeName": "Property_Comments_Subject",
+                "AttributeId": 5143,
+                "DisplayAttributeName": "Subject",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11698": {
+                "DispalyOrder": "122",
+                "ProjectAttributeId": 11698,
+                "AttributeName": "Property_Comments_Comments",
+                "AttributeId": 5144,
+                "DisplayAttributeName": "Comments",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
+            },
+            "11699": {
+                "DispalyOrder": "123",
+                "ProjectAttributeId": 11699,
+                "AttributeName": "Property_Comments_Comments_Type",
+                "AttributeId": 5145,
+                "DisplayAttributeName": "Comments Type",
+                "IsDistinct": 1,
+                "ControlName": "TextBox"
             }
         }
     },
@@ -653,14 +1883,14 @@
                         "SubGroupId": 0
                     },
                     "25": {
-                        "AttributeMasterId": 438,
-                        "ProjectAttributeMasterId": 11781,
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
                         "DispalyOrder": "25",
-                        "DisplayAttributeName": "Language",
+                        "DisplayAttributeName": "Lease Type",
                         "IsDistinct": 1,
-                        "ControlName": "Label",
+                        "ControlName": "TextBox",
                         "Options": null,
-                        "AttributeName": "Language",
+                        "AttributeName": "Lease_Type",
                         "MainGroupId": 41,
                         "SubGroupId": 0
                     },
@@ -673,6 +1903,1572 @@
                         "ControlName": "Label",
                         "Options": null,
                         "AttributeName": "Fetch_Botminds",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "124": {
+                        "AttributeMasterId": 5224,
+                        "ProjectAttributeMasterId": 11779,
+                        "DispalyOrder": "124",
+                        "DisplayAttributeName": "Lease ID",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_ID",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    }
+                }
+            },
+            "145": {
+                "production": {
+                    "1": {
+                        "AttributeMasterId": 5040,
+                        "ProjectAttributeMasterId": 11577,
+                        "DispalyOrder": "1",
+                        "DisplayAttributeName": "UOM",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Site_Info_UOM",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "2": {
+                        "AttributeMasterId": 5041,
+                        "ProjectAttributeMasterId": 11578,
+                        "DispalyOrder": "2",
+                        "DisplayAttributeName": "CUR",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Site_Info_CUR",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "3": {
+                        "AttributeMasterId": 5042,
+                        "ProjectAttributeMasterId": 11579,
+                        "DispalyOrder": "3",
+                        "DisplayAttributeName": "Address 1",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Address_1",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "4": {
+                        "AttributeMasterId": 5043,
+                        "ProjectAttributeMasterId": 11580,
+                        "DispalyOrder": "4",
+                        "DisplayAttributeName": "Address 2",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Address_2",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "5": {
+                        "AttributeMasterId": 5044,
+                        "ProjectAttributeMasterId": 11581,
+                        "DispalyOrder": "5",
+                        "DisplayAttributeName": "Address 3",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Address_3",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "6": {
+                        "AttributeMasterId": 5045,
+                        "ProjectAttributeMasterId": 11582,
+                        "DispalyOrder": "6",
+                        "DisplayAttributeName": "City",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Building_Info_City",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "7": {
+                        "AttributeMasterId": 5046,
+                        "ProjectAttributeMasterId": 11583,
+                        "DispalyOrder": "7",
+                        "DisplayAttributeName": "State",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Building_Info_State",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "8": {
+                        "AttributeMasterId": 591,
+                        "ProjectAttributeMasterId": 11584,
+                        "DispalyOrder": "8",
+                        "DisplayAttributeName": "Postal Code",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Postal_Code",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "9": {
+                        "AttributeMasterId": 267,
+                        "ProjectAttributeMasterId": 11585,
+                        "DispalyOrder": "9",
+                        "DisplayAttributeName": "County",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "County",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "10": {
+                        "AttributeMasterId": 5047,
+                        "ProjectAttributeMasterId": 11586,
+                        "DispalyOrder": "10",
+                        "DisplayAttributeName": "Country",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Building_Info_Country",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "11": {
+                        "AttributeMasterId": 5048,
+                        "ProjectAttributeMasterId": 11587,
+                        "DispalyOrder": "11",
+                        "DisplayAttributeName": "Override Latitude",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Override_Latitude",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "12": {
+                        "AttributeMasterId": 5049,
+                        "ProjectAttributeMasterId": 11588,
+                        "DispalyOrder": "12",
+                        "DisplayAttributeName": "Override Longitude",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Override_Longitude",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "13": {
+                        "AttributeMasterId": 5050,
+                        "ProjectAttributeMasterId": 11589,
+                        "DispalyOrder": "13",
+                        "DisplayAttributeName": "Building Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Building_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "14": {
+                        "AttributeMasterId": 5051,
+                        "ProjectAttributeMasterId": 11590,
+                        "DispalyOrder": "14",
+                        "DisplayAttributeName": "OwnershipType",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "OwnershipType",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "15": {
+                        "AttributeMasterId": 5052,
+                        "ProjectAttributeMasterId": 11591,
+                        "DispalyOrder": "15",
+                        "DisplayAttributeName": "UOM",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Building_Info_UOM",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "16": {
+                        "AttributeMasterId": 5053,
+                        "ProjectAttributeMasterId": 11592,
+                        "DispalyOrder": "16",
+                        "DisplayAttributeName": "Building Description",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Building_Description",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "17": {
+                        "AttributeMasterId": 5054,
+                        "ProjectAttributeMasterId": 11593,
+                        "DispalyOrder": "17",
+                        "DisplayAttributeName": "Held By",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_Held_By",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "18": {
+                        "AttributeMasterId": 1869,
+                        "ProjectAttributeMasterId": 11594,
+                        "DispalyOrder": "18",
+                        "DisplayAttributeName": "Suite",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Suite",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "19": {
+                        "AttributeMasterId": 5055,
+                        "ProjectAttributeMasterId": 11595,
+                        "DispalyOrder": "19",
+                        "DisplayAttributeName": "Lease Status",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Status",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "20": {
+                        "AttributeMasterId": 5056,
+                        "ProjectAttributeMasterId": 11596,
+                        "DispalyOrder": "20",
+                        "DisplayAttributeName": "Record Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "21": {
+                        "AttributeMasterId": 5057,
+                        "ProjectAttributeMasterId": 11597,
+                        "DispalyOrder": "21",
+                        "DisplayAttributeName": "Rent Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Rent_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "22": {
+                        "AttributeMasterId": 5058,
+                        "ProjectAttributeMasterId": 11598,
+                        "DispalyOrder": "22",
+                        "DisplayAttributeName": "Pro Rata Share",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Pro_Rata_Share",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "23": {
+                        "AttributeMasterId": 5059,
+                        "ProjectAttributeMasterId": 11599,
+                        "DispalyOrder": "23",
+                        "DisplayAttributeName": "Base Year",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Base_Year",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "24": {
+                        "AttributeMasterId": 5060,
+                        "ProjectAttributeMasterId": 11600,
+                        "DispalyOrder": "24",
+                        "DisplayAttributeName": "Reconciliations Required",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Reconciliations_Required",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "25": {
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
+                        "DispalyOrder": "25",
+                        "DisplayAttributeName": "Lease Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "26": {
+                        "AttributeMasterId": 5062,
+                        "ProjectAttributeMasterId": 11602,
+                        "DispalyOrder": "26",
+                        "DisplayAttributeName": "CUR",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_CUR",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "27": {
+                        "AttributeMasterId": 5063,
+                        "ProjectAttributeMasterId": 11603,
+                        "DispalyOrder": "27",
+                        "DisplayAttributeName": "UOM",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_UOM",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "28": {
+                        "AttributeMasterId": 5064,
+                        "ProjectAttributeMasterId": 11604,
+                        "DispalyOrder": "28",
+                        "DisplayAttributeName": "Pay Rent",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Pay_Rent",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "29": {
+                        "AttributeMasterId": 5065,
+                        "ProjectAttributeMasterId": 11605,
+                        "DispalyOrder": "29",
+                        "DisplayAttributeName": "Original Term Commencement",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Original_Term_Commencement",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "30": {
+                        "AttributeMasterId": 5066,
+                        "ProjectAttributeMasterId": 11606,
+                        "DispalyOrder": "30",
+                        "DisplayAttributeName": "Original Term End Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Original_Term_End_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "31": {
+                        "AttributeMasterId": 5067,
+                        "ProjectAttributeMasterId": 11607,
+                        "DispalyOrder": "31",
+                        "DisplayAttributeName": "Move-In Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "MoveIn_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "32": {
+                        "AttributeMasterId": 5068,
+                        "ProjectAttributeMasterId": 11608,
+                        "DispalyOrder": "32",
+                        "DisplayAttributeName": "Current Term Commencement",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_Current_Term_Commencement",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "33": {
+                        "AttributeMasterId": 5069,
+                        "ProjectAttributeMasterId": 11609,
+                        "DispalyOrder": "33",
+                        "DisplayAttributeName": "Current Term End Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_Current_Term_End_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "34": {
+                        "AttributeMasterId": 5070,
+                        "ProjectAttributeMasterId": 11610,
+                        "DispalyOrder": "34",
+                        "DisplayAttributeName": "Rentable Area",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_Rentable_Area",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "35": {
+                        "AttributeMasterId": 5071,
+                        "ProjectAttributeMasterId": 11611,
+                        "DispalyOrder": "35",
+                        "DisplayAttributeName": "Start reason",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_Start_reason",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "36": {
+                        "AttributeMasterId": 5072,
+                        "ProjectAttributeMasterId": 11612,
+                        "DispalyOrder": "36",
+                        "DisplayAttributeName": "Comments",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Record_Info_Comments",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "37": {
+                        "AttributeMasterId": 5073,
+                        "ProjectAttributeMasterId": 11613,
+                        "DispalyOrder": "37",
+                        "DisplayAttributeName": "Current Term Commencement",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Terms_Current_Term_Commencement",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "38": {
+                        "AttributeMasterId": 5074,
+                        "ProjectAttributeMasterId": 11614,
+                        "DispalyOrder": "38",
+                        "DisplayAttributeName": "Current Term End Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Terms_Current_Term_End_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "39": {
+                        "AttributeMasterId": 5075,
+                        "ProjectAttributeMasterId": 11615,
+                        "DispalyOrder": "39",
+                        "DisplayAttributeName": "Held By",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Terms_Held_By",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "40": {
+                        "AttributeMasterId": 5076,
+                        "ProjectAttributeMasterId": 11616,
+                        "DispalyOrder": "40",
+                        "DisplayAttributeName": "Rentable Area",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Terms_Rentable_Area",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "41": {
+                        "AttributeMasterId": 5077,
+                        "ProjectAttributeMasterId": 11617,
+                        "DispalyOrder": "41",
+                        "DisplayAttributeName": "Start reason",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Terms_Start_reason",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "42": {
+                        "AttributeMasterId": 5078,
+                        "ProjectAttributeMasterId": 11618,
+                        "DispalyOrder": "42",
+                        "DisplayAttributeName": "MTM",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "MTM",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "43": {
+                        "AttributeMasterId": 5079,
+                        "ProjectAttributeMasterId": 11619,
+                        "DispalyOrder": "43",
+                        "DisplayAttributeName": "Auto renewal",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Auto_renewal",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "44": {
+                        "AttributeMasterId": 5080,
+                        "ProjectAttributeMasterId": 11620,
+                        "DispalyOrder": "44",
+                        "DisplayAttributeName": "Usable Area",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Usable_Area",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "45": {
+                        "AttributeMasterId": 5081,
+                        "ProjectAttributeMasterId": 11621,
+                        "DispalyOrder": "45",
+                        "DisplayAttributeName": "Expense Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Expense_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "46": {
+                        "AttributeMasterId": 4898,
+                        "ProjectAttributeMasterId": 11622,
+                        "DispalyOrder": "46",
+                        "DisplayAttributeName": "Start Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Start_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "47": {
+                        "AttributeMasterId": 4899,
+                        "ProjectAttributeMasterId": 11623,
+                        "DispalyOrder": "47",
+                        "DisplayAttributeName": "End Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "End_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "48": {
+                        "AttributeMasterId": 5082,
+                        "ProjectAttributeMasterId": 11624,
+                        "DispalyOrder": "48",
+                        "DisplayAttributeName": "Is income",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Is_income",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "49": {
+                        "AttributeMasterId": 278,
+                        "ProjectAttributeMasterId": 11625,
+                        "DispalyOrder": "49",
+                        "DisplayAttributeName": "Description",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Description",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "50": {
+                        "AttributeMasterId": 5083,
+                        "ProjectAttributeMasterId": 11626,
+                        "DispalyOrder": "50",
+                        "DisplayAttributeName": "End Date Same As Lease Expiration",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "End_Date_Same_As_Lease_Expiration",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "51": {
+                        "AttributeMasterId": 2035,
+                        "ProjectAttributeMasterId": 11627,
+                        "DispalyOrder": "51",
+                        "DisplayAttributeName": "Amount",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Amount",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "52": {
+                        "AttributeMasterId": 5084,
+                        "ProjectAttributeMasterId": 11628,
+                        "DispalyOrder": "52",
+                        "DisplayAttributeName": "Amount Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Amount_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "53": {
+                        "AttributeMasterId": 5085,
+                        "ProjectAttributeMasterId": 11629,
+                        "DispalyOrder": "53",
+                        "DisplayAttributeName": "Recurrence",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Recurrence",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "54": {
+                        "AttributeMasterId": 5086,
+                        "ProjectAttributeMasterId": 11630,
+                        "DispalyOrder": "54",
+                        "DisplayAttributeName": "Enable",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Enable",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "55": {
+                        "AttributeMasterId": 5087,
+                        "ProjectAttributeMasterId": 11631,
+                        "DispalyOrder": "55",
+                        "DisplayAttributeName": "Repeats Every",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Repeats_Every",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "56": {
+                        "AttributeMasterId": 5088,
+                        "ProjectAttributeMasterId": 11632,
+                        "DispalyOrder": "56",
+                        "DisplayAttributeName": "First Expense Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "First_Expense_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "57": {
+                        "AttributeMasterId": 5089,
+                        "ProjectAttributeMasterId": 11633,
+                        "DispalyOrder": "57",
+                        "DisplayAttributeName": "On day",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "On_day",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "58": {
+                        "AttributeMasterId": 5090,
+                        "ProjectAttributeMasterId": 11634,
+                        "DispalyOrder": "58",
+                        "DisplayAttributeName": "Key Dates Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "59": {
+                        "AttributeMasterId": 5091,
+                        "ProjectAttributeMasterId": 11635,
+                        "DispalyOrder": "59",
+                        "DisplayAttributeName": "Summary",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Summary",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "60": {
+                        "AttributeMasterId": 5092,
+                        "ProjectAttributeMasterId": 11636,
+                        "DispalyOrder": "60",
+                        "DisplayAttributeName": "Status",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Status",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "61": {
+                        "AttributeMasterId": 5093,
+                        "ProjectAttributeMasterId": 11637,
+                        "DispalyOrder": "61",
+                        "DisplayAttributeName": "Effective",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Effective",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "62": {
+                        "AttributeMasterId": 5094,
+                        "ProjectAttributeMasterId": 11638,
+                        "DispalyOrder": "62",
+                        "DisplayAttributeName": "Is Effective Same As Lease Expiration?",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Is_Effective_Same_As_Lease_Expiration?",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "63": {
+                        "AttributeMasterId": 5095,
+                        "ProjectAttributeMasterId": 11639,
+                        "DispalyOrder": "63",
+                        "DisplayAttributeName": "Expiration",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Expiration",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "64": {
+                        "AttributeMasterId": 5096,
+                        "ProjectAttributeMasterId": 11640,
+                        "DispalyOrder": "64",
+                        "DisplayAttributeName": "Specify a different Notify From Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Specify_a_different_Notify_From_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "65": {
+                        "AttributeMasterId": 5097,
+                        "ProjectAttributeMasterId": 11641,
+                        "DispalyOrder": "65",
+                        "DisplayAttributeName": "Notify From",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Notify_From",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "66": {
+                        "AttributeMasterId": 5098,
+                        "ProjectAttributeMasterId": 11642,
+                        "DispalyOrder": "66",
+                        "DisplayAttributeName": "Set Earliest",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Set_Earliest",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "67": {
+                        "AttributeMasterId": 5099,
+                        "ProjectAttributeMasterId": 11643,
+                        "DispalyOrder": "67",
+                        "DisplayAttributeName": "Range",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Range1",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "68": {
+                        "AttributeMasterId": 5100,
+                        "ProjectAttributeMasterId": 11644,
+                        "DispalyOrder": "68",
+                        "DisplayAttributeName": "Resulting Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Resulting_Date1",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "69": {
+                        "AttributeMasterId": 5101,
+                        "ProjectAttributeMasterId": 11645,
+                        "DispalyOrder": "69",
+                        "DisplayAttributeName": "Set Latest",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Set_Latest",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "70": {
+                        "AttributeMasterId": 5102,
+                        "ProjectAttributeMasterId": 11646,
+                        "DispalyOrder": "70",
+                        "DisplayAttributeName": "Range",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Range2",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "71": {
+                        "AttributeMasterId": 5103,
+                        "ProjectAttributeMasterId": 11647,
+                        "DispalyOrder": "71",
+                        "DisplayAttributeName": "Resulting Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Resulting_Date2",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "72": {
+                        "AttributeMasterId": 5104,
+                        "ProjectAttributeMasterId": 11648,
+                        "DispalyOrder": "72",
+                        "DisplayAttributeName": "Document",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Document",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "73": {
+                        "AttributeMasterId": 5105,
+                        "ProjectAttributeMasterId": 11649,
+                        "DispalyOrder": "73",
+                        "DisplayAttributeName": "Reference -PDF Page",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Reference_PDF_Page",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "74": {
+                        "AttributeMasterId": 5106,
+                        "ProjectAttributeMasterId": 11650,
+                        "DispalyOrder": "74",
+                        "DisplayAttributeName": "Reference - Lease Page",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Reference_Lease_Page",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "75": {
+                        "AttributeMasterId": 5107,
+                        "ProjectAttributeMasterId": 11651,
+                        "DispalyOrder": "75",
+                        "DisplayAttributeName": "Reference - Section",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Key_Dates_Reference_Section",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "76": {
+                        "AttributeMasterId": 5108,
+                        "ProjectAttributeMasterId": 11652,
+                        "DispalyOrder": "76",
+                        "DisplayAttributeName": "Option Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Option_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "77": {
+                        "AttributeMasterId": 5109,
+                        "ProjectAttributeMasterId": 11653,
+                        "DispalyOrder": "77",
+                        "DisplayAttributeName": "Summary",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Summary",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "78": {
+                        "AttributeMasterId": 5110,
+                        "ProjectAttributeMasterId": 11654,
+                        "DispalyOrder": "78",
+                        "DisplayAttributeName": "Status",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Status",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "79": {
+                        "AttributeMasterId": 5111,
+                        "ProjectAttributeMasterId": 11655,
+                        "DispalyOrder": "79",
+                        "DisplayAttributeName": "Effective",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Effective",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "80": {
+                        "AttributeMasterId": 5112,
+                        "ProjectAttributeMasterId": 11656,
+                        "DispalyOrder": "80",
+                        "DisplayAttributeName": "Is Effective Same As Lease Expiration?",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Is_Effective_Same_As_Lease_Expiration?",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "81": {
+                        "AttributeMasterId": 5113,
+                        "ProjectAttributeMasterId": 11657,
+                        "DispalyOrder": "81",
+                        "DisplayAttributeName": "Expiration",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Expiration",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "82": {
+                        "AttributeMasterId": 5114,
+                        "ProjectAttributeMasterId": 11658,
+                        "DispalyOrder": "82",
+                        "DisplayAttributeName": "Specify a different Notify From Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Specify_a_different_Notify_From_Date",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "83": {
+                        "AttributeMasterId": 5115,
+                        "ProjectAttributeMasterId": 11659,
+                        "DispalyOrder": "83",
+                        "DisplayAttributeName": "Notify From",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Notify_From",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "84": {
+                        "AttributeMasterId": 5116,
+                        "ProjectAttributeMasterId": 11660,
+                        "DispalyOrder": "84",
+                        "DisplayAttributeName": "Set Earliest",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Set_Earliest",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "85": {
+                        "AttributeMasterId": 5117,
+                        "ProjectAttributeMasterId": 11661,
+                        "DispalyOrder": "85",
+                        "DisplayAttributeName": "Range",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Range1",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "86": {
+                        "AttributeMasterId": 5118,
+                        "ProjectAttributeMasterId": 11662,
+                        "DispalyOrder": "86",
+                        "DisplayAttributeName": "Resulting Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Resulting_Date1",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "87": {
+                        "AttributeMasterId": 5119,
+                        "ProjectAttributeMasterId": 11663,
+                        "DispalyOrder": "87",
+                        "DisplayAttributeName": "Set Latest",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Set_Latest",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "88": {
+                        "AttributeMasterId": 5120,
+                        "ProjectAttributeMasterId": 11664,
+                        "DispalyOrder": "88",
+                        "DisplayAttributeName": "Range",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Range2",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "89": {
+                        "AttributeMasterId": 5121,
+                        "ProjectAttributeMasterId": 11665,
+                        "DispalyOrder": "89",
+                        "DisplayAttributeName": "Resulting Date",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Resulting_Date2",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "90": {
+                        "AttributeMasterId": 5122,
+                        "ProjectAttributeMasterId": 11666,
+                        "DispalyOrder": "90",
+                        "DisplayAttributeName": "Document",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Document",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "91": {
+                        "AttributeMasterId": 5123,
+                        "ProjectAttributeMasterId": 11667,
+                        "DispalyOrder": "91",
+                        "DisplayAttributeName": "Reference -PDF Page",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Reference_PDF_Page",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "92": {
+                        "AttributeMasterId": 5124,
+                        "ProjectAttributeMasterId": 11668,
+                        "DispalyOrder": "92",
+                        "DisplayAttributeName": "Reference - Lease Page",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Reference_Lease_Page",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "93": {
+                        "AttributeMasterId": 5125,
+                        "ProjectAttributeMasterId": 11669,
+                        "DispalyOrder": "93",
+                        "DisplayAttributeName": "Reference - Section",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Options_Reference_Section",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "94": {
+                        "AttributeMasterId": 5126,
+                        "ProjectAttributeMasterId": 11670,
+                        "DispalyOrder": "94",
+                        "DisplayAttributeName": "Contact Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Contact_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "95": {
+                        "AttributeMasterId": 2026,
+                        "ProjectAttributeMasterId": 11671,
+                        "DispalyOrder": "95",
+                        "DisplayAttributeName": "Company",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Company",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "96": {
+                        "AttributeMasterId": 5127,
+                        "ProjectAttributeMasterId": 11672,
+                        "DispalyOrder": "96",
+                        "DisplayAttributeName": "Sal",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Sal",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "97": {
+                        "AttributeMasterId": 3542,
+                        "ProjectAttributeMasterId": 11673,
+                        "DispalyOrder": "97",
+                        "DisplayAttributeName": "First Name",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "First_Name",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "98": {
+                        "AttributeMasterId": 2061,
+                        "ProjectAttributeMasterId": 11674,
+                        "DispalyOrder": "98",
+                        "DisplayAttributeName": "Middle Name",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Middle_Name",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "99": {
+                        "AttributeMasterId": 2062,
+                        "ProjectAttributeMasterId": 11675,
+                        "DispalyOrder": "99",
+                        "DisplayAttributeName": "Last Name",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Last_Name",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "100": {
+                        "AttributeMasterId": 761,
+                        "ProjectAttributeMasterId": 11676,
+                        "DispalyOrder": "100",
+                        "DisplayAttributeName": "Title",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Title",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "101": {
+                        "AttributeMasterId": 5128,
+                        "ProjectAttributeMasterId": 11677,
+                        "DispalyOrder": "101",
+                        "DisplayAttributeName": "Care Of",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Care_Of",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "102": {
+                        "AttributeMasterId": 3363,
+                        "ProjectAttributeMasterId": 11678,
+                        "DispalyOrder": "102",
+                        "DisplayAttributeName": "Email",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Email",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "103": {
+                        "AttributeMasterId": 5129,
+                        "ProjectAttributeMasterId": 11679,
+                        "DispalyOrder": "103",
+                        "DisplayAttributeName": "Tel",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Tel",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "104": {
+                        "AttributeMasterId": 2073,
+                        "ProjectAttributeMasterId": 11680,
+                        "DispalyOrder": "104",
+                        "DisplayAttributeName": "Fax",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Fax",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "105": {
+                        "AttributeMasterId": 3248,
+                        "ProjectAttributeMasterId": 11681,
+                        "DispalyOrder": "105",
+                        "DisplayAttributeName": "Address1",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Address1",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "106": {
+                        "AttributeMasterId": 3296,
+                        "ProjectAttributeMasterId": 11682,
+                        "DispalyOrder": "106",
+                        "DisplayAttributeName": "Address2",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Address2",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "107": {
+                        "AttributeMasterId": 5130,
+                        "ProjectAttributeMasterId": 11683,
+                        "DispalyOrder": "107",
+                        "DisplayAttributeName": "City",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Contacts_City",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "108": {
+                        "AttributeMasterId": 5131,
+                        "ProjectAttributeMasterId": 11684,
+                        "DispalyOrder": "108",
+                        "DisplayAttributeName": "Country",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Contacts_Country",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "109": {
+                        "AttributeMasterId": 5132,
+                        "ProjectAttributeMasterId": 11685,
+                        "DispalyOrder": "109",
+                        "DisplayAttributeName": "State",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Contacts_State",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "110": {
+                        "AttributeMasterId": 3358,
+                        "ProjectAttributeMasterId": 11686,
+                        "DispalyOrder": "110",
+                        "DisplayAttributeName": "Zip Code",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Zip_Code",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "111": {
+                        "AttributeMasterId": 5133,
+                        "ProjectAttributeMasterId": 11687,
+                        "DispalyOrder": "111",
+                        "DisplayAttributeName": "Clauses Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Clauses_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "112": {
+                        "AttributeMasterId": 5134,
+                        "ProjectAttributeMasterId": 11688,
+                        "DispalyOrder": "112",
+                        "DisplayAttributeName": "Document",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Clauses_Document",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "113": {
+                        "AttributeMasterId": 5135,
+                        "ProjectAttributeMasterId": 11689,
+                        "DispalyOrder": "113",
+                        "DisplayAttributeName": "Reference -PDF Page",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Clauses_Reference_PDF_Page",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "114": {
+                        "AttributeMasterId": 5136,
+                        "ProjectAttributeMasterId": 11690,
+                        "DispalyOrder": "114",
+                        "DisplayAttributeName": "Reference - Lease Page",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Clauses_Reference_Lease_Page",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "115": {
+                        "AttributeMasterId": 5137,
+                        "ProjectAttributeMasterId": 11691,
+                        "DispalyOrder": "115",
+                        "DisplayAttributeName": "Reference - Section",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Clauses_Reference_Section",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "116": {
+                        "AttributeMasterId": 5138,
+                        "ProjectAttributeMasterId": 11692,
+                        "DispalyOrder": "116",
+                        "DisplayAttributeName": "Comments",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Clauses_Comments",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "117": {
+                        "AttributeMasterId": 5139,
+                        "ProjectAttributeMasterId": 11693,
+                        "DispalyOrder": "117",
+                        "DisplayAttributeName": "Subject",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Attachment_Subject",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "118": {
+                        "AttributeMasterId": 5140,
+                        "ProjectAttributeMasterId": 11694,
+                        "DispalyOrder": "118",
+                        "DisplayAttributeName": "Comments",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Attachment_Comments",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "119": {
+                        "AttributeMasterId": 5141,
+                        "ProjectAttributeMasterId": 11695,
+                        "DispalyOrder": "119",
+                        "DisplayAttributeName": "Comments Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Attachment_Comments_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "120": {
+                        "AttributeMasterId": 5142,
+                        "ProjectAttributeMasterId": 11696,
+                        "DispalyOrder": "120",
+                        "DisplayAttributeName": "File",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "File",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "121": {
+                        "AttributeMasterId": 5143,
+                        "ProjectAttributeMasterId": 11697,
+                        "DispalyOrder": "121",
+                        "DisplayAttributeName": "Subject",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Comments_Subject",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "122": {
+                        "AttributeMasterId": 5144,
+                        "ProjectAttributeMasterId": 11698,
+                        "DispalyOrder": "122",
+                        "DisplayAttributeName": "Comments",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Comments_Comments",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "123": {
+                        "AttributeMasterId": 5145,
+                        "ProjectAttributeMasterId": 11699,
+                        "DispalyOrder": "123",
+                        "DisplayAttributeName": "Comments Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Property_Comments_Comments_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    }
+                },
+                "static": {
+                    "22": {
+                        "AttributeMasterId": 5224,
+                        "ProjectAttributeMasterId": 11779,
+                        "DispalyOrder": "22",
+                        "DisplayAttributeName": "Lease ID",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Lease_ID",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "23": {
+                        "AttributeMasterId": 5225,
+                        "ProjectAttributeMasterId": 11780,
+                        "DispalyOrder": "23",
+                        "DisplayAttributeName": "Work Type",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Work_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "24": {
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
+                        "DispalyOrder": "24",
+                        "DisplayAttributeName": "Lease Type",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Lease_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "25": {
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
+                        "DispalyOrder": "25",
+                        "DisplayAttributeName": "Lease Type",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "26": {
+                        "AttributeMasterId": 5226,
+                        "ProjectAttributeMasterId": 11783,
+                        "DispalyOrder": "26",
+                        "DisplayAttributeName": "Fetch Botminds?",
+                        "IsDistinct": 1,
+                        "ControlName": "Label",
+                        "Options": null,
+                        "AttributeName": "Fetch_Botminds",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "124": {
+                        "AttributeMasterId": 5224,
+                        "ProjectAttributeMasterId": 11779,
+                        "DispalyOrder": "124",
+                        "DisplayAttributeName": "Lease ID",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_ID",
                         "MainGroupId": 41,
                         "SubGroupId": 0
                     }
@@ -734,14 +3530,26 @@
                         "SubGroupId": 0
                     },
                     "25": {
-                        "AttributeMasterId": 438,
-                        "ProjectAttributeMasterId": 11781,
+                        "AttributeMasterId": 5061,
+                        "ProjectAttributeMasterId": 11601,
                         "DispalyOrder": "25",
-                        "DisplayAttributeName": "Language",
+                        "DisplayAttributeName": "Lease Type",
                         "IsDistinct": 1,
-                        "ControlName": "Label",
+                        "ControlName": "TextBox",
                         "Options": null,
-                        "AttributeName": "Language",
+                        "AttributeName": "Lease_Type",
+                        "MainGroupId": 41,
+                        "SubGroupId": 0
+                    },
+                    "124": {
+                        "AttributeMasterId": 5224,
+                        "ProjectAttributeMasterId": 11779,
+                        "DispalyOrder": "124",
+                        "DisplayAttributeName": "Lease ID",
+                        "IsDistinct": 1,
+                        "ControlName": "TextBox",
+                        "Options": null,
+                        "AttributeName": "Lease_ID",
                         "MainGroupId": 41,
                         "SubGroupId": 0
                     }
@@ -751,6 +3559,9 @@
     },
     "AttributeGroupMaster": {
         "6694031": {
+            "41": "ProductAttributes"
+        },
+        "145": {
             "41": "ProductAttributes"
         },
         "6694035": {
@@ -780,8 +3591,129 @@
         "5224": "ProductAttributes",
         "5225": "ProductAttributes",
         "5061": "ProductAttributes",
-        "438": "ProductAttributes",
-        "5226": "ProductAttributes"
+        "5226": "ProductAttributes",
+        "5040": "ProductAttributes",
+        "5041": "ProductAttributes",
+        "5042": "ProductAttributes",
+        "5043": "ProductAttributes",
+        "5044": "ProductAttributes",
+        "5045": "ProductAttributes",
+        "5046": "ProductAttributes",
+        "591": "ProductAttributes",
+        "267": "ProductAttributes",
+        "5047": "ProductAttributes",
+        "5048": "ProductAttributes",
+        "5049": "ProductAttributes",
+        "5050": "ProductAttributes",
+        "5051": "ProductAttributes",
+        "5052": "ProductAttributes",
+        "5053": "ProductAttributes",
+        "5054": "ProductAttributes",
+        "1869": "ProductAttributes",
+        "5055": "ProductAttributes",
+        "5056": "ProductAttributes",
+        "5057": "ProductAttributes",
+        "5058": "ProductAttributes",
+        "5059": "ProductAttributes",
+        "5060": "ProductAttributes",
+        "5062": "ProductAttributes",
+        "5063": "ProductAttributes",
+        "5064": "ProductAttributes",
+        "5065": "ProductAttributes",
+        "5066": "ProductAttributes",
+        "5067": "ProductAttributes",
+        "5068": "ProductAttributes",
+        "5069": "ProductAttributes",
+        "5070": "ProductAttributes",
+        "5071": "ProductAttributes",
+        "5072": "ProductAttributes",
+        "5073": "ProductAttributes",
+        "5074": "ProductAttributes",
+        "5075": "ProductAttributes",
+        "5076": "ProductAttributes",
+        "5077": "ProductAttributes",
+        "5078": "ProductAttributes",
+        "5079": "ProductAttributes",
+        "5080": "ProductAttributes",
+        "5081": "ProductAttributes",
+        "4898": "ProductAttributes",
+        "4899": "ProductAttributes",
+        "5082": "ProductAttributes",
+        "278": "ProductAttributes",
+        "5083": "ProductAttributes",
+        "2035": "ProductAttributes",
+        "5084": "ProductAttributes",
+        "5085": "ProductAttributes",
+        "5086": "ProductAttributes",
+        "5087": "ProductAttributes",
+        "5088": "ProductAttributes",
+        "5089": "ProductAttributes",
+        "5090": "ProductAttributes",
+        "5091": "ProductAttributes",
+        "5092": "ProductAttributes",
+        "5093": "ProductAttributes",
+        "5094": "ProductAttributes",
+        "5095": "ProductAttributes",
+        "5096": "ProductAttributes",
+        "5097": "ProductAttributes",
+        "5098": "ProductAttributes",
+        "5099": "ProductAttributes",
+        "5100": "ProductAttributes",
+        "5101": "ProductAttributes",
+        "5102": "ProductAttributes",
+        "5103": "ProductAttributes",
+        "5104": "ProductAttributes",
+        "5105": "ProductAttributes",
+        "5106": "ProductAttributes",
+        "5107": "ProductAttributes",
+        "5108": "ProductAttributes",
+        "5109": "ProductAttributes",
+        "5110": "ProductAttributes",
+        "5111": "ProductAttributes",
+        "5112": "ProductAttributes",
+        "5113": "ProductAttributes",
+        "5114": "ProductAttributes",
+        "5115": "ProductAttributes",
+        "5116": "ProductAttributes",
+        "5117": "ProductAttributes",
+        "5118": "ProductAttributes",
+        "5119": "ProductAttributes",
+        "5120": "ProductAttributes",
+        "5121": "ProductAttributes",
+        "5122": "ProductAttributes",
+        "5123": "ProductAttributes",
+        "5124": "ProductAttributes",
+        "5125": "ProductAttributes",
+        "5126": "ProductAttributes",
+        "2026": "ProductAttributes",
+        "5127": "ProductAttributes",
+        "3542": "ProductAttributes",
+        "2061": "ProductAttributes",
+        "2062": "ProductAttributes",
+        "761": "ProductAttributes",
+        "5128": "ProductAttributes",
+        "3363": "ProductAttributes",
+        "5129": "ProductAttributes",
+        "2073": "ProductAttributes",
+        "3248": "ProductAttributes",
+        "3296": "ProductAttributes",
+        "5130": "ProductAttributes",
+        "5131": "ProductAttributes",
+        "5132": "ProductAttributes",
+        "3358": "ProductAttributes",
+        "5133": "ProductAttributes",
+        "5134": "ProductAttributes",
+        "5135": "ProductAttributes",
+        "5136": "ProductAttributes",
+        "5137": "ProductAttributes",
+        "5138": "ProductAttributes",
+        "5139": "ProductAttributes",
+        "5140": "ProductAttributes",
+        "5141": "ProductAttributes",
+        "5142": "ProductAttributes",
+        "5143": "ProductAttributes",
+        "5144": "ProductAttributes",
+        "5145": "ProductAttributes"
     },
     "ExportAttributeSubGroupMaster": [],
     "Menu": {
@@ -794,14 +3726,26 @@
         "31": {
             "DQC": {
                 "Production": "getjobcore"
-            },
-            "Abstraction": {
-                "Production": "getjobcore"
             }
         },
         "39": {
             "Translation": {
                 "Production": "Translatemodule"
+            }
+        },
+        "40": {
+            "Abstraction": {
+                "Production": "getjobcore"
+            }
+        },
+        "41": {
+            "Review": {
+                "Production": "QCValidation"
+            }
+        },
+        "42": {
+            "Sense Check": {
+                "Production": "GetJobCore"
             }
         }
     },
@@ -815,14 +3759,23 @@
         "7": "Manual DQC Inprogress English",
         "8": "Ready for Manual DQC NonEnglish",
         "9": "Manual DQC Completed NonEglish",
-        "10": "Ready for abstraction",
+        "10": "Ready for Abstraction",
         "11": "Translation Completed",
         "12": "Translation Inprogress",
         "13": "Ready For Translation",
         "14": "Consolidation Completed",
         "15": "Consolidation Inprogress",
         "16": "DQC Non English Query",
-        "17": "DQC English Query"
+        "17": "DQC English Query",
+        "18": "Sense Check WIP",
+        "19": "Ready for Sense Check",
+        "20": "Review Completed",
+        "21": "Review WIP",
+        "22": "Ready for Review",
+        "23": "Abstraction Completed",
+        "24": "Query",
+        "25": "Abstraction WIP",
+        "26": "Input Consolidation Pending"
     },
     "ProjectGroupStatus": {
         "Production": {
@@ -835,14 +3788,25 @@
             "7": "Manual DQC Inprogress English",
             "8": "Ready for Manual DQC NonEnglish",
             "9": "Manual DQC Completed NonEglish",
-            "10": "Ready for abstraction",
+            "10": "Ready for Abstraction",
             "11": "Translation Completed",
             "12": "Translation Inprogress",
             "13": "Ready For Translation",
             "14": "Consolidation Completed",
             "15": "Consolidation Inprogress",
             "16": "DQC Non English Query",
-            "17": "DQC English Query"
+            "17": "DQC English Query",
+            "24": "Query",
+            "25": "Abstraction WIP",
+            "26": "Input Consolidation Pending"
+        },
+        "Validation": {
+            "18": "Sense Check WIP",
+            "19": "Ready for Sense Check",
+            "20": "Review Completed",
+            "21": "Review WIP",
+            "22": "Ready for Review",
+            "23": "Abstraction Completed"
         }
     },
     "Module": {
@@ -877,7 +3841,7 @@
             "IsHistoryTrack": 1,
             "IsUrlMonitoring": null,
             "IsAllowedToDisplay": 1,
-            "IsModuleGroup": null,
+            "IsModuleGroup": 2,
             "IsHygineCheck": 0,
             "FromStatus": null
         },
@@ -914,24 +3878,60 @@
             "99847": {
                 "Id": 99847,
                 "Username": "leasetl"
+            },
+            "99969": {
+                "Id": 99969,
+                "Username": "leasetesttl"
             }
         },
         "6694031": {
             "99846": {
                 "Id": 99846,
                 "Username": "leaseuser"
+            },
+            "99968": {
+                "Id": 99968,
+                "Username": "leasetestuser"
+            }
+        },
+        "6694033": {
+            "101001": {
+                "Id": 101001,
+                "Username": "Revuuser"
+            }
+        },
+        "6694034": {
+            "101002": {
+                "Id": 101002,
+                "Username": "Senckuser"
             }
         },
         "6694035": {
             "99909": {
                 "Id": 99909,
                 "Username": "transuser"
+            },
+            "99970": {
+                "Id": 99970,
+                "Username": "transtest"
+            },
+            "99971": {
+                "Id": 99971,
+                "Username": "Absuser"
+            },
+            "99972": {
+                "Id": 99972,
+                "Username": "senuser"
+            },
+            "99973": {
+                "Id": 99973,
+                "Username": "Revuser"
             }
         },
         "145": {
-            "99846": {
-                "Id": 99846,
-                "Username": "leaseuser"
+            "101000": {
+                "Id": 101000,
+                "Username": "Abstuser"
             }
         }
     },
@@ -1040,6 +4040,66 @@
                 "FromStatus": "DQC Non English Query"
             }
         },
+        "6694033": {
+            "24": {
+                "ModuleId": 6694033,
+                "ModStatus": "Review On-Hold",
+                "ModuleStatusIdentifier": "ReviewOnHold",
+                "StatusId": 24,
+                "FromStatus": "Query"
+            },
+            "23": {
+                "ModuleId": 6694033,
+                "ModStatus": "Ready for Review",
+                "ModuleStatusIdentifier": "ReadyforQC",
+                "StatusId": 23,
+                "FromStatus": "Abstraction Completed"
+            },
+            "22": {
+                "ModuleId": 6694033,
+                "ModStatus": "Review WIP",
+                "ModuleStatusIdentifier": "ReviewnWIP",
+                "StatusId": 22,
+                "FromStatus": "Ready for Review"
+            },
+            "21": {
+                "ModuleId": 6694033,
+                "ModStatus": "Review Completed",
+                "ModuleStatusIdentifier": "ReviewCompleted",
+                "StatusId": 21,
+                "FromStatus": "Review WIP"
+            }
+        },
+        "6694034": {
+            "24": {
+                "ModuleId": 6694034,
+                "ModStatus": "Sense Check On-Hold",
+                "ModuleStatusIdentifier": "SenseCheckOnHold",
+                "StatusId": 24,
+                "FromStatus": "Query"
+            },
+            "20": {
+                "ModuleId": 6694034,
+                "ModStatus": "Ready for Sense Check",
+                "ModuleStatusIdentifier": "ReadyforSenseCheck",
+                "StatusId": 20,
+                "FromStatus": "Review Completed"
+            },
+            "19": {
+                "ModuleId": 6694034,
+                "ModStatus": "Sense Check WIP",
+                "ModuleStatusIdentifier": "SenseChecknWIP",
+                "StatusId": 19,
+                "FromStatus": "Ready for Sense Check"
+            },
+            "18": {
+                "ModuleId": 6694034,
+                "ModStatus": "Sense Check Completed",
+                "ModuleStatusIdentifier": "SenseCheckCompleted",
+                "StatusId": 18,
+                "FromStatus": "Sense Check WIP"
+            }
+        },
         "6694035": {
             "9": {
                 "ModuleId": 6694035,
@@ -1066,8 +4126,8 @@
         "145": {
             "5": {
                 "ModuleId": 145,
-                "ModStatus": "Ready for Abstraction",
-                "ModuleStatusIdentifier": "ReadyforAbstraction",
+                "ModStatus": "Input Consolidation Pending",
+                "ModuleStatusIdentifier": "Input Consolidation Pending",
                 "StatusId": 5,
                 "FromStatus": "Manual DQC Completed English"
             },
@@ -1077,6 +4137,34 @@
                 "ModuleStatusIdentifier": "ReadyforAbstraction",
                 "StatusId": 11,
                 "FromStatus": "Translation Completed"
+            },
+            "10": {
+                "ModuleId": 145,
+                "ModStatus": "Abstraction WIP",
+                "ModuleStatusIdentifier": "AbstractionWIP",
+                "StatusId": 10,
+                "FromStatus": "Ready for Abstraction"
+            },
+            "26": {
+                "ModuleId": 145,
+                "ModStatus": "Ready for Abstraction",
+                "ModuleStatusIdentifier": "ReadyforAbstraction",
+                "StatusId": 26,
+                "FromStatus": "Input Consolidation Pending"
+            },
+            "25": {
+                "ModuleId": 145,
+                "ModStatus": "Abstraction Completed",
+                "ModuleStatusIdentifier": "ProductionCompleted",
+                "StatusId": 25,
+                "FromStatus": "Abstraction WIP"
+            },
+            "24": {
+                "ModuleId": 145,
+                "ModStatus": "Abstraction On-Hold",
+                "ModuleStatusIdentifier": "AbstractionOnHold",
+                "StatusId": 24,
+                "FromStatus": "Query"
             }
         }
     },
@@ -1129,6 +4217,38 @@
             "Ready for Manual DQC NonEnglish",
             8
         ],
+        "24": [
+            "Review On-Hold",
+            false,
+            [
+                "Abstraction On-Hold",
+                false
+            ]
+        ],
+        "23": [
+            "Ready for Review",
+            22
+        ],
+        "22": [
+            "Review WIP",
+            21
+        ],
+        "21": [
+            "Review Completed",
+            20
+        ],
+        "20": [
+            "Ready for Sense Check",
+            19
+        ],
+        "19": [
+            "Sense Check WIP",
+            18
+        ],
+        "18": [
+            "Sense Check Completed",
+            false
+        ],
         "9": [
             "Ready For Translation",
             13
@@ -1142,12 +4262,24 @@
             11
         ],
         "5": [
-            "Ready for Abstraction",
-            10
+            "Input Consolidation Pending",
+            26
         ],
         "11": [
             "Ready for Abstraction",
             10
+        ],
+        "10": [
+            "Abstraction WIP",
+            25
+        ],
+        "26": [
+            "Ready for Abstraction",
+            10
+        ],
+        "25": [
+            "Abstraction Completed",
+            23
         ]
     },
     "ProjectConfig": {
