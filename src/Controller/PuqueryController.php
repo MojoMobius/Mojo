@@ -244,12 +244,7 @@ class PuqueryController extends AppController {
         $this->set('Puquery', $Puquery);
         $this->render('index');
     }
-     public function ajaxqueryinsert_dqc() {          
-         $connection = ConnectionManager::get('default');
-         
-     
-     }
-   
+    
     public function ajaxqueryinsert() {   
      $domainDate=date("Y-m-d", strtotime($_POST['cl_resp_date']) );
     
@@ -345,5 +340,40 @@ class PuqueryController extends AppController {
         echo 'updated';
         exit;
     }
+     public function ajaxqueryinsertdqc() {  
+        
+        //echo $stagingTable;exit;
+         $connection = ConnectionManager::get('default');
+         $selData = $connection->execute("SELECT * FROM ME_UserQuery WHERE StatusID !=3 AND ProductionEntityId='".$_POST['ProductionEntityId']."'")->fetchAll('assoc');
+         if(count($selData) > 0){
+             echo '0';
+         }
+         else{
+        $moduleId =$_POST['ModuleId']; 
+        $ProjectId =$_POST['ProjectId'];
+        //$user_id = $session->read("user_id");
+        $stagingTable = 'Staging_' . $moduleId . '_Data';
+         $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+         
+         $content = file_get_contents($path);
+         $JsonArray = json_decode($content, true);
+        //$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);      
+       
+            $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
+            $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
+            $next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
+            $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
+                 
+             
+              $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $next_status_id . " WHERE ProductionEntity=" . $_POST['ProductionEntityId']);
+              $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $next_status_id . " WHERE ID=" . $_POST['ProductionEntityId']);
+             
+             
+             echo '1';
+         }
+         exit;
+     
+     }
+   
 
 }

@@ -2,6 +2,13 @@
 
 use Cake\Routing\Router
 ?>
+<style>
+    .Flash-Message{
+        font-size: 18px;
+        color:red;
+    }
+</style>
+
 <div class="container-fluid mt15">
     <div class="formcontent">
         <h4>PU Queries</h4>
@@ -159,6 +166,7 @@ if(!empty($queryResult)){ ?>
                     <div class="panel panel-default">
                         <div class="panel-heading row">
         <div class="col-md-10">
+            <span id="message<?php echo $data2[0]['ProductionEntityId'];?>" class="Flash-Message"></span>
                             <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse99<?php echo $i;?><?php echo $j;?>"><img src="img/insert-object.png" style="margin-bottom:3px;"> 
                                     <label class="comments"><b>Domain Id:</b></label>
                                     <label class="comments"><span style="text-align:left"><?php echo $key2;?></span></label>
@@ -166,7 +174,7 @@ if(!empty($queryResult)){ ?>
                             </h4>
         </div>
                    <div class="col-md-2">
-                             <button name ='frmsubmit' type="button" onclick="return updateQuerydqc('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">dqc Completed</button>
+                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">dqc Completed</button>
         </div>
                         </div>
 
@@ -343,7 +351,33 @@ if(!empty($queryResult)){ ?>
             }
         });
     }
-
+    function updateQuerydqc(ProductionEntityId,ModuleId) {
+            			
+          var ProjectId = $("#ProjectId").val(); 
+            var result = new Array();
+             $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxqueryinsertdqc')); ?>",
+                  data: ({ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
+                success: function (res) { 
+			if(res == '0'){
+                           //$("#message"+ProductionEntityId).show(); 
+                            $("#message"+ProductionEntityId).show().html("Status Not Completed"); 
+                                    setTimeout(function(){
+                                       $("#message"+ProductionEntityId).hide(); 
+                                     }, 2000);
+                                }
+                                else{
+                                    location.reload();
+                                }
+                           
+                          //$(".hot_query").html(res);
+                 }
+                
+            });
+           
+			//location.reload();
+        }
 	   function updateQuery(att, ModuleId, ProductionEntityId) {
 		///
     var file_data = $('#upfile'+att).prop('files')[0];   
@@ -401,62 +435,7 @@ if(!empty($queryResult)){ ?>
   
     }
 	
-    function updateQuerydqc(att, ModuleId, ProductionEntityId) {
-		///
-    var file_data = $('#upfile'+att).prop('files')[0];   
-     var form_data = new FormData();                  
-    form_data.append('file', file_data);
-                                 
-   
-		///
-		
-        if ($('#mobius_comments' + att).val() == '')
-        {
-            alert('Enter Comments!');
-            $('#mobius_comments' + att).focus();
-            return false;
-        }
-
-        mobiusComment = $("#mobius_comments" + att).val();
-        status = $('#status' + att).val();
-        batchfrom = $('#batch_from').val();
-        batchto = $('#batch_to').val();
-        cl_resp = $('#cl_resp' + att).val();
-        respDate = $('#respDate'+ att).val();
-		ProjectId = $('#ProjectId').val();
-		RegionId = $('#RegionId').val();
-		DomainId = $('#domainId').val();
-		InputEntityId = $('#InputEntityId').val();
-
-
-
-        var result = new Array();
-		form_data.append('mobiusComment', mobiusComment);
-		form_data.append('queryID', att);
-		form_data.append('status', status);
-		form_data.append('ModuleId', ModuleId);
-		form_data.append('cl_resp', cl_resp);
-		form_data.append('cl_resp_date', respDate);
-		form_data.append('ProductionEntityId', ProductionEntityId);
-		form_data.append('ProjectId', ProjectId);
-		form_data.append('RegionId', RegionId);
-		form_data.append('DomainId', DomainId);
-		form_data.append('InputEntityId', InputEntityId);
-		 $.ajax({
-        url: "<?php echo Router::url(array('controller'=>'puquery','action'=>'ajaxqueryinsert_dqc'));?>",
-		dataType: 'text',  // what to expect back from the PHP script, if anything
-        cache: false,
-        contentType: false,
-        processData: false,           
-        data: form_data,                         
-        type: 'post',
-        success: function(php_script_response){
-            document.getElementById("projectforms").submit();
-        }
-      });
-		
-  
-    }
+    
 
     function formSubmitValidation() {
 
