@@ -7,6 +7,9 @@ use Cake\Routing\Router
         font-size: 18px;
         color:red;
     }
+.form-inline .form-group {
+     margin-bottom: 2px!important; 
+}
 </style>
 
 <div class="container-fluid mt15">
@@ -165,7 +168,7 @@ if(!empty($queryResult)){ ?>
                     <!-- Second Inner Collpse Starts-->
                     <div class="panel panel-default">
                         <div class="panel-heading row">
-        <div class="col-md-10">
+        <div class="col-md-9">
             <span id="message<?php echo $data2[0]['ProductionEntityId'];?>" class="Flash-Message"></span>
                             <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse99<?php echo $i;?><?php echo $j;?>"><img src="img/insert-object.png" style="margin-bottom:3px;"> 
                                     <label class="comments"><b>Domain Id:</b></label>
@@ -173,8 +176,11 @@ if(!empty($queryResult)){ ?>
                                 </a>
                             </h4>
         </div>
-                   <div class="col-md-2">
-                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">dqc Completed</button>
+                   <div class="col-md-3">
+                       <a target="_blank" href="<?php echo Router::url(array('controller'=>'Puquerylist','action'=>'index','PEid' => $data2[0]['ProductionEntityId'],'ModuleId'=>$data2[0]['ModuleId']));?>" >Click to view</a>
+                           
+                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">dqc Completed</button>
+                             <button name ='frmsubmit' type="button" onclick="return updateQuerysub('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">Submit</button>
         </div>
                         </div>
 
@@ -194,50 +200,58 @@ if(!empty($queryResult)){ ?>
                                     </legend>
                                     <div class="form-comment"> 
                                         <div class="form-group form-group-sm form-inline">
-                                            <div class="form-group frmgrp_align">
+                                            
+                                            <div class="row">
+                                            <div class="form-group frmgrp_align col-md-3">
                                                 <label class="comments"><span>User Raised Query</span></label>
-                                                <textarea readonly="" rows="2" class="form-controls puq-cmt" title="<?php echo $data3['Query'];?>"><?php echo $data3['Query'];?></textarea>
+                                                <div><textarea readonly="" rows="2" class="form-controls puq-cmt" title="<?php echo $data3['Query'];?>"><?php echo $data3['Query'];?></textarea></div>
                                             </div>
 
-                                            <div class="form-group frmgrp_align">
+                                            <div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments"><span>Mobius Comments</span></label>
-                                                <textarea name='mobius_comments<?php echo $data3['Id']?>' rows="2" id='mobius_comments<?php echo $data3['Id']?>' class="form-controls puq-cmt" title="<?php echo $data3['TLComments'];?>"><?php echo $data3['TLComments'];?></textarea>
+                                                <div><textarea name='mobius_comments<?php echo $data3['Id']?>' rows="2" id='mobius_comments<?php echo $data3['Id']?>' class="form-controls puq-cmt" title="<?php echo $data3['TLComments'];?>"><?php echo $data3['TLComments'];?></textarea></div>
                                             </div>
 
-                                            <div class="form-group frmgrp_align">
+                                            <div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments">Status</label>
-                                                <select class="form-control" name='status<?php echo $data3['Id']?>' id='status<?php echo $data3['Id']?>'>
+                                                <div><select class="form-control" name='status<?php echo $data3['Id']?>' id='status<?php echo $data3['Id']?>'>
                                                     <option selected="" value="2">Hold</option>
                                                     <option value="3">Query Completed</option>
-                                                </select>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            
-                                            <div class="form-group frmgrp_align">
+                                                <div class="form-group frmgrp_align  col-md-2">
                                                 <label class="comments">Client Response</label>
-                                                <textarea name='cl_resp<?php echo $data3['Id']?>' rows="2" id='cl_resp<?php echo $data3['Id']?>' class="form-controls puq-cmt" title="<?php echo $data3['Client_Response'];?>"><?php echo $data3['Client_Response'];?></textarea>
+                                                <div><textarea name='cl_resp<?php echo $data3['Id']?>' rows="2" id='cl_resp<?php echo $data3['Id']?>' class="form-controls puq-cmt" title="<?php echo $data3['Client_Response'];?>"><?php echo $data3['Client_Response'];?></textarea>
+                                                </div>
                                                 
                                             </div>
+                                        </div>
+                                            <div class="row">
                                             
-                                            <div class="form-group frmgrp_align">
+                                            
+                                            <div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments">Client Response Date</label>
                                               <?php 
                                             echo $this->Form->input('', array('id' => 'respDate'.$data3['Id'].'', 'name' => 'respDate'.$data3['Id'].'', 'class'=>'form-control' , 'value'=>date("d-m-Y", strtotime($data3['Client_Response_Date']) ) )); 
                                         ?>
                                             </div>
-						<div class="form-group frmgrp_align">
+						<div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments">File</label>
-                                                <span><input type="file" name="upfile<?php echo $data3['Id']?>" id="upfile<?php echo $data3['Id']?>"  style="border:none;">
+                                                <div><input type="file" name="upfile<?php echo $data3['Id']?>" id="upfile<?php echo $data3['Id']?>"  style="border:none;">
 												<input type="hidden" name="domainId" id="domainId" value="<?php echo $key2;?>">
 												<input type="hidden" name="InputEntityId" id="InputEntityId" value="<?php echo $data3['InputEntityId'];?>">
-												</span>
+												</div>
 												<br>(Allowed Formats: doc and pdf)
                                             </div>
-                                            <div class="form-group frmgrp_align">
-                                                <button name ='frmsubmit' type="button" onclick="return updateQuery('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">Submit</button>
+                                                 <div class="form-group frmgrp_align  col-md-5">
+                                                <button name ='frmsubmit' type="button" onclick="return updateQuery('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">Save</button>
                                                
 											   
 												
                                             </div>
+                                        </div>
+                                           
 
                                         </div>
                                     </div>
@@ -351,14 +365,14 @@ if(!empty($queryResult)){ ?>
             }
         });
     }
-    function updateQuerydqc(ProductionEntityId,ModuleId) {
+    function updateQuerydqc(stsId,ProductionEntityId,ModuleId) {
             			
           var ProjectId = $("#ProjectId").val(); 
             var result = new Array();
              $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxqueryinsertdqc')); ?>",
-                  data: ({ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
+                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
                 success: function (res) { 
 			if(res == '0'){
                            //$("#message"+ProductionEntityId).show(); 
@@ -378,6 +392,33 @@ if(!empty($queryResult)){ ?>
            
 			//location.reload();
         }
+         function updateQuerysub(stsId, ProductionEntityId, ModuleId) {
+	 var ProjectId = $("#ProjectId").val(); 
+            var result = new Array();
+             $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxquerysubmit')); ?>",
+                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
+                success: function (res) { 
+			if(res == '0'){
+                           //$("#message"+ProductionEntityId).show(); 
+                            $("#message"+ProductionEntityId).show().html("Status Not Completed"); 
+                                    setTimeout(function(){
+                                       $("#message"+ProductionEntityId).hide(); 
+                                     }, 2000);
+                                }
+                                else{
+                                    location.reload();
+                                }
+                           
+                          //$(".hot_query").html(res);
+                 }
+                
+            });
+           
+		
+  
+    }
 	   function updateQuery(att, ModuleId, ProductionEntityId) {
 		///
     var file_data = $('#upfile'+att).prop('files')[0];   
