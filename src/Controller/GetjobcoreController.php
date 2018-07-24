@@ -958,6 +958,9 @@ class GetjobcoreController extends AppController {
                     // echo 'coming';
                     $SelDomainUrl = "";
                 }
+				if($moduleId==145){
+					 $SelDomainUrl = 'http://mojolease.botminds.ai/login';
+				}
                 //echo $SelDomainUrl; exit;
                 $oldone = 1;
                 foreach ($groupwisearray as $key => $subGrp) {
@@ -1226,18 +1229,17 @@ class GetjobcoreController extends AppController {
         return $lists;
     }
 
-    function ajaxgeapivalidation($lists, $listdata_back, $project_scope_id) {
+    function ajaxgeapivalidation($listdata, $listdata_back, $project_scope_id) {
         try {
             $connection = ConnectionManager::get('default');
 
 //            $listdata = $_POST['listdata'];
 //            $listdata_back = $_POST['listdata'];
-            $listdata = $lists;
 //            $listdata_back = $listdata_back;
 //            $listdata = $this->ajaxgeapivalidationremovekey($project_scope_id, $listdata);
 
             $listdata_json = json_encode($listdata);
-
+//print_r($listdata_json);exit;
             $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_URL,"http://localhost/project/api.php");
             curl_setopt($ch, CURLOPT_URL, $this->validation_apiurl);
@@ -1254,7 +1256,7 @@ class GetjobcoreController extends AppController {
 
             curl_close($ch);
             $result = json_decode($server_output, true);
-            if (!empty($result)) {
+            if (!empty($result) && !empty($result['FDRID']) ) {
                 $res_array = $result["Validation Output"];
 
                 if (!empty($res_array)) {
@@ -1319,7 +1321,8 @@ class GetjobcoreController extends AppController {
     public function arrayfilters($array, $attid) {
 
         $attr = array_column($array, $attid);
-        if (!empty($attr)) {
+       
+        if (count($attr) > 0) {
             $ar = array();
             $i = 0;
             foreach ($attr as $key => $val) {
@@ -1328,11 +1331,16 @@ class GetjobcoreController extends AppController {
                     $ar[$i] = $val;
                 }
             }
+            if(empty($ar)){
+                $ar[1] = null;
+            }
+            
             $ar['cnt'] = count($ar);
         } else {
             $ar[1] = null;
             $ar['cnt'] = 1;
         }
+        
         return $ar;
     }
 
@@ -1411,9 +1419,12 @@ class GetjobcoreController extends AppController {
                     foreach ($subvalue as $sskey => $ssvalue) {
                         $ssattrname = $ssvalue['AttributeName']; // get header name 3
 
-                        $list_data_main[$val['name']][$subtitle][$ssattrname] = $this->arrayfilters($getQuery, intval($ssvalue['AttributeMasterId']));
-
-                        $listdata[$val['name']][$subtitle][$ssattrname] = $list_data_main[$val['name']][$subtitle][$ssattrname];
+                      $array = $this->arrayfilters($getQuery, intval($ssvalue['AttributeMasterId']));
+                      $array_cnt = $array;
+                       unset($array['cnt']);
+                    
+                        $list_data_main[$val['name']][$subtitle][$ssattrname] = $array_cnt;
+                        $listdata[$val['name']][$subtitle][$ssattrname] = $array;
 
                         $list_data_main[$val['name']][$subtitle][$ssattrname]['key'] = "ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
                     }
@@ -1423,7 +1434,6 @@ class GetjobcoreController extends AppController {
 
         $list[$project_scope_id] = $listdata;
         $lists['array'] = $list;
-
 
         $result = $this->ajaxgeapivalidation($lists, $list_data_main, $project_scope_id);
         echo json_encode($result);
