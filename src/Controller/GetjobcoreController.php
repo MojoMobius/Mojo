@@ -48,6 +48,8 @@ class GetjobcoreController extends AppController {
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
+		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
+		$this->set('levelModule', $LevelModule);
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
         if ($FromStatus == '') {
             $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
@@ -956,6 +958,9 @@ class GetjobcoreController extends AppController {
                     // echo 'coming';
                     $SelDomainUrl = "";
                 }
+				if($moduleId==145){
+					 $SelDomainUrl = 'http://mojolease.botminds.ai/login';
+				}
                 //echo $SelDomainUrl; exit;
                 $oldone = 1;
                 foreach ($groupwisearray as $key => $subGrp) {
@@ -1868,6 +1873,19 @@ class GetjobcoreController extends AppController {
         $RegionId = $_POST['RegionId'];
         echo $_POST['query'];
         $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
+        exit;
+    }
+	    function ajaxquerypostingmulti() {
+			
+	    parse_str($_POST['multiquery'], $Query);
+        $session = $this->request->session();
+        $user_id = $session->read("user_id");
+        $role_id = $session->read("RoleId");
+        $ProjectId = $session->read("ProjectId");
+        $moduleId = $session->read("moduleId");
+        $RegionId = $_POST['RegionId'];		
+		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
+		echo "success";
         exit;
     }
 
@@ -2915,5 +2933,66 @@ class GetjobcoreController extends AppController {
         echo json_encode($getdata);
         exit;
     }
+	function querysubmit(){
+	 $connection = ConnectionManager::get('default');
+
+	  parse_str($_POST['Query'], $Query);
+	  parse_str($_POST['QueryId'], $QueryId);
+	  parse_str($_POST['QueryName'], $QueryName);
+	 
+	 
+	$Htmlview="<table class='table table-center'>
+	  <tr>
+	  <th  width='20%'>Attribute Name</th>
+	  <th  width='20%'>Query</th>
+	  <th  width='20%'>TL Query</th>
+	  <th  width='20%'>Client Response</th>
+	  <th  width='20%'>Client Response Date</th>
+	  </tr>";
+	  foreach ($Query as $key =>$value){
+		  
+		  if($value=="Yes"){
+			  $ID=explode("_",$key);
+			  $newkey=$ID[1];
+			  $comments ="";
+			  $tlcomments = "";
+			  $cl_resp = "";
+			  $cl_date = "";
+			  
+			   $result = $connection->execute("Select Client_Response,Client_Response_Date,Query,TLComments from ME_UserQuery where AttributeMasterId = '" . $newkey . "'")->fetchAll('assoc');
+			   
+			   
+		  if(!empty($result)){
+			  $comments = $result[0]['Query'];
+			  $tlcomments = $result[0]['TLComments'];
+			  $cl_resp = $result[0]['Client_Response'];
+			  $cl_date = $result[0]['Client_Response_Date'];
+		  }
+
+        
+			  
+			  $Htmlview.='<tr>
+			  <td>'.$QueryName['querynameall'][$newkey].'</td>
+			  <td><textarea name="query['.$newkey.']" id="query" rows="4" cols="30" placeholder="" class="submit_query">'.$comments.'</textarea></td>
+			  <td>'.$tlcomments.'</td>
+			  <td>'.$cl_resp.'</td>
+			  <td>'.$cl_date.'</td>
+			  </tr>';
+	  
+		  }
+		  
+		  
+		  
+	  }
+	   $Htmlview.="</table>";
+	   echo  $Htmlview;
+	   exit;
+		
+		
+	}
+	
+	function datecalculator() {
+		
+	}
 
 }
