@@ -994,7 +994,7 @@ if ($NoNewJob == 'NoNewJob') {
             <div class="col-lg-6" align="left">
 <!--                <button type="button" href="#" class="btn btn-default offcanvas__trigger--open" onclick="multipleUrl();" id="multiplelinkbutton" data-rel="page-tag">Multiple Source Links</button>-->
                 <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
-                <!--                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>-->
+                                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>
             </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
@@ -3411,37 +3411,37 @@ $(document).keydown(function(e) {
                 });
         });
 
-//    function PdfPopup()
-//    {
-//
-//        var splitterElement = $("#horizontal"), getPane = function (index) {
-//            index = Number(index);
-//            var panes = splitterElement.children(".k-pane");
-//            if (!isNaN(index) && index < panes.length) {
-//                return panes[index];
-//            }
-//        };
-//
-//        var splitter = splitterElement.data("kendoSplitter");
-//        var pane = getPane('0');
-//        splitter.toggle(pane, $(pane).width() <= 0);
-//
-//
-//        var file = $("#status option:selected").text();
-//        myWindow = window.open("", "myWindow", "width=500, height=500");
-//        myWindow.document.write('<iframe id="pdfframe"  src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
-//
-//        $.ajax({
-//            type: "POST",
-//            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'upddateUndockSession')); ?>",
-//            data: ({undocked: 'yes'}),
-//            dataType: 'text',
-//            async: true,
-//            success: function (result) {
-//
-//            }
-//        });
-//    }
+    function PdfPopup()
+    {
+
+        var splitterElement = $("#horizontal"), getPane = function (index) {
+            index = Number(index);
+            var panes = splitterElement.children(".k-pane");
+            if (!isNaN(index) && index < panes.length) {
+                return panes[index];
+            }
+        };
+
+        var splitter = splitterElement.data("splitter");
+        var pane = getPane('0');
+        splitter.toggle(pane, $(pane).width() <= 0);
+
+
+        var file = $("#status option:selected").text();
+        myWindow = window.open("", "myWindow", "width=500, height=500");
+        myWindow.document.write('<iframe id="pdfframe"  src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'upddateUndockSession')); ?>",
+            data: ({undocked: 'yes'}),
+            dataType: 'text',
+            async: true,
+            success: function (result) {
+
+            }
+        });
+    }
     function onMyFrameLoad() {
         $('#loaded').val('loaded');
     }
