@@ -240,6 +240,7 @@ class ProductionDashBoardsTable extends Table {
     }
 
     public function findUsers(Query $query, array $options) {
+		
         $connection = ConnectionManager::get('default');
         $connection1 = ConnectionManager::get('default');
         $connection2 = ConnectionManager::get('default');
@@ -280,6 +281,7 @@ $ReportDateCondition="";
         if (!empty($UserId))
             $UserIdCondition = " AND UGMap.UserId IN (" . implode(',', $UserId) . ")";
 
+
         $queriesUGMappingName = $connection->execute("select UGMap.UserId, UGMas.GroupName from MV_UserGroupMapping UGMap"
                 . " INNER JOIN MV_UserGroupMaster as UGMas ON UGMas.Id = UGMap.UserGroupId"
                 . " where UGMap.UserGroupId IN (" . $UserGroupId . ") $UserIdCondition AND UGMap.ProjectId = " . $options['Project_Id'] . " AND UGMap.RegionId = " . $options['RegionId'] . " AND UGMap.RecordStatus = 1 GROUP BY UGMap.UserId, UGMas.GroupName");
@@ -301,16 +303,23 @@ $ReportDateCondition="";
         $queries = array();
         $timeMetric = array();
         $timeMetrics = array();
+		
         foreach ($GetPeriodArray as $dt) {
+			
             $DataExistsCount = $this->DataExistsInMonthwiseCheck($options['Project_Id'], $dt);
+			
             if ($DataExistsCount != "") {
-                $/* CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
+
+                $ CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
                 $CountQrys = $CountQry->fetchAll('assoc');
                 $CheckSPRPEMMonthWiseDone = count($CountQrys);
                 
                 if ($CheckSPRPEMMonthWiseDone <= 0) {
+					
                     $this->SpRunFuncRPEMMonthWise();
                     $IsItOkay = $this->CheckAttributesMatchingRPEMMonthWise($options['Project_Id'], $dt);
+					
+
                     if ($IsItOkay) {
                         $queryInsert = "Insert into MV_SP_Run_CheckList (ProjectId,SP_Name,SP_Id,RecordStatus,CreatedDate) values('" . $options['Project_Id'] . "','ProductionAndTimetricBothViewAndReportTableSPRun',1,1,'" . date('Y-m-d H:i:s') . "')";
                         $connection2->execute($queryInsert);
@@ -318,7 +327,8 @@ $ReportDateCondition="";
 //                    else {
 //                        return 'RunReportSPError';
 //                    }
-                } */
+
+                } 
 $IsItOkay = TRUE;
                 if ($IsItOkay) {
 						
@@ -376,6 +386,7 @@ $IsItOkay = TRUE;
                 $connection->execute($queryInsert);
             }
         }
+
         $IsItOkay = TRUE;
         if ($IsItOkay) {
 			
@@ -433,9 +444,12 @@ $IsItOkay = TRUE;
 						//echo "SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID , UserId";exit;
 						//echo "SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId";
 						
-                       $timeMetricsdata = $connection->execute("SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId")->fetchAll("assoc");
-//					   echo "SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId";
-                        //pr($timeMetricsdata);exit;
+
+						
+                        $timeMetricsdata = $connection->execute("SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") AND Module_Id='".$key."'  $DateCond $conditions_timemetric group by ProductionEntityID , UserId")->fetchAll("assoc");
+                       
+
+           
                         //$timeMetricdata = array_merge($timeMetricdata, $timeMetricsdata);
                         
                         foreach ($timeMetricsdata as $time):
@@ -455,8 +469,7 @@ $IsItOkay = TRUE;
                 }
             }
         }
-//pr($timeDetails);
-//exit;
+
         return array($queries, $timeDetails);
     }
 
@@ -1048,11 +1061,14 @@ $IsItOkay = TRUE;
     }
 
     public function SpRunFuncRPEMMonthWise() {
+		
         $connection = ConnectionManager::get('default');
         $connection->execute("exec CreateView_ProductionEntityMaster_monthwise");
+	
         $connection->execute("exec CreateView_ProductionTimeMetric_monthwise");
-      //  $connection->execute("exec CreateTable_MonthwiseReport");
+
         $connection->execute("exec CreateTable_MonthwiseProductionTimeMetricReport");
+		
     }
 
     public function CheckAttributesMatching($ProjectId) {
@@ -1091,6 +1107,7 @@ $IsItOkay = TRUE;
     }
 
     public function CheckAttributesMatchingRPEMMonthWise($ProjectId, $dt) {
+		
         $connection = ConnectionManager::get('default');
         //echo "SELECT AttributeMasterId FROM ME_ProductionData WHERE ProjectId = '".$ProjectId."' GROUP BY AttributeMasterId";
         $CountQry = $connection->execute("SELECT AttributeMasterId FROM ME_ProductionData WHERE ProjectId = '" . $ProjectId . "' GROUP BY AttributeMasterId");

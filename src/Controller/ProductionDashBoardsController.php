@@ -314,8 +314,7 @@ class ProductionDashBoardsController extends AppController {
                 }
 				
                 $ProductionDashboard = $this->ProductionDashBoards->find('users', ['condition' => $conditions, 'Module' => $ModuleStatus, 'conditionsIs' => $conditionsIs,'conditions_timemetric' => $conditions_timemetric, 'Project_Id' => $ProjectId, 'domainId' => $domainId, 'RegionId' => $RegionId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'AttributeIds' => $attributeIds, 'CheckSPDone' => $CheckSPDone]);
-//                pr($ProductionDashboard);
-//                exit;
+                pr($ProductionDashboard);exit;
                 if ($ProductionDashboard == 'RunReportSPError') {
                     $this->Flash->error(__("Please click 'Report Generate' button to generate results and search again."));
                     $this->set('RunReportSPError', 'RunReportSPError');

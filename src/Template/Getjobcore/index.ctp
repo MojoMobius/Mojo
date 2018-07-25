@@ -441,6 +441,16 @@ if ($NoNewJob == 'NoNewJob') {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+@media (min-width: 480px){
+.modal-dialog {
+    max-width: 1000px;
+    margin: 30px auto;
+}
+}
+.hot_query{
+	height:250px;
+	overflow-y:auto;
+}
 
     </style>
 
@@ -533,7 +543,7 @@ if ($NoNewJob == 'NoNewJob') {
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="mainurl" role="tabpanel">
-										 <iframe onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" target='_parent' sandbox=""  src="<?php echo $getDomainUrl;?>" ></iframe>
+										 <iframe onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" target='_parent'   src="http://mobiuslease.botminds.ai/login" ></iframe>
                                            <!--<object onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" sandbox="" data="<?php //echo $getDomainUrl; ?>" ></object> -->
                                            <?php if(empty($getDomainUrl)){
                                                 echo '<p><span style="font-weight:bold">No Website found...</span></p>';
@@ -760,7 +770,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                              $inpOnBlur = 'onblur="'.$mandateFunction.' '.$validate[$valprodFields['ProjectAttributeMasterId']]['FunctionName'].'(\'ProductionFields_' . $valprodFields['AttributeMasterId'].'_'.$DependentMasterIds['ProductionField'].'_'.$tempSq . '\', this.value,'.'\'' . $validate[$valprodFields['ProjectAttributeMasterId']]['AllowedCharacter'] . '\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['NotAllowedCharacter'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['Dateformat'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['AllowedDecimalPoint'].'\');" ';      
                                                                            //  $call = ''.$validate[$valprodFields['ProjectAttributeMasterId']]['Reload'].','.$valprodFields['AttributeMasterId'].','.$DependentMasterIds['ProductionField'].','.$tempSq.'); autoSave(' . $valprodFields['AttributeMasterId'] . ', ' . $DependentMasterIds['ProductionField'] . ', ' . $tempSq.');';
                                                                              $call = 'LoadValue('.$valprodFields['ProjectAttributeMasterId'].',this.value,'.$validate[$valprodFields['ProjectAttributeMasterId']]['Reload'].','.$valprodFields['AttributeMasterId'].','.$DependentMasterIds['ProductionField'].','.$tempSq.'); autoSave(' . $valprodFields['AttributeMasterId'] . ', ' . $DependentMasterIds['ProductionField'] . ', ' . $tempSq.');';
-                                                                             $inpClass = 'onchange="' . $call . '" class="inputsubGrp_'.$key.'_'.$keysub.' wid-100per form-control doOnBlur ' . $dbClassName . '" ';
+                                                                             $inpClass = 'onchange="' . $call . '" class="inputsubGrp_'.$key.'_'.$keysub.' wid-100per form-control UpdatedQuery doOnBlur ' . $dbClassName . '" ';
                                                                             }elseif($valprodFields['ControlName']=='MultiTextBox') {
                                                                               $COpyTeXtId = 'id=COpyTeXt_'.$valprodFields['AttributeMasterId'].'_'.$tempSq;
                                                                               $inpOnBlur = 'onblur="'.$mandateFunction.' '.$validate[$valprodFields['ProjectAttributeMasterId']]['FunctionName'].'(\'ProductionFields_' . $valprodFields['AttributeMasterId'].'_'.$DependentMasterIds['ProductionField'].'_'.$tempSq . '\', this.value,' .'\''. $validate[$valprodFields['ProjectAttributeMasterId']]['AllowedCharacter'] . '\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['NotAllowedCharacter'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['Dateformat'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['AllowedDecimalPoint'].'\');" ';       
@@ -782,6 +792,12 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <div class="form-group" style=""><p class="link-style"><a onclick="GetFrameData('<?php echo $valprodFields['AttributeName'] ?>');"><?php echo $valprodFields['DisplayAttributeName'] ?></a></p>
 
                                                                     <input type="hidden" value="<?php echo $valprodFields['DisplayAttributeName'] ?>" id="attrdisp<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $i; ?>_<?php echo $key; ?>_<?php echo $keysub; ?>" class="removeinputclass">
+																	  
+																	   <input type="hidden" class="query_ids" name="queryall[<?php echo $valprodFields['AttributeMasterId'];?>]" id="queryall.<?php echo $valprodFields['AttributeMasterId']; ?>" value="<?php echo $valprodFields['AttributeMasterId'];?>">
+                                        
+										 <input type="hidden" class="query_names" name="querynameall[<?php echo $valprodFields['AttributeMasterId'];?>]" id="querynameall.<?php echo $valprodFields['AttributeMasterId']; ?>" value="<?php echo $valprodFields['DisplayAttributeName'];?>">
+                                        
+																	
                                                                 </div>	
                                                                 </div>
                                                                 <div class="col-md-4 form-text">
@@ -994,7 +1010,7 @@ if ($NoNewJob == 'NoNewJob') {
             <div class="col-lg-6" align="left">
 <!--                <button type="button" href="#" class="btn btn-default offcanvas__trigger--open" onclick="multipleUrl();" id="multiplelinkbutton" data-rel="page-tag">Multiple Source Links</button>-->
                 <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
-                <!--                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>-->
+                               <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>
             </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
@@ -1010,7 +1026,11 @@ if ($NoNewJob == 'NoNewJob') {
 				<!--<button type="submit" name='Submit' value="saveandcontinue" class="btn btn-primary pull-right " onclick="return skipformSubmit();" style="margin-right: 5px;"> Skip & Continue </button> -->
                 <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>
                  <button type="button" name='Validation' value="validation" class="btn btn-primary pull-right m-r-5" onclick="AjaxValidation();">Validation</button>
+				 <?php if($levelModule == '1'){ ?>
+                <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodalAll" onclick="ajaxQuerypopup();" data-toggle="modal">Query</button>
+				 <?php } else{ ?>					
                 <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
+				<?php } ?>
             </div>
         </div>
     </form>
@@ -1160,6 +1180,31 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Handson Modal -->
 
         <!-- Modal -->
+		 <div class="modal fade" id="querymodalAll" aria-hidden="true" aria-labelledby="querymodalAll" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+				<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Query</h4>
+                    </div>
+					<div class="modal-body">                       
+                            <div class="hot_query">
+                                
+                            </div>
+                        </form>
+                    </div>
+					  <div class="modal-footer">
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQueryAll();")) . ' '; ?>
+                        <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
+                    </div>
+				</div>
+            </div>
+        </div>
+		
         <div class="modal fade" id="querymodal" aria-hidden="true" aria-labelledby="querymodal" role="dialog" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -2685,6 +2730,7 @@ $(document).keydown(function(e) {
 //            $('#addnewurl').hide();
 //        }
         //  Query posting
+
         function valicateQuery() {
             if ($("#query").val() == '')
             {
@@ -2711,7 +2757,8 @@ $(document).keydown(function(e) {
                         $("#query").val(result);
                     }, 2000);
                 }
-            });
+            });			
+			
         }
 
         // load next attribute
@@ -3411,37 +3458,33 @@ $(document).keydown(function(e) {
                 });
         });
 
-//    function PdfPopup()
-//    {
-//
-//        var splitterElement = $("#horizontal"), getPane = function (index) {
-//            index = Number(index);
-//            var panes = splitterElement.children(".k-pane");
-//            if (!isNaN(index) && index < panes.length) {
-//                return panes[index];
-//            }
-//        };
-//
-//        var splitter = splitterElement.data("kendoSplitter");
-//        var pane = getPane('0');
-//        splitter.toggle(pane, $(pane).width() <= 0);
-//
-//
-//        var file = $("#status option:selected").text();
-//        myWindow = window.open("", "myWindow", "width=500, height=500");
-//        myWindow.document.write('<iframe id="pdfframe"  src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
-//
-//        $.ajax({
-//            type: "POST",
-//            url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'upddateUndockSession')); ?>",
-//            data: ({undocked: 'yes'}),
-//            dataType: 'text',
-//            async: true,
-//            success: function (result) {
-//
-//            }
-//        });
-//    }
+   function PdfPopup()
+   {
+/* 
+       var splitterElement = $("#horizontal"), getPane = function (index) {
+           index = Number(index);
+           var panes = splitterElement.children(".k-pane");
+           if (!isNaN(index) && index < panes.length) {
+               return panes[index];
+           }
+       };
+
+       var splitter = splitterElement.data("kendoSplitter");
+       var pane = getPane('0');
+       splitter.toggle(pane, $(pane).width() <= 0);
+ */
+
+            //$('#splitter-block').enhsplitter();
+            $('.splitter_panel').first().width('0');
+			$('.splitter_bar').css({ left: 0});
+			$('.splitter_panel').last().width('1200');
+       
+       var file = 'http://mobiuslease.botminds.ai/login';
+       myWindow = window.open("", "myWindow", "width=500, height=500");
+       myWindow.document.write('<iframe id="pdfframe"  src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
+
+      
+   }
     function onMyFrameLoad() {
         $('#loaded').val('loaded');
     }
@@ -4052,7 +4095,45 @@ function goToMsg(id){
 	 
 	 
    }
-   
+   function ajaxQuerypopup(){
+ 
+ var arrayid = $('.query_ids').serialize() ;
+ var arrayname = $('.query_names').serialize() ;
+ var arraydata = $('.UpdatedQuery').serialize() ;
+
+
+	     $(".hot_query").html('Loading...');
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'querysubmit')); ?>',
+            
+            data: {Query: arraydata,QueryId: arrayid, QueryName:arrayname},
+            type: 'POST',
+            success: function (res) { 
+	     $(".hot_query").html(res);
+            }
+        });
+       // location.reload();
+   }
+   		    function valicateQueryAll() {
+            			
+           var arraydata = $('.submit_query').serialize() ;
+            var regionid = $('#RegionId').val();
+            query = $("#query").val();
+            InputEntyId = $("#ProductionEntity").val();
+
+            var result = new Array();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
+                data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),
+               
+                success: function (res) { 
+					//$(".hot_query").html(res);
+                 }
+                
+            });
+			location.reload();
+        }
 
     
 </script>

@@ -3740,7 +3740,11 @@
         },
         "41": {
             "Review": {
+<<<<<<< HEAD
                 "Production": "GetJobCore"
+=======
+                "Production": "QCValidation"
+>>>>>>> 14e6beda0656128ba3c20a1ab21ed85b5df574ec
             }
         },
         "42": {
@@ -3825,7 +3829,8 @@
             "IsAllowedToDisplay": null,
             "IsModuleGroup": null,
             "IsHygineCheck": 0,
-            "FromStatus": null
+            "FromStatus": null,			
+            "Level":3
         },
         "6694031": {
             "IsInputMandatory": 1,
@@ -3834,16 +3839,19 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": "1,8"
+            "FromStatus": "1,8",		
+            "Level":1
+			
         },
         "6694033": {
             "IsInputMandatory": 1,
             "IsHistoryTrack": 1,
             "IsUrlMonitoring": null,
             "IsAllowedToDisplay": 1,
-            "IsModuleGroup": null,
+            "IsModuleGroup": 2,
             "IsHygineCheck": 0,
-            "FromStatus": null
+            "FromStatus": null,			
+            "Level":2
         },
         "6694034": {
             "IsInputMandatory": 1,
@@ -4051,7 +4059,11 @@
             "23": {
                 "ModuleId": 6694033,
                 "ModStatus": "Ready for Review",
+<<<<<<< HEAD
                 "ModuleStatusIdentifier": "ReadyforReview",
+=======
+                "ModuleStatusIdentifier": "ReadyforQC",
+>>>>>>> 14e6beda0656128ba3c20a1ab21ed85b5df574ec
                 "StatusId": 23,
                 "FromStatus": "Abstraction Completed"
             },
