@@ -286,6 +286,22 @@ use Cake\Routing\Router; ?>
                 </div>
             </div>
 			</div>
+         <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">API Project</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="APIProject" name="APIProject" value="<?php echo trim($ApiProjectEdit); ?>">
+                </div>
+            </div>
+        </div>
+         <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label">API Template</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="APITemplate" name="APITemplate" value="<?php echo trim($ApiTemplateEdit); ?>">
+                </div>
+            </div>
+        </div>
         <div class="form-group" style="text-align:center;">
             <div class="col-sm-12">
                 <button type="button" class="btn btn-primary btn-sm" value="Submit" id="testbut" name="testbut" onclick="return validateForm()">Submit</button>
