@@ -61,6 +61,8 @@ class ProjectconfigController extends AppController {
             $default_dashboard_count = $this->request->data('default_dashboard_count');
             $quality_limit = $this->request->data('quality_limit');
             $monthly_target = $this->request->data('monthly_target');
+            $ApiProject = $this->request->data('APIProject');
+            $ApiTemplate = $this->request->data('APITemplate');
             $ClientId = $this->request->data('ClientId');
             $input_mandatory = $this->request->data('input_mandatory');
             $is_bulk = $this->request->data('is_bulk');
@@ -91,6 +93,8 @@ class ProjectconfigController extends AppController {
                 $Projectconfigmaster->ProductionView = $default_prod_view;
                 $Projectconfigmaster->QualityLimit = $quality_limit;
                 $Projectconfigmaster->MonthlyTarget = $monthly_target;
+                 $Projectconfigmaster->ApiProject = $ApiProject;
+                  $Projectconfigmaster->ApiTemplate = $ApiTemplate;
                 $Projectconfigmaster->client_id = $ClientId;
                 $Projectconfigmaster->InputCheck = $input_mandatory;
                 $Projectconfigmaster->isBulk = $is_bulk;
@@ -117,6 +121,8 @@ class ProjectconfigController extends AppController {
         $default_dashboard_count_edit = '';
         $QualityLimitEdit = '';
         $monthlytargetEdit = '';
+        $ApiProjectEdit = '';
+        $ApiTemplateEdit = '';
         $selectedyes = '';
         $selectedno = '';
         $selectedbulkyes = '';
@@ -154,6 +160,8 @@ class ProjectconfigController extends AppController {
                 //pr($default_dashboard_count_edit);
                 $QualityLimitEdit = $query->QualityLimit;
                 $monthlytargetEdit = $query->MonthlyTarget;
+                $ApiProjectEdit = $query->ApiProject;
+                $ApiTemplateEdit = $query->ApiTemplate;
                 //pr($QualityLimitEdit);
                 $InputCheckEdit = $query->InputCheck;
                 if ($InputCheckEdit == 1) {
@@ -218,6 +226,8 @@ class ProjectconfigController extends AppController {
         $this->set(compact('default_dashboard_count_edit'));
         $this->set(compact('QualityLimitEdit'));
         $this->set(compact('monthlytargetEdit'));
+        $this->set(compact('ApiProjectEdit'));
+        $this->set(compact('ApiTemplateEdit'));
         $ProjectMaster = TableRegistry::get('Projectmaster');
         $ProList = $ProjectMaster->find();
         $ProList->where(['RecordStatus' => 1]);

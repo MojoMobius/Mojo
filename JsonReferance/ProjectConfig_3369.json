@@ -3825,8 +3825,7 @@
             "IsAllowedToDisplay": null,
             "IsModuleGroup": null,
             "IsHygineCheck": 0,
-            "FromStatus": null,			
-            "Level":3
+            "FromStatus": null
         },
         "6694031": {
             "IsInputMandatory": 1,
@@ -3835,9 +3834,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": "1,8",		
-            "Level":1
-			
+            "FromStatus": "1,8"
         },
         "6694033": {
             "IsInputMandatory": 1,
@@ -3846,8 +3843,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 2,
             "IsHygineCheck": 0,
-            "FromStatus": null,			
-            "Level":2
+            "FromStatus": null
         },
         "6694034": {
             "IsInputMandatory": 1,
