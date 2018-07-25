@@ -329,18 +329,17 @@ echo $this->Form->end();
             return false;
         }
         if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
-            alert('Select Query Raised Date');
+            alert('Select From Date');
             return false;
         }
-        if ($('#user_id').val() == '') {
-            alert('Select Resource');
-            return false;
-        }
+//        if ($('#user_id').val() == '') {
+//            alert('Select Resource');
+//            return false;
+//        }
     }
 
     function ClearFields() {
         $('#ProjectId').val('0');
-        $('#RegionId').val('0');
         $('#UserGroupId').val('');
         $('#ModuleId').val('0');
         $('#QueryDateFrom').val('');
