@@ -215,8 +215,8 @@ if(!empty($queryResult)){ ?>
                                             <div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments">Status</label>
                                                 <div><select class="form-control" name='status<?php echo $data3['Id']?>' id='status<?php echo $data3['Id']?>'>
-                                                    <option selected="" value="2">Hold</option>
-                                                    <option value="3">Query Completed</option>
+                                                    <option <?php if($data3['QueryStatus'] != 3){ echo "selected"; } ?> value="2">Hold</option>
+                                                    <option <?php if($data3['QueryStatus'] == 3){ echo "selected"; } ?> value="3" >Query Completed</option>
                                                     </select>
                                                 </div>
                                             </div>

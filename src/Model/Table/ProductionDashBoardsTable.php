@@ -310,7 +310,7 @@ $ReportDateCondition="";
 			
             if ($DataExistsCount != "") {
 
-                $ CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
+                $CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
                 $CountQrys = $CountQry->fetchAll('assoc');
                 $CheckSPRPEMMonthWiseDone = count($CountQrys);
                 
