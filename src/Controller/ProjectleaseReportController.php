@@ -254,7 +254,6 @@ class ProjectleaseReportController extends AppController {
                      
                     $queryData = $connection->execute("SELECT StatusId FROM ProductionEntityMaster where Id='$ProductionEntityID'")->fetchAll('assoc');
                 $list['status'] = $queryData[0]['StatusId'];
-                 
                      $result[] = $list;
 //                     $result[] = $list;
 //                     $result[] = $list;
