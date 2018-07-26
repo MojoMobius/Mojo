@@ -804,10 +804,12 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <div class="form-group">
                                                                                     <?php
                                                                                     $readonly=array();
+                                                                                    if($productionjob['isbotminds'] != 1){
                                                                                     foreach ($ReadOnlyFields as $ReadOnlyVal){
-                                                                                        if($ReadOnlyVal['DisplayAttributeName'] == $valprodFields['DisplayAttributeName']){
+                                                                                        if($ReadOnlyVal['AttributeMasterId'] == $valprodFields['AttributeMasterId']){
                                                                                             $readonly[] = 'readonly="readonly"';
                                                                                         }
+                                                                                    }
                                                                                     }
                                                                                     $readonly = $readonly[0];
                                                                                     if ($inpuControlType == "TextBox") {
