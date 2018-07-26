@@ -255,18 +255,9 @@ class ProjectleaseReportController extends AppController {
                     $list['Client_Response_Date'] = $Client_Response_Date;
 
                     $queryData = $connection->execute("SELECT StatusId FROM ProductionEntityMaster where Id='$ProductionEntityID'")->fetchAll('assoc');
-                    $list['status'] = $queryData[0]['StatusId'];
+                    $statusid = $queryData[0]['StatusId'];
+                    $list['status'] = $JsonArray['ProjectGroupStatus']['Production'][$statusid];
                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
-//                     $result[] = $list;
                 }
             }
 
