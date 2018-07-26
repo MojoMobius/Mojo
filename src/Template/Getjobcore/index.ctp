@@ -1011,6 +1011,7 @@ if ($NoNewJob == 'NoNewJob') {
 <!--                <button type="button" href="#" class="btn btn-default offcanvas__trigger--open" onclick="multipleUrl();" id="multiplelinkbutton" data-rel="page-tag">Multiple Source Links</button>-->
                 <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
                                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>
+							   <button class="btn btn-default" name='fetchbotmind' id='fetchbotmind' onclick="fetchbotminds();" type="button">Fetch BotMinds</button>
             </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
@@ -4136,6 +4137,21 @@ function goToMsg(id){
             });
 			location.reload();
         }
-
+function fetchbotminds()
+{
+	token='';
+	 $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxGetAPIToken')); ?>",
+                success: function (res) { 
+						token=res;
+						tokenarr=JSON.parse(token);
+						//alert(tokenarr[0]);
+					}
+                
+            });
+			//if(token!='')
+			
+}
     
 </script>
