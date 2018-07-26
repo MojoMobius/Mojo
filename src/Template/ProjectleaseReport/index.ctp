@@ -201,17 +201,17 @@ if (count($result) > 0) {
                             <table style='width:100%;' class="table table-striped table-center" id='example'>
                                 <thead>
                                     <tr class="Heading">
-                                        <th>S.No</th>
-                                        <th>Project</th>
-                                        <th>Lease ID</th>
-                                        <th>No. of Documents</th>
-                                        <th>PDF Name</th>
+                                        <th style='width:5%;'>S.No</th>
+                                        <th style='width:10%;'>Project</th>
+                                        <th style='width:5%;'>Lease ID</th>
+                                        <th style='width:5%;'>No. of Documents</th>
+                                        <th style='width:25%;'>PDF Name</th>
 
-                                        <th>Status</th>
-                                        <th>On-Hold Comments</th>
-                                        <th>On-hold reported date</th>
-                                        <th>Client Responses</th>
-                                        <th>Client resolution date</th>
+                                        <th style='width:5%;'>Status</th>
+                                        <th style='width:15%;'>On-Hold Comments</th>
+                                        <th style='width:10%;'>On-hold reported date</th>
+                                        <th style='width:10%;'>Client Responses</th>
+                                        <th style='width:10%;'>Client resolution date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -220,17 +220,17 @@ if (count($result) > 0) {
                         foreach($result as $key1=>$data1){
                     ?>
                                     <tr>
-                                        <td><?php echo $i;?></td>
-                                        <td><?php echo $data1['ProjectName'];?></td>
-                                        <td><?php echo $data1['leaseid'];?></td>
-                                        <td><?php echo $data1['noofdocuments'];?> </td>
-                                        <td><?php echo $data1['pdfname'];?></td>
+                                        <td style='width:5%;'><?php echo $i;?></td>
+                                        <td style='width:10%;'><?php echo $data1['ProjectName'];?></td>
+                                        <td style='width:5%;'><?php echo $data1['leaseid'];?></td>
+                                        <td style='width:5%;'><?php echo $data1['noofdocuments'];?> </td>
+                                        <td style='width:25%;'><?php echo $data1['pdfname'];?></td>
 
-                                        <td><?php echo $data1['status'];?></td>
-                                        <td><?php echo $data1['holdcomments'];?></td>
-                                        <td><?php echo $data1['holdreportdate'];?></td>
-                                        <td><?php echo $data1['Client_Response'];?></td>
-                                        <td><?php echo $data1['Client_Response_Date'];?></td>
+                                        <td style='width:5%;'><?php echo $data1['status'];?></td>
+                                        <td style='width:15%;'><?php echo $data1['holdcomments'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['holdreportdate'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['Client_Response'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['Client_Response_Date'];?></td>
                                     </tr>
 
                             <?php 
@@ -325,11 +325,11 @@ echo $this->Form->end();
             return false;
         }
 
-        if ($('#ModuleId').val() == 0) {
-            alert('Select Module Name');
-            $('#ModuleId').focus();
-            return false;
-        }
+//        if ($('#ModuleId').val() == 0) {
+//            alert('Select Module Name');
+//            $('#ModuleId').focus();
+//            return false;
+//        }
         if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
             alert('Select From Date');
             return false;
@@ -343,7 +343,7 @@ echo $this->Form->end();
     function ClearFields() {
         $('#ProjectId').val('0');
         $('#UserGroupId').val('');
-        $('#ModuleId').val('0');
+        //$('#ModuleId').val('0');
         $('#QueryDateFrom').val('');
         $('#QueryDateTo').val('');
         $('#user_id').find('option').remove();

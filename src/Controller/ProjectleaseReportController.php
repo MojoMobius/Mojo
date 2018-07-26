@@ -49,7 +49,7 @@ class ProjectleaseReportController extends AppController {
         exit;
     }
 
-    public function getvalues($array, $key) {
+    public function getvalues($array, $key,$d='') {
         $arr = array();
         if (!empty($array)) {
             $arr = array_column($array, $key);
@@ -57,6 +57,9 @@ class ProjectleaseReportController extends AppController {
             if (!empty($arr)) {
                 foreach ($arr as $k => $v) {
                     if (!empty($v)) {
+                        if(!empty($d)){
+                            $v = date('d-m-Y H:i:s', strtotime($v));
+                        }
                         $msg .=$v . ",";
                     }
                 }
@@ -118,7 +121,7 @@ class ProjectleaseReportController extends AppController {
             $modulesConfig = $JsonArray['ModuleConfig'];
             $modulesArr = array();
 
-            $modulesArr[$moduleid] = $moduleIdtxt;
+            $modulesArr[$ModuleId] = $moduleIdtxt;
             ksort($modulesArr);
         }
 
@@ -213,14 +216,14 @@ class ProjectleaseReportController extends AppController {
                 $conditions.="  AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
             }
 
-
 //            $conditions = "";
 
             $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
             $DependencyTypeMasterId = $queryData[0]['Id'];
 
             $queryData = $connection->execute("select cpid.AttributeValue as fdrid,cpid.ProductionEntityID ,cpid.InputEntityId from ME_UserQuery as uq inner join MC_CengageProcessInputData as cpid on uq.ProductionEntityID=cpid.ProductionEntityID  where uq.ProjectId='$ProjectId' and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId' $conditions group by cpid.AttributeValue , cpid.ProductionEntityID,cpid.InputEntityId")->fetchAll('assoc');
-
+            
+ 
             $list = array();
             if (!empty($queryData)) {
                 foreach ($queryData as $key => $val) {
@@ -228,23 +231,26 @@ class ProjectleaseReportController extends AppController {
                     $ProductionEntityID = $val['ProductionEntityID'];
                     $InputEntityId = $val['InputEntityId'];
                     $doclist = $this->ajaxgetgroupurl($ProjectId, $RegionId, $ModuleId, $ProductionEntityID, $InputEntityId);
+             
                     $list['leaseid'] = $val['fdrid'];
                     $list['noofdocuments'] = $doclist['noofdocuments'];
                     $list['pdfname'] = $doclist['pdfname'];
 
                     $sub_queryData = $connection->execute("SELECT * FROM ME_UserQuery as uq where uq.ProjectId='$ProjectId' and uq.ModuleId='$ModuleId' and uq.ProductionEntityID='$ProductionEntityID' AND uq.RegionId ='$RegionId'  $conditions")->fetchAll('assoc');
+
                     //and ProductionEntityID='$ProductionEntityID' 
-//                     $this->pr("SELECT * FROM ME_UserQuery where ProjectId='$ProjectId' and ModuleId='$ModuleId' and ProductionEntityID='$ProductionEntityID' AND RegionId ='$RegionId'  $conditions");
+//                     $this->pr($sub_queryData);
 
                     $TLComments = "";
                     $QueryRaisedDate = "";
                     $Client_Response = "";
                     $Client_Response_Date = "";
                     if (!empty($sub_queryData)) {
+                        
                         $TLComments = $this->getvalues($sub_queryData, 'TLComments');
-                        $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate');
+                        $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate','D');
                         $Client_Response = $this->getvalues($sub_queryData, 'Client_Response');
-                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date');
+                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','D');
                     }
 
                     $list['holdcomments'] = $TLComments;
@@ -256,7 +262,7 @@ class ProjectleaseReportController extends AppController {
 
                     $queryData = $connection->execute("SELECT StatusId FROM ProductionEntityMaster where Id='$ProductionEntityID'")->fetchAll('assoc');
                     $statusid = $queryData[0]['StatusId'];
-                    $list['status'] = $JsonArray['ProjectGroupStatus']['Production'][$statusid];
+                    $list['status'] = $JsonArray['ProjectStatus'][$statusid];
                     $result[] = $list;
                 }
             }
@@ -295,8 +301,8 @@ class ProjectleaseReportController extends AppController {
 //        $RegionId = $_POST['RegionId'];
 //        $InputEntityId = $_POST['InputEntityId'];
 //        $ProdEntityId = $_POST['ProdEntityId'];
-        $ProdEntityId = 108904;
-        $InputEntityId = 110190;
+//        $ProdEntityId = 108904;
+//        $InputEntityId = 110190;
 
 //        $AttrGroup = $_POST['AttrGroup'];
 //        $AttrSubGroup = $_POST['AttrSubGroup'];
