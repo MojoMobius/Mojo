@@ -12,20 +12,19 @@ use Cake\Routing\Router
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
                     <div class="col-sm-6 prodash-txt">
-                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getModule(this.value);'));?>  
+                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getusergroupdetails();getresourcedetails();'));?>  
                         <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
+<!--getModule(this.value);-->
+            <div class="col-md-4 hide">
                 <div class="form-group">
                     <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Module</label>
                     <div class="col-sm-6" style="margin-top:3px;">
                         <div id="LoadModule">
                     <?php 
                     
-               
                     if ($ModuleIds == '') {
                       
                     $Modules = array(0 => '--Select--'); ?>
@@ -62,6 +61,23 @@ use Cake\Routing\Router
                 </div>
             </div>
 
+        <div class="col-md-4">
+                <div class="form-group">
+                   <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
+                    <div class="col-sm-6 ">
+                        <div id="LoadUserDetails">
+                        <?php
+//                        echo "<pre>s";print_r($postuser_id);exit;
+                        
+                            echo $this->Form->input('', array('options' => $User, 'class' => 'form-control', 'selected' => $postuser_id, 'value' => $postuser_id, 'id' => 'user_id', 'name' => 'user_id', 'style' => 'height:100px;margin-top: -15px;', 'multiple' => true));
+                        ?>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -86,20 +102,6 @@ use Cake\Routing\Router
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
-                    <div class="col-sm-6">
-                        <div id="LoadUserDetails">
-                        <?php
-//                        echo "<pre>s";print_r($postuser_id);exit;
-                        
-                            echo $this->Form->input('', array('options' => $User, 'class' => 'form-control', 'selected' => $postuser_id, 'value' => $postuser_id, 'id' => 'user_id', 'name' => 'user_id', 'style' => 'height:100px; margin-top:-15px;', 'multiple' => true));
-                        ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
