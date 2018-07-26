@@ -37,6 +37,7 @@ class PuqueryController extends AppController {
         $this->loadModel('projectmasters');
         $this->loadModel('importinitiates');
         $this->loadModel('Puquery');
+        $this->loadModel('GetJob');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');
     }
@@ -174,15 +175,34 @@ class PuqueryController extends AppController {
             if ($ModuleId != 0) {
                 $conditions.="  AND ME_UserQuery.ModuleId = " . $ModuleId . "";
             }
-            $moduleTable = 'Staging_' . $ModuleId . '_Data';
-            /*echo 'SELECT distinct Tdata.AttributeValue as domainID,Tdata.InputEntityId, ME_UserQuery.ProductionEntityId,ME_UserQuery.ModuleId,ME_UserQuery.Id ,TLComments,QueryRaisedDate, ME_UserQuery.UserID,ME_UserQuery.Query,ME_UserQuery.Client_Response,ME_UserQuery.Client_Response_Date,pem.StatusId as stsId FROM ME_UserQuery INNER JOIN MC_CengageProcessInputData as Tdata ON Tdata.ProductionEntityID=ME_UserQuery.ProductionEntityId INNER JOIN ProductionEntityMaster as pem ON pem.Id=ME_UserQuery.ProductionEntityId"
-                            . " WHERE Tdata.AttributeMasterId=" '. $domainId .' " AND ME_UserQuery.ProjectId=" '. $ProjectId . '" AND ME_UserQuery.StatusID in (1,2,4) " . '.$conditions.'';exit;
-                                    */
-            $queryData = $connection->execute("SELECT distinct Tdata.AttributeValue as domainID,Tdata.InputEntityId, ME_UserQuery.ProductionEntityId,ME_UserQuery.ModuleId,ME_UserQuery.Id ,TLComments,QueryRaisedDate, ME_UserQuery.UserID,ME_UserQuery.Query,ME_UserQuery.Client_Response,ME_UserQuery.Client_Response_Date,pem.StatusId as stsId FROM ME_UserQuery INNER JOIN MC_CengageProcessInputData as Tdata ON Tdata.ProductionEntityID=ME_UserQuery.ProductionEntityId INNER JOIN ProductionEntityMaster as pem ON pem.Id=ME_UserQuery.ProductionEntityId"
-                            . " WHERE Tdata.AttributeMasterId=" . $domainId . " AND ME_UserQuery.ProjectId=" . $ProjectId . " AND ME_UserQuery.StatusID in (1,2,4) " . $conditions)->fetchAll('assoc');
+            $moduleTable = 'Staging_' . $ModuleId . '_Data';          
+        
+        $StatusFind = $JsonArray['ProjectStatus']; 
+       
+        $connectiond2k = ConnectionManager::get('d2k');
+        $QcFirstStatusRW = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId AND ModuleStatusIdentifier LIKE '%Query%' AND RecordStatus=1")->fetchAll('assoc');  
+        //echo"<pre>";print_r($QcFirstStatusRW);exit;
+        $ArrQuery=array(); 
+        $newkey=array();
+         foreach($QcFirstStatusRW as $key => $value){
+           foreach($value as $key2 => $value2){
+             $ArrQuery[]=$value2;
+           }
+         }
+          foreach($StatusFind as $key => $value){
+              if(in_array($value, $ArrQuery)){
+                  $newkey[]=$key;
+              }       
+          }
+          $StsId = implode(",",$newkey);
+        
+            
+            
+            $queryData = $connection->execute("SELECT distinct Tdata.AttributeValue as domainID,Tdata.InputEntityId, ME_UserQuery.ProductionEntityId,ME_UserQuery.ModuleId,ME_UserQuery.Id ,ME_UserQuery.StatusID as QueryStatus ,TLComments,QueryRaisedDate, ME_UserQuery.UserID,ME_UserQuery.Query,ME_UserQuery.Client_Response,ME_UserQuery.Client_Response_Date,pem.StatusId as stsId FROM ME_UserQuery INNER JOIN MC_CengageProcessInputData as Tdata ON Tdata.ProductionEntityID=ME_UserQuery.ProductionEntityId INNER JOIN ProductionEntityMaster as pem ON pem.Id=ME_UserQuery.ProductionEntityId"
+                            . " WHERE Tdata.AttributeMasterId=" . $domainId . " AND ME_UserQuery.ProjectId=" . $ProjectId . " AND ME_UserQuery.StatusID in (1,2,3,4) AND pem.StatusId in ($StsId)" . $conditions)->fetchAll('assoc');
             $i = 0;
             foreach ($queryData as $val) {
-                $queryResult[$val['UserID']][$val['domainID']][]=array('Query'=>$val['Query'],'QueryRaisedDate'=>$val['QueryRaisedDate'],'Id'=>$val['Id'],'TLComments'=>$val['TLComments'],'ModuleId'=>$val['ModuleId'],'ProductionEntityId'=>$val['ProductionEntityId'],'InputEntityId'=>$val['InputEntityId'],'Client_Response'=>$val['Client_Response'],'Client_Response_Date'=>$val['Client_Response_Date'],'StatusId'=>$val['stsId']);
+                $queryResult[$val['UserID']][$val['domainID']][]=array('Query'=>$val['Query'],'QueryRaisedDate'=>$val['QueryRaisedDate'],'Id'=>$val['Id'],'TLComments'=>$val['TLComments'],'ModuleId'=>$val['ModuleId'],'ProductionEntityId'=>$val['ProductionEntityId'],'InputEntityId'=>$val['InputEntityId'],'Client_Response'=>$val['Client_Response'],'Client_Response_Date'=>$val['Client_Response_Date'],'StatusId'=>$val['stsId'],'QueryStatus'=>$val['QueryStatus']);
               /*  $queryResult[$val['UserID']][$val['domainID']][$i]['Query'] = $val['Query'];
                 $queryResult[$val['UserID']][$val['domainID']][$i]['QueryRaisedDate'] = $val['QueryRaisedDate'];
                 $queryResult[$val['UserID']][$val['domainID']][$i]['Id'] = $val['Id'];
@@ -256,7 +276,7 @@ class PuqueryController extends AppController {
              echo '0';
          }
          else{
-        $ProjectId = $session->read("ProjectId");
+         $ProjectId = $this->request->data('ProjectId');
         
         
             $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
@@ -278,7 +298,8 @@ class PuqueryController extends AppController {
         exit;
     }
     
-    public function ajaxqueryinsert() {   
+    public function ajaxqueryinsert() { 
+        
      $domainDate=date("Y-m-d", strtotime($_POST['cl_resp_date']) );
     
          $connection = ConnectionManager::get('default');
@@ -352,11 +373,11 @@ class PuqueryController extends AppController {
         ///file upload end//////////////////////
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
-        
+       
         $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' , TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
         $QryStatus = $connection->execute($UpdateQryStatus);
-        if ($_POST['status'] == 3) {
-         /*   $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
+         /*if ($_POST['status'] == 3) {
+           $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
             $first_Status_name = $JsonArray['ModuleStatusList'][$_POST['ModuleId']][0];
             $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
@@ -369,8 +390,8 @@ class PuqueryController extends AppController {
             $QryStatus = $connection->execute($UpdateQryStatus);
             $UpdateQryStatus = "update ME_Production_TimeMetric set StatusId='" . $first_Status_id . "' where ProductionEntityID='" . $_POST['ProductionEntityId'] . "' AND Module_Id=" . $_POST['ModuleId'];
             $QryStatus = $connection->execute($UpdateQryStatus);
-                    */
-        }
+                  
+        }  */
         echo 'updated';
         exit;
     }

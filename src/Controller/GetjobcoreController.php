@@ -2945,7 +2945,7 @@ class GetjobcoreController extends AppController {
 	  <tr>
 	  <th  width='20%'>Attribute Name</th>
 	  <th  width='20%'>Query</th>
-	  <th  width='20%'>TL Query</th>
+	  <th  width='20%'>TL Comments</th>
 	  <th  width='20%'>Client Response</th>
 	  <th  width='20%'>Client Response Date</th>
 	  </tr>";

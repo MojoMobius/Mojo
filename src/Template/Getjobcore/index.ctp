@@ -1198,8 +1198,10 @@ if ($NoNewJob == 'NoNewJob') {
                     </div>
 					  <div class="modal-footer">
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        
         <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQueryAll();")) . ' '; ?>
+<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
                     </div>
 				</div>
