@@ -4141,11 +4141,15 @@ function goToMsg(id){
         }
 function fetchbotminds()
 {
+    
+     ProjectId = $("#ProjectId").val();
 	token='';
 	 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxGetAPIToken')); ?>",
+                 data: ({ProjectId: ProjectId}),
                 success: function (res) { 
+                   
 						token=res;
 						tokenarr=JSON.parse(token);
 						//alert(tokenarr[0]);
