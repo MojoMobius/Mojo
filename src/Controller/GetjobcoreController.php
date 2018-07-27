@@ -1877,13 +1877,13 @@ class GetjobcoreController extends AppController {
     }
 	    function ajaxquerypostingmulti() {
 			
-	    parse_str($_POST['multiquery'], $Query);
+	parse_str($_POST['multiquery'], $Query);
         $session = $this->request->session();
         $user_id = $session->read("user_id");
         $role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
-        $RegionId = $_POST['RegionId'];		
+        $RegionId = $_POST['RegionId'];	
 		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
 		echo "success";
         exit;
