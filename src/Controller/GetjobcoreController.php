@@ -7,6 +7,10 @@ use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
+require_once(ROOT . '\vendor' . DS . 'PHPExcel' . DS . 'IOFactory.php');
+require_once(ROOT . '\vendor' . DS . 'PHPExcel.php');
+
+use PHPExcel_IOFactory;
 /**
  * Bookmarks Controller
  *
@@ -49,6 +53,7 @@ class GetjobcoreController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
+                //$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
         if ($FromStatus == '') {
@@ -3040,12 +3045,43 @@ $curlConfig = array(
 curl_setopt_array($ch, $curlConfig);
 $result = curl_exec($ch);
 
-echo $result;
+  $filepath = 'D:\xampp\htdocs\mojo_git\webroot\TsvFiles\SH_SH US017P01 - Lease_1532668145.tsv';
+ $load_keys=false;
+ $array = array();
+ 
+    if (!file_exists($filepath)){ return $array; }
+    $content = file($filepath);
+    echo '<pre>';
+ 
+    for ($x=0; $x < count($content); $x++){
+        if (trim($content[$x]) != ''){
+            $line = explode("\t", trim($content[$x]));
+            if ($load_keys){
+                $key = array_shift($line);
+                $array[$key] = $line;
+            }
+            else { $array[] = $line; }
+        }
+    }
+  
+    $finalarr = [];
+    $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
+  foreach($GroupAttribute as $grpKey => $grpVal){
+    foreach($array as $key => $val){
+        //print_r($val[0]);
+        if($grpVal == $val[0]){
+        $finalarr[$val[0]] = $val;
+         }
+    }
+  }
+    
+  print_r($finalarr);
+    exit;
 curl_close($ch); 
 		exit;
 	}
-	function datecalculator() {
-		
-	}
+//	function datecalculator() {
+//		
+//	}
 
 }

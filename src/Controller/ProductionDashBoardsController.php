@@ -314,7 +314,7 @@ class ProductionDashBoardsController extends AppController {
                 }
 				
                 $ProductionDashboard = $this->ProductionDashBoards->find('users', ['condition' => $conditions, 'Module' => $ModuleStatus, 'conditionsIs' => $conditionsIs,'conditions_timemetric' => $conditions_timemetric, 'Project_Id' => $ProjectId, 'domainId' => $domainId, 'RegionId' => $RegionId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'AttributeIds' => $attributeIds, 'CheckSPDone' => $CheckSPDone]);
-                pr($ProductionDashboard);exit;
+                //pr($ProductionDashboard);exit;
                 if ($ProductionDashboard == 'RunReportSPError') {
                     $this->Flash->error(__("Please click 'Report Generate' button to generate results and search again."));
                     $this->set('RunReportSPError', 'RunReportSPError');
@@ -552,6 +552,83 @@ class ProductionDashBoardsController extends AppController {
         echo $updateuser = $this->ProductionDashBoards->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
         exit;
     }
+    
+     function ajaxdirectabstraction() {
+		 
+      $connection = ConnectionManager::get('default');
+	  $id=$_POST['ProductionEntityId'];
+	  $ProjectId=$_POST['ProjectId'];
+	  //echo $ProjectId;exit;
+	   $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+           $content = file_get_contents($path);
+           $contentArr = json_decode($content, true);
+           $abstractionModuleid = array_search('Abstraction',$contentArr['Module']);
+           
+           parse_str($_POST['Inputentityids'], $searchInputentity);
+            parse_str($_POST['ids'], $searcharray);
+           parse_str($_POST['domainId'], $domainarray);
+           
+         $tbl_view.="<table class='table table-striped table-center'><tr><th>Id</th><th>Status</th>";
+         $tbl_view.='</tr>';
+                        
+          foreach($searcharray['priority'] as $key=>$val){
+                 
+              $inputentityId = $searchInputentity['InputEntityId'][$val];
+             	
+               $queryUpdate = $connection->execute("select isbotminds from ProductionEntityMaster where InputEntityId='$inputentityId'")->fetchAll('assoc');
+                $isbotminds=$queryUpdate[0]['isbotminds'];
+                
+                $isbotminds_yes = $isbotminds == 1?'selected':'';
+                $isbotminds_no = $isbotminds == 0?'selected':'';
+                
+                
+                $templateUser="<select  name='status[$inputentityId]' class='form-control statusids' >"
+                        . "<option value=0> --Select --</option>"  
+                        . "<option value=1 $isbotminds_yes>Yes</option>"
+                        ."<option value=0 $isbotminds_no>No</option>";
+                       
+                 $templateUser.='</select>';
+                 
+              $tbl_view.='<tr><td>'.$domainarray['domain'][$val].'</td>'
+                      . '<td>'.$templateUser
+                      . '</td></tr>';
+              
+          }
+            $tbl_view.="</table>";
+          
+//           print_r($domainarray);exit;
+//           print_r($abstractionModuleid);exit;
+       
+	   echo $tbl_view;
+        exit;
+    }
+    
+     function ajaxdirectabstractionsubmit() {
+         
+         $connection = ConnectionManager::get('default');
+		parse_str($_POST['statusids'], $searcharray);
+		  $ProjectId=$_POST['ProjectId'];
+                
+           $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+           $content = file_get_contents($path);
+           $contentArr = json_decode($content, true);
+           $abstractionModuleid = array_search('Abstraction',$contentArr['Module']);
+           
+                foreach($searcharray['status'] as $key => $val){
+                  $queryUpdate = "Update ProductionEntityMaster set isbotminds='$val' where InputEntityId='$key'";	
+         $connection->execute($queryUpdate);
+        
+                     $queryUpdate = "Update Staging_".$abstractionModuleid."_Data set isbotminds='$val' where InputEntityId='$key'";	
+                 
+         $connection->execute($queryUpdate);
+                    
+                }
+                
+            $array = array("status"=>1);
+            echo json_encode($array);
+                exit;
+     }
+    
 	 function ajaxgetdata() {
 		 
       $connection = ConnectionManager::get('default');
