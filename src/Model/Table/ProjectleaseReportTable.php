@@ -74,7 +74,7 @@ class ProjectleaseReportTable extends Table {
                     $modulesArr[$key] = $val;
                 }
             }
-            //$modulesArr[0] = '--Select--';
+           
             ksort($modulesArr);
             foreach ($modulesArr as $key => $value) {
                 if ($key == $ModuleId) {

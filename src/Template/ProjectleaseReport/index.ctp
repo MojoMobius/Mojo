@@ -12,20 +12,19 @@ use Cake\Routing\Router
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
                     <div class="col-sm-6 prodash-txt">
-                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getModule(this.value);'));?>  
+                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getusergroupdetails();getresourcedetails();'));?>  
                         <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
+<!--getModule(this.value);-->
+            <div class="col-md-4 hide">
                 <div class="form-group">
                     <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Module</label>
                     <div class="col-sm-6" style="margin-top:3px;">
                         <div id="LoadModule">
                     <?php 
                     
-               
                     if ($ModuleIds == '') {
                       
                     $Modules = array(0 => '--Select--'); ?>
@@ -62,6 +61,23 @@ use Cake\Routing\Router
                 </div>
             </div>
 
+        <div class="col-md-4">
+                <div class="form-group">
+                   <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
+                    <div class="col-sm-6 ">
+                        <div id="LoadUserDetails">
+                        <?php
+//                        echo "<pre>s";print_r($postuser_id);exit;
+                        
+                            echo $this->Form->input('', array('options' => $User, 'class' => 'form-control', 'selected' => $postuser_id, 'value' => $postuser_id, 'id' => 'user_id', 'name' => 'user_id', 'style' => 'height:100px;margin-top: -15px;', 'multiple' => true));
+                        ?>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -86,20 +102,6 @@ use Cake\Routing\Router
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
-                    <div class="col-sm-6">
-                        <div id="LoadUserDetails">
-                        <?php
-//                        echo "<pre>s";print_r($postuser_id);exit;
-                        
-                            echo $this->Form->input('', array('options' => $User, 'class' => 'form-control', 'selected' => $postuser_id, 'value' => $postuser_id, 'id' => 'user_id', 'name' => 'user_id', 'style' => 'height:100px; margin-top:-15px;', 'multiple' => true));
-                        ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
@@ -199,17 +201,17 @@ if (count($result) > 0) {
                             <table style='width:100%;' class="table table-striped table-center" id='example'>
                                 <thead>
                                     <tr class="Heading">
-                                        <th>S.No</th>
-                                        <th>Project</th>
-                                        <th>Lease ID</th>
-                                        <th>No. of Documents</th>
-                                        <th>PDF Name</th>
+                                        <th style='width:5%;'>S.No</th>
+                                        <th style='width:10%;'>Project</th>
+                                        <th style='width:5%;'>Lease ID</th>
+                                        <th style='width:5%;'>No. of Documents</th>
+                                        <th style='width:25%;'>PDF Name</th>
 
-                                        <th>Status</th>
-                                        <th>On-Hold Comments</th>
-                                        <th>On-hold reported date</th>
-                                        <th>Client Responses</th>
-                                        <th>Client resolution date</th>
+                                        <th style='width:5%;'>Status</th>
+                                        <th style='width:15%;'>On-Hold Comments</th>
+                                        <th style='width:10%;'>On-hold reported date</th>
+                                        <th style='width:10%;'>Client Responses</th>
+                                        <th style='width:10%;'>Client resolution date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -218,17 +220,17 @@ if (count($result) > 0) {
                         foreach($result as $key1=>$data1){
                     ?>
                                     <tr>
-                                        <td><?php echo $i;?></td>
-                                        <td><?php echo $data1['ProjectName'];?></td>
-                                        <td><?php echo $data1['leaseid'];?></td>
-                                        <td><?php echo $data1['noofdocuments'];?> </td>
-                                        <td><?php echo $data1['pdfname'];?></td>
+                                        <td style='width:5%;'><?php echo $i;?></td>
+                                        <td style='width:10%;'><?php echo $data1['ProjectName'];?></td>
+                                        <td style='width:5%;'><?php echo $data1['leaseid'];?></td>
+                                        <td style='width:5%;'><?php echo $data1['noofdocuments'];?> </td>
+                                        <td style='width:25%;'><?php echo $data1['pdfname'];?></td>
 
-                                        <td><?php echo $data1['status'];?></td>
-                                        <td><?php echo $data1['holdcomments'];?></td>
-                                        <td><?php echo $data1['holdreportdate'];?></td>
-                                        <td><?php echo $data1['Client_Response'];?></td>
-                                        <td><?php echo $data1['Client_Response_Date'];?></td>
+                                        <td style='width:5%;'><?php echo $data1['status'];?></td>
+                                        <td style='width:15%;'><?php echo $data1['holdcomments'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['holdreportdate'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['Client_Response'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['Client_Response_Date'];?></td>
                                     </tr>
 
                             <?php 
@@ -323,26 +325,25 @@ echo $this->Form->end();
             return false;
         }
 
-        if ($('#ModuleId').val() == 0) {
-            alert('Select Module Name');
-            $('#ModuleId').focus();
-            return false;
-        }
+//        if ($('#ModuleId').val() == 0) {
+//            alert('Select Module Name');
+//            $('#ModuleId').focus();
+//            return false;
+//        }
         if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
-            alert('Select Query Raised Date');
+            alert('Select From Date');
             return false;
         }
-        if ($('#user_id').val() == '') {
-            alert('Select Resource');
-            return false;
-        }
+//        if ($('#user_id').val() == '') {
+//            alert('Select Resource');
+//            return false;
+//        }
     }
 
     function ClearFields() {
         $('#ProjectId').val('0');
-        $('#RegionId').val('0');
         $('#UserGroupId').val('');
-        $('#ModuleId').val('0');
+        //$('#ModuleId').val('0');
         $('#QueryDateFrom').val('');
         $('#QueryDateTo').val('');
         $('#user_id').find('option').remove();
