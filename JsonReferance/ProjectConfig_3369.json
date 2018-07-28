@@ -4370,8 +4370,8 @@
         "ProductionView": "3",
         "HygineCheck": "2",
         "joballocation_type": "1",
-        "ApiProjectId": "",
-        "ApiTemplateId": ""
+        "ApiProjectId": "95d832f0deb14e85a3f8dcac10414e75",
+        "ApiTemplateId": "405461bbf5b1251a923d45c31e3b0080"
     },
     "UserGroups": {
         "6": "Team 1",
