@@ -30,6 +30,7 @@ class GetjobcoreController extends AppController {
     public $validation_apiurl = "http://52.66.118.29:8080/mojo_validation/validation/mojo_input/";
 
     public function initialize() {
+       
         parent::initialize();
         $this->loadModel('GetJob');
         $this->loadModel('Getjobcore');
@@ -71,7 +72,20 @@ class GetjobcoreController extends AppController {
             }
             $next_status_id = implode(',', $next_status_idArr);
         }
+//////rent calculation////
+         $RentAttribute = $connection->execute('SELECT * FROM RentCalc_Config  WHERE ProjectId=' . $ProjectId . '')->fetchAll('assoc');
+         $Commencement=$RentAttribute[0]['Commencement_Date_AttrId'];
+         $Expiration=$RentAttribute[0]['Expiration_Date_AttriId'];
+         $BaseRent=$RentAttribute[0]['Base_Rent_Initial_amount_AttriId'];
+         $RentInc=$RentAttribute[0]['Rent_Inc_AttrId'];
+         $this->set('Commencement',$Commencement);
+         $this->set('Expiration', $Expiration);
+         $this->set('BaseRent', $BaseRent);
+         $this->set('RentInc', $RentInc);
 
+//////rent calculation end////         
+        
+        
 
         $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][12][$moduleId]['production']);
         $moduleName = $JsonArray['Module'][$moduleId];
@@ -792,7 +806,7 @@ class GetjobcoreController extends AppController {
                     $this->set('NoNewJob', 'NoNewJob');
                 } else {
                     if ($productionjob[0]['StatusId'] == $FirstStatus && ($newJob == 'NewJob' || $newJob == 'newjob')) {
-                        $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId in (" . $NextStatusId . "),UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
+                        $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId =" . $NextStatusId . ",UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
                         if (empty($ProductionEntityStatus)) {
                             $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
                         } else {
@@ -3123,5 +3137,42 @@ curl_close($ch);
 //	function datecalculator() {
 //		
 //	}
+        
+ function ajaxRentcal(){
+     //echo $_POST['Rentval']."hello";
+     $Htmlview='<div class="form-group">';
+    $Htmlview.='<div class=" col-md-12">
+                               <div class="col-md-6"> <label for="Query" class="query">Commencement Date</label></div>
+                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
+                            </div>'; 
+    $Htmlview.='<div class=" col-md-12">
+                               <div class="col-md-6"> <label for="Query" class="query">Expiration Date </label></div>
+                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
+                            </div>'; 
+    $Htmlview.='<div class=" col-md-12">
+                               <div class="col-md-6"> <label for="Query" class="query">Base Rent Initial amount</label></div>
+                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
+                            </div>'; 
+    $Htmlview.='<div class=" col-md-12">
+                               <div class="col-md-6"> <label for="Query" class="query">Rent Inc</label></div>
+                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
+                            </div>'; 
+    $Htmlview.='<div class=" col-md-12">
+                               <div class="col-md-6"> <label for="Query" class="query">Frequency</label></div>
+                                        <div class="col-md-6">
+<select name="frequency" id="frequency">
+<option value="0">---Select---</option>
+<option value="6month">6 Month</option>
+<option value="1">1 Year</option>
+<option value"2">2 Year</option>
+<option value="3">3 Year</option>
+<option value"4">4 Year</option>
+</div>
+                            </div>'; 
+    $Htmlview.='</div>';
+     
+    echo $Htmlview;
+     exit;
+ }       
 
 }
