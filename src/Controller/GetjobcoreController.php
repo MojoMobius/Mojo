@@ -20,7 +20,7 @@ class GetjobcoreController extends AppController {
 
     /**
      * to initialize the model/utilities gonna to be used this page
-     */
+     */ 
     public $paginate = [
         'limit' => 10,
         'order' => [
