@@ -1222,7 +1222,7 @@ if ($NoNewJob == 'NoNewJob') {
                         <h4 class="modal-title" id="exampleModalTitle">Rent Calculation</h4>
                     </div>
 					<div class="modal-body" style="height:200px;">                       
-                            <div class="hot_rent">
+                            <div class="form-group">
                                 <div class=" col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
 								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="form-control" value="">
@@ -1256,13 +1256,15 @@ if ($NoNewJob == 'NoNewJob') {
 									</select>
 								   </div>
                                 </div>
+								 <div class="hot_rent">
+								 </div>
                             </div>
                         </form>
                     </div>
 					  <div class="modal-footer">
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
                         
-        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQueryAll();")) . ' '; ?>
+        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub();")) . ' '; ?>
 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
@@ -4265,17 +4267,22 @@ function Rentcalc(AttrId,ProEntId,Seq){
 	$("#RentIncVal").val(RentInc);
 	
 }
-function Rentcalc111(AttrId,ProEntId,Seq){
+function Rentcalcsub(){
 	var ProjectId = $("#ProjectId").val();
+	var Commencement = $("#CommencementVal").val();	
+	var Expiration = $("#ExpirationVal").val();	
+	var BaseRent = $("#BaseRentVal").val();	
+	var RentInc = $("#RentIncVal").val();
+	var Frequency = $("#frequency").val();
 	
 	var rentval = $("#ProductionFields_"+AttrId+"_"+ProEntId+"_"+Seq).val();
 	$(".hot_rent").html("Loading...");
 	 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
-                 data: ({ProjectId: ProjectId,Rentval: rentval}),
+                 data: ({ProjectId: ProjectId,Commencement: Commencement,Expiration: Expiration,BaseRent: BaseRent,RentInc: RentInc,Frequency: Frequency}),
                 success: function (res) { 
-                  $(".hot_rent").html(res);
+                     $(".hot_rent").html(res);
 					}
                 
             });

@@ -3140,6 +3140,9 @@ curl_close($ch);
         
  function ajaxRentcal(){
      //echo $_POST['Rentval']."hello";
+     
+     echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
+     exit;
      $Htmlview='<div class="form-group">';
     $Htmlview.='<div class=" col-md-12">
                                <div class="col-md-6"> <label for="Query" class="query">Commencement Date</label></div>
