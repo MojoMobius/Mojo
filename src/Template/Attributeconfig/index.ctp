@@ -57,7 +57,7 @@ use Cake\Routing\Router; ?>
 
 <div class="container-fluid mt15">
     <div class="formcontent">
-        <h4>Project Configuration</h4>
+        <h4>Attribute Configuration</h4>
         <?php echo $this->Form->create($Projectconfig, array('class' => 'form-horizontal', 'id' => 'projectforms','name' => 'projectforms')); ?>
         <span id="reg">  <input type="hidden" name="RegionId" id="RegionId" value="<?php echo $RegionId;?>"></span>
         <div class="row">
@@ -83,7 +83,7 @@ use Cake\Routing\Router; ?>
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Commencement Date AttributeId</label>
+                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Commencement Date Attribute</label>
                 <div class="col-sm-6" style="margin-top:3px;">
                     <div id="Attr1"><?php echo $Attr1;?> </div>
                 </div>
@@ -91,7 +91,7 @@ use Cake\Routing\Router; ?>
         </div>
          <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Expiration Date AttributeId</label>
+                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Expiration Date Attribute</label>
                 <div class="col-sm-6" style="margin-top:3px;">
                     <div id="Attr2"><?php echo $Attr2;?> </div>
                 </div>
@@ -101,7 +101,7 @@ use Cake\Routing\Router; ?>
         <div class="row">
          <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Base Rent Initial amount AttributeId</label>
+                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Base Rent Initial amount Attribute</label>
                 <div class="col-sm-6" style="margin-top:3px;">
                     <div id="Attr3"><?php echo $Attr3;?> </div>
                 </div>
@@ -109,7 +109,7 @@ use Cake\Routing\Router; ?>
         </div>
          <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Rent Inc AttributeId</label>
+                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Rent Inc Attribute</label>
                 <div class="col-sm-6" style="margin-top:3px;">
                     <div id="Attr4"><?php echo $Attr4;?></div>
                 </div>
@@ -142,10 +142,10 @@ use Cake\Routing\Router; ?>
             <thead>
                 <tr>
                     <th>Project Name</th>                    
-                    <th>Commencement Date AttrId</th>
-                    <th>Expiration Date AttrId</th>
-                    <th>Base Rent Initial amount AttrId</th>
-                    <th>Rent Inc AttrId</th>
+                    <th>Commencement Date Attribute</th>
+                    <th>Expiration Date Attribute</th>
+                    <th>Base Rent Initial amount Attribute</th>
+                    <th>Rent Inc Attribute</th>
                     <th>Edit</th>
                 </tr>
             </thead>
