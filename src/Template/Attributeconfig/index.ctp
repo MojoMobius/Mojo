@@ -64,8 +64,7 @@ use Cake\Routing\Router; ?>
          <div class="col-md-4">
             <div class="form-group">
                 <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Project</label>
-                <div class="col-sm-6" style="margin-top:3px;">
-                  
+                <div class="col-sm-6" style="margin-top:3px;">                  
                     <?php 
                     if ($ProjectIds == '') {
                     $Modules = array(0 => '--Select--'); ?>

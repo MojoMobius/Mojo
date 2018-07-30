@@ -7,6 +7,10 @@ use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
+require_once(ROOT . '\vendor' . DS . 'PHPExcel' . DS . 'IOFactory.php');
+require_once(ROOT . '\vendor' . DS . 'PHPExcel.php');
+
+use PHPExcel_IOFactory;
 /**
  * Bookmarks Controller
  *
@@ -49,6 +53,7 @@ class GetjobcoreController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
+                //$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
         if ($FromStatus == '') {
@@ -81,12 +86,13 @@ class GetjobcoreController extends AppController {
         if ($joballocation_type == 1) {
             $userCheck = ' AND UserId=' . $user_id;
         }
+		
         if ($frameType == 1) {
             if (isset($this->request->query['job']))
                 $newJob = $this->request->query['job'];
             if (isset($this->request->data['NewJob']))
                 $newJob = $this->request->data['NewJob'];
-            $InprogressProductionjob = $connection->execute('SELECT special FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId=' . $next_status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
+            $InprogressProductionjob = $connection->execute('SELECT special FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId in (' . $next_status_id . ') AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
             exit;
             if (empty($InprogressProductionjob)) {
                 $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
@@ -786,7 +792,7 @@ class GetjobcoreController extends AppController {
                     $this->set('NoNewJob', 'NoNewJob');
                 } else {
                     if ($productionjob[0]['StatusId'] == $FirstStatus && ($newJob == 'NewJob' || $newJob == 'newjob')) {
-                        $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $NextStatusId . ",UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
+                        $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId in (" . $NextStatusId . "),UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
                         if (empty($ProductionEntityStatus)) {
                             $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
                         } else {
@@ -1239,7 +1245,7 @@ class GetjobcoreController extends AppController {
 //            $listdata = $this->ajaxgeapivalidationremovekey($project_scope_id, $listdata);
 
             $listdata_json = json_encode($listdata);
-//print_r($listdata_json);exit;
+print_r($listdata_json);exit;
             $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_URL,"http://localhost/project/api.php");
             curl_setopt($ch, CURLOPT_URL, $this->validation_apiurl);
@@ -2992,60 +2998,130 @@ class GetjobcoreController extends AppController {
 	}
 	function ajaxGetAPIToken(){
 		$session = $this->request->session();
-        $user_id = $session->read("user_id");
-        $ProjectId = $_POST['ProjectId'];
-       
-		$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+		$ProjectId = $session->read("ProjectId");
+        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
-		$fields = array(
+	/*	$fields = array(
             'username' => "khaleelurrehmanm@mobiusservices.com",
             'password' => "Lease@123",
             'grant_type' => "password"
         );
-		 $fields_string = http_build_query($fields);
+		$fields_string = http_build_query($fields);
 		$ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.botminds.ai/token");
-		
-
-        curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                                             'Content-Type: application/x-www-form-urlencoded'                                            
                                             ));
-											
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
         $server_output = curl_exec($ch);
-		//pr($server_output);
-		//print_r(curl_getinfo($ch));
-        curl_close($ch);
+		curl_close($ch);
 		$server_output=json_decode($server_output);
-		//pr($server_output);
 		$token= 'bearer '.$server_output->access_token;
-		
-		$projectId="";
-		$templateId="";
+		$projectId=$projectConfigs['ApiProjectId'];
+		$templateId=$projectConfigs['ApiTemplateId'];
+		$documnetName=$JsonArray[$ProjectId].'_';
 		
 		$ch = curl_init();
-$curlConfig = array(
-    CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/95d832f0deb14e85a3f8dcac10414e75/405461bbf5b1251a923d45c31e3b0080/2c04845b5eb04b3a9f8b204dc725911e",
+		$curlConfig = array(
+        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/2c04845b5eb04b3a9f8b204dc725911e",
 	
-   // CURLOPT_RETURNTRANSFER => true,
-    
-	CURLOPT_HTTPHEADER=>array(
+        CURLOPT_HTTPHEADER=>array(
                                             'Content-Type: application/json',
 											'SubscriptionId:8e00b698c5464c5ea252d30e5056cea6',
 											'Authorization:Bearer Eu9387utC7tQECYn5OpGjR6i1Aakm4Nby7Av0_TNHQ6F6IJznMLx7xziYLeug1hKLx7mv3LYfby_rFqR6FUZ-MLeb2HHx0bG6q6m8UwEDvOragt-kBmTdDd6iiXq1S4Ncfp67yP-7addgJaiN6hAmNqPgi9vjgnFSZBa4N2sMpFL5tw6fUtZchmOsVGDv59aqyXxC2VDqHLAclMaE0CAVKShoMVYqVFyf4aozXwx1hnfzP3BL7yyOSg-jmnuaw9ZgcoOfwCzTvWP7qgjZkbeHODmXBLRrRlFb0EGfpt0IFKVaAxqVjMMmK2p7fZKKZeH5nDxhaWb5WhExGFe7cxeFYsaSKPXF1Q6gV-puY2pPpFRE4i1E63QZUgIc5JGRRrVRpNaehVMWJ0hN--d_CM0zpzaeKc4H6rKM0mAisAWb_t3h0mEROob4N6Egpp7qQpTkUAgr8hp0sAif-q-v7Jge_hfXz7pvJD7o5s8DuXtoMswMjYVh7EDmvXOJ-lSuvEA2hMLZCqk8bRY3_l-FCZHT1OUCKDMj5U6uAnVPqPokbwR7HMetX_ze1dt_fdoHXxd'
                                             )
 );
 curl_setopt_array($ch, $curlConfig);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
 $result = curl_exec($ch);
 
-echo $result;
+
+$result2=json_decode($result);
+//pr($result2);
+ $tsv=str_replace(' ','%20',$result2->Result);
+
+//echo $tsv = "https://finonsstorage.blob.core.windows.net/exportkeywords/SH_SH%20US017P01%20-%20Lease_1532748815.tsv?sv=2017-07-29&sr=b&sig=SaglL1yWHJYVgD7NnmfjttHc%2B7y%2BHYtOTjNPhwzECL8%3D&se=2018-07-28T03%3A38%3A35Z&sp=r";
+$newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
+//exit;
+copy($tsv, $newfile);
+ 
+*/
+  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
+ $load_keys=false;
+ $array = array();
+ 
+    if (!file_exists($filepath)){ return $array; }
+    $content = file($filepath);
+   // echo '<pre>';
+ 
+    for ($x=0; $x < count($content); $x++){
+        if (trim($content[$x]) != ''){
+            $line = explode("\t", trim($content[$x]));
+            if ($load_keys){
+                $key = array_shift($line);
+                $array[$key] = $line;
+            }
+            else { $array[] = $line; }
+        }
+    }
+  //pr($array);
+  $ProductionFields = $JsonArray['ModuleAttributes']['1011'][145]['production'];
+  $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
+  $SubGroupAttribute=$JsonArray['AttributeSubGroupMaster'];
+  foreach ($GroupAttribute as $key => $value) {
+                $groupwisearray[$key] = $value;
+                $keys = array_map(function($v) use ($key, $emparr) {
+                    if ($v['MainGroupId'] == $key) {
+                        return $v;
+                    }
+                }, $ProductionFields);
+                $keys_sub = $this->combineBySubGroup($keys);
+			   if(!empty($keys_sub))
+                $groupwisearray[$key] = $keys_sub;
+            }
+			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
+  //pr($groupwisearray);
+ $groupId='';$groupidorg='';$subgrup=0;
+     foreach($array as $attributeArr){
+		 
+	   if(count($attributeArr)==1){
+		  // echo $attributeArr[0];
+		  //echo $attributeArr[0];
+		    $groupId=array_search($attributeArr[0],$GroupAttribute);
+			if($groupId!=''){
+				$groupidorg=$groupId;
+				$subgroup=0;
+			}
+			$subgrup_search=array_search($attributeArr[0],$SubGroupAttribute[$groupidorg]);
+			if(!empty($subgrup_search)){
+				$subgrup=$subgrup_search;
+			}
+			//else
+				//$subgrup=0;
+			
+	   }
+	   else {
+		   
+		    $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+			
+			$update['ProductionFields_'.$keys[0].'_164_1']=$attributeArr[1];
+		  
+		     // echo $attr=array_search($attributeArr[0],$groupwisearray[$groupId]);
+		   
+	   }
+   }
+
+  
+   //pr($update);
+   echo json_encode($update);
+ 
 curl_close($ch); 
 		exit;
 	}
-	function datecalculator() {
-		
-	}
+//	function datecalculator() {
+//		
+//	}
 
 }

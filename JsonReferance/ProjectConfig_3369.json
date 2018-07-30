@@ -3905,8 +3905,7 @@
             "IsAllowedToDisplay": null,
             "IsModuleGroup": null,
             "IsHygineCheck": 0,
-            "FromStatus": null,
-            "Level": 2
+            "FromStatus": null
         },
         "6694031": {
             "IsInputMandatory": 1,
@@ -3915,8 +3914,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": "1,8",
-            "Level": 1
+            "FromStatus": "1,8"
         },
         "6694033": {
             "IsInputMandatory": 1,
@@ -3925,8 +3923,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 2,
             "IsHygineCheck": 0,
-            "FromStatus": null,
-            "Level": 3
+            "FromStatus": null
         },
         "6694034": {
             "IsInputMandatory": 1,
@@ -3935,8 +3932,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": null,
             "IsHygineCheck": 0,
-            "FromStatus": null,
-            "Level": 4
+            "FromStatus": null
         },
         "6694035": {
             "IsInputMandatory": 1,
@@ -3945,8 +3941,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": "0",
-            "Level": 5
+            "FromStatus": "0"
         },
         "145": {
             "IsInputMandatory": 1,
@@ -3955,8 +3950,7 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": null,
-            "Level": 2
+            "FromStatus": null
         }
     },
     "ModuleUser": {
@@ -4376,8 +4370,8 @@
         "ProductionView": "3",
         "HygineCheck": "2",
         "joballocation_type": "1",
-        "ApiProjectId": "",
-        "ApiTemplateId": ""
+        "ApiProjectId": "95d832f0deb14e85a3f8dcac10414e75",
+        "ApiTemplateId": "405461bbf5b1251a923d45c31e3b0080"
     },
     "UserGroups": {
         "6": "Team 1",
