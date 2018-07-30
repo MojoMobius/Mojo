@@ -55,6 +55,7 @@ class GetjobcoreTable extends Table {
 		
 
         if (!empty($count)) {
+           
             $queryUpdate = "update ME_UserQuery set Query='" . $QueryValue . "'  where AttributeMasterID='" . $key . "' and ProductionEntityId='" . $options['ProductionEntity'] . "' and ModuleId='" . $options['moduleId'] . "'";
             $connection->execute($queryUpdate);
         } else {

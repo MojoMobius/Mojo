@@ -16,7 +16,6 @@
 <?php 
 
     use Cake\Routing\Router;
-
     echo $this->Html->css('zebra_datepicker.css');
     echo $this->Html->script('zebra_datepicker');
     ?>
@@ -459,7 +458,7 @@ if ($NoNewJob == 'NoNewJob') {
   100% { transform: rotate(360deg); }
 }
 @media (min-width: 480px){
-.modal-dialog {
+.multi-row {
     max-width: 1000px;
     margin: 30px auto;
 }
@@ -693,6 +692,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <input value="1" type="hidden" data="<?php echo $GroupSeqCnt; ?>" name="GroupSeq_<?php echo $keysub; ?>" class="GroupSeq_<?php echo $keysub; ?> removeinputclass">
 
                                                             <?php
+															$Rentcalid =0;
                                                              $attr3_ar = array();
                                                             for ($grpseq = 1; $grpseq <= $GroupSeqCnt; $grpseq++) {
                                                                 if ($grpseq > 1)
@@ -703,6 +703,8 @@ if ($NoNewJob == 'NoNewJob') {
 
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
+
+																
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
                                                                         if ($isDistinct !== false)
                                                                         $totalSeqCnt = 0;
@@ -715,8 +717,9 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 if ($totalSeqCnt == 0) {
                                                                     $totalSeqCnt = 1;
                                                                 }
+																
                                                                 ?>
-
+																
                                                     
                                                                         <?php
                                                                         for ($thisseq = 1; $thisseq <= $totalSeqCnt; $thisseq++) {
@@ -725,6 +728,15 @@ if ($NoNewJob == 'NoNewJob') {
                                                                                         $tempSq = $grpseq;
                                                                                     } else
                                                                                         $tempSq = $thisseq;
+																					
+																					
+																					$CommencementVal=$processinputdata[$Commencement][$tempSq][$DependentMasterIds['ProductionField']];
+																
+																$ExpirationVal=$processinputdata[$Expiration][$tempSq][$DependentMasterIds['ProductionField']];
+																
+																$BaseRentVal=$processinputdata[$BaseRent][$tempSq][$DependentMasterIds['ProductionField']];
+																
+																$RentIncVal=$processinputdata[$RentInc][$tempSq][$DependentMasterIds['ProductionField']];
                                                                                      
                                                                                     $ProdFieldsValue = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq][$DependentMasterIds['ProductionField']];
                                                                                     $InpValueFieldsValue = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq][$DependentMasterIds['InputValue']];
@@ -827,6 +839,19 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 </div>
                                                                 <div class="col-md-4 form-text">
                                                                 <div class="form-group">
+																
+																<?php
+
+																if($Rentcalid==0){
+																$Rentcalid=1;
+
+																?>
+																<input type="hidden" name="Commencement" id="Commencement" value="<?php echo $CommencementVal;?>">
+																<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
+																<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
+																<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
+																<?php } ?>
+
                                                                                     <?php
                                                                                     $readonly=array();
                                                                                     if($productionjob['isbotminds'] != 1){
@@ -941,8 +966,11 @@ if ($NoNewJob == 'NoNewJob') {
 																	<a href="javascript: void(0);"
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
+																	</a>
+																
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>);" data-target="#rentmodalAll" data-toggle="modal">
+																		click
 																	</a>	
-																	
 																	
 																	<!---- Sivachidambaram ends--->
                                                                         <?php
@@ -1181,7 +1209,7 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Handson Modal -->
 
         <div class="modal fade modal-fill-in" id="exampleFillInHandson" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog multi-row2">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1208,8 +1236,71 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Handson Modal -->
 
         <!-- Modal -->
-		 <div class="modal fade" id="querymodalAll" aria-hidden="true" aria-labelledby="querymodalAll" role="dialog" tabindex="-1">
+			 <div class="modal fade" id="rentmodalAll" aria-hidden="true" aria-labelledby="rentmodalAll" role="dialog" tabindex="-1">
             <div class="modal-dialog">
+                <div class="modal-content">
+				<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Rent Calculation</h4>
+                    </div>
+					<div class="modal-body" style="height:200px;">                       
+                            <div class="form-group">
+                                <div class=" col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
+								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class=" col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Expiration Date</label></div>
+								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class=" col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Base Rent Initial amount</label></div>
+								   <div class="col-md-6"><input type="text" name="BaseRentVal" id="BaseRentVal"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class=" col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Rent Inc</label></div>
+								   <div class="col-md-6"><input type="text" name="RentIncVal" id="RentIncVal"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class=" col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Frequency</label></div>
+								   <div class="col-md-6">
+								   <select name="frequency" id="frequency" class="form-control">
+									<option value="0">---Select---</option>
+									<option value="6month">6 Month</option>
+									<option value="1">1 Year</option>
+									<option value"2">2 Year</option>
+									<option value="3">3 Year</option>
+									<option value"4">4 Year</option>
+									</select>
+								   </div>
+                                </div>
+								 <div class="hot_rent">
+								 </div>
+                            </div>
+                        </form>
+                    </div>
+					  <div class="modal-footer">
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
+                        
+        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub();")) . ' '; ?>
+<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                        <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
+                    </div>
+				</div>
+            </div>
+        </div>
+		
+		
+		
+		 <div class="modal fade" id="querymodalAll" aria-hidden="true" aria-labelledby="querymodalAll" role="dialog" tabindex="-1">
+            <div class="modal-dialog multi-row">
                 <div class="modal-content">
 				<div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -4189,6 +4280,40 @@ function fetchbotminds()
             });
 			//if(token!='')
 			
+}
+
+function Rentcalc(AttrId,ProEntId,Seq){
+	
+	var Commencement = $("#Commencement").val();	
+	var Expiration = $("#Expiration").val();	
+	var BaseRent = $("#BaseRent").val();	
+	var RentInc = $("#RentInc").val();
+	
+	$("#CommencementVal").val(Commencement);
+	$("#ExpirationVal").val(Expiration);
+	$("#BaseRentVal").val(BaseRent);
+	$("#RentIncVal").val(RentInc);
+	
+}
+function Rentcalcsub(){
+	var ProjectId = $("#ProjectId").val();
+	var Commencement = $("#CommencementVal").val();	
+	var Expiration = $("#ExpirationVal").val();	
+	var BaseRent = $("#BaseRentVal").val();	
+	var RentInc = $("#RentIncVal").val();
+	var Frequency = $("#frequency").val();
+	
+	var rentval = $("#ProductionFields_"+AttrId+"_"+ProEntId+"_"+Seq).val();
+	$(".hot_rent").html("Loading...");
+	 $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
+                 data: ({ProjectId: ProjectId,Commencement: Commencement,Expiration: Expiration,BaseRent: BaseRent,RentInc: RentInc,Frequency: Frequency}),
+                success: function (res) { 
+                     $(".hot_rent").html(res);
+					}
+                
+            });
 }
     
 </script>
