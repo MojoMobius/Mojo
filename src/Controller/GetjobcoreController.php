@@ -3143,36 +3143,40 @@ curl_close($ch);
      
      echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;
-     $Htmlview='<div class="form-group">';
-    $Htmlview.='<div class=" col-md-12">
-                               <div class="col-md-6"> <label for="Query" class="query">Commencement Date</label></div>
-                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
-                            </div>'; 
-    $Htmlview.='<div class=" col-md-12">
-                               <div class="col-md-6"> <label for="Query" class="query">Expiration Date </label></div>
-                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
-                            </div>'; 
-    $Htmlview.='<div class=" col-md-12">
-                               <div class="col-md-6"> <label for="Query" class="query">Base Rent Initial amount</label></div>
-                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
-                            </div>'; 
-    $Htmlview.='<div class=" col-md-12">
-                               <div class="col-md-6"> <label for="Query" class="query">Rent Inc</label></div>
-                                        <div class="col-md-6"><input type="text" name="query" id="query" rows="4" cols="30" value="'.$_POST['Rentval'].'"></div>
-                            </div>'; 
-    $Htmlview.='<div class=" col-md-12">
-                               <div class="col-md-6"> <label for="Query" class="query">Frequency</label></div>
-                                        <div class="col-md-6">
-<select name="frequency" id="frequency">
-<option value="0">---Select---</option>
-<option value="6month">6 Month</option>
-<option value="1">1 Year</option>
-<option value"2">2 Year</option>
-<option value="3">3 Year</option>
-<option value"4">4 Year</option>
-</div>
-                            </div>'; 
-    $Htmlview.='</div>';
+     
+     
+$percentage = $_POST['RentInc'];
+$total = $_POST['BaseRent'];
+$PercentageAmount = ($percentage / 100) * $total;
+$Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
+$Todate=date('Y-m-d',strtotime($_POST['Expiration']));
+$start    = new DateTime($Fromdate);
+$end      = new DateTime($Todate);
+$interval = DateInterval::createFromDateString($_POST['frequency']);
+$period   = new DatePeriod($start, $interval, $end);
+ $Htmlview="<table class='table table-center'>
+	  <tr>
+	  <th  width='20%'>% Change</th>
+	  <th  width='20%'>Amount ($)</th>
+	  <th  width='20%'>Expense Start</th>
+	  <th  width='20%'>Expense End</th>
+	  </tr>";
+foreach ($period as $dt) {
+    
+  $StartDate=$dt->format("d-m-Y");
+  $Enddate=date("d-m-Y", strtotime("+6 months", strtotime($StartDate)));
+$total =$total + ($percentage / 100) * $total;
+    
+  //  echo $dt->format("Y-m-d") . "<br>\n";
+    
+    $Htmlview.='<tr>
+			  <td>'.$PercentageAmount.'</td>
+			  <td>'.$total.'</td>
+			  <td>'.$StartDate.'</td>
+			  <td>'.$Enddate.'</td>
+			  </tr>';
+}
+ $Htmlview.='</table">';
      
     echo $Htmlview;
      exit;

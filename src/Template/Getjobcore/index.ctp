@@ -1248,11 +1248,11 @@ if ($NoNewJob == 'NoNewJob') {
 								   <div class="col-md-6">
 								   <select name="frequency" id="frequency" class="form-control">
 									<option value="0">---Select---</option>
-									<option value="6month">6 Month</option>
-									<option value="1">1 Year</option>
-									<option value"2">2 Year</option>
-									<option value="3">3 Year</option>
-									<option value"4">4 Year</option>
+									<option value="6 month">6 Month</option>
+									<option value="1 year">1 Year</option>
+									<option value="2 year">2 Year</option>
+									<option value="3 year">3 Year</option>
+									<option value="4 year">4 Year</option>
 									</select>
 								   </div>
                                 </div>
@@ -4260,6 +4260,7 @@ function Rentcalc(AttrId,ProEntId,Seq){
 	var Expiration = $("#Expiration").val();	
 	var BaseRent = $("#BaseRent").val();	
 	var RentInc = $("#RentInc").val();
+	
 	
 	$("#CommencementVal").val(Commencement);
 	$("#ExpirationVal").val(Expiration);
