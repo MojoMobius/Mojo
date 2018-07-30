@@ -364,7 +364,7 @@ class DeliveryExportTable extends Table {
             }
             if (is_numeric($val['ProjectAttributeMasterId'])) {
                 if(!empty($val['ProjectAttributeMasterId'])){
-                $firldArr['Headers'][$i] = $JsonArray[$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
+                $firldArr['Headers'][$i] = $JsonArray[$val['ProjectAttributeMasterId']]['AttributeName'];
                 
                  $k = 0;
                 foreach ($moduleConfig as $key => $value) {
@@ -403,7 +403,7 @@ class DeliveryExportTable extends Table {
                 }
             }
             if(!empty($val['AttributeMasterId'])){
-            $firldArr['HeaderVals'][$val['AttributeMasterId']] = $JsonArray[$val['ProjectAttributeMasterId']]['DisplayAttributeName'];
+            $firldArr['HeaderVals'][$val['AttributeMasterId']] = $JsonArray[$val['ProjectAttributeMasterId']]['AttributeName'];
             }
             if ($val['AttributeMasterId'] == 'UserId') {
                 $firldArr['UserId']['Order'] = $val['OrderId'];

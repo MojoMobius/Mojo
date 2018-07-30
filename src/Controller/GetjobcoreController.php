@@ -7,6 +7,10 @@ use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
 
+require_once(ROOT . '\vendor' . DS . 'PHPExcel' . DS . 'IOFactory.php');
+require_once(ROOT . '\vendor' . DS . 'PHPExcel.php');
+
+use PHPExcel_IOFactory;
 /**
  * Bookmarks Controller
  *
@@ -49,6 +53,7 @@ class GetjobcoreController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
+                //$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
         if ($FromStatus == '') {
@@ -1878,13 +1883,13 @@ print_r($listdata_json);exit;
     }
 	    function ajaxquerypostingmulti() {
 			
-	    parse_str($_POST['multiquery'], $Query);
+	parse_str($_POST['multiquery'], $Query);
         $session = $this->request->session();
         $user_id = $session->read("user_id");
         $role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
-        $RegionId = $_POST['RegionId'];		
+        $RegionId = $_POST['RegionId'];	
 		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
 		echo "success";
         exit;
@@ -2996,7 +3001,7 @@ print_r($listdata_json);exit;
 		$ProjectId = $session->read("ProjectId");
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
-		$fields = array(
+	/*	$fields = array(
             'username' => "khaleelurrehmanm@mobiusservices.com",
             'password' => "Lease@123",
             'grant_type' => "password"
@@ -3032,23 +3037,91 @@ curl_setopt_array($ch, $curlConfig);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
 $result = curl_exec($ch);
 
+
 $result2=json_decode($result);
 //pr($result2);
-echo $tsv=$result2->Result;
+ $tsv=str_replace(' ','%20',$result2->Result);
 
+//echo $tsv = "https://finonsstorage.blob.core.windows.net/exportkeywords/SH_SH%20US017P01%20-%20Lease_1532748815.tsv?sv=2017-07-29&sr=b&sig=SaglL1yWHJYVgD7NnmfjttHc%2B7y%2BHYtOTjNPhwzECL8%3D&se=2018-07-28T03%3A38%3A35Z&sp=r";
 $newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
+//exit;
+copy($tsv, $newfile);
+ 
+*/
+  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
+ $load_keys=false;
+ $array = array();
+ 
+    if (!file_exists($filepath)){ return $array; }
+    $content = file($filepath);
+   // echo '<pre>';
+ 
+    for ($x=0; $x < count($content); $x++){
+        if (trim($content[$x]) != ''){
+            $line = explode("\t", trim($content[$x]));
+            if ($load_keys){
+                $key = array_shift($line);
+                $array[$key] = $line;
+            }
+            else { $array[] = $line; }
+        }
+    }
+  //pr($array);
+  $ProductionFields = $JsonArray['ModuleAttributes']['1011'][145]['production'];
+  $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
+  $SubGroupAttribute=$JsonArray['AttributeSubGroupMaster'];
+  foreach ($GroupAttribute as $key => $value) {
+                $groupwisearray[$key] = $value;
+                $keys = array_map(function($v) use ($key, $emparr) {
+                    if ($v['MainGroupId'] == $key) {
+                        return $v;
+                    }
+                }, $ProductionFields);
+                $keys_sub = $this->combineBySubGroup($keys);
+			   if(!empty($keys_sub))
+                $groupwisearray[$key] = $keys_sub;
+            }
+			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
+  //pr($groupwisearray);
+ $groupId='';$groupidorg='';$subgrup=0;
+     foreach($array as $attributeArr){
+		 
+	   if(count($attributeArr)==1){
+		  // echo $attributeArr[0];
+		  //echo $attributeArr[0];
+		    $groupId=array_search($attributeArr[0],$GroupAttribute);
+			if($groupId!=''){
+				$groupidorg=$groupId;
+				$subgroup=0;
+			}
+			$subgrup_search=array_search($attributeArr[0],$SubGroupAttribute[$groupidorg]);
+			if(!empty($subgrup_search)){
+				$subgrup=$subgrup_search;
+			}
+			//else
+				//$subgrup=0;
+			
+	   }
+	   else {
+		   
+		    $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+			
+			$update['ProductionFields_'.$keys[0].'_164_1']=$attributeArr[1];
+		  
+		     // echo $attr=array_search($attributeArr[0],$groupwisearray[$groupId]);
+		   
+	   }
+   }
 
-if ( copy($tsv, $newfile) ) {
-    echo "Copy success!";
-}else{
-    echo "Copy failed.";
-}
-
+  
+   //pr($update);
+   echo json_encode($update);
+ 
 curl_close($ch); 
 		exit;
 	}
-	function datecalculator() {
-		
-	}
+//	function datecalculator() {
+//		
+//	}
 
 }

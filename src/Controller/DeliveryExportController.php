@@ -182,14 +182,14 @@ class DeliveryExportController extends AppController {
     }
     public function export()
     {
-        $fp = fsockopen('localhost', 8080);
+        $fp = fsockopen('localhost', 80);
         $params = array('ProjectId'=>$_POST['projectid'],'regionid'=>$_POST['regionid'],'batch_from'=>$_POST['inpdate']);
         foreach ($params as $key => &$val) {
             if (is_array($val)) $val = implode(',', $val);
                 $post_params[] = $key.'='.urlencode($val);
         }
         $post_string = implode('&', $post_params);
-        fwrite($fp, "POST /mojo_V2/DeliveryExport/exportdata HTTP/1.1\r\n");
+        fwrite($fp, "POST /mojo/DeliveryExport/exportdata HTTP/1.1\r\n");
         fwrite($fp, "Host: localhost \r\n");
         fwrite($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
         fwrite($fp, "Content-Length: ".strlen($post_string)."\r\n");
@@ -203,6 +203,19 @@ class DeliveryExportController extends AppController {
         fclose($fp);
     }
     function exportdata(){
+		
+			$connection = ConnectionManager::get('default');
+			$batch_from = $_POST['batch_from'];
+			
+			echo $table="Create table exportdata_".date('Ymd',strtotime($batch_from))." (
+			[MOBID (PK,Auto)]  [int] IDENTITY(1,1) NOT NULL,
+			[FDRID] nvarchar(max) NULL,
+			[Campaign] nvarchar(max) NULL,
+			[Field] nvarchar(max) NULL,
+			[Value] nvarchar(max) NULL,[TYPE] nvarchar (max),[Bot Name] nvarchar(max),[HTML File Name] nvarchar(max),
+			AttributeGroup nvarchar(max),GroupNumber nvarchar(max),DisplayOrderNumber nvarchar(max))";
+				//$insertQry=$connection->execute($table);
+		
             $ProjectId = $_POST['ProjectId'];
             $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
             $content = file_get_contents($path);
@@ -210,7 +223,7 @@ class DeliveryExportController extends AppController {
             $module = $contentArr['Module'];
             $moduleConfig = $contentArr['ModuleConfig'];
             $RegionId = $_POST['regionid'];
-            $batch_from = $_POST['batch_from'];
+            
             $folderDate=date('d-m-Y',strtotime($batch_from));
             $batch_to = $batch_from;
             $selected_month_first = strtotime($batch_to);
@@ -222,7 +235,7 @@ class DeliveryExportController extends AppController {
            
             $project_id = $ProjectId;
             $conditions.=" AND RPE.ProjectId ='$ProjectId'";
-            $connection = ConnectionManager::get('default');
+            
             $insert="update MC_Export_Details SET Record_Status=0 where Project=$ProjectId AND Region=$RegionId AND Date='".date('Y-m-d',strtotime($batch_from))."'";
             $insertQry=$connection->execute($insert);
             $insert="INSERT INTO MC_Export_Details (Project,Region,Date,Status,Record_Status)values($ProjectId,$RegionId,'".date('Y-m-d',strtotime($batch_from))."',1,1)";
@@ -237,7 +250,7 @@ class DeliveryExportController extends AppController {
             $ModuleuserId = $outputMapping['UserId'];
             $userOrderId = $outputMapping['UserId']['Order'];
             $ExportProductions = $this->DeliveryExport->find('users', ['condition' => $conditions, 'Project_Id' => $ProjectId, 'Region_Id' => $RegionId, 'UserGroupId' => $UserGroupId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'select_fields' => $select_fields, 'header_fields_vals' => $header_fields_vals, 'select_fields_param' => $select_fields_param, 'prodmodule_fields' => $prodmodule_fields, 'UserId' => $user_id]);
-            //pr($ExportProductions); exit;
+           // pr($ExportProductions); exit;
                     $prod = 0;
                     foreach ($prodmodule_fields as $Productionmodule):
                         $Prodmodulelist[$prod] = trim(trim($Productionmodule, 'RPT.['), ']');
@@ -266,11 +279,13 @@ class DeliveryExportController extends AppController {
                     $records_count = 0;
                     $filecount = 1;
                     $record_separate_limit = 400000;
+					$insertArr='';
                     foreach ($mainvalues as $key => $valueloop) {
                         $data_fdrid = $fdrid_vals[$valueloop['InputEntityId']];
                         $data_sequence = $valueloop['SequenceNumber'];
                         $data_field_type = $valueloop['FieldTypeName'];
                         foreach ($valueloop as $keys => $valueloopkeys) {
+						
                             $html_file_name = $html_vals[$keys][$valueloop['InputEntityId']][$valueloop['DepId']][$valueloop['SequenceNumber']];
                             if ($keys != 'FieldTypeName' && $keys != 'FDRID' && $keys != 'SequenceNumber' && $keys != 'UserId' && $keys != 'InputEntityId' && $keys != 'DepId') {
                                 $campaign_name = $AttributeGroupMasterName[$keys];
@@ -280,7 +295,10 @@ class DeliveryExportController extends AppController {
                                 $data.=$data_fdrid . '*' . $campaign_name . '*' . $field . '*' . $valuearr . '*' . $html_file_name . '*' . $data_field_type . '*' . $attr_sub_name . '*' . $data_sequence;
                                 $data = rtrim($data, '*');
                                 $data.= PHP_EOL;
+								$valuearr=str_replace("'","''",$valueloopkeys);
+								$insertArr.="('".$data_fdrid . "','" . $campaign_name . "','" . $field . "','$valuearr','" . $data_field_type . "','','" . $html_file_name . "','" . $attr_sub_name . "','" . $data_sequence."',''),";
                             }
+							
                             $records_count++;
                             if ($records_count > $record_separate_limit) {
                                 if (headers_sent()) {
@@ -307,6 +325,11 @@ class DeliveryExportController extends AppController {
                             }
                         }
                     }
+					 $insertArr = rtrim($insertArr, ',');
+					 echo $insertExpor="insert into  exportdata_".date('Ymd',strtotime($batch_from))." (FDRID,Campaign,Field,Value,TYPE,[Bot Name],[HTML File Name],AttributeGroup,GroupNumber,DisplayOrderNumber) values ".$insertArr;
+					$insertQry=$connection->execute($insertExpor); 
+					$sprun="EXECUTE [fdrupload_procedure_0706] @mojo_dbname ='D2K_MOJO_Entity_Validation',@mojo_tablename ='exportdata_".date('Ymd',strtotime($batch_from))."',@currentdate ='".date('Ymd',strtotime($batch_from))."'";
+					$sprunQry=$connection->execute($sprun); 
                   // echo $data;exit;
                     if (!empty($ExportProduction)) {
                         if ($records_count < $record_separate_limit) {
@@ -333,7 +356,7 @@ class DeliveryExportController extends AppController {
                         }
                         
                     }
-                       $insert="update MC_Export_Details SET Status=2 where Record_Status=1 AND Project=$ProjectId AND Region=$RegionId AND Date='".date('Y-m-d',strtotime($batch_from))."'";
+                      $insert="update MC_Export_Details SET Status=2 where Record_Status=1 AND Project=$ProjectId AND Region=$RegionId AND Date='".date('Y-m-d',strtotime($batch_from))."'";
             $insertQry=$connection->execute($insert);
                     exit;
     }

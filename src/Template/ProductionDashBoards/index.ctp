@@ -247,6 +247,9 @@ if (count($Production_dashboard) > 0) {
                         <div class="pane-content" >
                             
                               <input type="button" id="prioritize" name="prioritize" value="Allocate/Prioritize" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="priority();" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal">
+                              
+                              <input type="button" id="prioritize" name="prioritize" value="Direct/Abstraction" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="directabstraction();" data-rel="page-tag" data-target="#exampleFillPopupdirectabs" data-toggle="modal">
+                              
                             <input type="hidden" name="UpdateId" id="UpdateId">
                             <button style="float:right; height:18px; visibility: hidden; margin-right:15px;" type='hidden' name='downloadFile' id='downloadFile' value='downloadFile'></button>
                             <table style='width:100%;' class="table table-striped table-center" id='example'>
@@ -323,6 +326,7 @@ if (count($Production_dashboard) > 0) {
                                         
                                         <input type="hidden" class="status_ids" name="status[<?php echo $input['Id'];?>]" id="status.<?php echo $input['StatusId']; ?>" value="<?php echo $input['StatusId'];?>">
                                          <input type="hidden" class="pri_saved_ids" name="pri_saved[<?php echo $input['Id'];?>]" id="pri_saved.<?php echo $input['priority']; ?>" value="<?php echo $input['priority'];?>">
+                                          <input type="hidden" class="InputEntityId_ids" name="InputEntityId[<?php echo $input['Id'];?>]" id="InputEntityId_ids.<?php echo $input['InputEntityId']; ?>" value="<?php echo $input['InputEntityId'];?>">
                                         </td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
                                         <td><?php echo $region[$input['RegionId']]; ?></td>
@@ -461,6 +465,44 @@ echo $this->Form->end();
             </div>
         </div>
        
+         
+         <div class="modal fade modal-fill-in" id="exampleFillPopupdirectabs" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle">Direct Abstraction</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div  class="container-fluid" style="margin-bottom:-10px;">
+                            <div id="vertical_modal">
+                                <div id="top-pane">
+                                    <div id="horizontal" style="height: 100%; width: 100%;">
+                                        <div id="right-pane">
+                                           <div class="hotdirectabstraction">
+
+
+                                           </div>
+                                            
+                                            <div id="succ_msg" style="width: 800px;text-align: center;height:50px;color: red;font-size: 14px;display:none;" > Successfully Updated </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer"> <input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" id="but_directabstruction" onclick="directabstractionsubmit();" ></div>
+                    
+                </div>
+            </div>
+        </div>
+         
+         
+         
+         
         <!-- Popup new Modal -->
 <div id="fade" class="black_overlay"></div>
 <?php
@@ -901,9 +943,10 @@ if ($CallUserGroupFunctions == 'yes') {
 ?>
 <script>
         
-function priority(){
+function directabstraction(){
  //var n = $("input[name^='priority']").length;
  
+ var array_inputentityid_data = $('.InputEntityId_ids').serialize();
  var arraydata = $('.Pri_ids:checked').serialize();
  var arraydomain = $('.domain_ids').serialize();
  var arraystatus = $('.status_ids').serialize();
@@ -916,6 +959,50 @@ function priority(){
 //    
 // var arr_value+='_' + arraydata[i].value;
 //}
+ $(".hotdirectabstraction").html("Loading...");
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxdirectabstraction')); ?>',
+            
+            data: {ids: arraydata,ProjectId: Proid,domainId: arraydomain,savedId: arraysaved,statusId: arraystatus,Inputentityids:array_inputentityid_data},
+            type: 'POST',
+            success: function (res) {
+	     $(".hotdirectabstraction").html(res);
+            }
+        });
+}
+     
+     
+function directabstractionsubmit(){
+ 
+ var statusids = $('.statusids').serialize();
+ var Proid=$('#ProjectId').val();
+   
+            $("#but_directabstruction").css("opacity", "0.5");
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxdirectabstractionsubmit')); ?>',
+            
+            data: {statusids: statusids, ProjectId:Proid},
+            type: 'POST',
+            success: function (res) {
+	     //$(".hot").html(res);
+             $("#but_directabstruction").css("opacity", "");
+             $("#succ_msg").fadeIn();
+              $("#succ_msg").fadeOut(2000);
+         
+            }
+        });
+}
+     
+     
+function priority(){
+ //var n = $("input[name^='priority']").length;
+ 
+ var arraydata = $('.Pri_ids:checked').serialize();
+ var arraydomain = $('.domain_ids').serialize();
+ var arraystatus = $('.status_ids').serialize();
+ var arraysaved = $('.pri_saved_ids').serialize();
+ var Proid=$('#ProjectId').val();
+ 
  $(".hot").html("Loading...");
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdata')); ?>',
