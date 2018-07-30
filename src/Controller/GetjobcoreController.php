@@ -139,10 +139,6 @@ class GetjobcoreController extends AppController {
             }
             $RegionId = $productionjobNew['RegionId'];
 
-
-
-
-
             $StaticFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['static'];
             if ($RegionId == '')
                 $RegionId = 6;
@@ -750,7 +746,8 @@ class GetjobcoreController extends AppController {
             $connection = ConnectionManager::get('d2k');
             $statusIdentifier = ReadyforPUReworkIdentifier;
             $session = $this->request->session();
-            $moduleId = $session->read("moduleId");
+//            $moduleId = $session->read("moduleId");
+            
 
             $PuReworkFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
             $PuFirst_Status_id = array();
@@ -865,6 +862,7 @@ class GetjobcoreController extends AppController {
                     $n++;
                 }
             }
+      
             $FirstAttribute = $firstValue[0];
             $this->set('AttributeGroupMaster', $AttributeGroupMaster);
             $this->set('AttributesListGroupWise', $groupwisearray);
@@ -878,7 +876,7 @@ class GetjobcoreController extends AppController {
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
             $ReadOnlyFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['readonly'];
             //pr($productionjobNew);
-            //exit;
+            
             if ($productionjobNew) {
                 //exit;
 
@@ -1020,7 +1018,7 @@ class GetjobcoreController extends AppController {
                 endforeach;
                 $this->set('HelpContantDetails', $HelpContId);
             }
-
+   
             $productionjobId = $this->request->data['ProductionId'];
             $ProductionEntity = $this->request->data['ProductionEntityID'];
             $productionjobStatusId = $this->request->data['StatusId'];
@@ -1038,7 +1036,7 @@ class GetjobcoreController extends AppController {
                 $QcCompletedCount = $QcCompletedCount[0]['QCCompletedCount'];
                 $QcCompletedCount = $QcCompletedCount + 1;
             }
-
+       
             if (isset($this->request->data['Submit'])) {
 
                 $queryStatus = $connection->execute("SELECT count(1) as cnt FROM ME_UserQuery WITH (NOLOCK) WHERE  StatusID=1 AND ProjectId=" . $ProjectId . " AND  ProductionEntityId='" . $productionjobNew[0]['ProductionEntity'] . "'")->fetchAll('assoc');
@@ -1097,6 +1095,7 @@ class GetjobcoreController extends AppController {
                 $this->set('getNewJOb', '');
             }
             $validate = array();
+        
             foreach ($ProductionFields as $key => $val) {
                 $validationRules = $JsonArray['ValidationRules'][$val['ProjectAttributeMasterId']];
                 $validate[$val['ProjectAttributeMasterId']]['MinLength'] = $validationRules['MinLength'];
@@ -1195,9 +1194,14 @@ class GetjobcoreController extends AppController {
                 $validate[$val['ProjectAttributeMasterId']]['AllowedCharacter'] = htmlspecialchars($AllowedCharacter);
                 $validate[$val['ProjectAttributeMasterId']]['NotAllowedCharacter'] = htmlspecialchars($NotAllowedCharacter);
 
-                $validate[$val['ProjectAttributeMasterId']]['Format'] = $Format;
-                $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
-                $validate[$val['ProjectAttributeMasterId']]['AllowedDecimalPoint'] = $validationRules['AllowedDecimalPoint'];
+                
+                 $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
+                 $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
+                 $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
+                   
+                $validate[$val['ProjectAttributeMasterId']]['IsDatepicker'] = $validationRules['IsDatepicker'];
+                $validate[$val['ProjectAttributeMasterId']]['IsDatecalculator'] = $validationRules['IsDatecalculator'];
+                $validate[$val['ProjectAttributeMasterId']]['IsRentcalculator'] = $validationRules['IsRentcalculator'];
 
                 $validate[$val['ProjectAttributeMasterId']]['Options'] = htmlspecialchars($JsonArray['AttributeOrder'][$productionjobNew[0]['RegionId']][$val['ProjectAttributeMasterId']]['Options']);
                 $validate[$val['ProjectAttributeMasterId']]['Mapping'] = $JsonArray['AttributeOrder'][$productionjobNew[0]['RegionId']][$val['ProjectAttributeMasterId']]['Mapping'];
@@ -1259,7 +1263,6 @@ class GetjobcoreController extends AppController {
 //            $listdata = $this->ajaxgeapivalidationremovekey($project_scope_id, $listdata);
 
             $listdata_json = json_encode($listdata);
-print_r($listdata_json);exit;
             $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_URL,"http://localhost/project/api.php");
             curl_setopt($ch, CURLOPT_URL, $this->validation_apiurl);
@@ -1268,7 +1271,7 @@ print_r($listdata_json);exit;
 
             //attach encoded JSON string to the POST fields
 //        curl_setopt($ch, CURLOPT_POSTFIELDS,"postvar1=value1&postvar2=value2&postvar3=value3");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, "mojo_json=$listdata_json");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array("mojo_json"=>$listdata_json));
 
             // receive server response ...
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
