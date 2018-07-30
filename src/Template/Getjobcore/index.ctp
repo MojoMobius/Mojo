@@ -676,6 +676,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <input value="1" type="hidden" data="<?php echo $GroupSeqCnt; ?>" name="GroupSeq_<?php echo $keysub; ?>" class="GroupSeq_<?php echo $keysub; ?> removeinputclass">
 
                                                             <?php
+															$Rentcalid =0;
                                                              $attr3_ar = array();
                                                             for ($grpseq = 1; $grpseq <= $GroupSeqCnt; $grpseq++) {
                                                                 if ($grpseq > 1)
@@ -686,7 +687,7 @@ if ($NoNewJob == 'NoNewJob') {
 
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
-																$Rentcalid =0;
+
 																
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
                                                                         if ($isDistinct !== false)
@@ -816,6 +817,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <div class="form-group">
 																
 																<?php
+
 																if($Rentcalid==0){
 																$Rentcalid=1;
 
