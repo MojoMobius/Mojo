@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
 <?php
 
-//pr($processinputdata); //exit;
 use Cake\Routing\Router;
 
 if ($NoNewJob == 'NoNewJob') {
