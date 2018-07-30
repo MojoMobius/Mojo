@@ -42,6 +42,11 @@ class ValidationrulesController extends AppController {
             // pr($PostIsNumeric); exit;
             $PostIsEmail = $this->request->data('IsEmail');
             $PostIsUrl = $this->request->data('IsUrl');
+            
+            $PostIsDatepicker = $this->request->data('IsDatepicker');
+            $PostIsDatecalculator = $this->request->data('IsDatecalculator');
+            $PostIsRentcalculator = $this->request->data('IsRentcalculator');
+            
             $PostIsDate = $this->request->data('IsDate');
             $PostDateFormat= $this->request->data('DateFormat');
             $PostIsDecimal= $this->request->data('IsDecimal');
@@ -69,6 +74,11 @@ class ValidationrulesController extends AppController {
                 $FinalArray['IsNumeric']=0;
                 $FinalArray['IsEmail']=0;
                 $FinalArray['IsUrl']=0;
+                
+                $FinalArray['IsDatepicker']=0;
+                $FinalArray['IsDatecalculator']=0;
+                $FinalArray['IsRentcalculator']=0;
+                
                 $FinalArray['IsDate']=0;
                 $FinalArray['IsDecimal']=0;
                 $FinalArray['IsAutoSuggesstion']=0;
@@ -77,11 +87,19 @@ class ValidationrulesController extends AppController {
                 $FinalArray['ProjectAttributeMasterId']=$idArr[0];
                 $FinalArray['AttributeMasterId']=$idArr[1];
                 
-                $IsMandatory=in_array($val ,$PostIsMandatory);
+                
+                
+                
+            $IsMandatory=in_array($val ,$PostIsMandatory);
             $IsAlphabet=in_array($val ,$PostIsAlphabet);
             $IsNumeric=in_array($val ,$PostIsNumeric);
             $IsEmail=in_array($val ,$PostIsEmail);
             $IsUrl=in_array($val ,$PostIsUrl);
+            
+            $IsDatepicker=in_array($val ,$PostIsDatepicker);
+            $IsDatecalculator=in_array($val ,$PostIsDatecalculator);
+            $IsRentcalculator=in_array($val ,$PostIsRentcalculator);
+            
             $IsDate=in_array($val ,$PostIsDate);
             $FinalArray['DateFormat']=$PostDateFormat[$key];
             $IsDecimal=in_array($val ,$PostIsDecimal);
@@ -111,6 +129,19 @@ class ValidationrulesController extends AppController {
             if($IsUrl){
                 $FinalArray['IsUrl']=1;
             }
+            
+            if($IsDatepicker){
+                $FinalArray['IsDatepicker']=1;
+              
+            }
+            if($IsRentcalculator){
+                $FinalArray['IsRentcalculator']=1;
+            }
+            
+            if($IsDatecalculator){
+                $FinalArray['IsDatecalculator']=1;
+            }
+            
             if($IsDate){
                 $FinalArray['IsDate']=1;
             }
@@ -140,6 +171,11 @@ class ValidationrulesController extends AppController {
             $Validationrules->IsNumeric =  $FinalArray['IsNumeric'];
             $Validationrules->IsEmail =  $FinalArray['IsEmail'];
             $Validationrules->IsUrl =  $FinalArray['IsUrl'];
+            
+            $Validationrules->IsDatepicker =  $FinalArray['IsDatepicker'];
+            $Validationrules->IsRentcalculator =  $FinalArray['IsRentcalculator'];
+            $Validationrules->IsDatecalculator =  $FinalArray['IsDatecalculator'];
+            
             $Validationrules->IsDate =  $FinalArray['IsDate'];
             $Validationrules->Dateformat =  $FinalArray['DateFormat'];
             $Validationrules->IsDecimal =  $FinalArray['IsDecimal'];
@@ -152,6 +188,9 @@ class ValidationrulesController extends AppController {
             $Validationrules->Format =  $FinalArray['Format'];
             $Validationrules->MaxLength =  $FinalArray['MaxLength'];
             $Validationrules->MinLength =  $FinalArray['MinLength'];
+            
+//            echo "<pre>";print_r($Validationrules);exit;
+            
             $Validationrulestable->save($Validationrules);
             }
             $this->Flash->success(__('Validation rules has been saved.'));

@@ -13,9 +13,26 @@
 <script src="webroot/js/highlight/highlight.pack.js"></script>
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
-<?php
+<?php 
 
-use Cake\Routing\Router;
+    use Cake\Routing\Router;
+
+    echo $this->Html->css('zebra_datepicker.css');
+    echo $this->Html->script('zebra_datepicker');
+    ?>
+ <script>
+ $(document).ready(function () {
+ 
+  $('.IsDatepicker').Zebra_DatePicker({
+                    direction: true,
+                    format: 'd-m-Y'
+                });
+   });
+
+   </script>
+
+
+<?php
 
 if ($NoNewJob == 'NoNewJob') {
     ?>
@@ -28,6 +45,7 @@ if ($NoNewJob == 'NoNewJob') {
     <?php
 } else if ($this->request->query['job'] == 'completed' || $this->request->query['job'] == 'Query') {
     ?>
+
 <div align="center" style="color:green;">
     <b>
             <?php
@@ -761,6 +779,14 @@ if ($NoNewJob == 'NoNewJob') {
                                                                             }else{
                                                                               $minlength = $validate[$valprodFields['ProjectAttributeMasterId']]['MinLength']; 
                                                                             }
+                                                                    
+                                                                            if(!empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
+                                                                               $dbClassName .=" IsDatepicker "     ;
+                                                                            }else{
+                                                                              $dbClassName .="";
+                                                                            }
+                                                                       
+                                                                            
                                                                             //Mandatory coding ends
                                                                             if($valprodFields['ControlName']=='TextBox' || $valprodFields['ControlName']=='Label') { 
                                                                              $inpOnBlur = 'onblur="checkLength(this,'.$valprodFields['AttributeMasterId'].','.$DependentMasterIds['ProductionField'].','.$tempSq.','.$minlength.');'.$mandateFunction.' '.$validate[$valprodFields['ProjectAttributeMasterId']]['FunctionName'].'(\'ProductionFields_' . $valprodFields['AttributeMasterId'].'_'.$DependentMasterIds['ProductionField'].'_'.$tempSq . '\', this.value,'.'\'' . $validate[$valprodFields['ProjectAttributeMasterId']]['AllowedCharacter'] . '\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['NotAllowedCharacter'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['Dateformat'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['AllowedDecimalPoint'].'\');" maxlength="'.$validate[$valprodFields['ProjectAttributeMasterId']]['MaxLength'].'" minlength="'.$validate[$valprodFields['ProjectAttributeMasterId']]['MinLength'].'"';   
@@ -4060,7 +4086,11 @@ $(document).keydown(function(e) {
 	.link-style{
 	cursor: pointer;
 	}
-		
+        .Zebra_DatePicker_Icon_Inside{
+            left: 163px !important;
+        }
+        
+        
 </style>
 <?php
 if ($this->request->query['continue'] == 'yes') {
