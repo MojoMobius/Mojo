@@ -6,6 +6,9 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
+use DateTime;
+use DatePeriod;
+use DateInterval;
 
 require_once(ROOT . '\vendor' . DS . 'PHPExcel' . DS . 'IOFactory.php');
 require_once(ROOT . '\vendor' . DS . 'PHPExcel.php');
@@ -3141,8 +3144,8 @@ curl_close($ch);
  function ajaxRentcal(){
      //echo $_POST['Rentval']."hello";
      
-     echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
-     exit;
+    /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
+     exit;*/
      
      
 $percentage = $_POST['RentInc'];
@@ -3151,9 +3154,16 @@ $PercentageAmount = ($percentage / 100) * $total;
 $Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
 $Todate=date('Y-m-d',strtotime($_POST['Expiration']));
 $start    = new DateTime($Fromdate);
+$start->modify('first day of this month');
 $end      = new DateTime($Todate);
+$end->modify('first day of next month');
 $interval = DateInterval::createFromDateString($_POST['frequency']);
 $period   = new DatePeriod($start, $interval, $end);
+foreach ($period as $dt) {
+ echo $dt->format("Y-m-d") . "<br>\n";
+}
+
+
  $Htmlview="<table class='table table-center'>
 	  <tr>
 	  <th  width='20%'>% Change</th>
@@ -3170,7 +3180,7 @@ $total =$total + ($percentage / 100) * $total;
   //  echo $dt->format("Y-m-d") . "<br>\n";
     
     $Htmlview.='<tr>
-			  <td>'.$PercentageAmount.'</td>
+			  <td>'.$percentage.'</td>
 			  <td>'.$total.'</td>
 			  <td>'.$StartDate.'</td>
 			  <td>'.$Enddate.'</td>

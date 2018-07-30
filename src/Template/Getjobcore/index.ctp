@@ -1223,27 +1223,27 @@ if ($NoNewJob == 'NoNewJob') {
                     </div>
 					<div class="modal-body" style="height:200px;">                       
                             <div class="form-group">
-                                <div class=" col-md-12">
+                                <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
 								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="form-control" value="">
 								   </div>
                                 </div>
-								 <div class=" col-md-12">
+								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Expiration Date</label></div>
 								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="form-control" value="">
 								   </div>
                                 </div>
-								 <div class=" col-md-12">
+								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Base Rent Initial amount</label></div>
 								   <div class="col-md-6"><input type="text" name="BaseRentVal" id="BaseRentVal"  class="form-control" value="">
 								   </div>
                                 </div>
-								 <div class=" col-md-12">
+								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Rent Inc</label></div>
 								   <div class="col-md-6"><input type="text" name="RentIncVal" id="RentIncVal"  class="form-control" value="">
 								   </div>
                                 </div>
-								 <div class=" col-md-12">
+								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Frequency</label></div>
 								   <div class="col-md-6">
 								   <select name="frequency" id="frequency" class="form-control">
@@ -1254,7 +1254,8 @@ if ($NoNewJob == 'NoNewJob') {
 									<option value="3 year">3 Year</option>
 									<option value="4 year">4 Year</option>
 									</select>
-								   </div>
+								   </div> 
+								   <?php echo $this->Form->button('Get', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Rentcalcsub();")) . ' '; ?>
                                 </div>
 								 <div class="hot_rent">
 								 </div>
@@ -1264,7 +1265,7 @@ if ($NoNewJob == 'NoNewJob') {
 					  <div class="modal-footer">
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
                         
-        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub();")) . ' '; ?>
+        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub11111();")) . ' '; ?>
 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
@@ -4276,7 +4277,6 @@ function Rentcalcsub(){
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();
 	
-	var rentval = $("#ProductionFields_"+AttrId+"_"+ProEntId+"_"+Seq).val();
 	$(".hot_rent").html("Loading...");
 	 $.ajax({
                 type: "POST",
