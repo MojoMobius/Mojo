@@ -686,6 +686,8 @@ if ($NoNewJob == 'NoNewJob') {
 
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
+																$Rentcalid =0;
+																
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
                                                                         if ($isDistinct !== false)
                                                                         $totalSeqCnt = 0;
@@ -814,7 +816,6 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <div class="form-group">
 																
 																<?php
-																$Rentcalid =0;
 																if($Rentcalid==0){
 																$Rentcalid=1;
 
