@@ -87,7 +87,7 @@ class ValidationrulesTable extends Table {
 //            IsAutoSuggesstion,IsAllowNewValues,IsSpecialCharacter,AllowedCharacter,NotAllowedCharacter,Format,MaxLength,MinLength FROM ME_ValidationRules 
 //            WHERE ME_ValidationRules.RecordStatus=1 AND ME_ValidationRules.ProjectId=$ProjectId AND ME_ValidationRules.RegionId=$RegionId AND ME_ValidationRules.ModuleId=$ModuleId");
         $MojoTemplate = $connection->execute("SELECT ProjectAttributeMasterId,IsMandatory,IsAlphabet,IsNumeric,IsEmail,IsUrl,IsDate,DateFormat,IsDecimal,AllowedDecimalPoint,
-            IsAutoSuggesstion,IsAllowNewValues,IsSpecialCharacter,AllowedCharacter,NotAllowedCharacter,Format,MaxLength,MinLength FROM ME_ValidationRules 
+            IsAutoSuggesstion,IsAllowNewValues,IsSpecialCharacter,AllowedCharacter,NotAllowedCharacter,Format,MaxLength,MinLength,IsDatepicker,IsRentcalculator,IsDatecalculator FROM ME_ValidationRules 
             WHERE ME_ValidationRules.RecordStatus=1 AND ME_ValidationRules.ProjectId=$ProjectId AND ME_ValidationRules.RegionId=$RegionId");
         $mojoArr = $MojoTemplate->fetchAll('assoc');
         return $mojoArr;
@@ -104,8 +104,9 @@ class ValidationrulesTable extends Table {
             $contentArr = json_decode($content, true);
             $module_attributes = $contentArr['ModuleAttributes'][$RegionId][$ModuleId]['production'];
         }
+        
 //        echo '<pre>';
-//        //print_r($module_attributes);
+//        print_r($module_attributes);exit;
 //        foreach ($module_attributes as $key => $mojo) {
 //            print_r($mojo['DisplayAttributeName']);
 //            print_r($mojo['ProjectAttributeMasterId']);
@@ -126,6 +127,9 @@ class ValidationrulesTable extends Table {
             $templatenew.='<th>IsNumeric</th>';
             $templatenew.='<th>IsEmail</th>';
             $templatenew.='<th>IsUrl</th>';
+            $templatenew.='<th>isDatePicker</th>';
+            $templatenew.='<th>isDateCalculator</th>';
+            $templatenew.='<th>isRentCalculator</th>';
             $templatenew.='<th>IsDate</th>';
             $templatenew.='<th>DateFormat</th>';
             $templatenew.='<th>IsDecimal</th>';
@@ -182,6 +186,27 @@ class ValidationrulesTable extends Table {
                 $checkedIsUrl='';    
             $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsUrl[]" '.$checkedIsUrl.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" onclick="urlCheck('.$mojo['AttributeMasterId'].');"></td>';
             //IsUrl ends
+             //isdatepicker starts IsDatepicker,IsRentcalculator,IsDatecalculator
+            if($MappedAttribute[$i]['IsDatepicker']=='1')
+                $checkedisdatepicker='checked=""';
+            else
+                $checkedisdatepicker='';    
+            $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsDatepicker[]" '.$checkedisdatepicker.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+            //isdatepicker ends 
+            //isdatecalculator starts
+            if($MappedAttribute[$i]['IsDatecalculator']=='1')
+                $checkedisdatecalculator='checked=""';
+            else
+                $checkedisdatecalculator='';    
+            $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsDatecalculator[]" '.$checkedisdatecalculator.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+            //isdatecalculator ends 
+            //isrentcalculator starts
+                if($MappedAttribute[$i]['IsRentcalculator']=='1')
+                    $checkedisrentcalculator='checked=""';
+                else
+                    $checkedisrentcalculator='';    
+                $templatenew.='<td><input class="form-control" type="checkbox" id="isrentcalculator_'.$mojo['AttributeMasterId'].'" name="IsRentcalculator[]" '.$checkedisrentcalculator.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+                //isrentcalculator ends
             //IsDate starts
             if($MappedAttribute[$i]['IsDate']=='1'){
                 $checkedIsDate='checked=""';
