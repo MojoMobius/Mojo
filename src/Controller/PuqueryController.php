@@ -201,11 +201,11 @@ class PuqueryController extends AppController {
           $StsId = implode(",",$newkey);
         
             
-            $queryData = $connection->execute("SELECT distinct Tdata.AttributeValue as domainID,Tdata.InputEntityId, ME_UserQuery.ProductionEntityId,ME_UserQuery.ModuleId,ME_UserQuery.Id ,ME_UserQuery.StatusID as QueryStatus ,TLComments,QueryRaisedDate, ME_UserQuery.UserID,ME_UserQuery.Query,ME_UserQuery.Client_Response,ME_UserQuery.Client_Response_Date,pem.StatusId as stsId FROM ME_UserQuery INNER JOIN MC_CengageProcessInputData as Tdata ON Tdata.ProductionEntityID=ME_UserQuery.ProductionEntityId INNER JOIN ProductionEntityMaster as pem ON pem.Id=ME_UserQuery.ProductionEntityId"
+            $queryData = $connection->execute("SELECT distinct Tdata.AttributeValue as domainID,Tdata.InputEntityId, ME_UserQuery.ProductionEntityId,ME_UserQuery.ModuleId,ME_UserQuery.Id ,ME_UserQuery.StatusID as QueryStatus ,TLComments,QueryRaisedDate, ME_UserQuery.UserID,ME_UserQuery.Query,ME_UserQuery.Client_Response,ME_UserQuery.Client_Response_Date,ME_UserQuery.UploadFile,pem.StatusId as stsId FROM ME_UserQuery INNER JOIN MC_CengageProcessInputData as Tdata ON Tdata.ProductionEntityID=ME_UserQuery.ProductionEntityId INNER JOIN ProductionEntityMaster as pem ON pem.Id=ME_UserQuery.ProductionEntityId"
                             . " WHERE Tdata.AttributeMasterId=" . $domainId . " AND ME_UserQuery.ProjectId=" . $ProjectId . " AND ME_UserQuery.StatusID in (1,2,3,4) AND pem.StatusId in ($StsId)" . $conditions)->fetchAll('assoc');
             $i = 0;
             foreach ($queryData as $val) {
-                $queryResult[$val['UserID']][$val['domainID']][]=array('Query'=>$val['Query'],'QueryRaisedDate'=>$val['QueryRaisedDate'],'Id'=>$val['Id'],'TLComments'=>$val['TLComments'],'ModuleId'=>$val['ModuleId'],'ProductionEntityId'=>$val['ProductionEntityId'],'InputEntityId'=>$val['InputEntityId'],'Client_Response'=>$val['Client_Response'],'Client_Response_Date'=>$val['Client_Response_Date'],'StatusId'=>$val['stsId'],'QueryStatus'=>$val['QueryStatus']);
+                $queryResult[$val['UserID']][$val['domainID']][]=array('Query'=>$val['Query'],'QueryRaisedDate'=>$val['QueryRaisedDate'],'Id'=>$val['Id'],'TLComments'=>$val['TLComments'],'ModuleId'=>$val['ModuleId'],'ProductionEntityId'=>$val['ProductionEntityId'],'InputEntityId'=>$val['InputEntityId'],'Client_Response'=>$val['Client_Response'],'Client_Response_Date'=>$val['Client_Response_Date'],'UploadFile'=>$val['UploadFile'],'StatusId'=>$val['stsId'],'QueryStatus'=>$val['QueryStatus']);
               /*  $queryResult[$val['UserID']][$val['domainID']][$i]['Query'] = $val['Query'];
                 $queryResult[$val['UserID']][$val['domainID']][$i]['QueryRaisedDate'] = $val['QueryRaisedDate'];
                 $queryResult[$val['UserID']][$val['domainID']][$i]['Id'] = $val['Id'];
@@ -354,7 +354,9 @@ class PuqueryController extends AppController {
                  $uploadFName=$file_info."_".$DomainId."_".$ProjectId.".".$ext;
                  
                 if(!move_uploaded_file($_FILES['file']['tmp_name'], ''.$uploadFolder.'/' .$uploadFName))                        {
-                    $this->Flash->error('Invalid File .');
+                    //$this->Flash->error('Invalid File .');
+                    echo "0";
+		     exit;
                 }
                 else{
                   ///insert///
@@ -365,8 +367,9 @@ class PuqueryController extends AppController {
              }
              else{
                  if($ext !=""){
-                  $this->Flash->error('Invalid uploaded file format !');
-				  exit;
+                  //$this->Flash->error('Invalid uploaded file format !');
+                     echo "0";
+		     exit;
                  }
                  else{
                   //  $this->Flash->error('Upload File Not Choosen!');
@@ -377,9 +380,13 @@ class PuqueryController extends AppController {
         ///file upload end//////////////////////
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
+      
        
-        $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' , TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
+        $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
         $QryStatus = $connection->execute($UpdateQryStatus);
+        
+             
+               
          /*if ($_POST['status'] == 3) {
            $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
@@ -396,7 +403,7 @@ class PuqueryController extends AppController {
             $QryStatus = $connection->execute($UpdateQryStatus);
                   
         }  */
-        echo 'updated';
+        echo '1';
         exit;
     }
      public function ajaxqueryinsertdqc() {  
