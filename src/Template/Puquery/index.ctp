@@ -361,6 +361,10 @@ if(!empty($queryResult)){ ?>
     }
 
     function getresourcedetails() {
+    if($('#ProjectId').val() <= 0){
+        alert("Please Choose Project");
+        exit;
+    }
         var ProjectId = $('#ProjectId').val();
         var RegionId = $('#RegionId').val();
         var UserGroupId = $('#UserGroupId').val();

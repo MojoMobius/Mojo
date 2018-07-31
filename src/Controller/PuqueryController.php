@@ -64,7 +64,10 @@ class PuqueryController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $resources = $JsonArray['UserList'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
-        $region = $regionMainList = $JsonArray['RegionList'];
+        $region = $regionMainList = $JsonArray['RegionList'];       
+        foreach($region as $key => $val){
+            $RegionId=$key;
+        }
         $modules = $JsonArray['Module'];
         $modulesConfig = $JsonArray['ModuleConfig'];
         $modulesArr = array();
@@ -75,6 +78,7 @@ class PuqueryController extends AppController {
         }
         $modulesArr[0] = '--Select--';
         ksort($modulesArr);
+        $this->set('SessionRegionId', $RegionId);
         $this->set('resources', $resources);
         $this->set('modules', $modulesArr);
 
