@@ -64,7 +64,10 @@ class PuqueryController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $resources = $JsonArray['UserList'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
-        $region = $regionMainList = $JsonArray['RegionList'];
+        $region = $regionMainList = $JsonArray['RegionList'];       
+        foreach($region as $key => $val){
+            $RegionId=$key;
+        }
         $modules = $JsonArray['Module'];
         $modulesConfig = $JsonArray['ModuleConfig'];
         $modulesArr = array();
@@ -75,6 +78,7 @@ class PuqueryController extends AppController {
         }
         $modulesArr[0] = '--Select--';
         ksort($modulesArr);
+        $this->set('SessionRegionId', $RegionId);
         $this->set('resources', $resources);
         $this->set('modules', $modulesArr);
 
@@ -197,7 +201,6 @@ class PuqueryController extends AppController {
           $StsId = implode(",",$newkey);
         
             
-            
             $queryData = $connection->execute("SELECT distinct Tdata.AttributeValue as domainID,Tdata.InputEntityId, ME_UserQuery.ProductionEntityId,ME_UserQuery.ModuleId,ME_UserQuery.Id ,ME_UserQuery.StatusID as QueryStatus ,TLComments,QueryRaisedDate, ME_UserQuery.UserID,ME_UserQuery.Query,ME_UserQuery.Client_Response,ME_UserQuery.Client_Response_Date,pem.StatusId as stsId FROM ME_UserQuery INNER JOIN MC_CengageProcessInputData as Tdata ON Tdata.ProductionEntityID=ME_UserQuery.ProductionEntityId INNER JOIN ProductionEntityMaster as pem ON pem.Id=ME_UserQuery.ProductionEntityId"
                             . " WHERE Tdata.AttributeMasterId=" . $domainId . " AND ME_UserQuery.ProjectId=" . $ProjectId . " AND ME_UserQuery.StatusID in (1,2,3,4) AND pem.StatusId in ($StsId)" . $conditions)->fetchAll('assoc');
             $i = 0;
@@ -251,6 +254,7 @@ class PuqueryController extends AppController {
     }
 
     function getresourcedetails() {
+       // echo $_POST['projectId']."-".$_POST['regionId']."-".$_POST['userGroupId'];exit;
         $session = $this->request->session();
         echo $module = $this->Puquery->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
         exit;

@@ -13,14 +13,7 @@
 <script src="webroot/js/highlight/highlight.pack.js"></script>
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
-<style>
-.suc-msg{
-	color:red;
-	font-size:15px;
-    padding-left: 45%;
-    font-weight: 400;
-}
-</style>
+
 <?php 
 
     use Cake\Routing\Router;
@@ -30,6 +23,13 @@
  <script>
  $(document).ready(function () {
  
+    // setTimeout() function will be fired after page is loaded
+    // it will wait for 5 sec. and then will fire
+    // $("#successMessage").hide() function
+    setTimeout(function() {
+        $(".success_msg").hide()
+    }, 2000);
+	
   $('.IsDatepicker').Zebra_DatePicker({
                     direction: true,
                     format: 'd-m-Y'
@@ -531,7 +531,7 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Breadcrumb Ends -->
         <div class="panel m-l-30 m-r-30">
             <div class="panel-body">
-			<span class="suc-msg"><?php //if(isset($_GET['querysuccess'])){ echo "Successfully Submitted"; } ?></span>
+			
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
 			<div style="float: right;">
