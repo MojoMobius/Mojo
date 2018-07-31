@@ -336,7 +336,7 @@ class PuqueryController extends AppController {
         ///file upload//////////////////////
          $apendfilename="_".$DomainId."_".$ProjectId;
         $uploadFolder = "htmlfiles";
-        $allowed = array('doc', 'pdf');
+        $allowed = array('doc','docx','pdf');
         $filename = $file['name'];
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         $file_info = pathinfo($filename, PATHINFO_FILENAME);

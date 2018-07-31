@@ -1901,7 +1901,7 @@ class GetjobcoreController extends AppController {
         $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
         exit;
     }
-	    function ajaxquerypostingmulti() {
+    function ajaxquerypostingmulti() {
 			
 	parse_str($_POST['multiquery'], $Query);
         $session = $this->request->session();
@@ -2967,7 +2967,7 @@ class GetjobcoreController extends AppController {
 	  parse_str($_POST['QueryName'], $QueryName);
 	 
 	 
-	$Htmlview="<table class='table table-center'>
+	$Htmlview="<table class='table table-center qryvalidation'>
 	  <tr>
 	  <th  width='20%'>Attribute Name</th>
 	  <th  width='20%'>Query</th>
@@ -2999,7 +2999,10 @@ class GetjobcoreController extends AppController {
 			  
 			  $Htmlview.='<tr>
 			  <td>'.$QueryName['querynameall'][$newkey].'</td>
-			  <td><textarea name="query['.$newkey.']" id="query" rows="4" cols="30" placeholder="" class="submit_query">'.$comments.'</textarea></td>
+			  <td><textarea name="query['.$newkey.']" id="qry['.$newkey.']" rows="4" cols="30" placeholder="" class="submit_query">'.$comments.'</textarea>
+                             <input type="hidden" name="totqry" id="totqry" value='.$newkey.'> 
+
+</td>
 			  <td>'.$tlcomments.'</td>
 			  <td>'.$cl_resp.'</td>
 			  <td>'.$cl_date.'</td>

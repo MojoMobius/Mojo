@@ -13,6 +13,14 @@
 <script src="webroot/js/highlight/highlight.pack.js"></script>
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
+<style>
+.suc-msg{
+	color:red;
+	font-size:15px;
+    padding-left: 45%;
+    font-weight: 400;
+}
+</style>
 <?php 
 
     use Cake\Routing\Router;
@@ -523,6 +531,7 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Breadcrumb Ends -->
         <div class="panel m-l-30 m-r-30">
             <div class="panel-body">
+			<span class="suc-msg"></span>
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
 			<div style="float: right;">
@@ -4239,7 +4248,13 @@ function goToMsg(id){
        // location.reload();
    }
    		    function valicateQueryAll() {
-            			
+				 $(".qryvalidation textarea").each(function() {
+				   var element = $(this);
+				   if (element.val() == "") {
+					   alert("Query is Manatory Please fill all query!");
+					   exit;
+				   }
+				});
            var arraydata = $('.submit_query').serialize() ;
             var regionid = $('#RegionId').val();
             query = $("#query").val();
@@ -4249,14 +4264,15 @@ function goToMsg(id){
             $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
-                data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),
-               
+                data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
                 success: function (res) { 
-					//$(".hot_query").html(res);
+				 
                  }
                 
             });
-			location.reload();
+			 location.reload();
+					$(".suc-msg").html('Successfully Submitted');
+			
         }
 function fetchbotminds()
 {
