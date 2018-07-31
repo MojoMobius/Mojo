@@ -3156,15 +3156,16 @@ $total = $_POST['BaseRent'];
 $PercentageAmount = ($percentage / 100) * $total;
 $Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
 $Todate=date('Y-m-d',strtotime($_POST['Expiration']));
-$start    = new DateTime($Fromdate);
+$start    = new \DateTime($Fromdate);
 $start->modify('first day of this month');
-$end      = new DateTime($Todate);
+$end      = new \DateTime($Todate);
 $end->modify('first day of next month');
-$interval = DateInterval::createFromDateString($_POST['frequency']);
-$period   = new DatePeriod($start, $interval, $end);
-foreach ($period as $dt) {
- echo $dt->format("Y-m-d") . "<br>\n";
-}
+//$interval = \DateInterval::createFromDateString($_POST['Frequency']);
+$interval = \DateInterval::createFromDateString($_POST['Frequency']);
+$period   = new \DatePeriod($start, $interval, $end);
+//foreach ($period as $dt) {
+// echo $dt->format("Y-m-d") . "<br>\n";
+//}
 
 
  $Htmlview="<table class='table table-center'>
@@ -3177,8 +3178,15 @@ foreach ($period as $dt) {
 foreach ($period as $dt) {
     
   $StartDate=$dt->format("d-m-Y");
-  $Enddate=date("d-m-Y", strtotime("+6 months", strtotime($StartDate)));
+  $Edate=date("d-m-Y", strtotime("+6 months", strtotime($StartDate)));
+  $End_date = date('d-m-Y', strtotime($Edate . ' -1 day'));
 $total =$total + ($percentage / 100) * $total;
+$n = $total;
+$whole = floor($n);      // 1
+$fraction = $n - $whole; // .25
+if($fraction > 0){
+$total =number_format((float)$total, 2, '.', '');
+}
     
   //  echo $dt->format("Y-m-d") . "<br>\n";
     
@@ -3186,7 +3194,7 @@ $total =$total + ($percentage / 100) * $total;
 			  <td>'.$percentage.'</td>
 			  <td>'.$total.'</td>
 			  <td>'.$StartDate.'</td>
-			  <td>'.$Enddate.'</td>
+			  <td>'.$End_date.'</td>
 			  </tr>';
 }
  $Htmlview.='</table">';

@@ -692,7 +692,6 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <input value="1" type="hidden" data="<?php echo $GroupSeqCnt; ?>" name="GroupSeq_<?php echo $keysub; ?>" class="GroupSeq_<?php echo $keysub; ?> removeinputclass">
 
                                                             <?php
-															$Rentcalid =0;
                                                              $attr3_ar = array();
                                                             for ($grpseq = 1; $grpseq <= $GroupSeqCnt; $grpseq++) {
                                                                 if ($grpseq > 1)
@@ -737,6 +736,9 @@ if ($NoNewJob == 'NoNewJob') {
 																$BaseRentVal=$processinputdata[$BaseRent][$tempSq][$DependentMasterIds['ProductionField']];
 																
 																$RentIncVal=$processinputdata[$RentInc][$tempSq][$DependentMasterIds['ProductionField']];
+																
+																
+																
                                                                                      
                                                                                     $ProdFieldsValue = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq][$DependentMasterIds['ProductionField']];
                                                                                     $InpValueFieldsValue = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq][$DependentMasterIds['InputValue']];
@@ -840,17 +842,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <div class="col-md-4 form-text">
                                                                 <div class="form-group">
 																
-																<?php
-
-																if($Rentcalid==0){
-																$Rentcalid=1;
-
-																?>
-																<input type="hidden" name="Commencement" id="Commencement" value="<?php echo $CommencementVal;?>">
-																<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
-																<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
-																<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
-																<?php } ?>
+																
 
                                                                                     <?php
                                                                                     $readonly=array();
@@ -1007,6 +999,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                             </div>
                                                 </div>
                                                                             <?php
+																			
                                                                         }
                                                                         ?>
                                                     <span style="padding:0px;" class="add_<?php echo $valprodFields['AttributeMasterId']; ?>"></span>
@@ -1048,6 +1041,10 @@ if ($NoNewJob == 'NoNewJob') {
                                                 $attr_array[] = $attr1;
                                             }
                                             ?>
+											<input type="hidden" name="Commencement" id="Commencement" value="<?php echo $CommencementVal;?>">
+																<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
+																<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
+																<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
                                     </div>
                                 </div>
 
@@ -1245,7 +1242,7 @@ if ($NoNewJob == 'NoNewJob') {
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Rent Calculation</h4>
                     </div>
-					<div class="modal-body" style="height:200px;">                       
+					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
                             <div class="form-group">
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
@@ -1280,9 +1277,10 @@ if ($NoNewJob == 'NoNewJob') {
 									</select>
 								   </div> 
 								   <?php echo $this->Form->button('Get', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Rentcalcsub();")) . ' '; ?>
-                                </div>
+                                
 								 <div class="hot_rent">
 								 </div>
+</div>
                             </div>
                         </form>
                     </div>
