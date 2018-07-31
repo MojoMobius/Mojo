@@ -531,7 +531,7 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Breadcrumb Ends -->
         <div class="panel m-l-30 m-r-30">
             <div class="panel-body">
-			<span class="suc-msg"></span>
+			<span class="suc-msg"><?php //if(isset($_GET['querysuccess'])){ echo "Successfully Submitted"; } ?></span>
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
 			<div style="float: right;">
@@ -4265,13 +4265,18 @@ function goToMsg(id){
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
                 data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
-                success: function (res) { 
-				 
+                success: function (res) { 				 
+					//$(".suc-msg").html('Successfully Submitted');
                  }
                 
             });
-			 location.reload();
-					$(".suc-msg").html('Successfully Submitted');
+var url = window.location.href;    
+if (url.indexOf('?') > -1){
+   url += '&querysuccess=1'
+}else{
+   url += '?querysuccess=1'
+}
+window.location.href = url;
 			
         }
 function fetchbotminds()

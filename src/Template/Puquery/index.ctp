@@ -192,10 +192,11 @@ if(!empty($queryResult)){ ?>
                             <?php $k=0;
                                 foreach($data2 as $key3=>$data3){
                                     if(!empty($data3['Client_Response_Date']) && $data3['Client_Response_Date']!='NULL')                                    {
-                                       $Cl_date=$data3['Client_Response_Date'];                                     
+                                       $Cl_date=date("d-m-Y", strtotime($data3['Client_Response_Date']) ); 
+                                       
                                     }
                                     else{
-                                       $Cl_date=date('d-m-Y');  
+                                       $Cl_date=date("d-m-Y");  
                                     }
                                     
                                 echo $this->Form->input('', array( 'type'=>'hidden','id' => 'QueryID', 'name' => 'Query[]','value'=>$data3['Id'])); 
@@ -243,7 +244,7 @@ if(!empty($queryResult)){ ?>
                                             <div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments">Client Response Date</label>
                                               <?php 
-                                            echo $this->Form->input('', array('id' => 'respDate'.$data3['Id'].'', 'name' => 'respDate'.$data3['Id'].'', 'class'=>'form-control' , 'value'=>date("d-m-Y", strtotime($Cl_date) ) )); 
+                                            echo $this->Form->input('', array('id' => 'respDate'.$data3['Id'].'', 'name' => 'respDate'.$data3['Id'].'', 'class'=>'form-control' , 'value'=>$Cl_date )); 
                                         ?>
                                             </div>
 						<div class="form-group frmgrp_align  col-md-3">

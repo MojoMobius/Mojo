@@ -42,6 +42,9 @@ class GetjobcoreController extends AppController {
     }
 
     public function index() {
+       if(isset($_GET['querysuccess'])){
+            $this->Flash->success(__('Succssfully Submitted'));
+       }
 
         //echo '<pre>';
         // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
@@ -1910,8 +1913,8 @@ class GetjobcoreController extends AppController {
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
         $RegionId = $_POST['RegionId'];	
-		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
-		echo "success";
+		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);   
+        echo "success";
         exit;
     }
 
