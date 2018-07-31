@@ -19,7 +19,7 @@ use Cake\Routing\Router
     <div class="formcontent">
         <h4>PU Queries</h4>
             <?php echo $this->Form->create('',array('class'=>'form-horizontal','id'=>'projectforms')); ?>
-<?php $SessionRegionId='1011'; ?>
+<?php //$SessionRegionId='1011'; ?>
         
                      <input type="hidden" name="RegionId" id="RegionId" value="<?php echo  $SessionRegionId;?>">
         <div class="row">

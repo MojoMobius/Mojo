@@ -140,6 +140,7 @@ class PuquerylistController extends AppController {
         $StaticFields = array();
          
         foreach ($module as $key => $value) {
+            if($value==$moduleId){
             $proFieldssarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['production'];
             $StaticFieldssarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['static'];
             if (!empty($proFieldssarr)) {
@@ -150,6 +151,7 @@ class PuquerylistController extends AppController {
             
                if (!empty($StaticFieldssarr))
                 $StaticFields = array_merge($StaticFields, $StaticFieldssarr);
+            }
             
         }
         
