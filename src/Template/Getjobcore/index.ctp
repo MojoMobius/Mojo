@@ -13,6 +13,14 @@
 <script src="webroot/js/highlight/highlight.pack.js"></script>
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
+<style>
+.suc-msg{
+	color:red;
+	font-size:15px;
+    padding-left: 45%;
+    font-weight: 400;
+}
+</style>
 <?php 
 
     use Cake\Routing\Router;
@@ -523,6 +531,7 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Breadcrumb Ends -->
         <div class="panel m-l-30 m-r-30">
             <div class="panel-body">
+			<span class="suc-msg"><?php //if(isset($_GET['querysuccess'])){ echo "Successfully Submitted"; } ?></span>
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
 			<div style="float: right;">
@@ -692,7 +701,6 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <input value="1" type="hidden" data="<?php echo $GroupSeqCnt; ?>" name="GroupSeq_<?php echo $keysub; ?>" class="GroupSeq_<?php echo $keysub; ?> removeinputclass">
 
                                                             <?php
-															$Rentcalid =0;
                                                              $attr3_ar = array();
                                                             for ($grpseq = 1; $grpseq <= $GroupSeqCnt; $grpseq++) {
                                                                 if ($grpseq > 1)
@@ -737,6 +745,9 @@ if ($NoNewJob == 'NoNewJob') {
 																$BaseRentVal=$processinputdata[$BaseRent][$tempSq][$DependentMasterIds['ProductionField']];
 																
 																$RentIncVal=$processinputdata[$RentInc][$tempSq][$DependentMasterIds['ProductionField']];
+																
+																
+																
                                                                                      
                                                                                     $ProdFieldsValue = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq][$DependentMasterIds['ProductionField']];
                                                                                     $InpValueFieldsValue = $processinputdata[$valprodFields['AttributeMasterId']][$tempSq][$DependentMasterIds['InputValue']];
@@ -840,17 +851,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 <div class="col-md-4 form-text">
                                                                 <div class="form-group">
 																
-																<?php
-
-																if($Rentcalid==0){
-																$Rentcalid=1;
-
-																?>
-																<input type="hidden" name="Commencement" id="Commencement" value="<?php echo $CommencementVal;?>">
-																<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
-																<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
-																<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
-																<?php } ?>
+																
 
                                                                                     <?php
                                                                                     $readonly=array();
@@ -1007,6 +1008,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                             </div>
                                                 </div>
                                                                             <?php
+																			
                                                                         }
                                                                         ?>
                                                     <span style="padding:0px;" class="add_<?php echo $valprodFields['AttributeMasterId']; ?>"></span>
@@ -1048,6 +1050,10 @@ if ($NoNewJob == 'NoNewJob') {
                                                 $attr_array[] = $attr1;
                                             }
                                             ?>
+											<input type="hidden" name="Commencement" id="Commencement" value="<?php echo $CommencementVal;?>">
+																<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
+																<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
+																<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
                                     </div>
                                 </div>
 
@@ -1245,7 +1251,7 @@ if ($NoNewJob == 'NoNewJob') {
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Rent Calculation</h4>
                     </div>
-					<div class="modal-body" style="height:200px;">                       
+					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
                             <div class="form-group">
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
@@ -1280,9 +1286,10 @@ if ($NoNewJob == 'NoNewJob') {
 									</select>
 								   </div> 
 								   <?php echo $this->Form->button('Get', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Rentcalcsub();")) . ' '; ?>
-                                </div>
+                                
 								 <div class="hot_rent">
 								 </div>
+</div>
                             </div>
                         </form>
                     </div>
@@ -4241,7 +4248,13 @@ function goToMsg(id){
        // location.reload();
    }
    		    function valicateQueryAll() {
-            			
+				 $(".qryvalidation textarea").each(function() {
+				   var element = $(this);
+				   if (element.val() == "") {
+					   alert("Query is Manatory Please fill all query!");
+					   exit;
+				   }
+				});
            var arraydata = $('.submit_query').serialize() ;
             var regionid = $('#RegionId').val();
             query = $("#query").val();
@@ -4251,14 +4264,20 @@ function goToMsg(id){
             $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
-                data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),
-               
-                success: function (res) { 
-					//$(".hot_query").html(res);
+                data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
+                success: function (res) { 				 
+					//$(".suc-msg").html('Successfully Submitted');
                  }
                 
             });
-			location.reload();
+var url = window.location.href;    
+if (url.indexOf('?') > -1){
+   url += '&querysuccess=1'
+}else{
+   url += '?querysuccess=1'
+}
+window.location.href = url;
+			
         }
 function fetchbotminds()
 {

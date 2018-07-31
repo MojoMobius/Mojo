@@ -3,6 +3,9 @@
 use Cake\Routing\Router
 ?>
 <style>
+    .mandatory{
+        color:red;
+    }
     .Flash-Message{
         font-size: 18px;
         color:red;
@@ -22,7 +25,7 @@ use Cake\Routing\Router
         <div class="row">
         <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
+                <label for="inputEmail3" class="col-sm-6 control-label">Project<span class="mandatory"> *</span> </label>
                 <div class="col-sm-6 prodash-txt">
                    <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getusergroupdetails('.$SessionRegionId.');getModule(this.value);'));?>  
                 </div>
@@ -30,7 +33,7 @@ use Cake\Routing\Router
         </div>
             <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Module</label>
+                <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Module<span class="mandatory"> *</span></label>
                 <div class="col-sm-6" style="margin-top:3px;">
                     <div id="LoadModule">
                     <?php 
@@ -94,7 +97,7 @@ use Cake\Routing\Router
 
         <div class="col-md-4">
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-6 control-label">Query Date From:</label>
+                <label for="inputEmail3" class="col-sm-6 control-label">Query Date From<span class="mandatory"> *</span>:</label>
                 <div class="col-sm-6 prodash-txt">
                     <?php 
                         echo $this->Form->input('', array('id' => 'QueryDateFrom', 'name' => 'QueryDateFrom', 'class'=>'form-control' , 'value'=>$QueryDateFrom )); 
@@ -188,6 +191,14 @@ if(!empty($queryResult)){ ?>
                             <div class="panel-body">
                             <?php $k=0;
                                 foreach($data2 as $key3=>$data3){
+                                    if(!empty($data3['Client_Response_Date']) && $data3['Client_Response_Date']!='NULL')                                    {
+                                       $Cl_date=date("d-m-Y", strtotime($data3['Client_Response_Date']) ); 
+                                       
+                                    }
+                                    else{
+                                       $Cl_date=date("d-m-Y");  
+                                    }
+                                    
                                 echo $this->Form->input('', array( 'type'=>'hidden','id' => 'QueryID', 'name' => 'Query[]','value'=>$data3['Id'])); 
                             ?>
                                 <fieldset>
@@ -208,7 +219,7 @@ if(!empty($queryResult)){ ?>
                                             </div>
 
                                             <div class="form-group frmgrp_align  col-md-3">
-                                                <label class="comments"><span>Mobius Comments</span></label>
+                                                <label class="comments"><span>Mobius Comments</span><span class="mandatory">*</span></label>
                                                 <div><textarea name='mobius_comments<?php echo $data3['Id']?>' rows="2" id='mobius_comments<?php echo $data3['Id']?>' class="form-controls puq-cmt" title="<?php echo $data3['TLComments'];?>"><?php echo $data3['TLComments'];?></textarea></div>
                                             </div>
 
@@ -233,7 +244,7 @@ if(!empty($queryResult)){ ?>
                                             <div class="form-group frmgrp_align  col-md-3">
                                                 <label class="comments">Client Response Date</label>
                                               <?php 
-                                            echo $this->Form->input('', array('id' => 'respDate'.$data3['Id'].'', 'name' => 'respDate'.$data3['Id'].'', 'class'=>'form-control' , 'value'=>date("d-m-Y", strtotime($data3['Client_Response_Date']) ) )); 
+                                            echo $this->Form->input('', array('id' => 'respDate'.$data3['Id'].'', 'name' => 'respDate'.$data3['Id'].'', 'class'=>'form-control' , 'value'=>$Cl_date )); 
                                         ?>
                                             </div>
 						<div class="form-group frmgrp_align  col-md-3">
@@ -508,11 +519,11 @@ if(!empty($queryResult)){ ?>
     function ClearFields() {
         $('#ProjectId').val('0');
         //$('#RegionId').val('0');
-        $('#UserGroupId').val('');
+        //$('#UserGroupId').val('');
         $('#ModuleId').val('0');
         $('#QueryDateFrom').val('');
         $('#QueryDateTo').val('');
-        $('#user_id').find('option').remove();
+        //$('#user_id').find('option').remove();
     }
 </script>
 
