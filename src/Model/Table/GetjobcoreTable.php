@@ -32,7 +32,7 @@ class GetjobcoreTable extends Table {
         $QueryValue = str_replace("'", "''", trim($options['query']));
 
         if (!empty($count)) {
-            $queryUpdate = "update ME_UserQuery set Query='" . $QueryValue . "'  where ProductionEntityId='" . $options['ProductionEntity'] . "' and ModuleId='" . $options['moduleId'] . "'";
+            $queryUpdate = "update ME_UserQuery set Query='" . $QueryValue . "',StatusID=1  where ProductionEntityId='" . $options['ProductionEntity'] . "' and ModuleId='" . $options['moduleId'] . "'";
             $connection->execute($queryUpdate);
         } else {
             $queryInsert = "Insert into ME_UserQuery (ProjectId,RegionId,UserID,ProductionEntityId,ModuleId,Query,QueryRaisedDate,StatusID,RecordStatus,CreatedDate,CreatedBy) values('" . $options['ProjectId'] . "','" . $options['RegionId'] . "','" . $options['user'] . "','" . $options['ProductionEntity'] . "','" . $options['moduleId'] . "','" . $QueryValue . "','" . date('Y-m-d H:i:s') . "',1,1,'" . date('Y-m-d H:i:s') . "','" . $options['user'] . "')";

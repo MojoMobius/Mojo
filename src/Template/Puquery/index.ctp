@@ -6,6 +6,10 @@ use Cake\Routing\Router
     .mandatory{
         color:red;
     }
+    .Flash-suc-Message{
+        font-size: 18px;
+        color:green;
+    }
     .Flash-Message{
         font-size: 18px;
         color:red;
@@ -173,6 +177,7 @@ if(!empty($queryResult)){ ?>
                         <div class="panel-heading row">
         <div class="col-md-9">
             <span id="message<?php echo $data2[0]['ProductionEntityId'];?>" class="Flash-Message"></span>
+           
                             <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse99<?php echo $i;?><?php echo $j;?>"><img src="img/insert-object.png" style="margin-bottom:3px;"> 
                                     <label class="comments"><b>Domain Id:</b></label>
                                     <label class="comments"><span style="text-align:left"><?php echo $key2;?></span></label>
@@ -205,7 +210,8 @@ if(!empty($queryResult)){ ?>
                                     <legend class="puq">
                                         <label class="comments"><b>Query Date:</b></label>
                                         &nbsp;&nbsp;&nbsp;
-                                        <label class="comments"><span><?php echo $data3['QueryRaisedDate'];?></span></label>
+                                        <label class="comments"><span><?php echo $data3['QueryRaisedDate'];?></span></label> <span id="suc-message<?php echo $data3['Id'];?>" class="Flash-suc-Message"></span>
+                                         <span id="error-message<?php echo $data3['Id'];?>" class="Flash-Message"></span>
                                         &nbsp;&nbsp;&nbsp;
 
                                     </legend>
@@ -253,6 +259,7 @@ if(!empty($queryResult)){ ?>
 												<input type="hidden" name="domainId" id="domainId" value="<?php echo $key2;?>">
 												<input type="hidden" name="InputEntityId" id="InputEntityId" value="<?php echo $data3['InputEntityId'];?>">
 												</div>
+                                                <?php echo $data3['UploadFile'];?>
 												<br>(Allowed Formats: doc and pdf)
                                             </div>
                                                  <div class="form-group frmgrp_align  col-md-5">
@@ -483,8 +490,20 @@ if(!empty($queryResult)){ ?>
         processData: false,           
         data: form_data,                         
         type: 'post',
-        success: function(php_script_response){
-            document.getElementById("projectforms").submit();
+        success: function(res){
+                        if(res == '0'){
+                                       //$("#message"+ProductionEntityId).show(); 
+                            $("#error-message"+att).show().html("Invalid uploaded file format !"); 
+                                    setTimeout(function(){
+                                       $("#error-message"+att).hide(); 
+                                     }, 2000);
+                                }
+                                else{
+                                     $("#suc-message"+att).show().html("Successfully Saved"); 
+                                    setTimeout(function(){
+                                       $("#suc-message"+att).hide(); 
+                                     }, 2000);
+                                }
         }
       });
 		
