@@ -82,7 +82,7 @@ use Cake\Routing\Router
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-6 control-label">From Date:</label>
+                    <label for="inputEmail3" class="col-sm-6 control-label">Query Date From :</label>
                     <div class="col-sm-6 prodash-txt">
                     <?php 
                         echo $this->Form->input('', array('id' => 'QueryDateFrom', 'name' => 'QueryDateFrom', 'class'=>'form-control' , 'value'=>$QueryDateFrom )); 
