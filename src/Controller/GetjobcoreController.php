@@ -42,6 +42,9 @@ class GetjobcoreController extends AppController {
     }
 
     public function index() {
+       if(isset($_GET['querysuccess'])){
+            $this->Flash->success(__('Succssfully Submitted'));
+       }
 
         //echo '<pre>';
         // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
@@ -1901,7 +1904,7 @@ class GetjobcoreController extends AppController {
         $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
         exit;
     }
-	    function ajaxquerypostingmulti() {
+    function ajaxquerypostingmulti() {
 			
 	parse_str($_POST['multiquery'], $Query);
         $session = $this->request->session();
@@ -1910,8 +1913,8 @@ class GetjobcoreController extends AppController {
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
         $RegionId = $_POST['RegionId'];	
-		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
-		echo "success";
+		 $file = $this->Getjobcore->find('querypostAll', ['ProductionEntity' => $_POST['InputEntyId'], 'comments' => $Query, 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);   
+        echo "success";
         exit;
     }
 
@@ -2967,7 +2970,7 @@ class GetjobcoreController extends AppController {
 	  parse_str($_POST['QueryName'], $QueryName);
 	 
 	 
-	$Htmlview="<table class='table table-center'>
+	$Htmlview="<table class='table table-center qryvalidation'>
 	  <tr>
 	  <th  width='20%'>Attribute Name</th>
 	  <th  width='20%'>Query</th>
@@ -2999,7 +3002,10 @@ class GetjobcoreController extends AppController {
 			  
 			  $Htmlview.='<tr>
 			  <td>'.$QueryName['querynameall'][$newkey].'</td>
-			  <td><textarea name="query['.$newkey.']" id="query" rows="4" cols="30" placeholder="" class="submit_query">'.$comments.'</textarea></td>
+			  <td><textarea name="query['.$newkey.']" id="qry['.$newkey.']" rows="4" cols="30" placeholder="" class="submit_query">'.$comments.'</textarea>
+                             <input type="hidden" name="totqry" id="totqry" value='.$newkey.'> 
+
+</td>
 			  <td>'.$tlcomments.'</td>
 			  <td>'.$cl_resp.'</td>
 			  <td>'.$cl_date.'</td>
@@ -3156,15 +3162,16 @@ $total = $_POST['BaseRent'];
 $PercentageAmount = ($percentage / 100) * $total;
 $Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
 $Todate=date('Y-m-d',strtotime($_POST['Expiration']));
-$start    = new DateTime($Fromdate);
+$start    = new \DateTime($Fromdate);
 $start->modify('first day of this month');
-$end      = new DateTime($Todate);
+$end      = new \DateTime($Todate);
 $end->modify('first day of next month');
-$interval = DateInterval::createFromDateString($_POST['frequency']);
-$period   = new DatePeriod($start, $interval, $end);
-foreach ($period as $dt) {
- echo $dt->format("Y-m-d") . "<br>\n";
-}
+//$interval = \DateInterval::createFromDateString($_POST['Frequency']);
+$interval = \DateInterval::createFromDateString($_POST['Frequency']);
+$period   = new \DatePeriod($start, $interval, $end);
+//foreach ($period as $dt) {
+// echo $dt->format("Y-m-d") . "<br>\n";
+//}
 
 
  $Htmlview="<table class='table table-center'>
@@ -3177,8 +3184,15 @@ foreach ($period as $dt) {
 foreach ($period as $dt) {
     
   $StartDate=$dt->format("d-m-Y");
-  $Enddate=date("d-m-Y", strtotime("+6 months", strtotime($StartDate)));
+  $Edate=date("d-m-Y", strtotime("+6 months", strtotime($StartDate)));
+  $End_date = date('d-m-Y', strtotime($Edate . ' -1 day'));
 $total =$total + ($percentage / 100) * $total;
+$n = $total;
+$whole = floor($n);      // 1
+$fraction = $n - $whole; // .25
+if($fraction > 0){
+$total =number_format((float)$total, 2, '.', '');
+}
     
   //  echo $dt->format("Y-m-d") . "<br>\n";
     
@@ -3186,7 +3200,7 @@ $total =$total + ($percentage / 100) * $total;
 			  <td>'.$percentage.'</td>
 			  <td>'.$total.'</td>
 			  <td>'.$StartDate.'</td>
-			  <td>'.$Enddate.'</td>
+			  <td>'.$End_date.'</td>
 			  </tr>';
 }
  $Htmlview.='</table">';
