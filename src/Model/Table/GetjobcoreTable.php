@@ -28,7 +28,8 @@ class GetjobcoreTable extends Table {
 
         $connection = ConnectionManager::get('default');
         //echo "SELECT Id FROM ME_UserQuery WHERE InputEntityId='".$options['ProductionEntity']."' AND RecordStatus=1";
-        $count = $connection->execute("SELECT Id FROM ME_UserQuery WHERE ProductionEntityId='" . $options['ProductionEntity'] . "' AND RecordStatus=1")->fetchAll('assoc');
+        $moduleId=  $options['moduleId'];
+        $count = $connection->execute("SELECT Id FROM ME_UserQuery WHERE ProductionEntityId='" . $options['ProductionEntity'] . "' AND RecordStatus=1 AND ModuleId = '$moduleId'")->fetchAll('assoc');
         $QueryValue = str_replace("'", "''", trim($options['query']));
 
         if (!empty($count)) {

@@ -41,6 +41,8 @@ class PuquerylistController extends AppController {
         $statusIdentifier = ReadyForQCIdentifier;
         $session = $this->request->session();
         $moduleId = $_GET['ModuleId'];
+        
+        $stagingTable = 'Staging_' . $moduleId . '_Data';
 		//echo $moduleId;exit;
         
         $QcFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
@@ -222,7 +224,9 @@ class PuquerylistController extends AppController {
                 }
             $DependencyTypeMaster = $connection->execute('SELECT Id,Type,FieldTypeName FROM MC_DependencyTypeMaster WHERE ProjectId=' . $ProjectId . ' AND DisplayInProdScreen=1 AND RecordStatus=1')->fetchAll('assoc');
             if (!empty($InputEntityId)) {
-                $CengageProcessInputData = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')')->fetchAll('assoc');
+                //$CengageProcessInputData = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')')->fetchAll('assoc');
+                //echo 'SELECT  * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE  ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')';exit;
+            
                 $staticFields = array();
                 foreach ($StaticFields as $key => $value) {
                     $getDomainIdVal = $connection->execute('SELECT AttributeValue FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $value['AttributeMasterId']. ') AND DependencyTypeMasterId in ('.implode(',',$staticDepenIds).')')->fetchAll('assoc');
@@ -250,10 +254,46 @@ class PuquerylistController extends AppController {
             }
 
             $finalprodValue = array();
+               $CengageProcessInputData = $connection->execute('SELECT  * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE  ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND DependencyTypeMasterId IN (' . implode(',', $DependentMasterIds) . ')')->fetchAll('assoc');
+             
             foreach ($CengageProcessInputData as $key => $value) {
-                $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = [$value['AttributeValue']];
+             //  print_r($value);exit;
+              /*  $finalprodValue[$value['AttributeMasterId']][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = [$value['AttributeValue']];
                 
            $QcErrorComments[$CengageProcessInputData[$key]['AttributeMasterId']]['seq'] = $this->Puquerylist->ajax_GetQcComments_seq($CengageProcessInputData[$key]['InputEntityId'], $CengageProcessInputData[$key]['AttributeMasterId'], $CengageProcessInputData[$key]['ProjectAttributeMasterId'], 1);
+               
+               */
+                
+                
+                   // pr($value);exit;
+
+                    if ($value['special'] != '') {
+                        $special = '<xml>' . $value['special'] . '</xml>';
+                        $specialArr = simplexml_load_string($special);
+                        $specialArr = json_decode(json_encode($specialArr), 1);
+                        //  pr($productionjobNew);
+                        //exit;
+                        //$specialArr=$this->xml2array($specialArr);
+
+                        foreach ($specialArr as $key2Temp => $value2) {
+                            
+                            $key2 = str_replace('_x003', '', $key2Temp);
+                            $key2 = str_replace('_', '', $key2);
+                            if (is_array($value2) && count($value2) == 0)
+                                $value2 = '';
+                            //echo $value2;exit;
+                            $finalprodValue[$key2][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = $value2;
+                        }
+                        if ($value['SequenceNumber'] > $maxSeq[$value['DependencyTypeMasterId']] && $tempDep == $value['DependencyTypeMasterId']) {
+                            $maxSeq[$value['DependencyTypeMasterId']] = $value['SequenceNumber'];
+                            $tempDep = $value['DependencyTypeMasterId'];
+                        } else {
+                            if (!isset($maxSeq[$value['DependencyTypeMasterId']]))
+                                $maxSeq[$value['DependencyTypeMasterId']] = 1;
+                            $tempDep = $value['DependencyTypeMasterId'];
+                        }
+                    }
+                
             }
 //           echo "<pre>ss";print_r($QcErrorComments);exit;
            
@@ -267,7 +307,7 @@ class PuquerylistController extends AppController {
                     }
                 }
             }
-
+           //pr($finalprodValue);exit;
            
             $this->set('DependentMasterIds', $DependentMasterIds);
             $this->set('processinputdata', $finalprodValue);
@@ -415,7 +455,7 @@ class PuquerylistController extends AppController {
             }
         }
         
-        $this->set('QcErrorComments', $QcErrorComments);
+        //$this->set('QcErrorComments', $QcErrorComments);
         $this->set('validate', $validate);
         $this->set('ProductionFields', $ProductionFields);
         $this->set('DynamicFields', $DynamicFields);
