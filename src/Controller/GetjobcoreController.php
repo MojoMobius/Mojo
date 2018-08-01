@@ -42,9 +42,11 @@ class GetjobcoreController extends AppController {
     }
 
     public function index() {
-       if(isset($_GET['querysuccess'])){
-            $this->Flash->success(__('Succssfully Submitted'));
-       }
+        
+        
+       /*if(isset($_GET['querysuccess'])){
+            $this->Flash->success(__('Query Posted Successfully!'));
+       }*/
 
         //echo '<pre>';
         // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
@@ -904,7 +906,7 @@ class GetjobcoreController extends AppController {
                 $finalprodValue = array();
 
                 foreach ($productionjobNew as $key => $value) {
-                    //pr($value);
+                   // pr($value);exit;
 
                     if ($value['special'] != '') {
                         $special = '<xml>' . $value['special'] . '</xml>';
@@ -915,10 +917,12 @@ class GetjobcoreController extends AppController {
                         //$specialArr=$this->xml2array($specialArr);
 
                         foreach ($specialArr as $key2Temp => $value2) {
+                            
                             $key2 = str_replace('_x003', '', $key2Temp);
                             $key2 = str_replace('_', '', $key2);
                             if (is_array($value2) && count($value2) == 0)
                                 $value2 = '';
+                            //echo $value2;exit;
                             $finalprodValue[$key2][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = $value2;
                         }
                         if ($value['SequenceNumber'] > $maxSeq[$value['DependencyTypeMasterId']] && $tempDep == $value['DependencyTypeMasterId']) {
@@ -1002,6 +1006,7 @@ class GetjobcoreController extends AppController {
                         }
                     }
                 }
+               // pr($finalprodValue);exit;
                 $ProjectId = $productionjobNew[0]['ProjectId'];
                 $ProjectName = $JsonArray[$ProjectId];
 
