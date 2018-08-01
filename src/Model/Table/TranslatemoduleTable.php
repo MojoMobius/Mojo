@@ -24,5 +24,23 @@ class TranslatemoduleTable extends Table {
         $this->ModuleId = 1149;
     }
 
+    
+    public function findQuerypost(Query $query, array $options) {
+
+        $connection = ConnectionManager::get('default');
+        $moduleId=  $options['moduleId'];
+        $count = $connection->execute("SELECT Id FROM ME_UserQuery WHERE ProductionEntityId='" . $options['ProductionEntity'] . "' AND RecordStatus=1 AND ModuleId = '$moduleId'")->fetchAll('assoc');
+        $QueryValue = str_replace("'", "''", trim($options['query']));
+
+        if (!empty($count)) {
+            $queryUpdate = "update ME_UserQuery set Query='" . $QueryValue . "',StatusID=1  where ProductionEntityId='" . $options['ProductionEntity'] . "' and ModuleId='" . $options['moduleId'] . "'";
+            $connection->execute($queryUpdate);
+        }else {
+            $queryInsert = "Insert into ME_UserQuery (ProjectId,RegionId,UserID,ProductionEntityId,ModuleId,Query,QueryRaisedDate,StatusID,RecordStatus,CreatedDate,CreatedBy) values('" . $options['ProjectId'] . "','" . $options['RegionId'] . "','" . $options['user'] . "','" . $options['ProductionEntity'] . "','" . $options['moduleId'] . "','" . $QueryValue . "','" . date('Y-m-d H:i:s') . "',1,1,'" . date('Y-m-d H:i:s') . "','" . $options['user'] . "')";
+            $connection->execute($queryInsert);
+        }
+        return $options['query'];
+    }
+    
 
 }

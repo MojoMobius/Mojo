@@ -1464,7 +1464,7 @@ var xhtmlfileinitial = "<?php echo HTMLfilesPath; ?>" + "TranslationOutput/"+obj
             var result = new Array();
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxqueryposing')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'Translatemodule', 'action' => 'ajaxqueryposing')); ?>",
                 data: ({query: query, InputEntyId: InputEntyId, RegionId: regionid}),
                 dataType: 'text',
                 async: false,
