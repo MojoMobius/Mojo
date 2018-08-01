@@ -23,6 +23,10 @@ use Cake\Routing\Router
     margin: 0px;
     padding: 0px;
     }
+	.suc-msg{
+		color:green;
+		font-size:15px;
+	}
     
 </style>
 <div class="panel-group" id="accordion-dv" role="tablist" aria-multiselectable="true" style="margin-top:10px;">
@@ -458,7 +462,7 @@ echo $this->Form->end();
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="suc-msg"></div>
                     <div class="modal-footer"> <input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" ></div>
                     
                 </div>
@@ -1010,7 +1014,7 @@ function priority(){
             data: {ProductionEntityId: arraydata,ProjectId: Proid,domainId: arraydomain,savedId: arraysaved,statusId: arraystatus},
             type: 'POST',
             success: function (res) { 
-	     $(".hot").html(res);
+			$(".hot").html(res);
             }
         });
 }    
@@ -1029,15 +1033,14 @@ function prioritysubmit(){
 //}
 
             $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdatasubmit')); ?>',
-            
+            url: '<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxgetdatasubmit')); ?>',            
             data: {userId: arraydata, ProjectId:Proid},
             type: 'POST',
             success: function (res) { 
-	     //$(".hot").html(res);
+	          $(".suc-msg").html("Successfully Submitted!");
             }
         });
-        location.reload();
+       // location.reload();
 }    
 
 function numericvalidation(id){
