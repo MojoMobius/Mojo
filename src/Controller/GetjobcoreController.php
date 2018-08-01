@@ -3184,7 +3184,7 @@ $period   = new \DatePeriod($start, $interval, $end);
 foreach ($period as $dt) {
     
   $StartDate=$dt->format("d-m-Y");
-  $Edate=date("d-m-Y", strtotime("+6 months", strtotime($StartDate)));
+  $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
   $End_date = date('d-m-Y', strtotime($Edate . ' -1 day'));
 $total =$total + ($percentage / 100) * $total;
 $n = $total;
