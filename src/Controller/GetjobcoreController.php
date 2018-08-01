@@ -43,7 +43,7 @@ class GetjobcoreController extends AppController {
 
     public function index() {
        if(isset($_GET['querysuccess'])){
-            $this->Flash->success(__('Succssfully Submitted'));
+            $this->Flash->success(__('Query Posted Successfully!'));
        }
 
         //echo '<pre>';
