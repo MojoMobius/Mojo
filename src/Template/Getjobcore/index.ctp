@@ -20,15 +20,14 @@
     echo $this->Html->css('zebra_datepicker.css');
     echo $this->Html->script('zebra_datepicker');
     ?>
+	<style>
+	.suc-msg{
+		color:green;
+		font-size:15px;
+	}
+	</style>
  <script>
- $(document).ready(function () {
  
-    // setTimeout() function will be fired after page is loaded
-    // it will wait for 5 sec. and then will fire
-    // $("#successMessage").hide() function
-    setTimeout(function() {
-        $(".success_msg").hide()
-    }, 2000);
 	
   $('.IsDatepicker').Zebra_DatePicker({
                     direction: true,
@@ -1323,6 +1322,7 @@ if ($NoNewJob == 'NoNewJob') {
                         </form>
                     </div>
 					  <div class="modal-footer">
+					  <div class="suc-msg"></div>
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
                         
         <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQueryAll();")) . ' '; ?>
@@ -4266,18 +4266,18 @@ function goToMsg(id){
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
                 data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
                 success: function (res) { 				 
-					//$(".suc-msg").html('Successfully Submitted');
+					$(".suc-msg").html('Successfully Submitted');
                  }
                 
             });
-var url = window.location.href;    
+/*var url = window.location.href;    
 if (url.indexOf('?') > -1){
    url += '&querysuccess=1'
 }else{
    url += '?querysuccess=1'
 }
 window.location.href = url;
-			
+	*/		
         }
 function fetchbotminds()
 {

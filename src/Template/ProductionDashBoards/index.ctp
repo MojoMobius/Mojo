@@ -461,8 +461,10 @@ echo $this->Form->end();
                             </div>
                         </div>
                     </div>
-                    <div class="suc-msg"></div>
-                    <div class="modal-footer"> <input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" ></div>
+                    
+                    <div class="modal-footer">
+					<div class="suc-msg"></div>
+					<input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" ></div>
                     
                 </div>
             </div>
