@@ -46,6 +46,7 @@ class TranslatemoduleController extends AppController {
         $role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
+
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
@@ -105,7 +106,7 @@ class TranslatemoduleController extends AppController {
         $connection = ConnectionManager::get('d2k');
         $statusIdentifier = ReadyforPUReworkIdentifier;
         $session = $this->request->session();
-        $moduleId = $session->read("moduleId");
+//        $moduleId = $session->read("moduleId");
 
         $PuReworkFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
         $PuFirst_Status_id = array();
@@ -305,7 +306,6 @@ class TranslatemoduleController extends AppController {
                 $SelDomainUrl = "";
             }
 
-//                pr($finalprodValue);
 //               exit;
             $this->set('DependentMasterIds', $DependentMasterIds);
             $this->set('processinputdata', $finalprodValue);
@@ -316,7 +316,8 @@ class TranslatemoduleController extends AppController {
             $TimeTaken = $productionjobNew[0]['TimeTaken'];
             $this->set('TimeTaken', $TimeTaken);
             $QueryDetails = array();
-            $QueryDetails = $connection->execute("SELECT TLComments,Query,StatusID FROM ME_UserQuery WITH (NOLOCK) WHERE   ProductionEntityId=" . $productionjobNew[0]['ProductionEntity'])->fetchAll('assoc');
+            $QueryDetails = $connection->execute("SELECT TLComments,Query,StatusID FROM ME_UserQuery WITH (NOLOCK) WHERE ModuleId='$moduleId' and StatusID=1  and ProductionEntityId=" . $productionjobNew[0]['ProductionEntity'] )->fetchAll('assoc');
+           
             $this->set('QueryDetails', $QueryDetails[0]);
             $HelpContantDetails = array();
             $HelpContantDetails = $connection->execute("SELECT Id,AttributeMasterId FROM MC_CengageHelp WHERE ProjectId = " . $ProjectId . " AND RegionId = " . $RegionId . " AND RecordStatus=1")->fetchAll('assoc');
@@ -507,6 +508,18 @@ class TranslatemoduleController extends AppController {
 
         $result["Validation Output"] = $res_array;
         echo json_encode($result);
+        exit;
+    }
+    
+     function ajaxqueryposing() {
+        $session = $this->request->session();
+        $user_id = $session->read("user_id");
+        $role_id = $session->read("RoleId");
+        $ProjectId = $session->read("ProjectId");
+        $moduleId = $session->read("moduleId");
+        $RegionId = $_POST['RegionId'];
+        echo $_POST['query'];
+        $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
         exit;
     }
 
