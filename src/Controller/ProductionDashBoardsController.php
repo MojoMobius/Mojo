@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,6 +28,10 @@ class ProductionDashBoardsController extends AppController {
     }
 
     public function index() {
+        
+      /*   if(isset($_GET['prioritysuccess'])){
+            $this->Flash->success(__('Successfully Submitted!'));
+       }*/
       
         $session = $this->request->session();
         $sessionProjectId = $session->read("ProjectId");

@@ -308,7 +308,6 @@ class PuquerylistController extends AppController {
                 }
             }
            //pr($finalprodValue);exit;
-           
             $this->set('DependentMasterIds', $DependentMasterIds);
             $this->set('processinputdata', $finalprodValue);
             $this->set('GrpSercntArr', $finalGrpprodValue);

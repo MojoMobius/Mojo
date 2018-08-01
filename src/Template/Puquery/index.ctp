@@ -259,7 +259,7 @@ if(!empty($queryResult)){ ?>
 												<input type="hidden" name="domainId" id="domainId" value="<?php echo $key2;?>">
 												<input type="hidden" name="InputEntityId" id="InputEntityId" value="<?php echo $data3['InputEntityId'];?>">
 												</div>
-                                                <?php echo $data3['UploadFile'];?>
+                                                <a href="<?php echo HTMLfilesPath.$data3['UploadFile'];?>" target="_blank"><?php echo $data3['UploadFile'];?></a>
 												<br>(Allowed Formats: doc and pdf)
                                             </div>
                                                  <div class="form-group frmgrp_align  col-md-5">
