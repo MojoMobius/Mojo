@@ -21,6 +21,9 @@
     echo $this->Html->script('zebra_datepicker');
     ?>
 	<style>
+	.Apped-Rent{
+		padding:0px 10px;
+	}
 	.suc-msg{
 		padding-left:30%;
 		color:green;
@@ -972,10 +975,11 @@ if ($NoNewJob == 'NoNewJob') {
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>
-																
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>);" data-target="#rentmodalAll" data-toggle="modal">
+																<?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>,<?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
+																<?php } ?>
 																	
 																	<!---- Sivachidambaram ends--->
                                                                         <?php
@@ -1046,6 +1050,10 @@ if ($NoNewJob == 'NoNewJob') {
                }
             $attr1['sub'] = $attr_sub;
         ?>
+		<?php if($AttributeSubGroupMasterJSON[$key][$keysub] =="Brands"){ ?>
+		<div class="Apped-Rent">123456</div>
+		<?php } ?>
+		
                                         </div>
                                     </div>
                                         <!--                                    ----------------------------first campaign end--------------------------------------->
@@ -1350,10 +1358,10 @@ if ($NoNewJob == 'NoNewJob') {
                         </form>
                     </div>
 					  <div class="modal-footer">
-                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
-                        
-        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcappend();")) . ' '; ?>
-<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">                        
+								
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Rentcalcappend();">Submit</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
                     </div>
@@ -4364,10 +4372,10 @@ function fetchbotminds()
 
 function Rentcalc(AttrId,ProEntId,Seq){
 	
-	var Commencement = $("#Commencement").val();	
-	var Expiration = $("#Expiration").val();	
-	var BaseRent = $("#BaseRent").val();	
-	var RentInc = $("#RentInc").val();
+	var Commencement = '2018-01-25';//$("#Commencement").val();	
+	var Expiration = '2020-01-25';//$("#Expiration").val();	
+	var BaseRent = '15000';//$("#BaseRent").val();	
+	var RentInc = '2.5';//$("#RentInc").val();
 	
 	
 	$("#CommencementVal").val(Commencement);
@@ -4396,12 +4404,42 @@ function Rentcalcsub(){
             });
 }
 function Rentcalcappend(){
-	
+	var htmldata='';
+	    var Arrpercent = $('input[name^=percent]');
+	    var Arramount = $('input[name^=totalamt]');
+	    var Arrstartdate = $('input[name^=startdate]');
+	    var Arrenddate = $('input[name^=enddate]');
+		var totArr=Arrpercent.length;
+        var postData = {
+            Amountdata: [], // the videos is an array
+        };
+        $.each(Arramount, function(index, el) {
+             postData.Amountdata.push($(el).val());
+        });
+		console.log(postData.Amountdata[3]);
+               /* var arr = ["Mahesh", "Praveen", "DJ", "Jignesh", "Vulpes"];  
+                $.each(arr, function (index, value)  
+                {  
+                    alert(value);  
+                });  
+				*/
+	var atributeId='4410';
+	var ProjAttributeId='10321';
+	var groupId='177';
+	var subgrpId='234';
+	var groupName='Brand Relationship IDnew';
+           var toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+			
+			for(var i=0;i < totArr;i++){
+			//alert("hello");
+			//htmldata+= addAttributerent(atributeId,ProjAttributeId,groupId,subgrpId,groupName);
+			}
+	$(".Apped-Rent").html(htmldata);
 }
 
 function search_mode(AttrId,ProEntId,Seq){
 	
-	var Commencement = $("#Commencement").val();	
+	var Commencement = $("#Apped-Rent").val();	
 	var Expiration = $("#Expiration").val();	
 	var BaseRent = $("#BaseRent").val();	
 	var RentInc = $("#RentInc").val();
