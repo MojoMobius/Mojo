@@ -22,7 +22,9 @@
     ?>
 	<style>
 	.suc-msg{
+		padding-left:30%;
 		color:green;
+		font-weight:600;
 		font-size:15px;
 	}
 	</style>
@@ -1313,7 +1315,8 @@ if ($NoNewJob == 'NoNewJob') {
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="exampleModalTitle">Query</h4>
+                        <h4 class="modal-title" id="exampleModalTitle">Query  <span class="suc-msg"></span></h4> 
+					 
                     </div>
 					<div class="modal-body">                       
                             <div class="hot_query">
@@ -1322,7 +1325,6 @@ if ($NoNewJob == 'NoNewJob') {
                         </form>
                     </div>
 					  <div class="modal-footer">
-					  <div class="suc-msg"></div>
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
                         
         <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return valicateQueryAll();")) . ' '; ?>
@@ -4266,7 +4268,10 @@ function goToMsg(id){
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
                 data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
                 success: function (res) { 				 
-					$(".suc-msg").html('Successfully Submitted');
+					   $(".suc-msg").show().html('Query Posted Successfully!');
+					setTimeout(function() {
+					   $(".suc-msg").hide();
+					}, 2000);
                  }
                 
             });
