@@ -538,6 +538,9 @@ if ($NoNewJob == 'NoNewJob') {
                             <span style="display:none;">
 			    <input type="checkbox" class="chk-wid-Url" onclick="checkAllUrlAtt()" id="chk-wid-Url" value="1"> Show Relevant Fields
                             </span>
+							 <button class="btn btn-default" type="button" onclick="search_mode(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>);" data-target="#searchmodal" data-toggle="modal">Search</button>
+							 	
+							
 			</div>
                     <div id="splitter-block">
                         <div id="splitter-left">
@@ -1241,6 +1244,58 @@ if ($NoNewJob == 'NoNewJob') {
         <!-- Handson Modal -->
 
         <!-- Modal -->
+				 <div class="modal fade" id="searchmodal" aria-hidden="true" aria-labelledby="searchmodal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+				<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Search Field</h4>
+                    </div>
+					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
+                            <div class="form-group">
+                                <div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >lable1</label></div>
+								   <div class="col-md-6"><input type="text" name="CommencementVal1" id="CommencementVal1"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >lable2</label></div>
+								   <div class="col-md-6"><input type="text" name="ExpirationVal1" id="ExpirationVal1" class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >lable3</label></div>
+								   <div class="col-md-6"><input type="text" name="BaseRentVal1" id="BaseRentVal1"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >lable4</label></div>
+								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class="form-group col-md-12">
+								    
+								   <?php echo $this->Form->button('Get', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Searchdata();")) . ' '; ?>
+                                
+								 <div class="hot_search">
+								 </div>
+								</div>
+                            </div>
+                        </form>
+                    </div>
+					  <div class="modal-footer">
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
+                        
+        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub11111();")) . ' '; ?>
+<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                        <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
+                    </div>
+				</div>
+            </div>
+        </div>
 			 <div class="modal fade" id="rentmodalAll" aria-hidden="true" aria-labelledby="rentmodalAll" role="dialog" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -4334,6 +4389,21 @@ function Rentcalcsub(){
 					}
                 
             });
+}
+
+function search_mode(AttrId,ProEntId,Seq){
+	
+	var Commencement = $("#Commencement").val();	
+	var Expiration = $("#Expiration").val();	
+	var BaseRent = $("#BaseRent").val();	
+	var RentInc = $("#RentInc").val();
+	
+	
+	$("#CommencementVal").val(Commencement);
+	$("#ExpirationVal").val(Expiration);
+	$("#BaseRentVal").val(BaseRent);
+	$("#RentIncVal").val(RentInc);
+	
 }
     
 </script>
