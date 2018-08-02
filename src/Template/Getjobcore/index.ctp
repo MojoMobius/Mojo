@@ -1350,7 +1350,7 @@ if ($NoNewJob == 'NoNewJob') {
 					  <div class="modal-footer">
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
                         
-        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub11111();")) . ' '; ?>
+        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcappend();")) . ' '; ?>
 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
@@ -4389,6 +4389,9 @@ function Rentcalcsub(){
 					}
                 
             });
+}
+function Rentcalcappend(){
+	
 }
 
 function search_mode(AttrId,ProEntId,Seq){

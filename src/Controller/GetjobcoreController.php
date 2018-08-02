@@ -3202,10 +3202,10 @@ $total =number_format((float)$total, 2, '.', '');
   //  echo $dt->format("Y-m-d") . "<br>\n";
     
     $Htmlview.='<tr>
-			  <td>'.$percentage.'</td>
-			  <td>'.$total.'</td>
-			  <td>'.$StartDate.'</td>
-			  <td>'.$End_date.'</td>
+			  <td>'.$percentage.'<input type="hidden" name="percent[]" id="percent[]" value="'.$percentage.'" class="percent-class"></td>
+			  <td>'.$total.'<input type="hidden" name="totalamt[]" id="totalamt[]" value="'.$total.'" class="totalamt-class"></td>
+			  <td>'.$StartDate.'<input type="hidden" name="startdate[]" id="startdate[]" value="'.$StartDate.'" class="startdate-class"></td>
+			  <td>'.$End_date.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$End_date.'" class="enddate-class"></td>
 			  </tr>';
 }
  $Htmlview.='</table">';
