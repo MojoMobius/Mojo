@@ -700,7 +700,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
 																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>);" data-target="#rentmodalAll" data-toggle="modal">
+																	<a href="" onclick="Rentcalc(<?php echo $RentFirstAttribute;?>,<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
 																<?php } ?>
@@ -730,8 +730,12 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
 
-																
+																$Rentcheck=0;
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
+																if($Rentcheck==0){
+																	$Rentcheck++;
+																$RentFirstAttribute=$valprodFields['AttributeMasterId'];
+																}
                                                                         if ($isDistinct !== false)
                                                                         $totalSeqCnt = 0;
                                                                     else
@@ -1071,14 +1075,18 @@ if ($NoNewJob == 'NoNewJob') {
 															<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
 															<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
 															<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
+															
+															
 															<input type="hidden" name="CommencementId" id="CommencementId" value="<?php echo $Commencement;?>">
 															<input type="hidden" name="ExpirationId" id="ExpirationId" value="<?php echo $Expiration;?>">
 															<input type="hidden" name="BaseRentId" id="BaseRentId" value="<?php echo $BaseRent;?>">
 															<input type="hidden" name="RentIncId" id="RentIncId" value="<?php echo $RentInc;?>">
 															<input type="hidden" name="Rentseq" id="Rentseq" value="<?php echo $GroupSeqCnt;?>">
+															
 															<input type="hidden" name="RentComments" id="RentComments" value="">
 															<input type="hidden" name="RentDisposition" id="RentDisposition" value="">
 															<input type="hidden" name="RentProductionField" id="RentProductionField" value="">
+															<input type="hidden" name="RentFirstAttrId" id="RentFirstAttrId" value="">
                                     </div>
                                 </div>
 
@@ -1330,7 +1338,7 @@ if ($NoNewJob == 'NoNewJob') {
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title" id="exampleModalTitle">Rent Calculation</h4>
+                        <h4 class="modal-title" id="exampleModalTitle">Rent Calculation <span id="RentTitle"></span></h4>
                     </div>
 					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
                             <div class="form-group">
@@ -4517,7 +4525,10 @@ function fetchbotminds()
 			
 }
 
-function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId){
+function Rentcalc(FistAttrId,AttrId,ProductionField,Comments,Disposition,SubGroupId){
+	
+	
+	var Title = $("#ProductionFields_"+FistAttrId+"_"+ProductionField+"_1").val();
 	
 	var Commencement = $("#Commencement").val();	
 	var Expiration = $("#Expiration").val();	
@@ -4525,7 +4536,8 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId){
 	var RentInc = $("#RentInc").val();
 	var seq=$(".GroupSeq_"+SubGroupId).attr("data");
 	
-	
+	$("#RentTitle").html(Title);///rent popup title
+	$("#RentFirstAttrId").val(Title);///rent hidden file for append data load
 	$("#CommencementVal").val(Commencement);
 	$("#ExpirationVal").val(Expiration);
 	$("#BaseRentVal").val(BaseRent);
