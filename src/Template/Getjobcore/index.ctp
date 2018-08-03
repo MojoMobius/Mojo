@@ -1268,7 +1268,7 @@ if ($NoNewJob == 'NoNewJob') {
 
         <!-- Modal -->
 				 <div class="modal fade" id="searchmodal" aria-hidden="true" aria-labelledby="searchmodal" role="dialog" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="max-width:1200px;">
                 <div class="modal-content">
 				<div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1276,42 +1276,43 @@ if ($NoNewJob == 'NoNewJob') {
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Search Field</h4>
                     </div>
-					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
+					<div class="modal-body" style="height:520px;overflow-y:auto;">                       
                             <div class="form-group">
-                                <div class="form-group col-md-12">
+							
+                                <div class="form-group col-md-6">
 								   <div class="col-md-6"> <label for="Query" >Transfer_Agent_Name</label></div>
 								   <div class="col-md-6"><input type="text" name="OSF_CO_NAME" id="OSF_CO_NAME"  class="form-control" value="">
 								   </div>
                                 </div>
-								 <div class="form-group col-md-12">
+								 <div class="form-group col-md-6">
 								   <div class="col-md-6"> <label for="Query" >Company Name</label></div>
 								   <div class="col-md-6"><input type="text" name="FORMER_CO_NAME" id="FORMER_CO_NAME" class="form-control" value="">
 								   </div>
                                 </div>
-								 <!--<div class="form-group col-md-12">
+								<!-- <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >First Name</label></div>
-								   <div class="col-md-6"><input type="text" name="BaseRentVal1" id="BaseRentVal1"  class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="FIRST_NAME" id="FIRST_NAME"  class="form-control" value="">
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Middle Name</label></div>
-								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="MIDDLE_NAME" id="MIDDLE_NAME"  class="form-control" value="">
 								   </div>
                                 </div>
 								<div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Last Name</label></div>
-								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="LAST_NAME" id="LAST_NAME"  class="form-control" value="">
 								   </div>
                                 </div>
 								<div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Competitor_Name</label></div>
 								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
-								   </div>
-                                </div> -->
-								 <div class="form-group col-md-12">
+								   </div> -->
+                                </div>
+								 <div class="form-group col-md-6">
 								    
-								   <?php echo $this->Form->button('Get', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Searchdata();")) . ' '; ?>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								   <?php echo $this->Form->button('Search', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Searchdata();")) . ' '; ?>
+                                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> -->
 								 <div class="hot_search">
 								 </div>
 								</div>
@@ -4644,23 +4645,17 @@ function Rentcalcappend(){
 
 function search_mode(){
 	
-	var Commencement = $("#Apped-Rent").val();	
-	var Expiration = $("#Expiration").val();	
-	var BaseRent = $("#BaseRent").val();	
-	var RentInc = $("#RentInc").val();
+	$(".hot_search").html("");
+	$("#OSF_CO_NAME").val("");
+	$("#FORMER_CO_NAME").val("");
 	
-	
-	$("#CommencementVal").val(Commencement);
-	$("#ExpirationVal").val(Expiration);
-	$("#BaseRentVal").val(BaseRent); 
-	$("#RentIncVal").val(RentInc);
 
 }
 function Searchdata(){
 	var OSF_CO_NAME = $("#OSF_CO_NAME").val();
 	var FORMER_CO_NAME = $("#FORMER_CO_NAME").val();
 	//var BaseRentVal1 = $("#BaseRentVal1").val();
-	
+	$(".hot_search").html("Loading...");
 	
 	$(".hot_search").html("Loading...");
 	 $.ajax({
@@ -4674,34 +4669,131 @@ function Searchdata(){
                 
             });
 } 
-function populate(OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,COMPENSATIONS,COMMITTEES,BD_START_DATE,BD_END_DATE,EXEC_TITLE_START_DATE,EXEC_TITLE_END_DATE,School,Degree,Area,Year,CERT_NAME,Year,AWARD_NAME,YEAR,ASSOC_COUNCIL_NAME,COMMITTEE,ROLE,START_DATE,END_DATE,GENDER,FORMER_CO_ENT_NBR,FORMER_CO_NAME,FORMER_EXEC_TITLE,DATE_OF_BIRTH,START_DATE,COMPENSATIONS,COMMITTEES,EXEC_LINK_ID,PERSONNEL_ID){
+function populate(COMP_ENT_NBR,COMP_CO_ID,COMP_CO_NAME,Address1,City,State,Zip,Email,URL,Phone,Fax,Toll_Free,Address1,Address2,Address3,Postal_Code1,City,Province,Postal_Code2,Country,Postal_Code3,Email,URL,Phone,Fax,Toll_Free,Mailing_Address1,Mailing_City,Mailing_State,Mailing_Zip,Email,URL,Phone,Fax,Toll_Free,Mailing_Address1,Mailing_Address2,Mailing_Address3,Mailing_PostalCode1,Mailing_City,Mailing_Province,Mailing_Postal_Code2,Mailing_Country,Mailing_Postal_Code3,Email,URL,Phone,Fax,Toll_Free,Nbr_Employees,Revenue_Type,Sales,Upper_Sales_Range,Net_Income,Assets,Liabilities,Net_Worth,Fiscal_Yr_End_Date,FYE_MMDD,Nbr_Employee_Benefits,Pension_Type1,Pension_Assets,Pension_Ending_Date,Ticker,Stock_Exchange1,Cusip_Nbr,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,FIRST_NAME,MIDDLE_NAME,LAST_NAME,SUFFIX,Personnel_ID,Exec_Title,RESP_CODES,Board_Ind,Chairman_Ind,COMPENSATIONS,COMMITTEES,BD_START_DATE,BD_END_DATE,EXEC_TITLE_START_DATE,EXEC_TITLE_END_DATE,School,Degree,Area,Year,CERT_NAME,Year,AWARD_NAME,YEAR,ASSOC_COUNCIL_NAME,COMMITTEE,ROLE,START_DATE,END_DATE,GENDER,FORMER_CO_ENT_NBR,FORMER_CO_NAME,FORMER_EXEC_TITLE,DATE_OF_BIRTH,START_DATE,End_DATE,COMPENSATIONS,COMMITTEES,EXEC_LINK_ID,PERSONNEL_ID){
+	 $('#searchmodal').modal('hide');
 	
- alert('came');
-$('#ProductionFields_4847_164_1').val(OSF_CO_NAME);
-$('#ProductionFields_4848_164_1').val(OSF_ADDRESS1);
-$('#ProductionFields_4849_164_1').val(OSF_CITY);
-$('#ProductionFields_4850_164_1').val(OSF_COUNTRY);
-$('#ProductionFields_4851_164_1').val(OSF_CO_NAME);
-$('#ProductionFields_4852_164_1').val(OSF_ADDRESS1);
-$('#ProductionFields_4853_164_1').val(OSF_CITY);
-$('#ProductionFields_4854_164_1').val(OSF_COUNTRY);
-$('#ProductionFields_4855_164_1').val(OSF_CO_NAME);
-$('#ProductionFields_4856_164_1').val(OSF_ADDRESS1);
-$('#ProductionFields_4857_164_1').val(OSF_CITY);
-$('#ProductionFields_4858_164_1').val(OSF_COUNTRY);
-$('#ProductionFields_4859_164_1').val(OSF_CO_NAME);
-$('#ProductionFields_4860_164_1').val(OSF_ADDRESS1);
-$('#ProductionFields_4861_164_1').val(OSF_CITY);
-$('#ProductionFields_4862_164_1').val(OSF_COUNTRY);
-$('#ProductionFields_4867_164_1').val(COMPENSATIONS);
-$('#ProductionFields_4868_164_1').val(COMMITTEES);
-$('#ProductionFields_4873_164_1').val(School);
-$('#ProductionFields_4874_164_1').val(Degree);
-$('#ProductionFields_4876_164_1').val(Area);
-$('#ProductionFields_4881_164_1').val(ASSOC_COUNCIL_NAME);
-$('#ProductionFields_4882_164_1').val(COMMITTEE);
-$('#ProductionFields_4883_164_1').val(ROLE);
-$('#ProductionFields_4887_164_1').val(GENDER);
+
+$('#ProductionFields_3263_101_1').val(COMP_ENT_NBR);
+$('#ProductionFields_4783_101_1').val(COMP_CO_ID);
+$('#ProductionFields_4657_101_1').val(COMP_CO_NAME);
+$('#ProductionFields_4784_101_1').val(Address1);
+$('#ProductionFields_4785_101_1').val(City);
+$('#ProductionFields_4786_101_1').val(State);
+$('#ProductionFields_4787_101_1').val(Zip);
+$('#ProductionFields_4788_101_1').val(Email);
+$('#ProductionFields_4789_101_1').val(URL);
+$('#ProductionFields_4790_101_1').val(Phone);
+$('#ProductionFields_4791_101_1').val(Fax);
+$('#ProductionFields_4792_101_1').val(Toll_Free);
+$('#ProductionFields_4793_101_1').val(Address1);
+$('#ProductionFields_4794_101_1').val(Address2);
+$('#ProductionFields_4795_101_1').val(Address3);
+$('#ProductionFields_4796_101_1').val(Postal_Code1);
+$('#ProductionFields_11254_101_1').val(City);
+$('#ProductionFields_4798_101_1').val(Province);
+$('#ProductionFields_4799_101_1').val(Postal_Code2);
+$('#ProductionFields_4800_101_1').val(Country);
+$('#ProductionFields_4801_101_1').val(Postal_Code3);
+$('#ProductionFields_4802_101_1').val(Email);
+$('#ProductionFields_4803_101_1').val(URL);
+$('#ProductionFields_4804_101_1').val(Phone);
+$('#ProductionFields_4805_101_1').val(Fax);
+$('#ProductionFields_4806_101_1').val(Toll_Free);
+$('#ProductionFields_4807_101_1').val(Mailing_Address1);
+$('#ProductionFields_4808_101_1').val(Mailing_City);
+$('#ProductionFields_4809_101_1').val(Mailing_State);
+$('#ProductionFields_4810_101_1').val(Mailing_Zip);
+$('#ProductionFields_4811_101_1').val(Email);
+$('#ProductionFields_4812_101_1').val(URL);
+$('#ProductionFields_4813_101_1').val(Phone);
+$('#ProductionFields_4814_101_1').val(Fax);
+$('#ProductionFields_4815_101_1').val(Toll_Free);
+$('#ProductionFields_4816_101_1').val(Mailing_Address1);
+$('#ProductionFields_4817_101_1').val(Mailing_Address2);
+$('#ProductionFields_4818_101_1').val(Mailing_Address3);
+$('#ProductionFields_4819_101_1').val(Mailing_PostalCode1);
+$('#ProductionFields_4820_101_1').val(Mailing_City);
+$('#ProductionFields_4821_101_1').val(Mailing_Province);
+$('#ProductionFields_4822_101_1').val(Mailing_Postal_Code2);
+$('#ProductionFields_4823_101_1').val(Mailing_Country);
+$('#ProductionFields_4824_101_1').val(Mailing_Postal_Code3);
+$('#ProductionFields_4825_101_1').val(Email);
+$('#ProductionFields_4826_101_1').val(URL);
+$('#ProductionFields_4827_101_1').val(Phone);
+$('#ProductionFields_4828_101_1').val(Fax);
+$('#ProductionFields_4829_101_1').val(Toll_Free);
+$('#ProductionFields_4830_101_1').val(Nbr_Employees);
+$('#ProductionFields_4251_101_1').val(Revenue_Type);
+$('#ProductionFields_4831_101_1').val(Sales);
+$('#ProductionFields_4832_101_1').val(Upper_Sales_Range);
+$('#ProductionFields_4833_101_1').val(Net_Income);
+$('#ProductionFields_4834_101_1').val(Assets);
+$('#ProductionFields_4835_101_1').val(Liabilities);
+$('#ProductionFields_4836_101_1').val(Net_Worth);
+$('#ProductionFields_4837_101_1').val(Fiscal_Yr_End_Date);
+$('#ProductionFields_4838_101_1').val(FYE_MMDD);
+$('#ProductionFields_4840_101_1').val(Nbr_Employee_Benefits);
+$('#ProductionFields_4841_101_1').val(Pension_Type1);
+$('#ProductionFields_4842_101_1').val(Pension_Assets);
+$('#ProductionFields_4843_101_1').val(Pension_Ending_Date);
+$('#ProductionFields_4844_101_1').val(Ticker);
+$('#ProductionFields_4845_101_1').val(Stock_Exchange1);
+$('#ProductionFields_4846_101_1').val(Cusip_Nbr);
+$('#ProductionFields_4847_101_1').val(OSF_CO_NAME);
+$('#ProductionFields_4848_101_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4849_101_1').val(OSF_CITY);
+$('#ProductionFields_4850_101_1').val(OSF_COUNTRY);
+$('#ProductionFields_4851_101_1').val(OSF_CO_NAME);
+$('#ProductionFields_4852_101_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4853_101_1').val(OSF_CITY);
+$('#ProductionFields_4854_101_1').val(OSF_COUNTRY);
+$('#ProductionFields_4855_101_1').val(OSF_CO_NAME);
+$('#ProductionFields_4856_101_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4857_101_1').val(OSF_CITY);
+$('#ProductionFields_4858_101_1').val(OSF_COUNTRY);
+$('#ProductionFields_4859_101_1').val(OSF_CO_NAME);
+$('#ProductionFields_4860_101_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4861_101_1').val(OSF_CITY);
+$('#ProductionFields_4862_101_1').val(OSF_COUNTRY);
+$('#ProductionFields_3542_101_1').val(FIRST_NAME);
+$('#ProductionFields_2061_101_1').val(MIDDLE_NAME);
+$('#ProductionFields_2062_101_1').val(LAST_NAME);
+$('#ProductionFields_722_101_1').val(SUFFIX);
+$('#ProductionFields_3242_101_1').val(Personnel_ID);
+$('#ProductionFields_761_101_1').val(Exec_Title);
+$('#ProductionFields_4863_101_1').val(RESP_CODES);
+$('#ProductionFields_3105_101_1').val(Board_Ind);
+$('#ProductionFields_3106_101_1').val(Chairman_Ind);
+$('#ProductionFields_4867_101_1').val(COMPENSATIONS);
+$('#ProductionFields_4868_101_1').val(COMMITTEES);
+$('#ProductionFields_4869_101_1').val(BD_START_DATE);
+$('#ProductionFields_4870_101_1').val(BD_END_DATE);
+$('#ProductionFields_4871_101_1').val(EXEC_TITLE_START_DATE);
+$('#ProductionFields_4872_101_1').val(EXEC_TITLE_END_DATE);
+$('#ProductionFields_4873_101_1').val(School);
+$('#ProductionFields_4874_101_1').val(Degree);
+$('#ProductionFields_4875_101_1').val(Area);
+$('#ProductionFields_4876_101_1').val(Year);
+$('#ProductionFields_4877_101_1').val(CERT_NAME);
+$('#ProductionFields_4876_101_1').val(Year);
+$('#ProductionFields_4879_101_1').val(AWARD_NAME);
+$('#ProductionFields_4876_101_1').val(YEAR);
+$('#ProductionFields_4881_101_1').val(ASSOC_COUNCIL_NAME);
+$('#ProductionFields_4882_101_1').val(COMMITTEE);
+$('#ProductionFields_4883_101_1').val(ROLE);
+$('#ProductionFields_5447_101_1').val(START_DATE);
+$('#ProductionFields_5446_101_1').val(END_DATE);
+$('#ProductionFields_4887_101_1').val(GENDER);
+$('#ProductionFields_4888_101_1').val(FORMER_CO_ENT_NBR);
+$('#ProductionFields_236_101_1').val(FORMER_CO_NAME);
+$('#ProductionFields_761_101_1').val(FORMER_EXEC_TITLE);
+$('#ProductionFields_4897_101_1').val(DATE_OF_BIRTH);
+$('#ProductionFields_4869_101_1').val(START_DATE);
+$('#ProductionFields_4870_101_1').val(End_DATE);
+$('#ProductionFields_4867_101_1').val(COMPENSATIONS);
+$('#ProductionFields_4868_101_1').val(COMMITTEES);
+$('#ProductionFields_3103_101_1').val(EXEC_LINK_ID);
+$('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
 		
 							 
 						
