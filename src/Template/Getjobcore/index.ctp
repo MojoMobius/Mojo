@@ -699,7 +699,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
@@ -4519,10 +4519,10 @@ function fetchbotminds()
 
 function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId){
 	
-	var Commencement = '2018-01-25';//$("#Commencement").val();	
-	var Expiration = '2020-01-25';//$("#Expiration").val();	
-	var BaseRent = '15000';//$("#BaseRent").val();	
-	var RentInc = '2.5';//$("#RentInc").val();
+	var Commencement = $("#Commencement").val();	
+	var Expiration = $("#Expiration").val();	
+	var BaseRent = $("#BaseRent").val();	
+	var RentInc = $("#RentInc").val();
 	var seq=$(".GroupSeq_"+SubGroupId).attr("data");
 	
 	
