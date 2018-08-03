@@ -699,8 +699,8 @@ if ($NoNewJob == 'NoNewJob') {
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
-																	<a href="" onclick="Rentcalc(<?php echo $RentFirstAttribute;?>,<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>);" data-target="#rentmodalAll" data-toggle="modal">
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>,<?php echo $valprodFields['MainGroupId'];?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
 																<?php } ?>
@@ -730,12 +730,12 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
 
-																$Rentcheck=0;
+																$rentset=0;
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
-																if($Rentcheck==0){
-																	$Rentcheck++;
-																$RentFirstAttribute=$valprodFields['AttributeMasterId'];
-																}
+																
+																
+																
+																
                                                                         if ($isDistinct !== false)
                                                                         $totalSeqCnt = 0;
                                                                     else
@@ -955,6 +955,13 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 </div>
                                                                 <div class="col-md-2 form-text">
                                                                 <div class="form-group comments">
+																<?php if($rentset==0){
+																	$rentset++;
+																	?>
+																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
+																	<?php
+																}
+																?>
                                                                     <textarea rows="1" cols="50" class="form-control <?php echo $dbClassName_Disposition; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>
                                                                 </div>
                                                                 </div>
@@ -1087,6 +1094,9 @@ if ($NoNewJob == 'NoNewJob') {
 															<input type="hidden" name="RentDisposition" id="RentDisposition" value="">
 															<input type="hidden" name="RentProductionField" id="RentProductionField" value="">
 															<input type="hidden" name="RentFirstAttrId" id="RentFirstAttrId" value="">
+															<input type="hidden" name="RentFirstAttrVal" id="RentFirstAttrVal" value="">
+															<input type="hidden" name="RentSubGroup" id="RentSubGroup" value="">
+															<input type="hidden" name="RentGroup" id="RentGroup" value="">
                                     </div>
                                 </div>
 
@@ -4524,26 +4534,26 @@ function fetchbotminds()
 			//if(token!='')
 			
 }
-
-function Rentcalc(FistAttrId,AttrId,ProductionField,Comments,Disposition,SubGroupId){
-	
-	
-	var Title = $("#ProductionFields_"+FistAttrId+"_"+ProductionField+"_1").val();
-	
+function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
+	var newSubGroupId = parseInt(SubGroupId) + parseInt(1);
+	var newGroupId = parseInt(GroupId) + parseInt(1);	  
+	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
+	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = $("#Commencement").val();	
 	var Expiration = $("#Expiration").val();	
 	var BaseRent = $("#BaseRent").val();	
 	var RentInc = $("#RentInc").val();
-	var seq=$(".GroupSeq_"+SubGroupId).attr("data");
-	
+	var seq=$(".GroupSeq_"+SubGroupId).attr("data");	
 	$("#RentTitle").html(Title);///rent popup title
-	$("#RentFirstAttrId").val(Title);///rent hidden file for append data load
+	$("#RentFirstAttrVal").val(Title);
+	$("#RentFirstAttrId").val(FirstAttrId);///rent hidden file for append data load
+	$("#RentSubGroup").val(SubGroupId);
+	$("#RentGroup").val(GroupId);	
 	$("#CommencementVal").val(Commencement);
 	$("#ExpirationVal").val(Expiration);
 	$("#BaseRentVal").val(BaseRent);
 	$("#RentIncVal").val(RentInc);
-	$("#Rentseq").val(seq);
-	
+	$("#Rentseq").val(seq);	
 	$("#RentComments").val(Comments);
 	$("#RentDisposition").val(Disposition);
 	$("#RentProductionField").val(ProductionField);
@@ -4555,8 +4565,7 @@ function Rentcalcsub(){
 	var Expiration = $("#ExpirationVal").val();	
 	var BaseRent = $("#BaseRentVal").val();	
 	var RentInc = $("#RentIncVal").val();
-	var Frequency = $("#frequency").val();
-	
+	var Frequency = $("#frequency").val();	
 	$(".hot_rent").html("Loading...");
 	 $.ajax({
                 type: "POST",
@@ -4573,7 +4582,12 @@ function Rentcalcappend(){
 	var Expiration = $("#ExpirationId").val();	
 	var BaseRent = $("#BaseRentId").val();	
 	var RentInc = $("#RentIncId").val();
-	var seq= $("#Rentseq").val();
+	var seq= $("#Rentseq").val();	
+	var RentFirstAttrId = $("#RentFirstAttrId").val();
+	var RentFirstAttrVal = $("#RentFirstAttrVal").val();	
+	
+	var RentSubGroup = $("#RentSubGroup").val();	
+	var RentGroup = $("#RentGroup").val();
 
 	//var Comments =$("#RentComments").val();
 	//var Disposition=$("#RentDisposition").val();
@@ -4610,38 +4624,14 @@ function Rentcalcappend(){
 				*/
           
 			//for(var i=0;i < totArr;i++){
-			       for (var key in localStorage){
-                    if(key=='attrgrp') {
-                       
-                      arrtArr=JSON.parse(localStorage.getItem('attrgrp'));
-                      
-                      $.each(arrtArr, function(key, value) {
-						if(key < totArr){
-                         addSubgrpAttribute(value.subgrpId,value.groupId)
-						}
-                      });
-                       
-                    }
-                    if(key=='attradd') {
-                       
-                      arrtArr=JSON.parse(localStorage.getItem('attradd'));
-                      
-                      $.each(arrtArr, function(key, value) {
-						  if(key < totArr){
-							  
-                         addAttribute(value.data,value.ProjAttributeId,value.groupId,value.subgrpId,value.groupName);
-						
-						  }
-                      });
-                       
-                    }
-					
-                   
-                    //Load_verifiedAttrCnt($this);
-                }
-				
+			                RentSubGroup = parseInt(RentSubGroup) + parseInt(1);
+							RentGroup = parseInt(RentGroup) + parseInt(1);
 						for(var i=0;i < totArr;i++){
-							   seq = parseInt(seq) + parseInt(1);
+													
+							
+                         addSubgrpAttribute(RentSubGroup,RentGroup);
+						   seq = parseInt(seq) + parseInt(1);
+						 $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
 						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').val(postData.enddatedata[i]);
 						 $('input[name="ProductionFields_'+BaseRent+'_'+ProductionField+'_'+seq+'"]').val(postData.Amountdata[i]);
@@ -4806,8 +4796,6 @@ $('#ProductionFields_4867_101_1').val(COMPENSATIONS);
 $('#ProductionFields_4868_101_1').val(COMMITTEES);
 $('#ProductionFields_3103_101_1').val(EXEC_LINK_ID);
 $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
-		
-							 
-						
+			
 }	
 </script>
