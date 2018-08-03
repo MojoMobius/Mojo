@@ -663,10 +663,11 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <div class="col-md-6 row-title" style="padding:0px;">
                                                 <label class="form-control-label font-weight-400"> <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?></label> 
                                                 </div>
-                                                    <div class="col-md-6 row-title" style="padding-right: 84px;">
+                                                    <div class="col-md-4 row-title" style="padding-right: 14px;">
                                                                 <?php if ($isDistinct !== false) {
                                                                     ?>
                                                                  <i id="subgrp-add-field" style="margin-top:5px;" class="fa fa-plus-circle pull-right add-field m-l-10 m-r-5 addSubgrpAttribute" data="<?php echo $keysub; ?>" data-groupId="<?php echo $key; ?>" data-groupName="<?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>"></i> 
+																 
                                                                 
                                                                     <?php
                                                                     //pr($GrpSercntArr);
@@ -694,8 +695,17 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 }
                                                                 ?>
                                                 <input type="hidden" value="<?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>" id="attrsub<?php echo $i; ?>_<?php echo $key; ?>_<?php echo $keysub; ?>" class="removeinputclass">
+												
                                                 
                                                 </div>
+												<div class="col-md-2 row-title" style="padding:0px;">
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>);" data-target="#rentmodalAll" data-toggle="modal">
+																		click
+																	</a>	
+																<?php } ?>
+																</div>
+												
                                                 </div>
                                                 <br/><br/>
                                                                 <?php
@@ -976,11 +986,7 @@ if ($NoNewJob == 'NoNewJob') {
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>
-																<?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>);" data-target="#rentmodalAll" data-toggle="modal">
-																		click
-																	</a>	
-																<?php } ?>
+																
 																	
 																	<!---- Sivachidambaram ends--->
                                                                         <?php
@@ -4628,41 +4634,7 @@ function Rentcalcappend(){
 						 $('input[name="ProductionFields_'+BaseRent+'_'+ProductionField+'_'+seq+'"]').val(postData.Amountdata[i]);
 						 $('input[name="ProductionFields_'+RentInc+'_'+ProductionField+'_'+seq+'"]').val(postData.percentdata[i]);						
 						  }
-               /* for (var key in localStorage){
-                    if(key!=='attradd') {
-						$('input[name="'+key+'"]').val(localStorage.getItem(key));
-                        $('textarea[name="'+key+'"]').text(localStorage.getItem(key));
-                       // $('select[name="'+key+'"] > option').eq(localStorage.getItem(key)).attr('selected','selected')
-                       $this=$('input[name="'+key+'"]');
-                       $('select[name="'+key+'"] option').filter(function() { 
-                           $this=$('select[name="'+key+'"]');
-                        return ($(this).text() == localStorage.getItem(key)); //To select Blue
-                        }).prop('selected', true); 
-                        
-                
-                    }
-                  //  Load_verifiedAttrCnt($this);
-                }*/
-               /* Load_totalAttInThisGrpCnt();
-                //localStorage.clear();
-                $(".UpdateFields").blur(function(e){
-                    AttValue = $(this).val();
-                    Attname=$(this).attr("name");                  
-                    localStorage.setItem(Attname, AttValue);
-                    
-                    
-                    
-                 });
-                 
-                 $(".InsertFields").blur(function(e){
-                    AttValue = $(this).val();
-                    Attname=$(this).attr("name");
-                  
-                    localStorage.setItem(Attname, AttValue);
-                    
-                    
-                    
-                 });*/
+             
                 
 			
 			//}
@@ -4704,7 +4676,7 @@ function Searchdata(){
 } 
 function populate(OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,COMPENSATIONS,COMMITTEES,BD_START_DATE,BD_END_DATE,EXEC_TITLE_START_DATE,EXEC_TITLE_END_DATE,School,Degree,Area,Year,CERT_NAME,Year,AWARD_NAME,YEAR,ASSOC_COUNCIL_NAME,COMMITTEE,ROLE,START_DATE,END_DATE,GENDER,FORMER_CO_ENT_NBR,FORMER_CO_NAME,FORMER_EXEC_TITLE,DATE_OF_BIRTH,START_DATE,COMPENSATIONS,COMMITTEES,EXEC_LINK_ID,PERSONNEL_ID){
 	
-	alert('came');
+ alert('came');
 $('#ProductionFields_4847_164_1').val(OSF_CO_NAME);
 $('#ProductionFields_4848_164_1').val(OSF_ADDRESS1);
 $('#ProductionFields_4849_164_1').val(OSF_CITY);
