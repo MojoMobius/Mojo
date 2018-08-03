@@ -507,7 +507,8 @@ if ($NoNewJob == 'NoNewJob') {
                             <div class="col-md-4 font-size-14">
                         <?php echo "Project Name : ". $ProjectName; ?>
 
-                    </div> 
+                    </div> <button class="btn btn-default" type="button" onclick="search_mode();" data-target="#searchmodal" data-toggle="modal">Search</button>
+			
                             <label class="pull-right font-size-14">Timer 
                                 <span class="badge" id='countdown'>
                                     <div class="col-md-4">
@@ -536,11 +537,11 @@ if ($NoNewJob == 'NoNewJob') {
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
 			<div style="float: right;">
+							 
                             <input type="checkbox" class="chk-wid-Url float-right" onclick="ShowUnVerifiedAtt()" id="chk-wid-Url2" value="2"> Hide Completed Fields 
                             <span style="display:none;">
 			    <input type="checkbox" class="chk-wid-Url" onclick="checkAllUrlAtt()" id="chk-wid-Url" value="1"> Show Relevant Fields
                             </span>
-							 <button class="btn btn-default" type="button" onclick="search_mode(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>);" data-target="#searchmodal" data-toggle="modal">Search</button>
 							 	
 							
 			</div>
@@ -1258,43 +1259,46 @@ if ($NoNewJob == 'NoNewJob') {
 					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
                             <div class="form-group">
                                 <div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >lable1</label></div>
-								   <div class="col-md-6"><input type="text" name="CommencementVal1" id="CommencementVal1"  class="form-control" value="">
+								   <div class="col-md-6"> <label for="Query" >Transfer_Agent_Name</label></div>
+								   <div class="col-md-6"><input type="text" name="OSF_CO_NAME" id="OSF_CO_NAME"  class="form-control" value="">
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >lable2</label></div>
-								   <div class="col-md-6"><input type="text" name="ExpirationVal1" id="ExpirationVal1" class="form-control" value="">
+								   <div class="col-md-6"> <label for="Query" >Company Name</label></div>
+								   <div class="col-md-6"><input type="text" name="FORMER_CO_NAME" id="FORMER_CO_NAME" class="form-control" value="">
 								   </div>
                                 </div>
-								 <div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >lable3</label></div>
+								 <!--<div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >First Name</label></div>
 								   <div class="col-md-6"><input type="text" name="BaseRentVal1" id="BaseRentVal1"  class="form-control" value="">
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >lable4</label></div>
+								   <div class="col-md-6"> <label for="Query" >Middle Name</label></div>
 								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
 								   </div>
                                 </div>
+								<div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Last Name</label></div>
+								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
+								   </div>
+                                </div>
+								<div class="form-group col-md-12">
+								   <div class="col-md-6"> <label for="Query" >Competitor_Name</label></div>
+								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
+								   </div>
+                                </div> -->
 								 <div class="form-group col-md-12">
 								    
 								   <?php echo $this->Form->button('Get', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Searchdata();")) . ' '; ?>
-                                
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 								 <div class="hot_search">
 								 </div>
 								</div>
                             </div>
                         </form>
                     </div>
-					  <div class="modal-footer">
-                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
-                        
-        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub11111();")) . ' '; ?>
-<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-
-                        <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
-                    </div>
+					  
 				</div>
             </div>
         </div>
@@ -4396,7 +4400,7 @@ function Rentcalcsub(){
             });
 }
 
-function search_mode(AttrId,ProEntId,Seq){
+function search_mode(){
 	
 	var Commencement = $("#Commencement").val();	
 	var Expiration = $("#Expiration").val();	
@@ -4410,5 +4414,54 @@ function search_mode(AttrId,ProEntId,Seq){
 	$("#RentIncVal").val(RentInc);
 	
 }
-    
+function Searchdata(){
+	var OSF_CO_NAME = $("#OSF_CO_NAME").val();
+	var FORMER_CO_NAME = $("#FORMER_CO_NAME").val();
+	//var BaseRentVal1 = $("#BaseRentVal1").val();
+	
+	
+	$(".hot_search").html("Loading...");
+	 $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxSearch')); ?>",
+                 data: ({OSF_CO_NAME: OSF_CO_NAME,FORMER_CO_NAME:FORMER_CO_NAME}),
+                success: function (res) { 
+				
+                     $(".hot_search").html(res);
+					}
+                
+            });
+} 
+function populate(OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,OSF_CO_NAME,OSF_ADDRESS1,OSF_CITY,OSF_COUNTRY,COMPENSATIONS,COMMITTEES,BD_START_DATE,BD_END_DATE,EXEC_TITLE_START_DATE,EXEC_TITLE_END_DATE,School,Degree,Area,Year,CERT_NAME,Year,AWARD_NAME,YEAR,ASSOC_COUNCIL_NAME,COMMITTEE,ROLE,START_DATE,END_DATE,GENDER,FORMER_CO_ENT_NBR,FORMER_CO_NAME,FORMER_EXEC_TITLE,DATE_OF_BIRTH,START_DATE,COMPENSATIONS,COMMITTEES,EXEC_LINK_ID,PERSONNEL_ID){
+	
+	alert('came');
+$('#ProductionFields_4847_164_1').val(OSF_CO_NAME);
+$('#ProductionFields_4848_164_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4849_164_1').val(OSF_CITY);
+$('#ProductionFields_4850_164_1').val(OSF_COUNTRY);
+$('#ProductionFields_4851_164_1').val(OSF_CO_NAME);
+$('#ProductionFields_4852_164_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4853_164_1').val(OSF_CITY);
+$('#ProductionFields_4854_164_1').val(OSF_COUNTRY);
+$('#ProductionFields_4855_164_1').val(OSF_CO_NAME);
+$('#ProductionFields_4856_164_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4857_164_1').val(OSF_CITY);
+$('#ProductionFields_4858_164_1').val(OSF_COUNTRY);
+$('#ProductionFields_4859_164_1').val(OSF_CO_NAME);
+$('#ProductionFields_4860_164_1').val(OSF_ADDRESS1);
+$('#ProductionFields_4861_164_1').val(OSF_CITY);
+$('#ProductionFields_4862_164_1').val(OSF_COUNTRY);
+$('#ProductionFields_4867_164_1').val(COMPENSATIONS);
+$('#ProductionFields_4868_164_1').val(COMMITTEES);
+$('#ProductionFields_4873_164_1').val(School);
+$('#ProductionFields_4874_164_1').val(Degree);
+$('#ProductionFields_4876_164_1').val(Area);
+$('#ProductionFields_4881_164_1').val(ASSOC_COUNCIL_NAME);
+$('#ProductionFields_4882_164_1').val(COMMITTEE);
+$('#ProductionFields_4883_164_1').val(ROLE);
+$('#ProductionFields_4887_164_1').val(GENDER);
+		
+							 
+						
+}	
 </script>

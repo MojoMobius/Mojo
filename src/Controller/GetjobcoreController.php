@@ -3212,6 +3212,37 @@ $total =number_format((float)$total, 2, '.', '');
      
     echo $Htmlview;
      exit;
- }       
+ }  
+ 
+function ajaxSearch(){  
+$OSF_CO_NAME = $_POST['OSF_CO_NAME'];
+$FORMER_CO_NAME = $_POST['FORMER_CO_NAME'];
 
+  $connection = ConnectionManager::get('default');
+ // echo "Select Brands from Brands where CO_ENT_NBR = '" . $CO_ENT_NBR . "'";
+
+ $result = $connection->execute("Select top 5 * from OSF 
+ INNER JOIN Bio_Current_Employment ON Bio_Current_Employment.CO_ENT_NBR=OSF.CO_ENT_NBR
+ where OSF_CO_NAME = '" . $OSF_CO_NAME."'" )->fetchAll('assoc');
+			   
+ $Htmlview="<table class='table table-center'>
+	  <tr>
+	  <th  width='20%'>Transfer_Agent_Name</th>
+	  <th  width='20%'>Company Name</th>
+	  </tr>";
+foreach ($result as $set) {
+
+ 	$populate="'".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['COMPENSATIONS']."','".$set['COMMITTEES']."','".$set['BD_START_DATE']."','".$set['BD_END_DATE']."','".$set['EXEC_TITLE_START_DATE']."','".$set['EXEC_TITLE_END_DATE']."','".$set['School']."','".$set['Degree']."','".$set['Area']."','".$set['Year']."','".$set['CERT_NAME']."','".$set['Year']."','".$set['AWARD_NAME']."','".$set['YEAR']."','".$set['ASSOC_COUNCIL_NAME']."','".$set['COMMITTEE']."','".$set['ROLE']."','".$set['START_DATE']."','".$set['END_DATE']."','".$set['GENDER']."','".$set['FORMER_CO_ENT_NBR']."','".$set['FORMER_CO_NAME']."','".$set['FORMER_EXEC_TITLE']."','".$set['DATE_OF_BIRTH']."','".$set['START_DATE']."','".$set['COMPENSATIONS']."','".$set['COMMITTEES']."','".$set['EXEC_LINK_ID']."','".$set['PERSONNEL_ID']."'";
+//$populate="'".$set['CO_NAME']."','".$set['TRADE_NAME']."'";
+    $Htmlview.='<tr onclick="populate('.$populate.')">
+			  <td>'.$set['OSF_CO_NAME'].'</td>
+			  <td>'.$set['FORMER_CO_NAME'].'</td>
+			  
+			  </tr>';
+}
+ $Htmlview.='</table">';
+     
+    echo $Htmlview;
+     exit;
+ }
 }
