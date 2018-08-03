@@ -699,7 +699,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>,<?php echo $valprodFields['MainGroupId'];?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
@@ -958,7 +958,7 @@ if ($NoNewJob == 'NoNewJob') {
 																<?php if($rentset==0){
 																	$rentset++;
 																	?>
-																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
+																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" >
 																	<?php
 																}
 																?>
@@ -4537,7 +4537,7 @@ function fetchbotminds()
 function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
 	var newSubGroupId = parseInt(SubGroupId) + parseInt(1);
 	var newGroupId = parseInt(GroupId) + parseInt(1);	  
-	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
+	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId+""+Seq).val();	
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = $("#Commencement").val();	
 	var Expiration = $("#Expiration").val();	
