@@ -3210,11 +3210,6 @@ $total =number_format((float)$total, 2, '.', '');
 }
  $Htmlview.='</table">';
  
- $Htmlview.='<input type="hidden" name="rentattrid[]" id="rentattrid[]" value="'.$percentage.'"';
- $Htmlview.='<input type="hidden" name="rentprojattrid[]" id="rentprojattrid[]" value="'.$percentage.'"';
- $Htmlview.='<input type="hidden" name="rentgroupId[]" id="rentgroupId[]" value="'.$percentage.'"';
- $Htmlview.='<input type="hidden" name="rentsubgrpId[]" id="rentsubgrpId[]" value="'.$percentage.'"';
- $Htmlview.='<input type="hidden" name="rengroupName[]" id="rengroupName[]" value="'.$percentage.'"';
      
     echo $Htmlview;
      exit;
