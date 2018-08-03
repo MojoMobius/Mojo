@@ -3964,7 +3964,8 @@
             "IsAllowedToDisplay": null,
             "IsModuleGroup": null,
             "IsHygineCheck": 0,
-            "FromStatus": null
+            "FromStatus": null,
+			"Level":2
         },
         "6694031": {
             "IsInputMandatory": 1,
@@ -3973,7 +3974,8 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": "1,8"
+            "FromStatus": "1,8",
+			"Level":1
         },
         "6694033": {
             "IsInputMandatory": 1,
@@ -3982,7 +3984,8 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 2,
             "IsHygineCheck": 0,
-            "FromStatus": null
+            "FromStatus": null,
+			"Level":2
         },
         "6694034": {
             "IsInputMandatory": 1,
@@ -3991,7 +3994,8 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": null,
             "IsHygineCheck": 0,
-            "FromStatus": null
+            "FromStatus": null,
+			"Level":2
         },
         "6694035": {
             "IsInputMandatory": 1,
@@ -4000,7 +4004,8 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": "0"
+            "FromStatus": "0",
+			"Level":2
         },
         "145": {
             "IsInputMandatory": 1,
@@ -4009,7 +4014,8 @@
             "IsAllowedToDisplay": 1,
             "IsModuleGroup": 1,
             "IsHygineCheck": null,
-            "FromStatus": null
+            "FromStatus": null,
+			"Level":2
         }
     },
     "ModuleUser": {

@@ -21,6 +21,9 @@
     echo $this->Html->script('zebra_datepicker');
     ?>
 	<style>
+	.Apped-Rent{
+		padding:0px 10px;
+	}
 	.suc-msg{
 		padding-left:30%;
 		color:green;
@@ -973,10 +976,11 @@ if ($NoNewJob == 'NoNewJob') {
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>
-																
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>);" data-target="#rentmodalAll" data-toggle="modal">
+																<?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $tempSq;?>,<?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
+																<?php } ?>
 																	
 																	<!---- Sivachidambaram ends--->
                                                                         <?php
@@ -1047,6 +1051,8 @@ if ($NoNewJob == 'NoNewJob') {
                }
             $attr1['sub'] = $attr_sub;
         ?>
+		
+		
                                         </div>
                                     </div>
                                         <!--                                    ----------------------------first campaign end--------------------------------------->
@@ -1354,10 +1360,10 @@ if ($NoNewJob == 'NoNewJob') {
                         </form>
                     </div>
 					  <div class="modal-footer">
-                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
-                        
-        <?php echo $this->Form->button('Submit', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "return Rentcalcsub11111();")) . ' '; ?>
-<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">                        
+								
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Rentcalcappend();">Submit</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
                     </div>
@@ -1897,6 +1903,135 @@ $(document).keydown(function(e) {
 
             Load_totalAttInThisGrpCnt();
                     $('.testmulti').fSelect();
+           //  checkAll(groupId,subgrpId);
+        }
+		  function  addAttributerent (atributeId,ProjAttributeId,groupId,subgrpId,groupName) {
+            //var atributeId = $(this).attr("data");
+            //var ProjAttributeId = $(this).attr("data-ProjAttrId");
+            //var groupId = $(this).attr("data-groupId");
+            //var subgrpId = $(this).attr("date-subgrpId");
+            // var groupName = $(this).attr("data-groupName");
+         
+            var maxSeqCnt = $('.ShowingSeqDiv_' + atributeId).attr("data");
+            var nxtSeq = parseInt(maxSeqCnt) + 1;
+            var subGrpArr='<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
+            var subGrpAtt = JSON.parse(subGrpArr);
+            //var subGrpArrValidate='<?php //echo htmlspecialchars(str_replace("'", "\\'", json_encode($validate)))?>';
+            //var subGrpArrValidate='<?php //echo str_replace("\\", "\\",(json_encode($validate)))?>';
+            //var subGrpArrValidate='<?php //echo stripslashes(str_replace("\\\\", "\\",(json_encode($validate))))?>';
+            var subGrpArrValidate='<?php echo stripslashes(json_encode($validate))?>';
+            var subGrpAttValidate = JSON.parse(subGrpArrValidate);
+            var elementValidate = subGrpAttValidate[ProjAttributeId];
+            
+            var subGrpAttArr = subGrpAtt[groupId][subgrpId];
+           element=[];
+             $.each(subGrpAttArr, function (key, val) {
+                 if(val['AttributeMasterId']==atributeId){
+                     element=val;
+                 }
+             });
+             var inpId = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['ProductionField']; ?>_' + nxtSeq;
+            var inpName = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['ProductionField']; ?>_' + nxtSeq;
+            var commendName = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['Comments']; ?>_' + nxtSeq;
+            var selName = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['Disposition']; ?>_' + nxtSeq;
+            var prodDep='<?php echo $DependentMasterIds['ProductionField']; ?>';
+            var cmdDep='<?php echo $DependentMasterIds['Comments']; ?>';
+            var disDep='<?php echo $DependentMasterIds['Disposition']; ?>';
+             maxSeq='<?php echo json_encode($maxSeq);?>';
+            maxSeqArr=JSON.parse(maxSeq);
+            if(nxtSeq<=maxSeqArr[prodDep])
+                var dbClass='UpdateFields';
+            else
+                var dbClass='InsertFields';
+            if(nxtSeq<=maxSeqArr[cmdDep]) 
+                var dbClass_cmd='UpdateFields';
+            else
+                var dbClass_cmd='InsertFields';
+            
+            if(nxtSeq<=maxSeqArr[disDep]) 
+                var dbClass_dis='UpdateFields';
+            else
+                var dbClass_dis='InsertFields';
+            
+            //alert(nxtSeq);
+            var toappendData = '<div id="MultiField_' + atributeId + '_' + nxtSeq + '" style="border-bottom: 1px dotted rgb(196, 196, 196) !important" class="row form-responsive MultiField_' + atributeId + ' CampaignWiseFieldsDiv_' + groupId + '">' +
+                    '<div class="col-md-3 form-title"><div class="form-group" style=""><p>' + groupName + '</p></div></div>' +
+                    '<div class="col-md-4 form-text"><div class="form-group">' ;
+					
+		var pam = element['ProjectAttributeMasterId'];
+                 var reload = 'LoadValue('+pam+',this.value,'+elementValidate['Reload']+','+ atributeId +','+'<?php echo $DependentMasterIds['ProductionField']; ?>'+','+ nxtSeq +');';
+                                      //  var reload = elementValidate['Reload'] +','+ atributeId +','+'<?php echo $DependentMasterIds['ProductionField']; ?>'+','+ nxtSeq +');';
+                                        var IsMandatory=elementValidate['IsMandatory'];
+                                        var DisplayAttributeName=elementValidate['DisplayAttributeName'];
+                                        var mandateFunction ='';
+                                         if(IsMandatory==1){
+                                         var mandateFunction = 'MandatoryValue(this.id,this.value,'+'\''+DisplayAttributeName+'\');';
+                                         }
+                                         else{
+                                          var mandateFunction =''; 
+                                         }
+                             var inpOnBlur ='';        
+                             elementValidate['AllowedCharacter'] = addslashes(elementValidate['AllowedCharacter']);
+                             elementValidate['NotAllowedCharacter'] = addslashes(elementValidate['NotAllowedCharacter']);
+                     if(elementValidate['ControlName']=='TextBox'){
+                         inpOnBlur =' onblur="checkLength(this,'+atributeId+','+'<?php echo $DependentMasterIds['ProductionField']; ?>'+','+nxtSeq+','+elementValidate['MinLength']+'); '+mandateFunction+elementValidate['FunctionName']+'(this.id, this.value,'+'\''+elementValidate['AllowedCharacter'] + '\', '+'\''+elementValidate['NotAllowedCharacter']+'\', '+'\''+elementValidate['Dateformat']+'\', '+'\''+elementValidate['AllowedDecimalPoint']+'\');" maxlength="'+elementValidate['MaxLength']+'" minlength="'+elementValidate['MinLength']+'"';   
+                     }else if(elementValidate['ControlName']=='DropDownList'){
+                         inpOnBlur =' onblur="'+mandateFunction+elementValidate['FunctionName']+'(this.id, this.value,'+'\''+elementValidate['AllowedCharacter'] + '\', '+'\''+elementValidate['NotAllowedCharacter']+'\', '+'\''+elementValidate['Dateformat']+'\', '+'\''+elementValidate['AllowedDecimalPoint']+'\');"';   
+                     }
+                        //alert(inpOnBlur);
+                        //onblur="NumbersOnly(this.id, this.value,'', '', '', 'null');" maxlength="null" minlength="null"
+                    if(element['ControlName']=='TextBox')
+                        toappendData +='<input '+inpOnBlur+' type="text" class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' form-control doOnBlur '+dbClass+'" id="' + inpId + '"  name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);">' ;
+                    if(element['ControlName']=='MultiTextBox') {
+                    toappendData += '<textarea id=COpyTeXt_' + atributeId + '_' + nxtSeq + ' readonly="readonly" class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' form-control"></textarea>';
+                    if(element['Options'] != ''){
+                        var inpName = 'ProductionField_' + atributeId + '_<?php echo $DependentMasterIds['ProductionField']; ?>_' + nxtSeq+'[]';
+                        toappendData +='<select multiple="true" '+inpOnBlur+' class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' testmulti doOnBlur UpdateFields removeinputclass"  id="' + inpId + '" name="' + inpName + '" >';
+
+                    jQuery.each(element['Options'], function (i, val) {
+                        toappendData +='<option value="'+val+'">'+val+'</option>';
+                    });
+                    toappendData +='</select>';
+                    } else {
+                        toappendData +='<textarea '+inpOnBlur+' class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' form-control doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"></textarea>' ;
+                    }
+                }
+                if(element['ControlName']=='CheckBox')
+                        toappendData +='<input '+inpOnBlur+' type="checkbox" class="inputsubGrp_'+groupId+'_'+subgrpId+' doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '"  onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);">' ;  
+                if(element['ControlName']=='RadioButton'){
+                        toappendData +='<input value="Yes" type="radio" style="position:static" class="inputsubGrp_'+groupId+'_'+subgrpId+' doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"> Yes '+
+                                        '<input value="No" type="radio" style="position:static" class="inputsubGrp_'+groupId+'_'+subgrpId+' doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"> No ' ;  
+                            }
+                   if(element['ControlName']=='DropDownList') {
+                        toappendData +='<select '+inpOnBlur+' onchange = '+reload+' class="inputsubGrp_'+groupId+'_'+subgrpId+' wid-100per form-control doOnBlur '+dbClass+'"  id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"><option value="">--Select--</option>';
+                       
+                      jQuery.each(element['Options'], function (i, val) {
+                          toappendData +='<option value="'+val+'">'+val+'</option>';
+                      });
+                      toappendData +='</select>';
+                  }
+                    toappendData +='<span class="lighttext" data-toggle="tooltip" title=""></span>' +
+                    '</div></div>' +
+                    '<div class="col-md-2 form-text"><div class="form-group comments">' +
+                    '<textarea '+inpOnBlur+' rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
+                    '</div></div>' +
+                    '<div class="col-md-3 form-status"><div class="form-group status">' +
+                    '<select '+inpOnBlur+' id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
+                    '<option value="">--</option>' +
+                    '<option value="A">A</option>' +
+                    '<option value="D">D</option>' +
+                    '<option value="M">M</option>' +
+                    '<option value="V">V</option>' +
+                    '</select>' +
+                    '<div><i class="fa fa-minus-circle remove-field m-r-10" style="padding:5px;" data="' + atributeId + '"></i></div></div>' +
+                    '</div></div>';
+
+					return toappendData;
+          //  $('.add_' + atributeId).append(toappendData);
+           // $('.ShowingSeqDiv_' + atributeId).attr("data", nxtSeq);
+
+         //   Load_totalAttInThisGrpCnt();
+          //          $('.testmulti').fSelect();
            //  checkAll(groupId,subgrpId);
         }
         function addSubgrpAttribute(subgrpId,groupId){
@@ -4043,7 +4178,7 @@ $(document).keydown(function(e) {
                 data: {keyval: keyval, changed: changes,ProductionEntityId:ProductionEntityId,data: hot.getData()}, // contains changed cells' data
                 success: function (result) {
                     if (result) {
-                        // alert(result);
+                        // alert(result);  
                         hot.updateSettings({
                             cells: function (row, col, prop) {
                                 if (row == changed[0] && col == result[1]) {
@@ -4368,10 +4503,10 @@ function fetchbotminds()
 
 function Rentcalc(AttrId,ProEntId,Seq){
 	
-	var Commencement = $("#Commencement").val();	
-	var Expiration = $("#Expiration").val();	
-	var BaseRent = $("#BaseRent").val();	
-	var RentInc = $("#RentInc").val();
+	var Commencement = '2018-01-25';//$("#Commencement").val();	
+	var Expiration = '2020-01-25';//$("#Expiration").val();	
+	var BaseRent = '15000';//$("#BaseRent").val();	
+	var RentInc = '2.5';//$("#RentInc").val();
 	
 	
 	$("#CommencementVal").val(Commencement);
@@ -4399,10 +4534,106 @@ function Rentcalcsub(){
                 
             });
 }
+function Rentcalcappend(){
+	var htmldata='';
+	    var Arrpercent = $('input[name^=percent]');
+	    var Arramount = $('input[name^=totalamt]');
+	    var Arrstartdate = $('input[name^=startdate]');
+	    var Arrenddate = $('input[name^=enddate]');
+		var totArr=Arrpercent.length;
+        var postData = {
+            Amountdata: [], // the videos is an array
+        };
+        $.each(Arramount, function(index, el) {
+             postData.Amountdata.push($(el).val());
+        });
+               /* var arr = ["Mahesh", "Praveen", "DJ", "Jignesh", "Vulpes"];  
+                $.each(arr, function (index, value)  
+                {  
+                    alert(value);  
+                });  
+				*/
+	var atributeId='4410';
+	var ProjAttributeId='10321';
+	var groupId='177';
+	var subgrpId='234';
+	var groupName='Brand Relationship IDnew';
+	var nxtSeq='10';
+           var toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+			
+			//for(var i=0;i < totArr;i++){
+			       for (var key in localStorage){
+                    if(key=='attrgrp') {
+                       
+                      arrtArr=JSON.parse(localStorage.getItem('attrgrp'));
+                      
+                      $.each(arrtArr, function(key, value) {
+						if(key < totArr){
+                         addSubgrpAttribute(value.subgrpId,value.groupId)
+						}
+                      });
+                       
+                    }
+                    if(key=='attradd') {
+                       
+                      arrtArr=JSON.parse(localStorage.getItem('attradd'));
+                      
+                      $.each(arrtArr, function(key, value) {
+						  if(key < totArr){
+                         addAttribute(value.data,value.ProjAttributeId,value.groupId,value.subgrpId,value.groupName)
+						  }
+                      });
+                       
+                    }
+                   
+                    //Load_verifiedAttrCnt($this);
+                }
+                for (var key in localStorage){
+                    if(key!=='attradd') {
+                        
+                        $('input[name="'+key+'"]').val(localStorage.getItem(key));
+                        $('textarea[name="'+key+'"]').text(localStorage.getItem(key));
+                       // $('select[name="'+key+'"] > option').eq(localStorage.getItem(key)).attr('selected','selected')
+                       $this=$('input[name="'+key+'"]');
+                       $('select[name="'+key+'"] option').filter(function() { 
+                           $this=$('select[name="'+key+'"]');
+                        return ($(this).text() == localStorage.getItem(key)); //To select Blue
+                        }).prop('selected', true); 
+                        
+                
+                    }
+                  //  Load_verifiedAttrCnt($this);
+                }
+               /* Load_totalAttInThisGrpCnt();
+                //localStorage.clear();
+                $(".UpdateFields").blur(function(e){
+                    AttValue = $(this).val();
+                    Attname=$(this).attr("name");
+                  
+                    localStorage.setItem(Attname, AttValue);
+                    
+                    
+                    
+                 });
+                 
+                 $(".InsertFields").blur(function(e){
+                    AttValue = $(this).val();
+                    Attname=$(this).attr("name");
+                  
+                    localStorage.setItem(Attname, AttValue);
+                    
+                    
+                    
+                 });*/
+               
+			
+			//}
+	//$(".Apped-Rent").html(htmldata);
+}
 
 function search_mode(){
 	
-	var Commencement = $("#Commencement").val();	
+	var Commencement = $("#Apped-Rent").val();	
 	var Expiration = $("#Expiration").val();	
 	var BaseRent = $("#BaseRent").val();	
 	var RentInc = $("#RentInc").val();
@@ -4412,7 +4643,6 @@ function search_mode(){
 	$("#ExpirationVal").val(Expiration);
 	$("#BaseRentVal").val(BaseRent);
 	$("#RentIncVal").val(RentInc);
-	
 }
 function Searchdata(){
 	var OSF_CO_NAME = $("#OSF_CO_NAME").val();
