@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -63,7 +62,8 @@ class GetjobcoreController extends AppController {
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
                 //$LevelModule = 1;
-		$this->set('levelModule', $LevelModule);
+		$this->set('levelModule', $LevelModule);		
+		$this->set('ModuleId', $moduleId);
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
         if ($FromStatus == '') {
             $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
@@ -2601,6 +2601,7 @@ class GetjobcoreController extends AppController {
         $headi = 0;
         foreach ($valArr['handson'] as $key => $value) {
 
+            $qc_datarow.='<tr>';     
             $ac_menu = count($value);
             $ex_menu = $nm_menu - count($value);
             foreach ($value as $arkey => $arvalue) {
