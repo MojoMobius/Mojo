@@ -1912,6 +1912,10 @@ class GetjobcoreController extends AppController {
     function ajaxquerypostingmulti() {
 			
 	parse_str($_POST['multiquery'], $Query);
+       if(empty($Query)){
+        echo "fail";
+        exit;  
+       }
         $session = $this->request->session();
         $user_id = $session->read("user_id");
         $role_id = $session->read("RoleId");
@@ -3001,7 +3005,12 @@ class GetjobcoreController extends AppController {
 			  $comments = $result[0]['Query'];
 			  $tlcomments = $result[0]['TLComments'];
 			  $cl_resp = $result[0]['Client_Response'];
-			  $cl_date = $result[0]['Client_Response_Date'];
+                          if(!empty($result[0]['Client_Response_Date']) && $result[0]['Client_Response_Date'] !='NULL'){
+			  $cl_date = date("d-m-Y",$result[0]['Client_Response_Date']);
+                          }
+                          else{
+                          $cl_date = "";    
+                          }
 		  }
 
         

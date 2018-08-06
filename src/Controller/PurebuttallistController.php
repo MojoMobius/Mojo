@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -1349,7 +1348,7 @@ class PurebuttallistController extends AppController {
     function ajaxgetdatahandalldata() {
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
-        $moduleId = $_POST['ModuleId'];
+         $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $handskey = $_POST['handskey'];
         $session = $this->request->session();
@@ -1456,8 +1455,9 @@ class PurebuttallistController extends AppController {
         
 		 $qc_datarow='';
 		 $headi=0;
+		 //echo "<pre>s";print_r($valArr['handson']);exit;
 		foreach($valArr['handson'] as $key=>$value){
-                 
+            $qc_datarow.='<tr>';     
 		    $ac_menu= count($value);
 		    $ex_menu=$nm_menu - count($value);
 		   foreach($value as $arkey=>$arvalue){	

@@ -1038,8 +1038,11 @@ function prioritysubmit(){
             data: {userId: arraydata, ProjectId:Proid},
             type: 'POST',
             success: function (res) { 
-	          $(".suc-msg").html("Successfully Submitted!");
-            }
+	          $(".suc-msg").show().html('Job Allocated Successfully!');
+					setTimeout(function() {
+					   $(".suc-msg").hide();
+                                           location.reload();
+					}, 2000);
         });
        // location.reload();
 }    

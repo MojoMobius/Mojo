@@ -177,6 +177,7 @@ if(!empty($queryResult)){ ?>
                         <div class="panel-heading row">
         <div class="col-md-9">
             <span id="message<?php echo $data2[0]['ProductionEntityId'];?>" class="Flash-Message"></span>
+            <span id="suc-msg<?php echo $data2[0]['ProductionEntityId'];?>" class="Flash-suc-Message"></span>
            
                             <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse99<?php echo $i;?><?php echo $j;?>"><img src="img/insert-object.png" style="margin-bottom:3px;"> 
                                     <label class="comments"><b>Domain Id:</b></label>
@@ -398,12 +399,16 @@ if(!empty($queryResult)){ ?>
                 success: function (res) { 
 			if(res == '0'){
                            //$("#message"+ProductionEntityId).show(); 
-                            $("#message"+ProductionEntityId).show().html("Status Not Completed"); 
+                            $("#message"+ProductionEntityId).show().html("Status Not Completed!"); 
                                     setTimeout(function(){
                                        $("#message"+ProductionEntityId).hide(); 
                                      }, 2000);
                                 }
                                 else{
+                                   $("#suc-msg"+ProductionEntityId).show().html("DQC completed successfully"); 
+                                    setTimeout(function(){
+                                       $("#suc-msg"+ProductionEntityId).hide(); 
+                                     }, 2000);
                                     location.reload();
                                 }
                            
@@ -424,13 +429,18 @@ if(!empty($queryResult)){ ?>
                 success: function (res) { 
 			if(res == '0'){
                            //$("#message"+ProductionEntityId).show(); 
-                            $("#message"+ProductionEntityId).show().html("Status Not Completed"); 
+                            $("#message"+ProductionEntityId).show().html("Status Not Completed!"); 
                                     setTimeout(function(){
                                        $("#message"+ProductionEntityId).hide(); 
                                      }, 2000);
                                 }
                                 else{
+                                      $("#suc-msg"+ProductionEntityId).show().html("Query submitted successfully "); 
+                                    setTimeout(function(){
+                                       $("#suc-msg"+ProductionEntityId).hide(); 
+                                     }, 2000);
                                     location.reload();
+                                     }
                                 }
                            
                           //$(".hot_query").html(res);
