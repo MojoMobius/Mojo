@@ -3222,23 +3222,41 @@ $FORMER_CO_NAME = $_POST['FORMER_CO_NAME'];
 
   $connection = ConnectionManager::get('default');
  // echo "Select Brands from Brands where CO_ENT_NBR = '" . $CO_ENT_NBR . "'";
+ $test='';
+if($OSF_CO_NAME!='' && $FORMER_CO_NAME==''){
+	$test.="  OSF_CO_NAME like '".$OSF_CO_NAME."%'";
+}
 
- $result = $connection->execute("Select top 5 * from OSF 
- INNER JOIN Bio_Current_Employment ON Bio_Current_Employment.CO_ENT_NBR=OSF.CO_ENT_NBR
- where OSF_CO_NAME = '" . $OSF_CO_NAME."'" )->fetchAll('assoc');
+if($FORMER_CO_NAME!='' && $OSF_CO_NAME=='' ){
+	$test.="  FORMER_CO_NAME like '".$FORMER_CO_NAME."%'";
+}
+if($FORMER_CO_NAME!='' && $OSF_CO_NAME!='' ){
+	$test.="  FORMER_CO_NAME like '".$FORMER_CO_NAME."%' AND OSF_CO_NAME like '".$OSF_CO_NAME."%'";
+}
+
+ $result = $connection->execute("Select top 100 * from OSF 
+ LEFT JOIN Bio_Former_Employment ON Bio_Former_Employment.EXEC_LINK_ID=OSF.CO_ENT_NBR
+ LEFT JOIN CA1 ON CA1.CO_ENT_NBR =OSF.CO_ENT_NBR
+ LEFT JOIN Bio_Current_Employment ON Bio_Current_Employment.CO_ROOT_ID =OSF.CO_ENT_NBR
+ LEFT JOIN Bio_Certifications ON Bio_Certifications.EXEC_LINK_ID =OSF.CO_ENT_NBR
+ LEFT JOIN Bio_Awards ON Bio_Awards.EXEC_LINK_ID =OSF.CO_ENT_NBR
+ LEFT JOIN Bio_Associations ON Bio_Associations.EXEC_LINK_ID =OSF.CO_ENT_NBR
+  
+ where $test " )->fetchAll('assoc');
 			   
  $Htmlview="<table class='table table-center'>
 	  <tr>
-	  <th  width='20%'>Transfer_Agent_Name</th>
 	  <th  width='20%'>Company Name</th>
+	  <th  width='20%'>Company Enterprise Number</th>
 	  </tr>";
+	 // pr($result);
 foreach ($result as $set) {
 
- 	$populate="'".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['COMPENSATIONS']."','".$set['COMMITTEES']."','".$set['BD_START_DATE']."','".$set['BD_END_DATE']."','".$set['EXEC_TITLE_START_DATE']."','".$set['EXEC_TITLE_END_DATE']."','".$set['School']."','".$set['Degree']."','".$set['Area']."','".$set['Year']."','".$set['CERT_NAME']."','".$set['Year']."','".$set['AWARD_NAME']."','".$set['YEAR']."','".$set['ASSOC_COUNCIL_NAME']."','".$set['COMMITTEE']."','".$set['ROLE']."','".$set['START_DATE']."','".$set['END_DATE']."','".$set['GENDER']."','".$set['FORMER_CO_ENT_NBR']."','".$set['FORMER_CO_NAME']."','".$set['FORMER_EXEC_TITLE']."','".$set['DATE_OF_BIRTH']."','".$set['START_DATE']."','".$set['COMPENSATIONS']."','".$set['COMMITTEES']."','".$set['EXEC_LINK_ID']."','".$set['PERSONNEL_ID']."'";
+ 	$populate="'".$set['COMP_ENT_NBR']."','".$set['COMP_CO_ID']."','".$set['COMP_CO_NAME']."','".$set['Address1']."','".$set['City']."','".$set['State']."','".$set['Zip']."','".$set['Email']."','".$set['URL']."','".$set['Phone']."','".$set['Fax']."','".$set['Toll_Free']."','".$set['Address1']."','".$set['Address2']."','".$set['Address3']."','".$set['Postal_Code1']."','".$set['City']."','".$set['Province']."','".$set['Postal_Code2']."','".$set['Country']."','".$set['Postal_Code3']."','".$set['Email']."','".$set['URL']."','".$set['Phone']."','".$set['Fax']."','".$set['Toll_Free']."','".$set['Mailing_Address1']."','".$set['Mailing_City']."','".$set['Mailing_State']."','".$set['Mailing_Zip']."','".$set['Email']."','".$set['URL']."','".$set['Phone']."','".$set['Fax']."','".$set['Toll_Free']."','".$set['Mailing_Address1']."','".$set['Mailing_Address2']."','".$set['Mailing_Address3']."','".$set['Mailing_PostalCode1']."','".$set['Mailing_City']."','".$set['Mailing_Province']."','".$set['Mailing_Postal_Code2']."','".$set['Mailing_Country']."','".$set['Mailing_Postal_Code3']."','".$set['Email']."','".$set['URL']."','".$set['Phone']."','".$set['Fax']."','".$set['Toll_Free']."','".$set['Nbr_Employees']."','".$set['Revenue_Type']."','".$set['Sales']."','".$set['Upper_Sales_Range']."','".$set['Net_Income']."','".$set['Assets']."','".$set['Liabilities']."','".$set['Net_Worth']."','".$set['Fiscal_Yr_End_Date']."','".$set['FYE_MMDD']."','".$set['Nbr_Employee_Benefits']."','".$set['Pension_Type1']."','".$set['Pension_Assets']."','".$set['Pension_Ending_Date']."','".$set['Ticker']."','".$set['Stock_Exchange1']."','".$set['Cusip_Nbr']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['OSF_CO_NAME']."','".$set['OSF_ADDRESS1']."','".$set['OSF_CITY']."','".$set['OSF_COUNTRY']."','".$set['FIRST_NAME']."','".$set['MIDDLE_NAME']."','".$set['LAST_NAME']."','".$set['SUFFIX']."','".$set['Personnel_ID']."','".$set['Exec_Title']."','".$set['RESP_CODES']."','".$set['Board_Ind']."','".$set['Chairman_Ind']."','".$set['COMPENSATIONS']."','".$set['COMMITTEES']."','".$set['BD_START_DATE']."','".$set['BD_END_DATE']."','".$set['EXEC_TITLE_START_DATE']."','".$set['EXEC_TITLE_END_DATE']."','".$set['School']."','".$set['Degree']."','".$set['Area']."','".$set['Year']."','".$set['CERT_NAME']."','".$set['Year']."','".$set['AWARD_NAME']."','".$set['YEAR']."','".$set['ASSOC_COUNCIL_NAME']."','".$set['COMMITTEE']."','".$set['ROLE']."','".$set['START_DATE']."','".$set['END_DATE']."','".$set['GENDER']."','".$set['FORMER_CO_ENT_NBR']."','".$set['FORMER_CO_NAME']."','".$set['FORMER_EXEC_TITLE']."','".$set['DATE_OF_BIRTH']."','".$set['START_DATE']."','".$set['End_DATE']."','".$set['COMPENSATIONS']."','".$set['COMMITTEES']."','".$set['EXEC_LINK_ID']."','".$set['PERSONNEL_ID']."'";
 //$populate="'".$set['CO_NAME']."','".$set['TRADE_NAME']."'";
-    $Htmlview.='<tr onclick="populate('.$populate.')">
-			  <td>'.$set['OSF_CO_NAME'].'</td>
+    $Htmlview.='<tr onclick="populate('.$populate.')" style="cursor: pointer;">
 			  <td>'.$set['FORMER_CO_NAME'].'</td>
+			  <td>'.$set['CO_ENT_NBR'].'</td>
 			  
 			  </tr>';
 }
