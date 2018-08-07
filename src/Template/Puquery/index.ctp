@@ -264,7 +264,7 @@ if(!empty($queryResult)){ ?>
 												<br>(Allowed Formats: doc and pdf)
                                             </div>
                                                  <div class="form-group frmgrp_align  col-md-5">
-                                                <button name ='frmsubmit' type="button" onclick="return updateQuery('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">Save</button>
+                                                <button name ='frmsubmit' type="button" onclick="return updateQuery('<?php echo $data3['Id'];?>', '<?php echo $data3['ModuleId']?>', '<?php echo $data3['ProductionEntityId']?>');" class="btn btn-default btn-sm">Save</button><span class="mandatory">*</span>
                                                
 											   
 												
