@@ -3006,7 +3006,7 @@ class GetjobcoreController extends AppController {
 			  $tlcomments = $result[0]['TLComments'];
 			  $cl_resp = $result[0]['Client_Response'];
                           if(!empty($result[0]['Client_Response_Date']) && $result[0]['Client_Response_Date'] !='NULL'){
-			  $cl_date = date("d-m-Y",$result[0]['Client_Response_Date']);
+			  $cl_date = date("d-m-Y",strtotime($result[0]['Client_Response_Date']));
                           }
                           else{
                           $cl_date = "";    
