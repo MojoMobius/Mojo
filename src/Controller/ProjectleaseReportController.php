@@ -49,7 +49,7 @@ class ProjectleaseReportController extends AppController {
         exit;
     }
 
-    public function getvalues($array, $key,$d='') {
+    public function getvalues($array, $key,$d='',$dt='') {
         $arr = array();
         if (!empty($array)) {
             $arr = array_column($array, $key);
@@ -59,6 +59,9 @@ class ProjectleaseReportController extends AppController {
                     if (!empty($v)) {
                         if(!empty($d)){
                             $v = date('d-m-Y H:i', strtotime($v));
+                        }
+                        if(!empty($dt)){
+                            $v = date('d-m-Y', strtotime($v));
                         }
                         $msg .=$v . ", ";
                     }
@@ -210,7 +213,7 @@ class ProjectleaseReportController extends AppController {
                 $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
             }
             if ($QueryDateFrom != '' && $QueryDateTo == '') {
-                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
+                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d H:i') ;
             }
             if ($QueryDateFrom == '' && $QueryDateTo != '') {
                 $conditions.="  AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
@@ -250,7 +253,7 @@ class ProjectleaseReportController extends AppController {
                         $TLComments = $this->getvalues($sub_queryData, 'TLComments');
                         $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate','D');
                         $Client_Response = $this->getvalues($sub_queryData, 'Client_Response');
-                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','D');
+                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','','dt');
                     }
 
                     $list['holdcomments'] = $TLComments;
