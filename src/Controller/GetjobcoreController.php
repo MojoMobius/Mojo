@@ -10,10 +10,6 @@ use DateTime;
 use DatePeriod;
 use DateInterval;
 
-require_once(ROOT . '\vendor' . DS . 'PHPExcel' . DS . 'IOFactory.php');
-require_once(ROOT . '\vendor' . DS . 'PHPExcel.php');
-
-use PHPExcel_IOFactory;
 /**
  * Bookmarks Controller
  *
@@ -33,7 +29,6 @@ class GetjobcoreController extends AppController {
     public $validation_apiurl = "http://52.66.118.29:8080/mojo_validation/validation/mojo_input/";
 
     public function initialize() {
-       
         parent::initialize();
         $this->loadModel('GetJob');
         $this->loadModel('Getjobcore');
@@ -43,14 +38,9 @@ class GetjobcoreController extends AppController {
 
     public function index() {
         
-        
-       /*if(isset($_GET['querysuccess'])){
-            $this->Flash->success(__('Query Posted Successfully!'));
-       }*/
-
         //echo '<pre>';
         // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
-        //exit;
+       // exit;
 
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
@@ -62,9 +52,9 @@ class GetjobcoreController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
-                //$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
+	//	exit;
         if ($FromStatus == '') {
             $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
             $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
@@ -93,12 +83,10 @@ class GetjobcoreController extends AppController {
 
 //////rent calculation end////         
         
-        
-
         $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][12][$moduleId]['production']);
         $moduleName = $JsonArray['Module'][$moduleId];
         $this->set('moduleName', $moduleName);
-        $frameType = $JsonArray['ProjectConfig']['IsBulk'];
+        echo $frameType = $JsonArray['ProjectConfig']['IsBulk'];
         $limit = 1;
         $frameType = $JsonArray['ProjectConfig']['ProductionView'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
@@ -108,7 +96,7 @@ class GetjobcoreController extends AppController {
         if ($joballocation_type == 1) {
             $userCheck = ' AND UserId=' . $user_id;
         }
-		
+	//	exit;
         if ($frameType == 1) {
             if (isset($this->request->query['job']))
                 $newJob = $this->request->query['job'];
@@ -714,7 +702,8 @@ class GetjobcoreController extends AppController {
             $this->set('session', $session);
             $dynamicData = $SequenceNumber[0];
             $this->set('dynamicData', $dynamicData);
-        } else {
+        } 
+        else {
 
 
             //----------------------------------$frameType == 3------------------------------//
@@ -754,9 +743,8 @@ class GetjobcoreController extends AppController {
             $connection = ConnectionManager::get('d2k');
             $statusIdentifier = ReadyforPUReworkIdentifier;
             $session = $this->request->session();
-//            $moduleId = $session->read("moduleId");
+            $moduleId = $session->read("moduleId");
             
-
             $PuReworkFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
             $PuFirst_Status_id = array();
             $PuNext_Status_ids = array();
@@ -789,7 +777,7 @@ class GetjobcoreController extends AppController {
 
             $connection = ConnectionManager::get('default');
             $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
-            //pr($InprogressProductionjob);
+            //pr($InprogressProductionjob); exit;
             //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
             //echo '<pre>';
             //var_dump( (array) $InprogressProductionjob );
@@ -917,12 +905,10 @@ class GetjobcoreController extends AppController {
                         //$specialArr=$this->xml2array($specialArr);
 
                         foreach ($specialArr as $key2Temp => $value2) {
-                            
                             $key2 = str_replace('_x003', '', $key2Temp);
                             $key2 = str_replace('_', '', $key2);
                             if (is_array($value2) && count($value2) == 0)
                                 $value2 = '';
-                            //echo $value2;exit;
                             $finalprodValue[$key2][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = $value2;
                         }
                         if ($value['SequenceNumber'] > $maxSeq[$value['DependencyTypeMasterId']] && $tempDep == $value['DependencyTypeMasterId']) {
@@ -2973,6 +2959,7 @@ class GetjobcoreController extends AppController {
 	  parse_str($_POST['Query'], $Query);
 	  parse_str($_POST['QueryId'], $QueryId);
 	  parse_str($_POST['QueryName'], $QueryName);
+	  $ProductionEntity=$_POST['ProductionEntity'];
 	 
 	 
 	$Htmlview="<table class='table table-center qryvalidation'>
@@ -2993,7 +2980,7 @@ class GetjobcoreController extends AppController {
 			  $cl_resp = "";
 			  $cl_date = "";
 			  
-			   $result = $connection->execute("Select Client_Response,Client_Response_Date,Query,TLComments from ME_UserQuery where AttributeMasterId = '" . $newkey . "'")->fetchAll('assoc');
+			   $result = $connection->execute("Select Client_Response,Client_Response_Date,Query,TLComments from ME_UserQuery where AttributeMasterId = '" . $newkey . "' AND ProductionEntityId=$ProductionEntity")->fetchAll('assoc');
 			   
 			   
 		  if(!empty($result)){
@@ -3030,6 +3017,9 @@ class GetjobcoreController extends AppController {
 	function ajaxGetAPIToken(){
 		$session = $this->request->session();
 		$ProjectId = $session->read("ProjectId");
+		
+		 $jobId = $_POST['domainId'];
+		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
 	/*	$fields = array(
@@ -3037,7 +3027,7 @@ class GetjobcoreController extends AppController {
             'password' => "Lease@123",
             'grant_type' => "password"
         );
-		$fields_string = http_build_query($fields);
+		 $fields_string = http_build_query($fields);
 		$ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.botminds.ai/token");
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -3053,7 +3043,7 @@ class GetjobcoreController extends AppController {
 		$projectId=$projectConfigs['ApiProjectId'];
 		$templateId=$projectConfigs['ApiTemplateId'];
 		$documnetName=$JsonArray[$ProjectId].'_';
-		
+	
 		$ch = curl_init();
 		$curlConfig = array(
         CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/2c04845b5eb04b3a9f8b204dc725911e",
@@ -3101,6 +3091,10 @@ copy($tsv, $newfile);
   $ProductionFields = $JsonArray['ModuleAttributes']['1011'][145]['production'];
   $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
   $SubGroupAttribute=$JsonArray['AttributeSubGroupMaster'];
+  
+        $connection = ConnectionManager::get('default');
+        $ProdFieldID = $connection->execute("Select Id from MC_DependencyTypeMaster where Type in ('ProductionField','Disposition') AND ProjectId=" . $ProjectId)->fetchAll('assoc');
+        
   foreach ($GroupAttribute as $key => $value) {
                 $groupwisearray[$key] = $value;
                 $keys = array_map(function($v) use ($key, $emparr) {
@@ -3113,39 +3107,132 @@ copy($tsv, $newfile);
                 $groupwisearray[$key] = $keys_sub;
             }
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
-  //pr($groupwisearray);
- $groupId='';$groupidorg='';$subgrup=0;
-     foreach($array as $attributeArr){
-		 
-	   if(count($attributeArr)==1){
-		  // echo $attributeArr[0];
-		  //echo $attributeArr[0];
-		    $groupId=array_search($attributeArr[0],$GroupAttribute);
-			if($groupId!=''){
-				$groupidorg=$groupId;
-				$subgroup=0;
-			}
-			$subgrup_search=array_search($attributeArr[0],$SubGroupAttribute[$groupidorg]);
-			if(!empty($subgrup_search)){
-				$subgrup=$subgrup_search;
-			}
-			//else
-				//$subgrup=0;
-			
-	   }
-	   else {
-		   
-		    $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
-			
-			$update['ProductionFields_'.$keys[0].'_164_1']=$attributeArr[1];
-		  
-		     // echo $attr=array_search($attributeArr[0],$groupwisearray[$groupId]);
-		   
-	   }
-   }
+                       // echo '<pre>';
+  //pr($array);        
+                     $groupBase = 'Rent';
+                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index');
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';
 
-  
-   //pr($update);
+     foreach($array as $attributeArr){  
+	   if(count($attributeArr)==1){
+            $tempGrpSearch = '';
+            $rentSearch  = in_array($attributeArr[0], $option_list);
+            if($rentSearch){
+                //$groupId=array_search($groupBase,$GroupAttribute);
+				//$groupidorg
+				if($groupidorg!=''){
+					$groupidorg=$groupId;
+					$subgrup = array_keys($SubGroupAttribute[$groupidorg]);
+					$subgrup = $subgrup[0];
+				}
+				 $tempGrpSearch = 'options';
+			}
+            else{
+				$groupId=array_search($attributeArr[0],$GroupAttribute);
+				if($groupId!=''){
+					$groupidorg=$groupId;
+					$subgrup=0;
+					$tempGrpSearch='';
+				}
+				if(!empty($SubGroupAttribute[$groupidorg])){
+					$subgrup_search=array_search($attributeArr[0],$SubGroupAttribute[$groupidorg]);
+					if(!empty($subgrup_search)){
+						$subgrup=$subgrup_search;
+					}
+				}
+			}
+		}
+        else {
+			
+             if($tempGrpSearch == ''){
+				$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+                if($keys[0] != ''){
+					$update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_1']=$attributeArr[1];
+                    $update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_1']='A';
+                    }
+               }
+         }
+         if($tempGrpSearch != ''){
+			// pr($attributeArr);;
+            $t=1;
+           //$count = count($attributeArr);
+            $rentSearch  = in_array($attributeArr[0], $option_list);
+            if($rentSearch){
+                $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), 'Expense Type'); 
+                $start_array = $seq + 1;
+				$start_array_rent=$start_array;
+				 $count+=count($attributeArr);
+				$count_array_rent=$count;
+				//$seq = $c;
+               
+               // $count = $count + $seq;
+				//$rentSearchprevoud=$attributeArr[0];
+            }
+            else{
+				
+                $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+				
+				//if($count>count($attributeArr)){
+					//$start_array=3;
+				//$count=$start_array+count($attributeArr); }
+				//else {
+					//echo $start_array;
+					if($start_array!=1) {
+						$start_array=$start_array_rent;
+					$count=count($attributeArr)+$start_array;
+					}
+					else{
+					$start_array=1;
+					$count=count($attributeArr);
+					}				
+				//}
+            }
+			//echo 'str='.$start_array.'cnt='.$count;
+            for($c= $start_array; $c < $count; $c++){
+                //  echo $c;
+				if($keys[0] != ''){
+					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$t];
+					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$t];
+					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
+				}
+				$start_array++;   
+				$t++;
+			if($c>$seq)
+				$seq = $c;
+            }
+        }
+        if($tempGrpSearch == ''){
+			if(count($attributeArr) > 2){
+				$groupAddition = $connection->execute("Select Is_Distinct from MC_Subgroup_Config where Primary_Group_Id = $groupidorg AND Subgroup_Id = $subgrup AND RecordStatus = 1 AND ProjectId=" . $ProjectId)->fetchAll('assoc');
+				if($groupAddition[0]['Is_Distinct'] != 1){
+					for($c= 2; $c < count($attributeArr); $c++){
+						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+						$Projectkeys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','ProjectAttributeMasterId'), $attributeArr[0]);
+						$DisplayName = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','DisplayAttributeName'), $attributeArr[0]);
+						if($keys[0] != ''){
+							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$c];
+							$update['funcValSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c] = $keys[0].'_'.$Projectkeys[0].'_'.$groupidorg.'_'.$subgrup.'_'.$DisplayName[0].'_'.$attributeArr[$c];
+							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
+                        } 
+					}
+				}
+				else{
+					for($c= 2; $c < count($attributeArr); $c++){
+						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+						if($keys[0] != ''){
+							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$c];
+                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$c];
+                            $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
+                        } 
+					}
+      
+				}
+			}
+		}
+    }
+          
+   //echo '<pre>';
+   // pr($update);
    echo json_encode($update);
  
 curl_close($ch); 

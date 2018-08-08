@@ -275,6 +275,8 @@ class PuqueryController extends AppController {
     }
     public function ajaxquerysubmit() {  
          $connection = ConnectionManager::get('default');
+		  $session = $this->request->session();   
+		  $user = $session->read("user_id");
          $selData = $connection->execute("SELECT * FROM ME_UserQuery WHERE StatusID !=3 AND ProductionEntityId='".$_POST['ProductionEntityId']."'")->fetchAll('assoc');
          if(count($selData) > 0){
              echo '0';
@@ -285,18 +287,21 @@ class PuqueryController extends AppController {
         
             $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-            $first_Status_name = $JsonArray['ModuleStatusList'][$_POST['ModuleId']][0];
-            $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-            $SelectQryStatus = $connection->execute("Select StatusId from $moduleTable where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ")->fetchAll('assoc');
+			$SelectQryStatus = $connection->execute("Select StatusId from $moduleTable where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ")->fetchAll('assoc');
             $QryStatus = $SelectQryStatus[0]['StatusId'];
+			$first_Status_name = $JsonArray['ModuleStatus_Navigation'][$QryStatus][0];
+			$first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
+			//echo "Select StatusId from $moduleTable where ProductionEntity='" . $_POST['ProductionEntityId'] . "' "; exit;
+            
             $Status_Id = $JsonArray['ModuleStatus_Navigation'][$QryStatus][1];
             //print_r($QryStatus);
            // exit;
-            $UpdateQryStatus = "update $moduleTable set  StatusId='" . $Status_Id . "',QueryResolved=1 ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ";
+             $UpdateQryStatus = "update $moduleTable set  StatusId='" . $first_Status_id . "',QueryResolved=1 ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ";
             $QryStatus = $connection->execute($UpdateQryStatus);
-            $UpdateQryStatus = "update ME_Production_TimeMetric set StatusId='" . $first_Status_id . "' where ProductionEntityID='" . $_POST['ProductionEntityId'] . "' AND Module_Id=" . $_POST['ModuleId'];
-            $QryStatus = $connection->execute($UpdateQryStatus);
-        
+             //$UpdateQryStatus = "update ME_Production_TimeMetric set StatusId='" . $first_Status_id . "' where ProductionEntityID='" . $_POST['ProductionEntityId'] . "' AND Module_Id=" . $_POST['ModuleId'];
+			//echo "UPDATE ProductionEntityMaster SET StatusId=" . $first_Status_id . " WHERE ID=" . $_POST['ProductionEntityId'];
+			$productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $first_Status_id . " WHERE ID=" . $_POST['ProductionEntityId']);
+             
         echo '1';
          }
         exit;
@@ -381,12 +386,8 @@ class PuqueryController extends AppController {
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
       
-       
         $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
         $QryStatus = $connection->execute($UpdateQryStatus);
-        
-             
-               
          /*if ($_POST['status'] == 3) {
            $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
@@ -425,16 +426,15 @@ class PuqueryController extends AppController {
          $content = file_get_contents($path);
          $JsonArray = json_decode($content, true);
         //$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);      
-       
-            //$first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
-            //$first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-            $first_Status_id = $_POST['statusId'];
-            $next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
+        $first_Status_id = $_POST['statusId'];
+            //$next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
             $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
-                 
+			$inprogress=$JsonArray['ModuleStatus_Navigation'][$next_status_id][1];
+			$completed=$JsonArray['ModuleStatus_Navigation'][$inprogress][1];
+                  
              
-              $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $next_status_id . " WHERE ProductionEntity=" . $_POST['ProductionEntityId']);
-              $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $next_status_id . " WHERE ID=" . $_POST['ProductionEntityId']);
+              $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completed . " WHERE ProductionEntity=" . $_POST['ProductionEntityId']);
+              $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completed . " WHERE ID=" . $_POST['ProductionEntityId']);
              
              
              echo '1';

@@ -58,7 +58,7 @@ class ProjectleaseReportController extends AppController {
                 foreach ($arr as $k => $v) {
                     if (!empty($v)) {
                         if(!empty($d)){
-                            $v = date('d-m-Y H:i', strtotime($v));
+                            $v = date('d-m-Y', strtotime($v));
                         }
                         $msg .=$v . ", ";
                     }

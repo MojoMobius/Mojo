@@ -28,11 +28,6 @@ class ProductionDashBoardsController extends AppController {
     }
 
     public function index() {
-        
-      /*   if(isset($_GET['prioritysuccess'])){
-            $this->Flash->success(__('Successfully Submitted!'));
-       }*/
-      
         $session = $this->request->session();
         $sessionProjectId = $session->read("ProjectId");
         $userid = $session->read('user_id');

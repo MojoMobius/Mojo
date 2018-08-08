@@ -38,7 +38,7 @@
                     direction: true,
                     format: 'd-m-Y'
                 });
-   });
+   //});
 
    </script>
 
@@ -4463,13 +4463,14 @@ function goToMsg(id){
  var arrayid = $('.query_ids').serialize() ;
  var arrayname = $('.query_names').serialize() ;
  var arraydata = $('.UpdatedQuery').serialize() ;
+ ProductionEntity = $("#ProductionEntity").val();
 
 
 	     $(".hot_query").html('Loading...');
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'querysubmit')); ?>',
             
-            data: {Query: arraydata,QueryId: arrayid, QueryName:arrayname},
+            data: {Query: arraydata,QueryId: arrayid, QueryName:arrayname,ProductionEntity:ProductionEntity},
             type: 'POST',
             success: function (res) { 
 	     $(".hot_query").html(res);
@@ -4514,19 +4515,84 @@ window.location.href = url;
         }
 function fetchbotminds()
 {
-    
      ProjectId = $("#ProjectId").val();
+     
+       var domainId = "<?php echo $staticFields[0]; ?>";
 
 	token='';
 	 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxGetAPIToken')); ?>",
-                 data: ({ProjectId: ProjectId}),
+                 data: ({ProjectId: ProjectId, domainId:domainId}),
                 success: function (res) { 
                    resArr=JSON.parse(res);
-						 $.each(resArr, function( key, element ) {
-							 $('#'+key).val(element);
-							 
+
+						 $.each(resArr['singleAttr'], function( key, element ) {
+                                                    if(element == 'A'){
+                                                    $('select[name="'+key+'"]').val(element);
+                                                    }else{
+                                                  $('#'+key).val(element);
+                                             } 
+						 });
+                                              $.each(resArr['funcValGroup'], function( key, element ) {
+                                                  var values = element.split('_');   
+                                                  var subGroup = values[0];
+                                                          var group = values[1];
+                                                            var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
+                                                            var nxtSeq = parseInt(maxSeqCnt);
+                                                              if(maxSeqCnt > 1) {
+                                                            $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
+                                                            Load_totalAttInThisGrpCnt();
+                                                            var nxtSeq = nxtSeq - 1;
+                                                            $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
+                                                        }   
+                                                         });
+                                                         $.each(resArr['funcValGroup'], function( key, element ) {
+                                                  var values = element.split('_');   
+                                                  var subGroup = values[0];
+                                                          var group = values[1];
+                                                   addSubgrpAttribute(subGroup,group);
+                                           	 
+						 });
+                                              $.each(resArr['funcValSingle'], function( key, element ) {
+                                                      var values = element.split('_');   
+                                                      var attrid = values[0];
+                                                              var projattrid = values[1];
+                                                              var group = values[2];
+                                                              var subgroup = values[3];
+                                                              var displayname = values[4];
+                                                           var maxSeqCnt = $('.ShowingSeqDiv_' + attrid).attr("data");
+                                                            var nxtSeq = parseInt(maxSeqCnt);
+                                                            if(maxSeqCnt > 1) {
+                                                            $("#MultiField_"+attrid+"_"+maxSeqCnt ).remove();
+                                                            Load_totalAttInThisGrpCnt();
+                                                            var nxtSeq = nxtSeq - 1;
+                                                            $('.ShowingSeqDiv_' + attrid).attr("data", nxtSeq); 
+                                              }
+                                               });
+                                               $.each(resArr['funcValSingle'], function( key, element ) {
+                                                      var values = element.split('_');   
+                                                      var attrid = values[0];
+                                                              var projattrid = values[1];
+                                                              var group = values[2];
+                                                              var subgroup = values[3];
+                                                              var displayname = values[4];
+							 addAttribute(attrid,projattrid,group,subgroup,displayname);
+                                               
+						 });
+                                                  $.each(resArr['addAttrSingle'], function( key, element ) {
+							 if(element == 'A'){
+                                                     $('select[name="'+key+'"]').val(element);
+                                                    }else{
+                                                  $('#'+key).val(element);
+                                             } 
+						 });
+                                                 $.each(resArr['addAttrGroup'], function( key, element ) {
+							 if(element == 'A'){
+                                                     $('select[name="'+key+'"]').val(element);
+                                                    }else{
+                                                  $('#'+key).val(element);
+                                             } 
 						 });
 					}
                 
