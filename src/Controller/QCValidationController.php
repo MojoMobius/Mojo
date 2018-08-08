@@ -1026,7 +1026,7 @@ class QCValidationController extends AppController {
 			$status=$next_status_id;
 			if($next_status_id_rw !='')
 			{
-				$status=','.$next_status_id_rw;
+				$status.=','.$next_status_id_rw;
 			}
 			//echo 'SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId IN (' . $status .') AND SequenceNumber=1 AND ProjectId=' . $ProjectId;
            $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId IN (' . $status .') AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');

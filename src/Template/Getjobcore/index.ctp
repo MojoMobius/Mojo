@@ -30,6 +30,12 @@
 		font-weight:600;
 		font-size:15px;
 	}
+        .emptyerror{
+            color: red;
+            padding-left: 40%;
+            font-size: 15px;
+            font-weight: 500;
+        }
 	</style>
  <script>
  
@@ -589,6 +595,8 @@ if ($NoNewJob == 'NoNewJob') {
                             <!-- End Example Tabs -->			
                         </div>
                         <div id="splitter-right">
+
+<div class="emptyerror" style="display:none;" >No Queries been Entered!</div>
                             <div>
                                 <input type="hidden" name='ProductionId' id="ProductionId" value="<?php echo $productionjob['Id']; ?>">
                                 <input class="UpdateFields" type="hidden" name='ProductionEntity' id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
@@ -690,7 +698,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 ?>
                                                 <i id= "next_<?php echo $keysub; ?>" class="fa fa-angle-double-right pull-right m-r-5 <?php echo $pagination_validation_class; ?> validation_error_pagination" style="color:#4397e6"  onclick="Paginate('next', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i> 
                                                 <i id="previous_<?php echo $keysub; ?>" class="fa fa-angle-double-left pull-right <?php echo $pagination_validation_class; ?> validation_error_pagination" onclick="Paginate('previous', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i>
-                                                <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
+                                                <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>',' <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>','<?php echo $ModuleId; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                     <?php
                                                                 }
                                                                 ?>
@@ -699,7 +707,8 @@ if ($NoNewJob == 'NoNewJob') {
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){								
+																 ?>
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>,<?php echo $valprodFields['MainGroupId'];?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
@@ -729,7 +738,6 @@ if ($NoNewJob == 'NoNewJob') {
 
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
-
 																$rentset=0;
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
 																
@@ -958,7 +966,7 @@ if ($NoNewJob == 'NoNewJob') {
 																<?php if($rentset==0){
 																	$rentset++;
 																	?>
-																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" >
+																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
 																	<?php
 																}
 																?>
@@ -1012,7 +1020,7 @@ if ($NoNewJob == 'NoNewJob') {
                                     <?php if ($totalSeqCnt > 1) {
                                                                             ?>
                                                                  
-                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>');" data-rel="page-tag" data-target="#exampleFillInHandson" data-toggle="modal"></i>
+                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>','<?php echo $ModuleId; ?>');"" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                 <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
                                                                 <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" style="color:#4397e6" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
@@ -1283,7 +1291,39 @@ if ($NoNewJob == 'NoNewJob') {
             </div>
         </div>
         <!-- Handson Modal -->
+		 <!-- Popup new Modal -->
+<div class="modal fade modal-fill-in" id="exampleFillPopup" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">Ã—</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="example" class="container-fluid" style="margin-bottom:-10px;">
+                            <div id="vertical">
+                                <div id="top-pane">
+                                    <div id="horizontal" style="height: 100%; width: 100%;">
+                                        <div id="right-pane">
+<div id="example1" class="hot handsontable htColumnHeaders">
 
+
+
+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!-- Popup new Modal -->
+        
         <!-- Modal -->
 				 <div class="modal fade" id="searchmodal" aria-hidden="true" aria-labelledby="searchmodal" role="dialog" tabindex="-1">
             <div class="modal-dialog" style="max-width:1200px;">
@@ -1355,6 +1395,7 @@ if ($NoNewJob == 'NoNewJob') {
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
 								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="form-control" value="">
+								   <input type="hidden" name="SequenceVal" id="SequenceVal"  class="form-control" value="">
 								   
 								   </div>
                                 </div>
@@ -2108,9 +2149,9 @@ $(document).keydown(function(e) {
                 var dbClass_dis='UpdateFields';
             else
                 var dbClass_dis='InsertFields';
+            var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
-            
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
                 atributeId = element['AttributeMasterId'];
@@ -3926,7 +3967,19 @@ $(document).keydown(function(e) {
         example1.style.height = availableHeight + 'px';
 
     }
-    function loadhandsondatafinal(id, idval, key, keysub,attrName) { var ProductionEntityId = $("#ProductionEntity").val();
+	    function loadhandsondatafinal(id, idval, key, keysub, submenu,ModuleId) {
+        var ProductionEntityId = $("#ProductionEntity").val();
+        $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'Purebuttallist', 'action' => 'ajaxgetdatahand')); ?>',
+            dataType: 'text',
+            type: 'POST',
+            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id, title:submenu,ModuleId:ModuleId},
+            success: function (res) {                
+                $(".hot").html(res);
+            }
+        });
+    }
+    function loadhandsondatafinal_old(id, idval, key, keysub,attrName) { var ProductionEntityId = $("#ProductionEntity").val();
         
         var subGrpArr='<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
             var subGrpAtt = JSON.parse(subGrpArr);
@@ -4080,12 +4133,27 @@ $(document).keydown(function(e) {
 
 
     }
+function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
+ var ProductionEntityId = $("#ProductionEntity").val();
 
+        $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'Purebuttallist', 'action' => 'ajaxgetdatahandalldata')); ?>',
+            dataType: 'text',
+            type: 'POST',
+            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId},
+            success: function (res) {	
+	
+       
+	     $(".hot").html(res);
+            }
+        });
+	
+}  
 
-    function loadhandsondatafinal_all(id, idval, key, keysub) {
+    function loadhandsondatafinal_allold(id, idval, key, keysub) {
         var ProductionEntityId = $("#ProductionEntity").val();
         $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
+            url: '<?php echo Router::url(array('controller' => 'Purebuttallist', 'action' => 'ajaxgetdatahandalldata')); ?>',
             dataType: 'json',
             type: 'POST',
             data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub},
@@ -4466,6 +4534,7 @@ function goToMsg(id){
  ProductionEntity = $("#ProductionEntity").val();
 
 
+
 	     $(".hot_query").html('Loading...');
             $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'querysubmit')); ?>',
@@ -4482,7 +4551,7 @@ function goToMsg(id){
 				 $(".qryvalidation textarea").each(function() {
 				   var element = $(this);
 				   if (element.val() == "") {
-					   alert("Query is Manatory Please fill all query!");
+					   alert("Query is Mandatory Please fill all query!");
 					   exit;
 				   }
 				});
@@ -4496,11 +4565,22 @@ function goToMsg(id){
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
                 data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
-                success: function (res) { 				 
+                success: function (res) { 
+                        if(res =="success"){
 					   $(".suc-msg").show().html('Query Posted Successfully!');
 					setTimeout(function() {
 					   $(".suc-msg").hide();
+                                           location.reload();
 					}, 2000);
+                                    }
+                        else{
+
+                $('#querymodalAll').modal('hide');
+                                        $(".emptyerror").show();
+					setTimeout(function() {
+					   $(".emptyerror").hide();
+					}, 2000);
+                        }
                  }
                 
             });
@@ -4601,25 +4681,36 @@ function fetchbotminds()
 			
 }
 function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
+	
+	if(Seq > 1){
+	var newSubGroupId = SubGroupId;
+	var newGroupId = GroupId;	
+	}
+	else{	
 	var newSubGroupId = parseInt(SubGroupId) + parseInt(1);
-	var newGroupId = parseInt(GroupId) + parseInt(1);	  
-	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId+""+Seq).val();	
+	var newGroupId = parseInt(GroupId) + parseInt(1);
+	}	
+	
+	
+		  
+	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
-	var Commencement = $("#Commencement").val();	
-	var Expiration = $("#Expiration").val();	
-	var BaseRent = $("#BaseRent").val();	
-	var RentInc = $("#RentInc").val();
-	var seq=$(".GroupSeq_"+SubGroupId).attr("data");	
+	var Commencement = '2018-01-25';//$("#Commencement").val();	
+	var Expiration = '2020-01-25';//$("#Expiration").val();	
+	var BaseRent = '15000';//$("#BaseRent").val();	
+	var RentInc = '2.5';//$("#RentInc").val();
+	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
 	$("#RentTitle").html(Title);///rent popup title
 	$("#RentFirstAttrVal").val(Title);
 	$("#RentFirstAttrId").val(FirstAttrId);///rent hidden file for append data load
-	$("#RentSubGroup").val(SubGroupId);
-	$("#RentGroup").val(GroupId);	
+	$("#RentSubGroup").val(newSubGroupId);
+	$("#RentGroup").val(newGroupId);	
 	$("#CommencementVal").val(Commencement);
+	$("#SequenceVal").val(Seq);
 	$("#ExpirationVal").val(Expiration);
 	$("#BaseRentVal").val(BaseRent);
 	$("#RentIncVal").val(RentInc);
-	$("#Rentseq").val(seq);	
+	$("#Rentseq").val(sequence);	
 	$("#RentComments").val(Comments);
 	$("#RentDisposition").val(Disposition);
 	$("#RentProductionField").val(ProductionField);
@@ -4645,6 +4736,7 @@ function Rentcalcsub(){
 }
 function Rentcalcappend(){
 	var Commencement = $("#CommencementId").val();	
+	var GetSequence = $("#SequenceVal").val();
 	var Expiration = $("#ExpirationId").val();	
 	var BaseRent = $("#BaseRentId").val();	
 	var RentInc = $("#RentIncId").val();
@@ -4652,12 +4744,15 @@ function Rentcalcappend(){
 	var RentFirstAttrId = $("#RentFirstAttrId").val();
 	var RentFirstAttrVal = $("#RentFirstAttrVal").val();	
 	
+	var SequenceVal = $("#SequenceVal").val();
+	
 	var RentSubGroup = $("#RentSubGroup").val();	
 	var RentGroup = $("#RentGroup").val();
 
 	//var Comments =$("#RentComments").val();
 	//var Disposition=$("#RentDisposition").val();
 	var ProductionField=$("#RentProductionField").val();	
+	//var RentFirstAttrVal = $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+GetSequence+'"]').val();	
 	
 	    var Arrpercent = $('input[name^=percent]');
 	    var Arramount = $('input[name^=totalamt]');
@@ -4690,8 +4785,6 @@ function Rentcalcappend(){
 				*/
           
 			//for(var i=0;i < totArr;i++){
-			                RentSubGroup = parseInt(RentSubGroup) + parseInt(1);
-							RentGroup = parseInt(RentGroup) + parseInt(1);
 						for(var i=0;i < totArr;i++){
 													
 							
@@ -4864,4 +4957,64 @@ $('#ProductionFields_3103_101_1').val(EXEC_LINK_ID);
 $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
 			
 }	
-</script>
+
+          function Pucmterrorclk(subgrp, clkseq) {
+                $('#exampleFillPopup').modal('hide');
+                var currentSeq = $(".GroupSeq_" + subgrp + "").val(); // 2
+                var totalseq = $(".GroupSeq_"+subgrp).attr('data'); // 4
+                
+                   var action ="";
+                if(currentSeq < clkseq){
+                    action = "next";
+                }else if(currentSeq > clkseq){
+                    action = "previous";
+                }
+            var nex = parseInt(clkseq);
+            var prev = parseInt(clkseq);
+            
+            if (currentSeq == totalseq)
+                $('#next_' + subgrp).css('color', 'grey');
+            else
+                $('#next_' + subgrp).css('color', '#4397e6');
+
+            if (currentSeq == 1)
+                $('#previous_' + subgrp).css('color', 'grey');
+            else
+                $('#previous_' + subgrp).css('color', '#4397e6');
+
+            if (action == 'next' && totalseq >= nex) {
+
+                $("#MultiSubGroup_" + subgrp + "_" + currentSeq).hide();
+                $("#MultiSubGroup_" + subgrp + "_" + nex).show();
+                $(".GroupSeq_" + subgrp + "").val(nex);
+                if (nex == totalseq)
+                    $('#next_' + subgrp).css('color', 'grey');
+                else
+                    $('#next_' + subgrp).css('color', '#4397e6');
+                if (nex == 1)
+                    $('#previous_' + subgrp).css('color', 'grey');
+                else
+                    $('#previous_' + subgrp).css('color', '#4397e6');
+            }
+
+            if (action == 'previous' && totalseq >= prev && prev > 0) {
+
+                $("#MultiSubGroup_" + subgrp + "_" + currentSeq).hide();
+                $("#MultiSubGroup_" + subgrp + "_" + prev).show();
+                $(".GroupSeq_" + subgrp + "").val(prev);
+
+                if (prev == totalseq)
+                    $('#next_' + subgrp).css('color', 'grey');
+                else
+                    $('#next_' + subgrp).css('color', '#4397e6');
+
+                if (prev == 1)
+                    $('#previous_' + subgrp).css('color', 'grey');
+                else
+                    $('#previous_' + subgrp).css('color', '#4397e6');
+            }
+              
+          }  
+
+</script> 
+ 

@@ -4086,7 +4086,6 @@ function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
             }
         });
 	
-}
-
+}   
     
 </script>
