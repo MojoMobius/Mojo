@@ -52,7 +52,13 @@ class GetjobcoreController extends AppController {
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
-		$this->set('levelModule', $LevelModule);
+
+//		$this->set('levelModule', $LevelModule);
+
+                //$LevelModule = 1;
+		$this->set('levelModule', $LevelModule);		
+		$this->set('ModuleId', $moduleId);
+
         $FromStatus = $JsonArray['ModuleConfig'][$moduleId]['FromStatus'];
 	//	exit;
         if ($FromStatus == '') {
@@ -2587,6 +2593,7 @@ class GetjobcoreController extends AppController {
         $headi = 0;
         foreach ($valArr['handson'] as $key => $value) {
 
+            $qc_datarow.='<tr>';     
             $ac_menu = count($value);
             $ex_menu = $nm_menu - count($value);
             foreach ($value as $arkey => $arvalue) {
@@ -2987,7 +2994,12 @@ class GetjobcoreController extends AppController {
 			  $comments = $result[0]['Query'];
 			  $tlcomments = $result[0]['TLComments'];
 			  $cl_resp = $result[0]['Client_Response'];
-			  $cl_date = $result[0]['Client_Response_Date'];
+                          if(!empty($result[0]['Client_Response_Date']) && $result[0]['Client_Response_Date'] !='NULL'){
+			  $cl_date = date("d-m-Y",strtotime($result[0]['Client_Response_Date']));
+                          }
+                          else{
+                          $cl_date = "";    
+                          }
 		  }
 
         
