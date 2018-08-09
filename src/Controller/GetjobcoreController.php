@@ -55,7 +55,7 @@ class GetjobcoreController extends AppController {
 
 //		$this->set('levelModule', $LevelModule);
 
-                //$LevelModule = 1;
+					$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);		
 		$this->set('ModuleId', $moduleId);
 
@@ -1265,7 +1265,7 @@ class GetjobcoreController extends AppController {
 //            $listdata_back = $listdata_back;
 //            $listdata = $this->ajaxgeapivalidationremovekey($project_scope_id, $listdata);
 
-            $listdata_json = json_encode($listdata);
+            echo $listdata_json = json_encode($listdata); exit;
             $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_URL,"http://localhost/project/api.php");
             curl_setopt($ch, CURLOPT_URL, $this->validation_apiurl);
@@ -1904,6 +1904,10 @@ class GetjobcoreController extends AppController {
     function ajaxquerypostingmulti() {
 			
 	parse_str($_POST['multiquery'], $Query);
+       if(empty($Query)){
+        echo "fail";
+        exit;  
+       }
         $session = $this->request->session();
         $user_id = $session->read("user_id");
         $role_id = $session->read("RoleId");
