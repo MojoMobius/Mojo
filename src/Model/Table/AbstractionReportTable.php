@@ -51,7 +51,7 @@ class AbstractionReportTable extends Table {
 
     function findExport(Query $query, array $options) {
 //      echo "<pre>sd";   print_r($options); 
-//      exit;
+
         $ProjectId = $options['ProjectId'];
 
         $path = JSONPATH . '\\ProjectConfig_' . $options['ProjectId'] . '.json';
@@ -84,16 +84,40 @@ class AbstractionReportTable extends Table {
                     $tableData.='<tr>';
                     $tableData .= '<tbody>';
                     $tableData.='<td >' . $subval[$k]['DisplayAttributeName'] . '</td>';
-                    $tableData.='<td >' . round($n - $k) . '</td>';
+
+                    
+                    $tableData.='<td ><table border="1"><tr>';
+                    $seqcnt = $subval[$n - $k]['seqcnt'];
+                    $subseqcnt = $n - $k;
+                    for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
+                        if(!empty($subval[$subseqcnt]['res'][$ksub])){
+                            $tableData.='<td style="border-right: 1px solid">'. $subval[$subseqcnt]['res'][$ksub] . '</td>';
+                        }else{
+                             $tableData.='<td></td>';
+                        }
+                              
+                    }
+                    $tableData.= '</tr></table></td>';
                     $tableData.='<td >' . $subval[$n + $k]['DisplayAttributeName'] . '</td>';
-                    $tableData.='<td >' . round($n + $k) . '</td>';
+                    $tableData.='<td ><table border="1"><tr>';
+                    
+                    $seqcnt = $subval[$n + $k]['seqcnt'];
+                    $subseqcnt = $n + $k;
+                    for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
+                        if(!empty($subval[$subseqcnt]['res'][$ksub])){
+                             $tableData.='<td style="border-right: 1px solid">' . $subval[$subseqcnt]['res'][$ksub] . '</td>';
+                        }else{
+                             $tableData.='<td></td>';
+                        }
+                            
+                    }
+                    $tableData.= '</tr></table></td>';
                     $tableData .= '</tbody>';
                     $tableData.='</tr>';
                 }
             endforeach;
             // sub header 
             foreach ($input['sub'] as $subheadkey => $subheadval):
-                 // sub header 
                    $tableData.='<tr>';
                     $tableData .= '<tbody>';
                     $tableData.='<td style="background-color:#E8F1B9;">' .  $AttributeSubGroupMaster[$inputKey][$subheadkey] . '</td>';
@@ -105,16 +129,42 @@ class AbstractionReportTable extends Table {
                     $tableData.='<tr>';
                     $tableData .= '<tbody>';
                     $tableData.='<td >' . $subheadval[$k]['DisplayAttributeName'] . '</td>';
-                    $tableData.='<td >' . round($n - $k) . '</td>';
+//                    $tableData.='<td >' . round($n - $k) . '</td>';
+                    
+                     $tableData.='<td ><table border="1"><tr>';
+                    $seqcnt = $subheadval[$n - $k]['seqcnt'];
+                    $subseqcnt = $n - $k;
+                    for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
+                        if(!empty($subheadval[$subseqcnt]['res'][$ksub])){
+                             $tableData.='<td style="border-right: 1px solid">'. $subheadval[$subseqcnt]['res'][$ksub] . '</td>';
+                        }else{
+                             $tableData.='<td></td>';
+                        }
+                    }
+                    $tableData.= '</tr></table></td>';
+                    
                     $tableData.='<td >' . $subheadval[$n + $k]['DisplayAttributeName'] . '</td>';
-                    $tableData.='<td >' . round($n + $k) . '</td>';
+                  
+                    $tableData.='<td ><table  border="1"><tr>';
+                    $seqcnt = $subheadval[$n + $k]['seqcnt'];
+                    $subseqcnt = $n + $k;
+                    for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
+                         if(!empty($subheadval[$subseqcnt]['res'][$ksub])){
+                             $tableData.='<td style="border-right: 1px solid">' . $subheadval[$subseqcnt]['res'][$ksub] . '</td>';
+                        }else{
+                             $tableData.='<td></td>';
+                        }
+                            
+                    }
+                    $tableData.= '</tr></table></td>';
+                    
                     $tableData .= '</tbody>';
                     $tableData.='</tr>';
                 }
             endforeach;
             
             $tableData.='</table>  </td></tr><tr><td colspan="2"></td></tr></table>';
-            $tableData.='<table><tr><td></td><td>';
+            $tableData.='<table border="1"><tr><td></td><td>';
             
             if($i < $j){
                 $tableData.=' <table border="1" style="margin-top:10px;"><thead>';

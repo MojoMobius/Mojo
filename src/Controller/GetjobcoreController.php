@@ -3085,7 +3085,7 @@ $newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
 copy($tsv, $newfile);
  
 */
-  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
+  $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3125,9 +3125,9 @@ copy($tsv, $newfile);
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
                        // echo '<pre>';
   //pr($array);        
-                     $groupBase = 'Rent';
+                   //  $groupBase = 'Rent';
                         $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index');
- $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';
 
      foreach($array as $attributeArr){  
 	   if(count($attributeArr)==1){
@@ -3172,20 +3172,37 @@ copy($tsv, $newfile);
 			// pr($attributeArr);;
             $t=1;
            //$count = count($attributeArr);
+             
             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
-                $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), 'Expense Type'); 
+                $type_name = $attributeArr[0];
+                
+                $work_type = $SubGroupAttribute[$groupidorg][$subgrup];
+                
+                if($work_type = 'Rent'){
+                   $final_type = 'Expense Type';
+                }
+                else if($work_type = 'Key Dates'){
+                    $final_type = 'Key Dates Type';
+                }
+                else {
+                    $final_type = 'Option Type';
+                }
+                
+                
+                $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
                 $start_array = $seq + 1;
 				$start_array_rent=$start_array;
 				 $count+=count($attributeArr);
 				$count_array_rent=$count;
 				//$seq = $c;
-               
+               $type_keys = $keys;
                // $count = $count + $seq;
 				//$rentSearchprevoud=$attributeArr[0];
             }
+            
             else{
-				
+		  $keyss = $type_keys;
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
 				
 				//if($count>count($attributeArr)){
@@ -3203,10 +3220,17 @@ copy($tsv, $newfile);
 					}				
 				//}
             }
+            
 			//echo 'str='.$start_array.'cnt='.$count;
-            for($c= $start_array; $c < $count; $c++){
-                //  echo $c;
+             
+          if($count == 1){
+            $count  = 2;
+          }
+            for($c= $start_array; $c < $count; $c++)
+            {  
+            //   print_r($keyss);
 				if($keys[0] != ''){
+                 $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$t];
 					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$t];
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
@@ -3247,8 +3271,8 @@ copy($tsv, $newfile);
 		}
     }
           
-   //echo '<pre>';
-   // pr($update);
+  // echo '<pre>';
+  //  pr($update);
    echo json_encode($update);
  
 curl_close($ch); 
