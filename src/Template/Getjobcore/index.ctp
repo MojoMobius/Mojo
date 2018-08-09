@@ -2151,7 +2151,7 @@ $(document).keydown(function(e) {
                 var dbClass_dis='InsertFields';
             var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a id = "' + subgrpId + '_' +groupId+ '_' +nxtSeq+ '" class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
                 atributeId = element['AttributeMasterId'];
@@ -3753,7 +3753,7 @@ $(document).keydown(function(e) {
                 var dbClass_dis='InsertFields';
             
             
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i id = "' + subgrpId + '_' +groupId+ '_' +nxtSeq+ '" class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
                 atributeId = element['AttributeMasterId'];
@@ -4661,18 +4661,22 @@ function fetchbotminds()
                                                
 						 });
                                                   $.each(resArr['addAttrSingle'], function( key, element ) {
+                                                  //    if(element != ''){
 							 if(element == 'A'){
                                                      $('select[name="'+key+'"]').val(element);
                                                     }else{
                                                   $('#'+key).val(element);
-                                             } 
+                                              }
+                                           //  } 
 						 });
                                                  $.each(resArr['addAttrGroup'], function( key, element ) {
+                                                //     if(element != ''){
 							 if(element == 'A'){
                                                      $('select[name="'+key+'"]').val(element);
                                                     }else{
                                                   $('#'+key).val(element);
                                              } 
+                                        // }
 						 });
 					}
                 
