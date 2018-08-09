@@ -1041,11 +1041,12 @@ function prioritysubmit(){
             success: function (res) { 
 	          $(".suc-msg").show().html("Job Allocated Successfully!");
 			  setTimeout(function() {
-					$(".suc-msg").hide()
+					$(".suc-msg").hide();
+					 location.reload();
 				}, 2000);
             }
         });
-       // location.reload();
+        //location.reload();
 }    
 
 function numericvalidation(id){
