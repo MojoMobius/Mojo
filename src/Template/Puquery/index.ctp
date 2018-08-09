@@ -8,7 +8,13 @@ use Cake\Routing\Router
     }
     .Flash-suc-Message{
         font-size: 18px;
+		padding-left:10%;		
         color:green;
+    }
+	.Flash-error-Message{
+        font-size: 18px;
+		padding-left:10%;		
+        color:red;
     }
     .Flash-Message{
         font-size: 18px;
@@ -212,7 +218,7 @@ if(!empty($queryResult)){ ?>
                                         <label class="comments"><b>Query Date:</b></label>
                                         &nbsp;&nbsp;&nbsp;
                                         <label class="comments"><span><?php echo $data3['QueryRaisedDate'];?></span></label> <span id="suc-message<?php echo $data3['Id'];?>" class="Flash-suc-Message"></span>
-                                         <span id="error-message<?php echo $data3['Id'];?>" class="Flash-Message"></span>
+                                         <span id="error-message<?php echo $data3['Id'];?>" class="Flash-error-Message"></span>
                                         &nbsp;&nbsp;&nbsp;
 
                                     </legend>
