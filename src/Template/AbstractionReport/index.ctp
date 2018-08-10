@@ -10,17 +10,12 @@ use Cake\Routing\Router
 
             <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client</label>
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client<span class="mandatory"> *</span></label>
                         <div class="col-sm-6" style="line-height: 0px;">
                              <?php
-                             
-                    if ($ClientId == '') {
                        
                          echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId));
-                       
-                    } else {
-                        echo $ClientId;
-                    }
+
                     ?>
                      <input type="hidden" name="RegionId" id="RegionId" value="<?php echo  $SessionRegionId;?>">
                      
@@ -30,9 +25,10 @@ use Cake\Routing\Router
             
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
+                    <label for="inputEmail3" class="col-sm-6 control-label">Project <span class="mandatory"> *</span></label>
                     <div class="col-sm-6 prodash-txt">
                    <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId));?>  
+                        
                         <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
                     </div>
                 </div>
@@ -40,10 +36,10 @@ use Cake\Routing\Router
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="UserGroupId" class="col-sm-6 control-label">Lease Id</label>
+                    <label for="UserGroupId" class="col-sm-6 control-label">Lease Id<span class="mandatory"> *</span></label>
                     <div class="col-sm-6 ">
                        <div id="LoadUserGroup">
-                            <input type="text" name="LeaseId" value="" id="LeaseId">
+                            <input type="text" name="LeaseId" id="LeaseId" value="<?php echo $LeaseId;?>">
                        </div>
                     </div>
                 </div>
@@ -79,10 +75,10 @@ use Cake\Routing\Router
         <div class="form-group" style="text-align:center;" >
             <div class="col-sm-12">
                 <input type="hidden" name='formSubmit'>
-                <button type="submit" name = 'check_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Submit</button>
+                <button type="submit" name = 'check_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Export Report</button>
                 <button type="button" name = 'clear'class="btn btn-primary btn-sm" onclick="return ClearFields();">Clear</button>
                     <?php
- echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return formSubmitValidation()', 'type' => 'submit'));   ?>
+// echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return formSubmitValidation()', 'type' => 'submit'));   ?>
             </div>
         </div>
 		<?php echo $this->Form->end(); ?>
@@ -91,6 +87,9 @@ use Cake\Routing\Router
 
 
 <style type='text/css'>
+    .mandatory {
+    color: red;
+}
     .comments{top:0 !important;left:0 !important;position:relative !important;color:black !important;}
     .frmgrp_align{margin-left: 15px !important;margin-right: 0px !important;}
 
@@ -227,35 +226,15 @@ echo $this->Form->end();
 <script type="text/javascript">
 
 
-    function getModule() {
-//        var result = new Array();
-        var ProjectId = $('#ProjectId').val();
-        var RegionId = $('#RegionId').val();
-
-
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'projectleasereport', 'action' => 'ajaxmodule')); ?>",
-            data: ({ProjectId: ProjectId, RegionId: RegionId}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-                document.getElementById('LoadModule').innerHTML = result;
-            }
-        });
-    }
-
-
-
     function formSubmitValidation() {
 
-return 1;
+
         if ($('#ClientId').val() == 0) {
             alert('Select Client Id');
             $('#ClientId').focus();
             return false;
         }
-        
+     
         if ($('#ProjectId').val() == 0) {
             alert('Select Project Name');
             $('#ProjectId').focus();
@@ -268,20 +247,18 @@ return 1;
             return false;
         }
         
-        if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
-            alert('Select From Date');
-            return false;
-        }
+//        if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
+//            alert('Select From Date');
+//            return false;
+//        }
 
     }
 
     function ClearFields() {
         $('#ProjectId').val('0');
-        $('#UserGroupId').val('');
-        //$('#ModuleId').val('0');
-        $('#QueryDateFrom').val('');
-        $('#QueryDateTo').val('');
-        $('#user_id').find('option').remove();
+        $('#LeaseId').val('');
+        $('#ClientId').val('0');   
+
     }
 </script>
 

@@ -49,7 +49,7 @@ class ProjectleaseReportController extends AppController {
         exit;
     }
 
-    public function getvalues($array, $key,$d='') {
+    public function getvalues($array, $key,$d='',$dt='') {
         $arr = array();
         if (!empty($array)) {
             $arr = array_column($array, $key);
@@ -58,7 +58,10 @@ class ProjectleaseReportController extends AppController {
                 foreach ($arr as $k => $v) {
                     if (!empty($v)) {
                         if(!empty($d)){
-                            $v = date('d-m-Y H:i', strtotime($v));
+                            $v = date('d-m-Y', strtotime($v));
+                        }
+                        if(!empty($dt)){
+                            $v = date('d-m-Y', strtotime($v));
                         }
                         $msg .=$v . ", ";
                     }
@@ -210,7 +213,7 @@ class ProjectleaseReportController extends AppController {
                 $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
             }
             if ($QueryDateFrom != '' && $QueryDateTo == '') {
-                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
+                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:00:00' ;
             }
             if ($QueryDateFrom == '' && $QueryDateTo != '') {
                 $conditions.="  AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
@@ -250,7 +253,7 @@ class ProjectleaseReportController extends AppController {
                         $TLComments = $this->getvalues($sub_queryData, 'TLComments');
                         $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate','D');
                         $Client_Response = $this->getvalues($sub_queryData, 'Client_Response');
-                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','D');
+                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','','dt');
                     }
 
                     $list['holdcomments'] = $TLComments;
@@ -445,109 +448,6 @@ class ProjectleaseReportController extends AppController {
         $this->render('index');
     }
 
-    public function ajaxpurebutalcommentsinsert() {
-        $connection = ConnectionManager::get('default');
-        $session = $this->request->session();
-        $user = $session->read("user_id");
-
-        $CommentsId = $_POST['CommentsId'];
-        $ProjectId = $_POST['ProjectId'];
-        $InputEntityId = $_POST['InputEntityId'];
-        $QCrebuttalTextbox = $_POST['QCrebuttalTextbox'];
-        $Status_id = $_POST['Status_id'];
-        $ModuleId = $_POST['ModuleId'];
-
-        $UpdateQryStatus = "update MV_QC_Comments set  StatusId='" . $Status_id . "' ,TLReputedComments='" . trim($QCrebuttalTextbox) . "' where Id='" . $CommentsId . "' ";
-        $QryStatus = $connection->execute($UpdateQryStatus);
-
-        $queries = $connection->execute("SELECT RegionId,StatusId,SequenceNumber,Id,TLReputedComments,UserReputedComments,QCComments,AttributeMasterId,OldValue FROM MV_QC_Comments where Id = '$CommentsId'")->fetchAll('assoc');
-
-        $RegionId = $queries[0]['RegionId'];
-
-        // pu user rework -> status update when atleast one reject from pu-tl   
-        $pucmtcntfindqueries = $connection->execute("SELECT count(Id) as pucmtcnt FROM MV_QC_Comments where StatusId = '3' and InputEntityId='$InputEntityId' and ProjectId='$ProjectId'")->fetchAll('assoc');
-
-        if (!empty($pucmtcntfindqueries)) {
-
-            $connectiond2k = ConnectionManager::get('d2k');
-            $Readyforputlrebuttal = Readyforputlrebuttal;
-            $ReadyforPURework = ReadyforPUReworkIdentifier;
-            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-
-            // get production main-status id 
-            $PutlFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$ModuleId and ModuleStatusIdentifier='$Readyforputlrebuttal' AND RecordStatus=1")->fetchAll('assoc');
-            $PutlFirstStatus = array_map(current, $PutlFirstStatus);
-            $Putlfirst_Status_name = $PutlFirstStatus[0];
-            $Putlfirst_Status_id = array_search($Putlfirst_Status_name, $JsonArray['ProjectStatus']);
-
-            $pucmtcnt = array_map(current, $pucmtcntfindqueries);
-            $cnt = $pucmtcnt[0];
-            if ($cnt == 0) { // checking no Tl - comments pending 
-                $purejectcmtcntfindqueries = $connection->execute("SELECT count(Id) as pucmtcnt FROM MV_QC_Comments where StatusId = '5' and InputEntityId='$InputEntityId' and ProjectId='$ProjectId'")->fetchAll('assoc');
-                $purejcmtcnt = array_map(current, $purejectcmtcntfindqueries);
-                $purejcnt = $purejcmtcnt[0];
-
-                if ($purejcnt > 0) { // check its having any rejected status
-                    $getreworkFirstStatus = $connectiond2k->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId='$ModuleId' and ModuleStatusIdentifier='$ReadyforPURework' AND RecordStatus=1")->fetchAll('assoc');
-                    $pureworkfirstStatus = array_map(current, $getreworkFirstStatus);
-                    $pureworkfirst_Status_name = $pureworkfirstStatus[0];
-                    $purework_Status_id = array_search($pureworkfirst_Status_name, $JsonArray['ProjectStatus']);
-
-                    $UpdateQryStatus = "update ProductionEntityMaster set StatusId='$purework_Status_id' where ProjectId='$ProjectId'  AND InputEntityId=$InputEntityId ";
-                    $QryStatus = $connection->execute($UpdateQryStatus);
-                } else { // pu rebuttal comments done without any reject
-                    $putlcompletedstatus_id = $JsonArray['ModuleStatus_Navigation'][$Putlfirst_Status_id][1];
-                    $UpdateQryStatus = "update ProductionEntityMaster set  StatusId='$putlcompletedstatus_id' where ProjectId='$ProjectId' AND InputEntityId=$InputEntityId";
-                    $QryStatus = $connection->execute($UpdateQryStatus);
-                    //Staging table updation
-                    $module = $JsonArray['Module'];
-                    $module = array_keys($module);
-                    $ProductionFields = array();
-                    foreach ($module as $key => $value) {
-                        $StaticFieldssarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['production'];
-                        if (!empty($StaticFieldssarr)) {
-                            $moduleId = $value;
-                        }
-                    }
-
-                    $stagingTable = 'Staging_' . $moduleId . '_Data';
-                    $UpdateQryStatus = "update $stagingTable set  StatusId='$putlcompletedstatus_id' where ProjectId='$ProjectId' AND InputEntityId=$InputEntityId";
-                    $QryStatus = $connection->execute($UpdateQryStatus);
-                }
-            }
-        }
-
-        $data1 = $queries[0];
-        if ($data1['StatusId'] == 4) {
-            $rebute_txt = "Rebute";
-        } else if ($data1['StatusId'] == 5) {
-            $rebute_txt = "Reject";
-        }
-        $call = "return query('" . $data1['Id'] . "','" . $data1['StatusId'] . "','D','" . $data1['TLReputedComments'] . "','" . $data1['QCComments'] . "','" . $data1['UserReputedComments'] . "')";
-
-        echo '<button name="frmsubmit" type="button" onclick="' . $call . '" class="btn btn-default btn-sm added-commnt">' . $rebute_txt . '</button>';
-        exit;
-    }
-
-    public function ajaxqueryinsert() {
-        $connection = ConnectionManager::get('default');
-        $session = $this->request->session();
-        $user = $session->read("user_id");
-        $ProjectId = $session->read("ProjectId");
-        $UpdateQryStatus = "update ME_UserQuery set  TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
-        $QryStatus = $connection->execute($UpdateQryStatus);
-        if ($_POST['status'] == 3) {
-            $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
-            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-            $first_Status_name = $JsonArray['ModuleStatusList'][$_POST['ModuleId']][0];
-            $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
-            $UpdateQryStatus = "update $moduleTable set  StatusId='" . $first_Status_id . "',QueryResolved=1 ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where ProductionEntity='" . $_POST['ProductionEntityId'] . "' ";
-            $QryStatus = $connection->execute($UpdateQryStatus);
-            $UpdateQryStatus = "update ME_Production_TimeMetric set StatusId='" . $first_Status_id . "' where ProductionEntityID='" . $_POST['ProductionEntityId'] . "' AND Module_Id=" . $_POST['ModuleId'];
-            $QryStatus = $connection->execute($UpdateQryStatus);
-        }
-        echo 'updated';
-        exit;
-    }
+   
 
 }

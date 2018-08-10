@@ -31,9 +31,10 @@ class AbstractionReportController extends AppController {
             'Id' => 'asc'
         ]
     ];
-     public $RegionId =1011;
+    public $RegionId = 1011;
 
     public function initialize() {
+
         parent::initialize();
         $this->loadModel('projectmasters');
         $this->loadModel('importinitiates');
@@ -44,16 +45,43 @@ class AbstractionReportController extends AppController {
         $this->loadModel('AbstractionReport');
     }
 
-    public function pr($array,$y='') {
+    public function pr($array, $y = '') {
         echo "<pre>";
         print_r($array);
-        if(empty($y)){
+        if (empty($y)) {
             exit;
         }
     }
 
+    public function arrayfilters($array, $attid) {
+
+        $attr = array_column($array, $attid);
+
+        if (count($attr) > 0) {
+            $ar = array();
+            $i = 0;
+            foreach ($attr as $key => $val) {
+                if (!is_null($val)) {
+                    $ar[$i] = $val;
+                    $i++;
+                }
+            }
+            if (empty($ar)) {
+                $ar[] = null;
+            }
+
+//            $ar['cnt'] = count($ar);
+        } else {
+            $ar[] = null;
+//            $ar['cnt'] = 1;
+        }
+
+        return $ar;
+    }
 
     public function index() {
+
+
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -62,7 +90,7 @@ class AbstractionReportController extends AppController {
         $moduleIdtxt = 'Abstraction';
         $this->set('RegionId', $RegionId);
 //        $ProjectId = $session->read("ProjectId");
-        $moduleId = $session->read("moduleId");
+//        $moduleId = $session->read("moduleId");
 
 
         $MojoProjectIds = $this->projectmasters->find('Projects');
@@ -75,16 +103,16 @@ class AbstractionReportController extends AppController {
         endforeach;
         $this->set('Projects', $ProListFinal);
 
-     
+
         $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
         $Cl_list = array('0' => '--Select--');
         foreach ($Cl_listarray as $values):
             $Cl_list[$values['Id']] = $values['ClientName'];
         endforeach;
         $this->set('Clients', $Cl_list);
-        
-        $ProjectId = 3369;
-        $this->request->data['ProjectId'] = 3369;
+
+//        $ProjectId = 3369;
+//        $this->request->data['ProjectId'] = 3369;
 
         if (isset($this->request->data['ProjectId'])) {
             $this->set('ProjectId', $this->request->data['ProjectId']);
@@ -132,67 +160,179 @@ class AbstractionReportController extends AppController {
             $QueryDateTo = '';
         }
 
-        
+
         $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$ModuleId]['production'];
         $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'][$ModuleId];
-            $groupwisearray = array();
-            $subgroupwisearray = array();
-            foreach ($AttributeGroupMaster as $key => $value) {
+        $groupwisearray = array();
+        $subgroupwisearray = array();
+        foreach ($AttributeGroupMaster as $key => $value) {
             //    $groupwisearray[] = $value;
-                $keys = array_map(function($v) use ($key, $emparr) {
-                    if ($v['MainGroupId'] == $key) {
-                        return $v;
-                    }
-                }, $ProductionFields);
-                
-               
-                $keys_sub = $this->combineBySubGroup($keys);
-                $groupwisearray[$key] = $keys_sub;
-                $groupwisearray11[] = $keys_sub;
-            }
-           
-            
-                    
-        $subattrList= array();
-        $finalarray=array();
-        $arrtlist=array();
-        
-        foreach ($AttributeGroupMaster as $key => $val){
-            $finalarray[$key]['main']= $groupwisearray[$key];
-           if(!empty($JsonArray['AttributeSubGroupMaster'][$key])){
-                 foreach ($JsonArray['AttributeSubGroupMaster'][$key] as $keyatr => $valatr){
-                    $finalarray[$key]['sub'][$keyatr]= $groupwisearray[$key][$keyatr];
-                    unset($finalarray[$key]['main'][$keyatr]);
+            $keys = array_map(function($v) use ($key, $emparr) {
+                if ($v['MainGroupId'] == $key) {
+                    return $v;
                 }
-            }
+            }, $ProductionFields);
+
+
+            $keys_sub = $this->combineBySubGroup($keys);
+            $groupwisearray[$key] = $keys_sub;
+            $groupwisearray11[] = $keys_sub;
         }
-      
-        
-         $production_attr_id = array_column($ProductionFields, 'AttributeMasterId');
-        if(!empty($production_attr_id)){
-            $production_attr_id_str = "[".implode("],[", $production_attr_id)."]";
-        }
-      
-//        $this->pr($AttributeGroupMaster,1);
-    
-           // get fdrid
-            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
-            $DependencyTypeMasterId = $queryData[0]['Id'];
-            
-//            select top 10 [5224],* from Report_ProductionEntityMaster_7_2018 where SequenceNumber =1 and DependencyTypeMasterId =167
-         //     $AttributeMasterId = "[".$AttributeMasterId."] as leaseId";
-              
-//              $queryData = $connection->execute("select $production_attr_id_str ,ProductionEntityID ,InputEntityId from Report_ProductionEntityMaster_7_2018 where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' and SequenceNumber=1 ")->fetchAll('assoc');
-             
-        
+
+
+
 
         $resqueryData = array();
         $result = array();
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
 
+            $ProjectId = $this->request->data['ProjectId'];
+            $QueryDateFrom = $this->request->data['QueryDateFrom'];
+            $QueryDateTo = $this->request->data['QueryDateTo'];
+            $ClientId = $this->request->data['ClientId'];
+            $LeaseId = $this->request->data['LeaseId'];
             
+            $this->set('ClientId', $ClientId);
+            $this->set('ProjectId', $ProjectId);
+            $this->set('LeaseId', $LeaseId);
             
-              $productionData = '';
+//            $this->pr($LeaseId);
+            // get json array 
+
+            $conditions = "";
+
+            if ($QueryDateFrom != '' && $QueryDateTo != '') {
+                $months = $this->getmonthlist($QueryDateFrom, $QueryDateTo);
+            } elseif ($QueryDateFrom != '' && $QueryDateTo == '') {
+                $months = $this->getmonthlist($QueryDateFrom, $QueryDateFrom);
+            } elseif ($QueryDateFrom == '' && $QueryDateTo != '') {
+                $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
+            } else {
+                $QueryDateFrom = date("Y-m-d");
+                $QueryDateTo = date("Y-m-d");
+                $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
+            }
+
+
+            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
+            $DependencyTypeMasterId = $queryData[0]['Id'];
+
+            $mncnt = count($months);
+            $i = 1;
+            $noresult = 0;
+            foreach ($months as $monkey => $mnt_tbl) {
+
+                $stagingTable = "Report_ProductionEntityMaster$mnt_tbl";
+                $get_tableexist = $connection->execute("IF OBJECT_ID (N'$stagingTable', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res ")->fetchAll('assoc');
+
+                if ($get_tableexist[0]['res'] > 0) {
+
+                    $getqueryres = $connection->execute("select count(*) as cnt  from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' ")->fetchAll('assoc');
+                    if (!empty($getqueryres[0]['cnt'])) {
+                        break;
+                    } else {
+                        if ($mncnt == $i) {
+                            $noresult = 1;
+                        }
+                    }
+                } else {
+                    $noresult = 1;
+                    
+                    break;
+                }
+
+                $i++;
+            }
+
+
+            if (!empty($noresult)) {
+                $this->Flash->error(__('No Record found for this combination!'));
+            } else {
+
+
+//                $ClientId = 1;
+//                $ProjectId = 3369;
+//                $LeaseId = 'US017P01';
+
+                $ColumnNames = $connection->execute("SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS  where TABLE_NAME='$stagingTable' and ISNUMERIC(COLUMN_NAME) = 1")->fetchAll('assoc');
+
+                $arr = array();
+                foreach ($ColumnNames as $key => $val):
+                    $arr[] = $val['COLUMN_NAME'];
+                endforeach;
+                $NumericColumnNames = implode(",", $arr);
+
+
+                // split attributes
+                $AttributeMast = array_chunk($arr, ceil(count($arr) / 2));
+                $AttributeMasterids1 = "[" . implode('],[', $AttributeMast[0]) . "]";
+                $AttributeMasterids2 = "[" . implode('],[', $AttributeMast[1]) . "]";
+//          $ProductionField = $DependentMasterIds['ProductionField'];
+//echo $AttributeMasterId;exit;
+                $LeaseIdColumn = "[".$AttributeMasterId."]";
+               
+                $getQuery1 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
+  
+                
+                $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' AND $LeaseIdColumn = '$LeaseId'  ")->fetchAll('assoc');
+
+                $getQuery = array();
+                $cnt1 = count($getQuery1);
+                $cnt2 = count($getQuery2);
+
+                if ($cnt1 < $cnt2) {
+                    $getQuerytemp1 = $getQuery1;
+                    $getQuerytemp2 = $getQuery2;
+                    $getQuery1 = $getQuerytemp2;
+                    $getQuery2 = $getQuerytemp1;
+                }
+
+                if (!empty($getQuery1) && !empty($getQuery2)) {
+                    foreach ($getQuery1 as $key => $val) {
+                        $getQuery[$key] = isset($getQuery2[$key]) ? $getQuery2[$key] + $val : $val;
+                    }
+                }
+
+
+                $subattrList = array();
+                $finalarray = array();
+                $arrtlist = array();
+
+                foreach ($AttributeGroupMaster as $key => $val) {
+                    $finalarray[$key]['main'] = $groupwisearray[$key];
+                    if (!empty($JsonArray['AttributeSubGroupMaster'][$key])) {
+                        foreach ($JsonArray['AttributeSubGroupMaster'][$key] as $keyatr => $valatr) {
+                            $finalarray[$key]['sub'][$keyatr] = $groupwisearray[$key][$keyatr];
+                            unset($finalarray[$key]['main'][$keyatr]);
+                        }
+                    }
+                }
+
+                foreach ($finalarray as $key => $val) {
+                    foreach ($val['main'] as $key1 => $val1) {
+                        foreach ($val1 as $key2 => $val2) {
+                            $result = $this->arrayfilters($getQuery, intval($val2['AttributeMasterId']));
+//                        $result = $this->arrayfilters($getQuery, intval(5061));
+                            $finalarray[$key]['main'][$key1][$key2]['res'] = $result;
+                            $finalarray[$key]['main'][$key1][$key2]['seqcnt'] = count($result);
+                        }
+                    }
+
+                    foreach ($val['sub'] as $subkey1 => $subval1) {
+                        foreach ($subval1 as $subkey2 => $subval2) {
+                            $result = $this->arrayfilters($getQuery, intval($subval2['AttributeMasterId']));
+//                        $result = $this->arrayfilters($getQuery, intval(5061));
+                            $finalarray[$key]['sub'][$subkey1][$subkey2]['res'] = $result;
+                            $finalarray[$key]['sub'][$subkey1][$subkey2]['seqcnt'] = count($result);
+                        }
+                    }
+                }
+
+
+
+//            $this->pr($finalarray);
+
+                $productionData = '';
                 if (!empty($finalarray)) {
                     $productionData = $this->AbstractionReport->find('export', ['ProjectId' => $ProjectId, 'condition' => $finalarray]);
                     $this->layout = null;
@@ -206,53 +346,15 @@ class AbstractionReportController extends AppController {
                     echo $productionData;
                     exit;
                 }
-            
-            
-            
-            $ProjectId = $this->request->data['ProjectId'];
-            $QueryDateFrom = $this->request->data['QueryDateFrom'];
-            $QueryDateTo = $this->request->data['QueryDateTo'];
-
-            $ClientId = 1;
-            $ProjectId = 3369;
-            $LeaseId = 3369;
-            
-            
-            // get values from report table 
-            
-            // get fdrid
-            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
-            $DependencyTypeMasterId = $queryData[0]['Id'];
-            
-//              $AttributeMasterId = "[".$AttributeMasterId."]";
-//              $queryData = $connection->execute("select $AttributeMasterId as fdrid,ProductionEntityID ,InputEntityId from Report_ProductionEntityMaster_7_2018 where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' and SequenceNumber=1 ")->fetchAll('assoc');
-             
-              
-              // get json array 
-              
-              $queryData = $connection->execute("select $AttributeMasterId as fdrid,ProductionEntityID ,InputEntityId from Report_ProductionEntityMaster_7_2018 where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' and SequenceNumber=1 ")->fetchAll('assoc');
-              
-            $conditions = "";
-
-            if ($QueryDateFrom != '' && $QueryDateTo != '') {
-                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-            }
-            if ($QueryDateFrom != '' && $QueryDateTo == '') {
-                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:59:59'";
-            }
-            if ($QueryDateFrom == '' && $QueryDateTo != '') {
-                $conditions.="  AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
             }
 
 
-            $this->set('result', $result);
-
-            if (empty($result)) {
-                $this->Flash->error(__('No Record found for this combination!'));
-            }
+//             $this->pr($stagingTable);
+//           
+//            $this->pr($stagingTable,1);
+//            $this->pr($getqueryres);
         }
     }
-
 
     public function getmonthlist($date1, $date2) {
 
@@ -276,17 +378,7 @@ class AbstractionReportController extends AppController {
         return $months;
     }
 
-
- 
-
-   
-
-    
-
-    
-
-
-function combineBySubGroup($keysss) {
+    function combineBySubGroup($keysss) {
         $mainarr = array();
         foreach ($keysss as $key => $value) {
             if (!empty($value))

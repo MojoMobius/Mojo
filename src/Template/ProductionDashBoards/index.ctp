@@ -23,7 +23,9 @@ use Cake\Routing\Router
     padding: 0px;
     }
 	.suc-msg{
+		padding-left:25%;
 		color:green;
+		font-weight:600;
 		font-size:15px;
 	}
     
@@ -443,7 +445,7 @@ echo $this->Form->end();
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">x</span>
                         </button>
-                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle">Priority/Job Allocation</h4>
+                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle">Priority/Job Allocation <span class="suc-msg"></span></h4>
                     </div>
                     <div class="modal-body">
                         <div  class="container-fluid" style="margin-bottom:-10px;">
@@ -463,7 +465,6 @@ echo $this->Form->end();
                     </div>
                     
                     <div class="modal-footer">
-					<div class="suc-msg"></div>
 					<input type="button" value="Submit" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="prioritysubmit();" ></div>
                     
                 </div>
@@ -1038,13 +1039,14 @@ function prioritysubmit(){
             data: {userId: arraydata, ProjectId:Proid},
             type: 'POST',
             success: function (res) { 
-	          $(".suc-msg").show().html('Job Allocated Successfully!');
-					setTimeout(function() {
-					   $(".suc-msg").hide();
-                                           location.reload();
-					}, 2000);
+	          $(".suc-msg").show().html("Job Allocated Successfully!");
+			  setTimeout(function() {
+					$(".suc-msg").hide();
+					 location.reload();
+				}, 2000);
+            }
         });
-       // location.reload();
+        //location.reload();
 }    
 
 function numericvalidation(id){
