@@ -81,7 +81,6 @@ class AbstractionReportController extends AppController {
 
     public function index() {
 
-
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -274,11 +273,16 @@ class AbstractionReportController extends AppController {
 //          $ProductionField = $DependentMasterIds['ProductionField'];
 //echo $AttributeMasterId;exit;
                 $LeaseIdColumn = "[".$AttributeMasterId."]";
-               
-                $getQuery1 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
+                
+               $getInputEntityId = $connection->execute("select top 1 InputEntityId from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
+               $InputEntityId = $getInputEntityId[0]['InputEntityId'];
+//               $InputEntityId = 112152;
+//                print_r($getInputEntityId);exit;
+                
+                $getQuery1 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId' ")->fetchAll('assoc');
   
                 
-                $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId'  ")->fetchAll('assoc');
+                $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId'  ")->fetchAll('assoc');
                 
                 $getQuery = array();
                 $cnt1 = count($getQuery1);
