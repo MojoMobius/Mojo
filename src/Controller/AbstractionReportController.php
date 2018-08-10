@@ -214,9 +214,13 @@ class AbstractionReportController extends AppController {
             }
 
 
-            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
-            $DependencyTypeMasterId = $queryData[0]['Id'];
-
+            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName IN ('General' ,'After Normalized','After Normalized_Reference URL','Disposition') ")->fetchAll('assoc');
+//            $DependencyTypeMasterId = $queryData[0]['Id'];
+            $DependencyTypeMasterIds = '';
+            if(!empty($queryData)){
+                $DependencyTypeMasterIds = implode(',', array_column($queryData, 'Id'));
+            }
+                      
             $mncnt = count($months);
             $i = 1;
             $noresult = 0;
@@ -227,7 +231,7 @@ class AbstractionReportController extends AppController {
 
                 if ($get_tableexist[0]['res'] > 0) {
 
-                    $getqueryres = $connection->execute("select count(*) as cnt  from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' ")->fetchAll('assoc');
+                    $getqueryres = $connection->execute("select count(*) as cnt  from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) ")->fetchAll('assoc');
                     if (!empty($getqueryres[0]['cnt'])) {
                         break;
                     } else {
@@ -271,11 +275,11 @@ class AbstractionReportController extends AppController {
 //echo $AttributeMasterId;exit;
                 $LeaseIdColumn = "[".$AttributeMasterId."]";
                
-                $getQuery1 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
+                $getQuery1 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
   
                 
-                $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId='$DependencyTypeMasterId' AND $LeaseIdColumn = '$LeaseId'  ")->fetchAll('assoc');
-
+                $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId'  ")->fetchAll('assoc');
+                
                 $getQuery = array();
                 $cnt1 = count($getQuery1);
                 $cnt2 = count($getQuery2);

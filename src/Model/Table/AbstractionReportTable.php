@@ -164,9 +164,10 @@ class AbstractionReportTable extends Table {
             endforeach;
             
             $tableData.='</table>  </td></tr><tr><td colspan="2"></td></tr></table>';
-            $tableData.='<table border="1"><tr><td></td><td>';
+            
             
             if($i < $j){
+                $tableData.='<table ><tr><td></td><td>';
                 $tableData.=' <table border="1" style="margin-top:10px;"><thead>';
             }
             
