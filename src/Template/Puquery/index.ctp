@@ -446,7 +446,7 @@ if(!empty($queryResult)){ ?>
                                        $("#suc-msg"+ProductionEntityId).hide(); 
                                      }, 2000);
                                     location.reload();
-                                     
+
                                 }
                            
                           //$(".hot_query").html(res);

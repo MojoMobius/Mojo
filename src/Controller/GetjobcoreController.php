@@ -2628,7 +2628,7 @@ class GetjobcoreController extends AppController {
         exit;
     }
 
-    function ajaxgetdatahandalldata() {
+    function ajaxgetdatahandalldataold() {
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
         $handskey = $_POST['handskey'];
@@ -3391,4 +3391,116 @@ foreach ($result as $set) {
     echo $Htmlview;
      exit;
  }
+ 
+ function ajaxgetdatahandalldata() {
+     if($_POST['singleAttr']=="no"){
+     $Attr =explode("-",$_POST['AttributeMasterId']);
+     $setArr= array_filter($Attr);
+     }
+     else{
+      $setArr = array(0 => $_POST['AttributeMasterId']);
+     }
+     //print_r($setArr);exit;
+     $i=0;
+     $ListAttrId='';
+     $qc_datarownew='';
+     $tblheadnew='';
+    $totattr= count($setArr);
+     foreach ($setArr as $val){       
+         if($i > 0){
+         $ListAttrId.=",";
+         }
+          $ListAttrId.= '[' . $val . ']';
+          $i++;
+     }
+     $Attributes =implode(",",$setArr);
+     $InputEntity=$_POST['InputEntityId'];
+     $stagingtable = 'Staging_'.$_POST['ModuleId'].'_Data';
+     
+     
+     
+        $ProductionEntityId = $_POST['ProductionEntityId'];
+        $AttributeMasterId = $_POST['AttributeMasterId'];
+         $moduleId = $_POST['ModuleId'];
+        $Title = $_POST['title'];
+        $Prvseq = $_POST['prvseq'];
+        $session = $this->request->session();
+//        $moduleId = $session->read("moduleId");
+        
+        $handskeysub = $_POST['handskeysub'];
+        $ProjectId = $session->read("ProjectId");
+        $connection = ConnectionManager::get('default');
+        $user_id = $session->read("user_id");
+        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+
+
+        
+          $link = $connection->execute("SELECT RegionId FROM ProductionEntityMaster where ProjectId=" . $ProjectId . " AND Id='".$ProductionEntityId."'")->fetchAll('assoc');
+          
+        $RegionId = $link[0]['RegionId'];       
+
+	 $link2 = $connection->execute("SELECT FieldTypeName,Id FROM MC_DependencyTypeMaster WHERE FieldTypeName IN ('After Normalized') AND ProjectId=".$ProjectId)->fetchAll('assoc');
+     
+        foreach ($link2 as $keytype => $valuetype) {
+            $NormalizedId=$valuetype["Id"];
+        }
+       
+   
+        //$ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+		$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
+                foreach ($firstModuleId as $keys => $valuesval) {
+                        $fineval[] = $keys;
+                }
+		$modulIdSS = $fineval[0];
+   
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
+        
+        foreach($ProductionFields as $key=>$val){
+            if(in_array($val['AttributeMasterId'] , $setArr)){
+                $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
+                $handskeysub =$val['SubGroupId'];
+                $handskeymain =$val['MainGroupId'];
+            }
+        }
+        $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by SequenceNumber asc")->fetchAll('assoc');
+               $seq=0;
+		foreach ($link4 as $key => $value) {
+                    $seq++;
+                     $qc_datarownew.='<tr>';
+                   for($i=0;$i<$totattr;$i++){
+                        if($_POST['singleAttr']=="no"){
+                     $text_onclk ='onclick=Pucmterrorclk('.$handskeysub.','.$seq.')';
+                        }
+                        else{
+                      $text_onclk = "onclick=loadMultiFieldqcerror($AttributeMasterId,$seq,$Prvseq)";
+                        }
+                     $text_cls = "pu_cmts_seq";
+                     if($value[$setArr[$i]] !=NULL)
+		     $qc_datarownew.='<td '.$text_onclk.' class ="'.$text_cls.'" cellspacing="10">'.$value[$setArr[$i]].'</td>';
+		  
+                   }
+                   
+                     $qc_datarownew.='</tr>';
+                    
+                
+                }
+        
+        
+        
+        
+		 $qc_data='<div style="padding: 10px;background: #fff;font-size: 17px;font-weight: 500;">'.$Title.'</div>';
+		 $qc_data.='<table style="display:inline-table"><tr style="white-space: nowrap;">'.$tblheadnew.'</tr>';		 
+//		 $qc_data.='<tr >'.$tblheadtwo.'</tr>';		
+		 $qc_data.=$qc_datarownew;
+		 $qc_data.='</table>';
+		echo $qc_data;
+		//echo "hello";
+        //echo json_encode($valArr);
+	   
+	   exit;
+        
+    }
+     
+ 
+ 
 }
