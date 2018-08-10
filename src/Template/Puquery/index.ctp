@@ -440,7 +440,69 @@ if(!empty($queryResult)){ ?>
                                        $("#suc-msg"+ProductionEntityId).hide(); 
                                      }, 2000);
                                     location.reload();
-                                     }
+                                    
+                                }
+                           
+                          //$(".hot_query").html(res);
+              }
+                
+            });
+           
+		
+  
+    }
+    function updateQuerydqc(stsId,ProductionEntityId,ModuleId) {
+            			
+          var ProjectId = $("#ProjectId").val(); 
+            var result = new Array();
+             $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxqueryinsertdqc')); ?>",
+                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
+                success: function (res) { 
+			if(res == '0'){
+                           //$("#message"+ProductionEntityId).show(); 
+                            $("#message"+ProductionEntityId).show().html("Status Not Completed!"); 
+                                    setTimeout(function(){
+                                       $("#message"+ProductionEntityId).hide(); 
+                                     }, 2000);
+                                }
+                                else{
+                                   $("#suc-msg"+ProductionEntityId).show().html("DQC completed successfully"); 
+                                    setTimeout(function(){
+                                       $("#suc-msg"+ProductionEntityId).hide(); 
+                                     }, 2000);
+                                    location.reload();
+                                }
+                           
+                          //$(".hot_query").html(res);
+                 }
+                
+            });
+           
+			//location.reload();
+        }
+         function updateQuerysub(stsId, ProductionEntityId, ModuleId) {
+	 var ProjectId = $("#ProjectId").val(); 
+            var result = new Array();
+             $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxquerysubmit')); ?>",
+                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
+                success: function (res) { 
+			if(res == '0'){
+                           //$("#message"+ProductionEntityId).show(); 
+                            $("#message"+ProductionEntityId).show().html("Status Not Completed!"); 
+                                    setTimeout(function(){
+                                       $("#message"+ProductionEntityId).hide(); 
+                                     }, 2000);
+                                }
+                                else{
+                                      $("#suc-msg"+ProductionEntityId).show().html("Query submitted successfully "); 
+                                    setTimeout(function(){
+                                       $("#suc-msg"+ProductionEntityId).hide(); 
+                                     }, 2000);
+                                    location.reload();
                                 }
                            
                           //$(".hot_query").html(res);
