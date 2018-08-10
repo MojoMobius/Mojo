@@ -4628,10 +4628,11 @@ function Rentcalcappend(){
 				*/
           
 			//for(var i=0;i < totArr;i++){
+				
 						for(var i=0;i < totArr;i++){
 													
 							
-                         //addSubgrpAttribute(RentSubGroup,RentGroup);
+                         addSubgrpAttribute(RentSubGroup,RentGroup);
 						   seq = parseInt(seq) + parseInt(1);
 						 $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
