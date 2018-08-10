@@ -44,7 +44,7 @@
                     direction: true,
                     format: 'd-m-Y'
                 });
-   });
+  
 
    </script>
 
@@ -606,6 +606,7 @@ if ($NoNewJob == 'NoNewJob') {
                                 <input class="UpdateFields" type="hidden" name="ProjectId" id="ProjectId" value="<?php echo $productionjob['ProjectId']; ?>">
                                 <input class="UpdateFields" type="hidden" name="InputEntityId" id="InputEntityId" value="<?php echo $productionjob['InputEntityId']; ?>">
 
+
                                 <input type="hidden" name="attrGroupId" id="attrGroupId">
                                 <input type="hidden" name="attrSubGroupId" id="attrSubGroupId">
                                 <input type="hidden" name="attrId" id="attrId">
@@ -695,10 +696,20 @@ if ($NoNewJob == 'NoNewJob') {
                                                                 if ($GroupSeqCnt > 1) {
                                                                      // code added developer01-b2l
                                                                    $pagination_validation_class = "ProductionFields_" . $DependentMasterIds['ProductionField'];
+					
+																   
                                                                 ?>
                                                 <i id= "next_<?php echo $keysub; ?>" class="fa fa-angle-double-right pull-right m-r-5 <?php echo $pagination_validation_class; ?> validation_error_pagination" style="color:#4397e6"  onclick="Paginate('next', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i> 
                                                 <i id="previous_<?php echo $keysub; ?>" class="fa fa-angle-double-left pull-right <?php echo $pagination_validation_class; ?> validation_error_pagination" onclick="Paginate('previous', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i>
-                                                <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>',' <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>','<?php echo $ModuleId; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
+
+<?php 
+$ArrAttributes='';
+foreach ($valuesSub as $key => $val){
+ $ArrAttributes .=  $val['AttributeMasterId']."-";
+}
+?>
+
+                                                <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $ArrAttributes; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>',' <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>','<?php echo $ModuleId; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                     <?php
                                                                 }
                                                                 ?>
@@ -707,7 +718,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){								
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){								
 																 ?>
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>,<?php echo $valprodFields['MainGroupId'];?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
@@ -1020,7 +1031,7 @@ if ($NoNewJob == 'NoNewJob') {
                                     <?php if ($totalSeqCnt > 1) {
                                                                             ?>
                                                                  
-                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>','<?php echo $ModuleId; ?>');"" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
+                                                                <i class="fa fa-info-circle m-l-10" ata-target="#example-modal" onclick="loadhandsondatafinal('<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $i; ?>', '<?php echo $tempSq; ?>', '<?php echo $keysub; ?>','<?php echo $valprodFields['DisplayAttributeName']; ?>','<?php echo $ModuleId; ?>');"" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                 <i class="fa fa-angle-double-left i_previous_<?php echo $valprodFields['AttributeMasterId']; ?>" onclick="loadMultiField('i_previous', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i>
                                                                 <i class="fa fa-angle-double-right m-r-5 i_next_<?php echo $valprodFields['AttributeMasterId']; ?>" style="color:#4397e6" onclick="loadMultiField('i_next', '<?php echo $valprodFields['AttributeMasterId']; ?>', '<?php echo $totalSeqCnt; ?>');"></i> 
                                                             
@@ -1666,7 +1677,7 @@ if ($NoNewJob == 'NoNewJob') {
          if(select_all_Disp === 'V'){
          var subGrpArr='<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
     var subGrpAtt = JSON.parse(subGrpArr);     
-
+console.log(subGrpAtt);
     var subGrpAttArr = subGrpAtt[grp][subgrp];   
      var maxSeqCntsub = $('.GroupSeq_' + subgrp).attr("data");
         var inpId = <?php echo $DependentMasterIds['ProductionField']; ?>;
@@ -1980,135 +1991,7 @@ $(document).keydown(function(e) {
                     $('.testmulti').fSelect();
            //  checkAll(groupId,subgrpId);
         }
-		  function  addAttributerent (atributeId,ProjAttributeId,groupId,subgrpId,groupName) {
-            //var atributeId = $(this).attr("data");
-            //var ProjAttributeId = $(this).attr("data-ProjAttrId");
-            //var groupId = $(this).attr("data-groupId");
-            //var subgrpId = $(this).attr("date-subgrpId");
-            // var groupName = $(this).attr("data-groupName");
-         
-            var maxSeqCnt = $('.ShowingSeqDiv_' + atributeId).attr("data");
-            var nxtSeq = parseInt(maxSeqCnt) + 1;
-            var subGrpArr='<?php echo str_replace("'", "\\'", json_encode($AttributesListGroupWise))?>';
-            var subGrpAtt = JSON.parse(subGrpArr);
-            //var subGrpArrValidate='<?php //echo htmlspecialchars(str_replace("'", "\\'", json_encode($validate)))?>';
-            //var subGrpArrValidate='<?php //echo str_replace("\\", "\\",(json_encode($validate)))?>';
-            //var subGrpArrValidate='<?php //echo stripslashes(str_replace("\\\\", "\\",(json_encode($validate))))?>';
-            var subGrpArrValidate='<?php echo stripslashes(json_encode($validate))?>';
-            var subGrpAttValidate = JSON.parse(subGrpArrValidate);
-            var elementValidate = subGrpAttValidate[ProjAttributeId];
-            
-            var subGrpAttArr = subGrpAtt[groupId][subgrpId];
-           element=[];
-             $.each(subGrpAttArr, function (key, val) {
-                 if(val['AttributeMasterId']==atributeId){
-                     element=val;
-                 }
-             });
-             var inpId = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['ProductionField']; ?>_' + nxtSeq;
-            var inpName = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['ProductionField']; ?>_' + nxtSeq;
-            var commendName = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['Comments']; ?>_' + nxtSeq;
-            var selName = 'ProductionFields_' + atributeId + '_<?php echo $DependentMasterIds['Disposition']; ?>_' + nxtSeq;
-            var prodDep='<?php echo $DependentMasterIds['ProductionField']; ?>';
-            var cmdDep='<?php echo $DependentMasterIds['Comments']; ?>';
-            var disDep='<?php echo $DependentMasterIds['Disposition']; ?>';
-             maxSeq='<?php echo json_encode($maxSeq);?>';
-            maxSeqArr=JSON.parse(maxSeq);
-            if(nxtSeq<=maxSeqArr[prodDep])
-                var dbClass='UpdateFields';
-            else
-                var dbClass='InsertFields';
-            if(nxtSeq<=maxSeqArr[cmdDep]) 
-                var dbClass_cmd='UpdateFields';
-            else
-                var dbClass_cmd='InsertFields';
-            
-            if(nxtSeq<=maxSeqArr[disDep]) 
-                var dbClass_dis='UpdateFields';
-            else
-                var dbClass_dis='InsertFields';
-            
-            //alert(nxtSeq);
-            var toappendData = '<div id="MultiField_' + atributeId + '_' + nxtSeq + '" style="border-bottom: 1px dotted rgb(196, 196, 196) !important" class="row form-responsive MultiField_' + atributeId + ' CampaignWiseFieldsDiv_' + groupId + '">' +
-                    '<div class="col-md-3 form-title"><div class="form-group" style=""><p>' + groupName + '</p></div></div>' +
-                    '<div class="col-md-4 form-text"><div class="form-group">' ;
-					
-		var pam = element['ProjectAttributeMasterId'];
-                 var reload = 'LoadValue('+pam+',this.value,'+elementValidate['Reload']+','+ atributeId +','+'<?php echo $DependentMasterIds['ProductionField']; ?>'+','+ nxtSeq +');';
-                                      //  var reload = elementValidate['Reload'] +','+ atributeId +','+'<?php echo $DependentMasterIds['ProductionField']; ?>'+','+ nxtSeq +');';
-                                        var IsMandatory=elementValidate['IsMandatory'];
-                                        var DisplayAttributeName=elementValidate['DisplayAttributeName'];
-                                        var mandateFunction ='';
-                                         if(IsMandatory==1){
-                                         var mandateFunction = 'MandatoryValue(this.id,this.value,'+'\''+DisplayAttributeName+'\');';
-                                         }
-                                         else{
-                                          var mandateFunction =''; 
-                                         }
-                             var inpOnBlur ='';        
-                             elementValidate['AllowedCharacter'] = addslashes(elementValidate['AllowedCharacter']);
-                             elementValidate['NotAllowedCharacter'] = addslashes(elementValidate['NotAllowedCharacter']);
-                     if(elementValidate['ControlName']=='TextBox'){
-                         inpOnBlur =' onblur="checkLength(this,'+atributeId+','+'<?php echo $DependentMasterIds['ProductionField']; ?>'+','+nxtSeq+','+elementValidate['MinLength']+'); '+mandateFunction+elementValidate['FunctionName']+'(this.id, this.value,'+'\''+elementValidate['AllowedCharacter'] + '\', '+'\''+elementValidate['NotAllowedCharacter']+'\', '+'\''+elementValidate['Dateformat']+'\', '+'\''+elementValidate['AllowedDecimalPoint']+'\');" maxlength="'+elementValidate['MaxLength']+'" minlength="'+elementValidate['MinLength']+'"';   
-                     }else if(elementValidate['ControlName']=='DropDownList'){
-                         inpOnBlur =' onblur="'+mandateFunction+elementValidate['FunctionName']+'(this.id, this.value,'+'\''+elementValidate['AllowedCharacter'] + '\', '+'\''+elementValidate['NotAllowedCharacter']+'\', '+'\''+elementValidate['Dateformat']+'\', '+'\''+elementValidate['AllowedDecimalPoint']+'\');"';   
-                     }
-                        //alert(inpOnBlur);
-                        //onblur="NumbersOnly(this.id, this.value,'', '', '', 'null');" maxlength="null" minlength="null"
-                    if(element['ControlName']=='TextBox')
-                        toappendData +='<input '+inpOnBlur+' type="text" class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' form-control doOnBlur '+dbClass+'" id="' + inpId + '"  name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);">' ;
-                    if(element['ControlName']=='MultiTextBox') {
-                    toappendData += '<textarea id=COpyTeXt_' + atributeId + '_' + nxtSeq + ' readonly="readonly" class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' form-control"></textarea>';
-                    if(element['Options'] != ''){
-                        var inpName = 'ProductionField_' + atributeId + '_<?php echo $DependentMasterIds['ProductionField']; ?>_' + nxtSeq+'[]';
-                        toappendData +='<select multiple="true" '+inpOnBlur+' class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' testmulti doOnBlur UpdateFields removeinputclass"  id="' + inpId + '" name="' + inpName + '" >';
-
-                    jQuery.each(element['Options'], function (i, val) {
-                        toappendData +='<option value="'+val+'">'+val+'</option>';
-                    });
-                    toappendData +='</select>';
-                    } else {
-                        toappendData +='<textarea '+inpOnBlur+' class="wid-100per inputsubGrp_'+groupId+'_'+subgrpId+' form-control doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"></textarea>' ;
-                    }
-                }
-                if(element['ControlName']=='CheckBox')
-                        toappendData +='<input '+inpOnBlur+' type="checkbox" class="inputsubGrp_'+groupId+'_'+subgrpId+' doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '"  onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);">' ;  
-                if(element['ControlName']=='RadioButton'){
-                        toappendData +='<input value="Yes" type="radio" style="position:static" class="inputsubGrp_'+groupId+'_'+subgrpId+' doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"> Yes '+
-                                        '<input value="No" type="radio" style="position:static" class="inputsubGrp_'+groupId+'_'+subgrpId+' doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"> No ' ;  
-                            }
-                   if(element['ControlName']=='DropDownList') {
-                        toappendData +='<select '+inpOnBlur+' onchange = '+reload+' class="inputsubGrp_'+groupId+'_'+subgrpId+' wid-100per form-control doOnBlur '+dbClass+'"  id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);"><option value="">--Select--</option>';
-                       
-                      jQuery.each(element['Options'], function (i, val) {
-                          toappendData +='<option value="'+val+'">'+val+'</option>';
-                      });
-                      toappendData +='</select>';
-                  }
-                    toappendData +='<span class="lighttext" data-toggle="tooltip" title=""></span>' +
-                    '</div></div>' +
-                    '<div class="col-md-2 form-text"><div class="form-group comments">' +
-                    '<textarea '+inpOnBlur+' rows="1" cols="50" class="form-control '+dbClass_cmd+'" id="" name="' + commendName + '" placeholder="Comments"></textarea>' +
-                    '</div></div>' +
-                    '<div class="col-md-3 form-status"><div class="form-group status">' +
-                    '<select '+inpOnBlur+' id="" name="' + selName + '" class="form-control CampaignWiseSelDone_' + groupId + ' subGrpDisp_'+groupId+'_'+subgrpId+' dispositionSelect '+dbClass_dis+'">' +
-                    '<option value="">--</option>' +
-                    '<option value="A">A</option>' +
-                    '<option value="D">D</option>' +
-                    '<option value="M">M</option>' +
-                    '<option value="V">V</option>' +
-                    '</select>' +
-                    '<div><i class="fa fa-minus-circle remove-field m-r-10" style="padding:5px;" data="' + atributeId + '"></i></div></div>' +
-                    '</div></div>';
-
-					return toappendData;
-          //  $('.add_' + atributeId).append(toappendData);
-           // $('.ShowingSeqDiv_' + atributeId).attr("data", nxtSeq);
-
-         //   Load_totalAttInThisGrpCnt();
-          //          $('.testmulti').fSelect();
-           //  checkAll(groupId,subgrpId);
-        }
+		
         function addSubgrpAttribute(subgrpId,groupId){
             
 
@@ -2122,7 +2005,9 @@ $(document).keydown(function(e) {
             //var subGrpArrValidate='<?php echo str_replace("'", "\\'", json_encode($validate))?>';
             var subGrpArrValidate='<?php echo stripslashes(json_encode($validate))?>';
             var subGrpAttValidate = JSON.parse(subGrpArrValidate);
-            
+			console.log(subGrpAtt);
+			console.log(groupId);
+			console.log(subgrpId);			
             var subGrpAttArr = subGrpAtt[groupId][subgrpId];
             var groupName = 'Organization Status';
 
@@ -3967,7 +3852,7 @@ $(document).keydown(function(e) {
         example1.style.height = availableHeight + 'px';
 
     }
-	    function loadhandsondatafinal(id, idval, key, keysub, submenu,ModuleId) {
+	    function loadhandsondatafinalold(id, idval, key, keysub, submenu,ModuleId) {
         var ProductionEntityId = $("#ProductionEntity").val();
         $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Purebuttallist', 'action' => 'ajaxgetdatahand')); ?>',
@@ -4134,13 +4019,37 @@ $(document).keydown(function(e) {
 
     }
 function loadhandsondatafinal_all(id, idval, key, keysub,submenu,ModuleId) {
+if(id ==''){
+id = 0;
+}
  var ProductionEntityId = $("#ProductionEntity").val();
+ var InputEntityId = $("#InputEntityId").val();
 
         $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'Purebuttallist', 'action' => 'ajaxgetdatahandalldata')); ?>',
+            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
             dataType: 'text',
             type: 'POST',
-            data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId},
+            data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"no"},
+            success: function (res) {	
+	
+       
+	     $(".hot").html(res);
+            }
+        });
+	
+}  
+function loadhandsondatafinal(id, idval, key, keysub,submenu,ModuleId) {
+if(id ==''){
+id = 0;
+}
+ var ProductionEntityId = $("#ProductionEntity").val();
+ var InputEntityId = $("#InputEntityId").val();
+
+        $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
+            dataType: 'text',
+            type: 'POST',
+            data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,prvseq:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"yes"},
             success: function (res) {	
 	
        
@@ -4722,7 +4631,7 @@ function Rentcalcappend(){
 						for(var i=0;i < totArr;i++){
 													
 							
-                         addSubgrpAttribute(RentSubGroup,RentGroup);
+                         //addSubgrpAttribute(RentSubGroup,RentGroup);
 						   seq = parseInt(seq) + parseInt(1);
 						 $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
@@ -4949,6 +4858,47 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
               
           }  
+		  function loadMultiFieldqcerror(attributeMasterId, clkseq,prvseq) {
+        
+                $('#exampleFillPopup').modal('hide');
+				 $("#MultiField_" + attributeMasterId + "_" + prvseq).hide();
+                $("#MultiField_" + attributeMasterId + "_" + clkseq).show();
+				
+//                $('#exampleFillInHandson').modal('hide');
+                /*var currentSeq = $(".ShowingSeqDiv_" + attributeMasterId + "").val(); // 2
+                var totalseq = $(".ShowingSeqDiv_"+attributeMasterId).attr('data'); // 4
+                
+                console.log(totalseq);
+                
+               var action ="";
+                if(currentSeq < clkseq){
+                    action = "next";
+                }else if(currentSeq > clkseq){
+                    action = "previous";
+                }
+            var nex = parseInt(clkseq);
+            var prev = parseInt(clkseq);
+        
+          
+            var nex = parseInt(currentSeq) + 1;
+            var prev = parseInt(currentSeq) - 1;
+
+            if (action == 'next' && totalseq >= nex) {
+                //$(".MultiField_" + attributeMasterId).hide();
+                $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
+                $("#MultiField_" + attributeMasterId + "_" + nex).show();
+                $(".ShowingSeqDiv_" + attributeMasterId + "").val(nex);
+            }
+
+            if (action == 'previous' && totalseq >= prev && prev > 0) {
+                //$(".MultiField_" + attributeMasterId).hide();
+                $("#MultiField_" + attributeMasterId + "_" + currentSeq).hide();
+                $("#MultiField_" + attributeMasterId + "_" + prev).show();
+                $(".ShowingSeqDiv_" + attributeMasterId + "").val(prev);
+            }
+			*/
+        }
+
 
 </script> 
  
