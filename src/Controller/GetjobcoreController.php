@@ -3085,7 +3085,7 @@ $newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
 copy($tsv, $newfile);
  
 */
-  $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
+  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3163,7 +3163,7 @@ copy($tsv, $newfile);
              if($tempGrpSearch == ''){
 				$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
                 if($keys[0] != ''){
-					$update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_1']=$attributeArr[1];
+					$update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_1']=trim($attributeArr[1],'"');
                     $update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_1']='A';
                     }
                }
@@ -3231,8 +3231,8 @@ copy($tsv, $newfile);
             //   print_r($keyss);
 				if($keys[0] != ''){
                  $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
-					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$t];
-					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$t];
+					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$t],'"');
+					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
 				}
 				$start_array++;   
@@ -3250,7 +3250,7 @@ copy($tsv, $newfile);
 						$Projectkeys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','ProjectAttributeMasterId'), $attributeArr[0]);
 						$DisplayName = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','DisplayAttributeName'), $attributeArr[0]);
 						if($keys[0] != ''){
-							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$c];
+							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
 							$update['funcValSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c] = $keys[0].'_'.$Projectkeys[0].'_'.$groupidorg.'_'.$subgrup.'_'.$DisplayName[0].'_'.$attributeArr[$c];
 							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
@@ -3260,8 +3260,8 @@ copy($tsv, $newfile);
 					for($c= 2; $c < count($attributeArr); $c++){
 						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
 						if($keys[0] != ''){
-							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$c];
-                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$c];
+							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
+                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
                             $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
 					}

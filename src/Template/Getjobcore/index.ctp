@@ -572,7 +572,8 @@ if ($NoNewJob == 'NoNewJob') {
                                     </ul>
                                     <div class="tab-content" id="leftpane">
                                         <div class="tab-pane active" id="exampleTabsOne" role="tabpanel" style="display:none !important;">
-                                            <object width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" data="" width="auto" height="auto"></object>
+										
+                                            <object width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" data="	" width="auto" height="auto"></object>
 
                                         </div>
                                         <div class="tab-pane" id="googletab" role="tabpanel">
@@ -596,7 +597,7 @@ if ($NoNewJob == 'NoNewJob') {
                         </div>
                         <div id="splitter-right">
 
-<div class="emptyerror" style="display:none;" >No Queries been Entered!</div>
+<div class="emptyerror" style="display:none;" >No Queries Posted!</div>
                             <div>
                                 <input type="hidden" name='ProductionId' id="ProductionId" value="<?php echo $productionjob['Id']; ?>">
                                 <input class="UpdateFields" type="hidden" name='ProductionEntity' id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">
@@ -2284,13 +2285,17 @@ $(document).keydown(function(e) {
                 dataType: 'text',
                 async: true,
                 success: function (result) {
+				//	alert(result);
                     if (result != '' && result != null) {
                         $('.CntBadge').hide();
                         var obj = JSON.parse(result);
 
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
+							
                             $('#exampleTabsOne').show();
                             var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
+							//alert(htmlfileinitial);
+							//htmlfileinitial='SH_SH_US017P01-Lease.pdf';
                             document.getElementById('frame1').data = htmlfileinitial;
 							
 							var object = document.getElementById("frame1");
@@ -4595,6 +4600,7 @@ window.location.href = url;
         }
 function fetchbotminds()
 {
+	$(".validationloader").show();
      ProjectId = $("#ProjectId").val();
      
        var domainId = "<?php echo $staticFields[0]; ?>";
@@ -4678,6 +4684,7 @@ function fetchbotminds()
                                              } 
                                         // }
 						 });
+						  $(".validationloader").hide();
 					}
                 
             });
