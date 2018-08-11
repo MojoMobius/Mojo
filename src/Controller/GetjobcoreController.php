@@ -3472,7 +3472,7 @@ foreach ($result as $set) {
                 }
 		$modulIdSS = $fineval[0];
    
-        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
 		
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){

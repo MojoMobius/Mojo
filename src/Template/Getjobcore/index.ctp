@@ -723,7 +723,7 @@ if ($NoNewJob == 'NoNewJob') {
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,1);" data-target="#rentmodalAll" data-toggle="modal">
