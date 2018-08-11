@@ -832,11 +832,10 @@ if ($NoNewJob == 'NoNewJob') {
                                                                             }else{
                                                                               $minlength = $validate[$valprodFields['ProjectAttributeMasterId']]['MinLength']; 
                                                                             }
-                                                                    
-                                                                            if(!empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
-                                                                               $dbClassName .=" IsDatepicker "     ;
+                                                                            if(empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
+                                                                               $isDatePicker= '';
                                                                             }else{
-                                                                              $dbClassName .="";
+                                                                              $isDatePicker = 1;
                                                                             }
                                                                        
                                                                             
@@ -1000,14 +999,13 @@ if ($NoNewJob == 'NoNewJob') {
                                                                                                 ?>>V</option>
                                                                     </select>
                                                                     <div>
-																	<!---- Sivachidambaram on 21 July 2018 --->
+                                                                                                                                        <?php if($isDatePicker == 1){   ?>
 																	<a href="javascript: void(0);"
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>
 																
-																	
-																	<!---- Sivachidambaram ends--->
+                                                                                                                                        <?php }	?>
                                                                         <?php
                                                                 $array1 = $valprodFields['AttributeMasterId'];
                                                                 $array2 = $HelpContantDetails;
@@ -1123,7 +1121,10 @@ if ($NoNewJob == 'NoNewJob') {
 <!--                <button type="button" href="#" class="btn btn-default offcanvas__trigger--open" onclick="multipleUrl();" id="multiplelinkbutton" data-rel="page-tag">Multiple Source Links</button>-->
                 <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
                                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>
+                               <?php if($ModuleId == 145) { ?>
 							   <button class="btn btn-default" name='fetchbotmind' id='fetchbotmind' onclick="fetchbotminds();" type="button">Fetch BotMinds</button>
+                                                           
+                               <?php } ?>
             </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
