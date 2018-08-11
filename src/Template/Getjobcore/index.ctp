@@ -4630,8 +4630,8 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 
 
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
-	var Commencement = '2018-01-25';//$("#Commencement").val();	
-	var Expiration = '2020-01-25';//$("#Expiration").val();	
+	var Commencement = "2018-01-24";//$("#Commencement").val();	
+	var Expiration = '2020-01-24';//$("#Expiration").val();	
 	var BaseRent = '15000';//$("#BaseRent").val();	
 	var RentInc = '2.5';//$("#RentInc").val();
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");

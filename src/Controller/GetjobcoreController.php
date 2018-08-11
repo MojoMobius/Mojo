@@ -3291,24 +3291,30 @@ curl_close($ch);
 //	}
         
  function ajaxRentcal(){
-     //echo $_POST['Rentval']."hello";
+
+//echo $_POST['Rentval']."hello";
      
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;*/
-     
      
 $percentage = $_POST['RentInc'];
 $total = $_POST['BaseRent'];
 $PercentageAmount = ($percentage / 100) * $total;
 $Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
+
 $Todate=date('Y-m-d',strtotime($_POST['Expiration']));
+
+$Fromday=date('d',strtotime($_POST['Commencement']));
+$Today=date('d',strtotime($_POST['Expiration']));
+
 $start    = new \DateTime($Fromdate);
-$start->modify('first day of this month');
+$start->modify(''.$Fromday.' day of this month');
 $end      = new \DateTime($Todate);
-$end->modify('first day of next month');
+$end->modify(''.$Today.' day of next month');
 //$interval = \DateInterval::createFromDateString($_POST['Frequency']);
 $interval = \DateInterval::createFromDateString($_POST['Frequency']);
 $period   = new \DatePeriod($start, $interval, $end);
+//print_r($period);exit;
 //foreach ($period as $dt) {
 // echo $dt->format("Y-m-d") . "<br>\n";
 //}
@@ -3322,10 +3328,11 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  <th  width='20%'>Expense End</th>
 	  </tr>";
 foreach ($period as $dt) {
-    
   $StartDate=$dt->format("d-m-Y");
   $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
-  $End_date = date('d-m-Y', strtotime($Edate . ' -1 day'));
+  $Endcheck_date = date('Y-m-d', strtotime($Edate . ' -1 day'));  
+  $mindateArr=array($Edate,$Endcheck_date);
+  $Mindate=date("d-m-Y", strtotime(min($mindateArr)));
 $total =$total + ($percentage / 100) * $total;
 $n = $total;
 $whole = floor($n);      // 1
@@ -3340,7 +3347,7 @@ $total =number_format((float)$total, 2, '.', '');
 			  <td>'.$percentage.'<input type="hidden" name="percent[]" id="percent[]" value="'.$percentage.'" class="percent-class"></td>
 			  <td>'.$total.'<input type="hidden" name="totalamt[]" id="totalamt[]" value="'.$total.'" class="totalamt-class"></td>
 			  <td>'.$StartDate.'<input type="hidden" name="startdate[]" id="startdate[]" value="'.$StartDate.'" class="startdate-class"></td>
-			  <td>'.$End_date.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$End_date.'" class="enddate-class"></td>
+			  <td>'.$Mindate.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$Mindate.'" class="enddate-class"></td>
 			  </tr>';
 }
  $Htmlview.='</table">';
