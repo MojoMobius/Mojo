@@ -194,7 +194,7 @@ if(!empty($queryResult)){ ?>
                    <div class="col-md-3">
                        <a target="_blank" href="<?php echo Router::url(array('controller'=>'Puquerylist','action'=>'index','PEid' => $data2[0]['ProductionEntityId'],'ModuleId'=>$data2[0]['ModuleId']));?>" >Click to view</a>
                            
-                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">dqc Completed</button>
+                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">DQC Completed</button>
                              <button name ='frmsubmit' type="button" onclick="return updateQuerysub('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">Submit</button>
         </div>
                         </div>
@@ -446,69 +446,7 @@ if(!empty($queryResult)){ ?>
                                        $("#suc-msg"+ProductionEntityId).hide(); 
                                      }, 2000);
                                     location.reload();
-                                    
-                                }
-                           
-                          //$(".hot_query").html(res);
-              }
-                
-            });
-           
-		
-  
-    }
-    function updateQuerydqc(stsId,ProductionEntityId,ModuleId) {
-            			
-          var ProjectId = $("#ProjectId").val(); 
-            var result = new Array();
-             $.ajax({
-                type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxqueryinsertdqc')); ?>",
-                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
-                success: function (res) { 
-			if(res == '0'){
-                           //$("#message"+ProductionEntityId).show(); 
-                            $("#message"+ProductionEntityId).show().html("Status Not Completed!"); 
-                                    setTimeout(function(){
-                                       $("#message"+ProductionEntityId).hide(); 
-                                     }, 2000);
-                                }
-                                else{
-                                   $("#suc-msg"+ProductionEntityId).show().html("DQC completed successfully"); 
-                                    setTimeout(function(){
-                                       $("#suc-msg"+ProductionEntityId).hide(); 
-                                     }, 2000);
-                                    location.reload();
-                                }
-                           
-                          //$(".hot_query").html(res);
-                 }
-                
-            });
-           
-			//location.reload();
-        }
-         function updateQuerysub(stsId, ProductionEntityId, ModuleId) {
-	 var ProjectId = $("#ProjectId").val(); 
-            var result = new Array();
-             $.ajax({
-                type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxquerysubmit')); ?>",
-                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
-                success: function (res) { 
-			if(res == '0'){
-                           //$("#message"+ProductionEntityId).show(); 
-                            $("#message"+ProductionEntityId).show().html("Status Not Completed!"); 
-                                    setTimeout(function(){
-                                       $("#message"+ProductionEntityId).hide(); 
-                                     }, 2000);
-                                }
-                                else{
-                                      $("#suc-msg"+ProductionEntityId).show().html("Query submitted successfully "); 
-                                    setTimeout(function(){
-                                       $("#suc-msg"+ProductionEntityId).hide(); 
-                                     }, 2000);
-                                    location.reload();
+
                                 }
                            
                           //$(".hot_query").html(res);

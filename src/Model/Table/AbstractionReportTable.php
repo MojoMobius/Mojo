@@ -86,7 +86,7 @@ class AbstractionReportTable extends Table {
                     $tableData.='<td >' . $subval[$k]['DisplayAttributeName'] . '</td>';
 
                     
-                    $tableData.='<td ><table border="1"><tr>';
+                    $tableData.='<td style="border: 1px solid"><table><tr>';
                     $seqcnt = $subval[$n - $k]['seqcnt'];
                     $subseqcnt = $n - $k;
                     for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
@@ -99,7 +99,7 @@ class AbstractionReportTable extends Table {
                     }
                     $tableData.= '</tr></table></td>';
                     $tableData.='<td >' . $subval[$n + $k]['DisplayAttributeName'] . '</td>';
-                    $tableData.='<td ><table border="1"><tr>';
+                    $tableData.='<td style="border: 1px solid"><table><tr>';
                     
                     $seqcnt = $subval[$n + $k]['seqcnt'];
                     $subseqcnt = $n + $k;
@@ -121,17 +121,17 @@ class AbstractionReportTable extends Table {
                    $tableData.='<tr>';
                     $tableData .= '<tbody>';
                     $tableData.='<td style="background-color:#E8F1B9;">' .  $AttributeSubGroupMaster[$inputKey][$subheadkey] . '</td>';
-                    $tableData.='<td ></td><td ></td><td ></td></tbody></tr>';
+                    $tableData.='<td style="border: 1px solid"></td><td ></td><td ></td></tbody></tr>';
                    
                     
                 $n = round(count($subheadval) / 2);
                 for ($k = 0; $k < $n; $k++) {
                     $tableData.='<tr>';
                     $tableData .= '<tbody>';
-                    $tableData.='<td >' . $subheadval[$k]['DisplayAttributeName'] . '</td>';
+                    $tableData.='<td>' . $subheadval[$k]['DisplayAttributeName'] . '</td>';
 //                    $tableData.='<td >' . round($n - $k) . '</td>';
                     
-                     $tableData.='<td ><table border="1"><tr>';
+                     $tableData.='<td style="border: 1px solid"><table ><tr>';
                     $seqcnt = $subheadval[$n - $k]['seqcnt'];
                     $subseqcnt = $n - $k;
                     for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
@@ -145,7 +145,7 @@ class AbstractionReportTable extends Table {
                     
                     $tableData.='<td >' . $subheadval[$n + $k]['DisplayAttributeName'] . '</td>';
                   
-                    $tableData.='<td ><table  border="1"><tr>';
+                    $tableData.='<td style="border: 1px solid"><table ><tr>';
                     $seqcnt = $subheadval[$n + $k]['seqcnt'];
                     $subseqcnt = $n + $k;
                     for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
@@ -164,16 +164,17 @@ class AbstractionReportTable extends Table {
             endforeach;
             
             $tableData.='</table>  </td></tr><tr><td colspan="2"></td></tr></table>';
-            $tableData.='<table border="1"><tr><td></td><td>';
+            
             
             if($i < $j){
+                $tableData.='<table ><tr><td></td><td>';
                 $tableData.=' <table border="1" style="margin-top:10px;"><thead>';
             }
             
             $i++;
         endforeach;
 
-         $tableData.='</table>  </td></tr><tr><td colspan="2"></td></tr></table>';
+         $tableData.='</table> </td></tr><tr><td colspan="2"></td></tr></table>';
 
 //        echo $tableData;
 //        exit;
