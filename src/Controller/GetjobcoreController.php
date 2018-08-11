@@ -3528,8 +3528,7 @@ foreach ($result as $set) {
 	   
 	   exit;
         
-    }
-     
+    }     
  
  
 }

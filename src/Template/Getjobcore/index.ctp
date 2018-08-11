@@ -486,6 +486,54 @@ if ($NoNewJob == 'NoNewJob') {
 	height:250px;
 	overflow-y:auto;
 }
+.hot table{
+width:100%;
+}
+.modal-content{
+   background:#fff!important; 
+    height: 100%;    
+	}
+.modal-body{
+   background:#fff!important; 
+    height: 100%;    
+    width:100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+.modal-backdrop {
+    visibility: hidden !important;
+}
+#exampleFillPopup .modal.in {
+   /* background-color: rgba(0,0,0,0.5);*/
+}
+.modal-content{
+    background-color:#fff;
+}
+#exampleFillPopup .modal-dialog { 
+    z-index: 1; /* Sit on top */
+    padding: 100px; /* Location of the box */
+    min-height:100px;
+    left: 0;
+    top: 0;
+    overflow: visible; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ 
+        }
+.modal-header {
+ 
+    background-color: #337AB7;
+    width:100%;
+ 
+    padding:16px 16px;
+ 
+    color:#FFF;
+ 
+    border-bottom:2px dashed #337AB7;
+ 
+ }
 
     </style>
 
@@ -4400,14 +4448,14 @@ id = 0;
     }
 
     #vertical {
-        height: 750px;
+        height: 350px;
         margin: 0 auto;
     }
     #left-pane,#right-pane  { background-color: rgba(60, 70, 80, 0.05); }
     .pane-content {
         padding: 0 10px;
     }
-	.link-style{
+	.link-style,.pu_cmts_seq{
 	cursor: pointer;
 	}
         .Zebra_DatePicker_Icon_Inside{
@@ -4989,5 +5037,6 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
+
 </script> 
  
