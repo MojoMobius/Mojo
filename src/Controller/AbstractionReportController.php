@@ -230,7 +230,9 @@ class AbstractionReportController extends AppController {
 
                 if ($get_tableexist[0]['res'] > 0) {
 
+
                     $getqueryres = $connection->execute("select count(*) as cnt  from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) ")->fetchAll('assoc');
+
                     if (!empty($getqueryres[0]['cnt'])) {
                         break;
                     } else {
@@ -273,6 +275,7 @@ class AbstractionReportController extends AppController {
 //          $ProductionField = $DependentMasterIds['ProductionField'];
 //echo $AttributeMasterId;exit;
                 $LeaseIdColumn = "[".$AttributeMasterId."]";
+
                 
                $getInputEntityId = $connection->execute("select top 1 InputEntityId from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
                $InputEntityId = $getInputEntityId[0]['InputEntityId'];
@@ -283,7 +286,7 @@ class AbstractionReportController extends AppController {
   
                 
                 $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId'  ")->fetchAll('assoc');
-                
+
                 $getQuery = array();
                 $cnt1 = count($getQuery1);
                 $cnt2 = count($getQuery2);
@@ -336,6 +339,7 @@ class AbstractionReportController extends AppController {
                     }
                 }
 
+				
 
 
 //            $this->pr($finalarray);
