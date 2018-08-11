@@ -522,7 +522,7 @@ width:100%;
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
  
         }
-.modal-header {
+#exampleFillPopup .modal-header {
  
     background-color: #337AB7;
     width:100%;
