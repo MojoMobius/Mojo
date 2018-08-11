@@ -3406,6 +3406,7 @@ foreach ($result as $set) {
      $qc_datarownew='';
      $tblheadnew='';
     $totattr= count($setArr);
+    $OrderAttribute='[' . $setArr[0] . ']';
      foreach ($setArr as $val){       
          if($i > 0){
          $ListAttrId.=",";
@@ -3462,20 +3463,24 @@ foreach ($result as $set) {
                 $handskeymain =$val['MainGroupId'];
             }
         }
-        $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by SequenceNumber asc")->fetchAll('assoc');
-               $seq=0;
+       
+        $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc")->fetchAll('assoc');
+               //$seq=0;
+               $Rowdata=array();
 		foreach ($link4 as $key => $value) {
-                    $seq++;
+                   // $seq++;
+                    $seq=$value['sequenceNumber'];
                      $qc_datarownew.='<tr>';
                    for($i=0;$i<$totattr;$i++){
+                      
                         if($_POST['singleAttr']=="no"){
-                     $text_onclk ='onclick=Pucmterrorclk('.$handskeysub.','.$seq.')';
+                        $text_onclk ='onclick=Pucmterrorclk('.$handskeysub.','.$seq.')';
                         }
                         else{
                       $text_onclk = "onclick=loadMultiFieldqcerror($AttributeMasterId,$seq,$Prvseq)";
                         }
                      $text_cls = "pu_cmts_seq";
-                     if($value[$setArr[$i]] !=NULL)
+                     if($value[$setArr[0]] !=NULL)
 		     $qc_datarownew.='<td '.$text_onclk.' class ="'.$text_cls.'" cellspacing="10">'.$value[$setArr[$i]].'</td>';
 		  
                    }
@@ -3484,6 +3489,7 @@ foreach ($result as $set) {
                     
                 
                 }
+                
         
         
         
