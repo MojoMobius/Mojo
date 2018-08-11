@@ -4627,9 +4627,6 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
-	alert(newSubGroupId);
-	alert(newGroupId);
-	alert(FirstAttrId);
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = '2018-01-25';//$("#Commencement").val();	
 	var Expiration = '2020-01-25';//$("#Expiration").val();	
@@ -4718,7 +4715,9 @@ function Rentcalcappend(){
 							
                          addSubgrpAttribute(RentSubGroup,RentGroup);
 						   seq = parseInt(seq) + parseInt(1);
-						 $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
+						   
+						 $('#ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'').val(RentFirstAttrVal);
+						 //$('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
 						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').val(postData.enddatedata[i]);
 						 $('input[name="ProductionFields_'+BaseRent+'_'+ProductionField+'_'+seq+'"]').val(postData.Amountdata[i]);
@@ -4981,6 +4980,5 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
-
 </script> 
  
