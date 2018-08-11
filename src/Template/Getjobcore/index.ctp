@@ -36,6 +36,9 @@
             font-size: 15px;
             font-weight: 500;
         }
+		.rent-icon{
+			padding:0px 5px;
+		}
 	</style>
  <script>	
   $('.IsDatepicker').Zebra_DatePicker({
@@ -483,6 +486,54 @@ if ($NoNewJob == 'NoNewJob') {
 	height:250px;
 	overflow-y:auto;
 }
+.hot table{
+width:100%;
+}
+.modal-content{
+   background:#fff!important; 
+    height: 100%;    
+	}
+.modal-body{
+   background:#fff!important; 
+    height: 100%;    
+    width:100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+.modal-backdrop {
+    visibility: hidden !important;
+}
+#exampleFillPopup .modal.in {
+   /* background-color: rgba(0,0,0,0.5);*/
+}
+.modal-content{
+    background-color:#fff;
+}
+#exampleFillPopup .modal-dialog { 
+    z-index: 1; /* Sit on top */
+    padding: 100px; /* Location of the box */
+    min-height:100px;
+    left: 0;
+    top: 0;
+    overflow: visible; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ 
+        }
+#exampleFillPopup .modal-header {
+ 
+    background-color: #337AB7;
+    width:100%;
+ 
+    padding:16px 16px;
+ 
+    color:#FFF;
+ 
+    border-bottom:2px dashed #337AB7;
+ 
+ }
 
     </style>
 
@@ -721,11 +772,13 @@ if ($NoNewJob == 'NoNewJob') {
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
 
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){								
+																 <?php 
+																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
-																 ?>
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,1);" data-target="#rentmodalAll" data-toggle="modal">
-																		click
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
+																		 <img src="images/rent.png" width="25" height="25">
 																	</a>	
 																<?php } ?>
 																</div>
@@ -2043,7 +2096,9 @@ $(document).keydown(function(e) {
                 var dbClass_dis='InsertFields';
             var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a id = "' + subgrpId + '_' +groupId+ '_' +nxtSeq+ '" class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+
+            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right rent-icon" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal"><img src="images/rent.png" width="25" height="25"></a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:10px"></i><br>';			
+
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
                 atributeId = element['AttributeMasterId'];
@@ -3173,6 +3228,8 @@ $(document).keydown(function(e) {
                     $('#previous_' + subgrp).css('color', '#4397e6');
             }
               currentSeq = $(".GroupSeq_" + subgrp + "").val();
+			  
+			 $('#CurSeq').val(currentSeq);
             checkAllUrlAttPaginate(subgrp,currentSeq);
             
         }
@@ -4393,14 +4450,14 @@ id = 0;
     }
 
     #vertical {
-        height: 750px;
+        height: 350px;
         margin: 0 auto;
     }
     #left-pane,#right-pane  { background-color: rgba(60, 70, 80, 0.05); }
     .pane-content {
         padding: 0 10px;
     }
-	.link-style{
+	.link-style,.pu_cmts_seq{
 	cursor: pointer;
 	}
         .Zebra_DatePicker_Icon_Inside{
@@ -4613,7 +4670,9 @@ function fetchbotminds()
 			
 }
 function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
-	
+	if(Seq ==0){
+	var Seq =$("#CurSeq").val();
+	}
 	/*if(Seq > 1){
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;	
@@ -4627,12 +4686,11 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
-	alert(newSubGroupId);
-	alert(newGroupId);
-	alert(FirstAttrId);
+
+
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
-	var Commencement = '2018-01-25';//$("#Commencement").val();	
-	var Expiration = '2020-01-25';//$("#Expiration").val();	
+	var Commencement = "2018-01-24";//$("#Commencement").val();	
+	var Expiration = '2020-01-24';//$("#Expiration").val();	
 	var BaseRent = '15000';//$("#BaseRent").val();	
 	var RentInc = '2.5';//$("#RentInc").val();
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
@@ -4650,6 +4708,8 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	$("#RentComments").val(Comments);
 	$("#RentDisposition").val(Disposition);
 	$("#RentProductionField").val(ProductionField);
+	$(".hot_rent").html("");
+	$("#frequency").val("0");
 	
 }
 function Rentcalcsub(){
@@ -4678,10 +4738,10 @@ function Rentcalcappend(){
 	var RentInc = $("#RentIncId").val();
 	var seq= $("#Rentseq").val();	
 	var RentFirstAttrId = $("#RentFirstAttrId").val();
-	var RentFirstAttrVal = $("#RentFirstAttrVal").val();	
-	
-	var SequenceVal = $("#SequenceVal").val();
-	
+
+	var RentFirstAttrVal = $("#RentFirstAttrVal").val();
+	var SequenceVal = $("#SequenceVal").val();	
+
 	var RentSubGroup = $("#RentSubGroup").val();	
 	var RentGroup = $("#RentGroup").val();
 
@@ -4713,21 +4773,16 @@ function Rentcalcappend(){
 		$.each(Arramount, function(index, el) {
              postData.enddatedata.push($(el).val());
         });
-               /* var arr = ["Mahesh", "Praveen", "DJ", "Jignesh", "Vulpes"];  
-                $.each(arr, function (index, value)  
-                {  
-                    alert(value);  
-                });  
-				*/
-          
-			//for(var i=0;i < totArr;i++){
+               
 				
 						for(var i=0;i < totArr;i++){
 													
 							
                          addSubgrpAttribute(RentSubGroup,RentGroup);
 						   seq = parseInt(seq) + parseInt(1);
-						 $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
+						   
+						 $('#ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'').val(RentFirstAttrVal);
+						 //$('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
 						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').val(postData.enddatedata[i]);
 						 $('input[name="ProductionFields_'+BaseRent+'_'+ProductionField+'_'+seq+'"]').val(postData.Amountdata[i]);
@@ -4736,8 +4791,6 @@ function Rentcalcappend(){
              
                 
 			
-			//}
-	//$(".Apped-Rent").html(htmldata);
 
 }
 

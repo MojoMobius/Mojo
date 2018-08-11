@@ -3288,24 +3288,30 @@ curl_close($ch);
 //	}
         
  function ajaxRentcal(){
-     //echo $_POST['Rentval']."hello";
+
+//echo $_POST['Rentval']."hello";
      
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;*/
-     
      
 $percentage = $_POST['RentInc'];
 $total = $_POST['BaseRent'];
 $PercentageAmount = ($percentage / 100) * $total;
 $Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
+
 $Todate=date('Y-m-d',strtotime($_POST['Expiration']));
+
+$Fromday=date('d',strtotime($_POST['Commencement']));
+$Today=date('d',strtotime($_POST['Expiration']));
+
 $start    = new \DateTime($Fromdate);
-$start->modify('first day of this month');
+$start->modify(''.$Fromday.' day of this month');
 $end      = new \DateTime($Todate);
-$end->modify('first day of next month');
+$end->modify(''.$Today.' day of next month');
 //$interval = \DateInterval::createFromDateString($_POST['Frequency']);
 $interval = \DateInterval::createFromDateString($_POST['Frequency']);
 $period   = new \DatePeriod($start, $interval, $end);
+//print_r($period);exit;
 //foreach ($period as $dt) {
 // echo $dt->format("Y-m-d") . "<br>\n";
 //}
@@ -3319,10 +3325,11 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  <th  width='20%'>Expense End</th>
 	  </tr>";
 foreach ($period as $dt) {
-    
   $StartDate=$dt->format("d-m-Y");
   $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
-  $End_date = date('d-m-Y', strtotime($Edate . ' -1 day'));
+  $Endcheck_date = date('Y-m-d', strtotime($Edate . ' -1 day'));  
+  $mindateArr=array($Edate,$Endcheck_date);
+  $Mindate=date("d-m-Y", strtotime(min($mindateArr)));
 $total =$total + ($percentage / 100) * $total;
 $n = $total;
 $whole = floor($n);      // 1
@@ -3337,7 +3344,7 @@ $total =number_format((float)$total, 2, '.', '');
 			  <td>'.$percentage.'<input type="hidden" name="percent[]" id="percent[]" value="'.$percentage.'" class="percent-class"></td>
 			  <td>'.$total.'<input type="hidden" name="totalamt[]" id="totalamt[]" value="'.$total.'" class="totalamt-class"></td>
 			  <td>'.$StartDate.'<input type="hidden" name="startdate[]" id="startdate[]" value="'.$StartDate.'" class="startdate-class"></td>
-			  <td>'.$End_date.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$End_date.'" class="enddate-class"></td>
+			  <td>'.$Mindate.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$Mindate.'" class="enddate-class"></td>
 			  </tr>';
 }
  $Htmlview.='</table">';
@@ -3406,6 +3413,7 @@ foreach ($result as $set) {
       $setArr = array(0 => $_POST['AttributeMasterId']);
      }
      //print_r($setArr);exit;
+	 
      $i=0;
      $ListAttrId='';
      $qc_datarownew='';
@@ -3419,19 +3427,21 @@ foreach ($result as $set) {
           $ListAttrId.= '[' . $val . ']';
           $i++;
      }
+
+     
+     $session = $this->request->session();
+     $moduleId = $session->read("moduleId");
      $Attributes =implode(",",$setArr);
      $InputEntity=$_POST['InputEntityId'];
-     $stagingtable = 'Staging_'.$_POST['ModuleId'].'_Data';
-     
-     
-     
+     $stagingtable = 'Staging_'.$moduleId.'_Data';
+      
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
-         $moduleId = $_POST['ModuleId'];
+       //  $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $Prvseq = $_POST['prvseq'];
-        $session = $this->request->session();
-//        $moduleId = $session->read("moduleId");
+
+
         
         $handskeysub = $_POST['handskeysub'];
         $ProjectId = $session->read("ProjectId");
@@ -3453,14 +3463,21 @@ foreach ($result as $set) {
        
    
         //$ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
-		$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
+		/*$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
                 foreach ($firstModuleId as $keys => $valuesval) {
                         $fineval[] = $keys;
                 }
 		$modulIdSS = $fineval[0];
+                
+                 */
    
-        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
+<<<<<<< HEAD
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
         
+=======
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
+		
+>>>>>>> a82ddbf096aa7ff48e1952cf3701974e1710be97
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){
                 $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
@@ -3495,8 +3512,6 @@ foreach ($result as $set) {
                 
                 }
                 
-        
-        
         
         
 		 $qc_data='<div style="padding: 10px;background: #fff;font-size: 17px;font-weight: 500;">'.$Title.'</div>';
