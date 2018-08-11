@@ -3414,19 +3414,20 @@ foreach ($result as $set) {
           $ListAttrId.= '[' . $val . ']';
           $i++;
      }
+     
+     $session = $this->request->session();
+     $moduleId = $session->read("moduleId");
      $Attributes =implode(",",$setArr);
      $InputEntity=$_POST['InputEntityId'];
-     $stagingtable = 'Staging_'.$_POST['ModuleId'].'_Data';
+     $stagingtable = 'Staging_'.$moduleId.'_Data';
      
      
      
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
-         $moduleId = $_POST['ModuleId'];
+       //  $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $Prvseq = $_POST['prvseq'];
-        $session = $this->request->session();
-//        $moduleId = $session->read("moduleId");
         
         $handskeysub = $_POST['handskeysub'];
         $ProjectId = $session->read("ProjectId");

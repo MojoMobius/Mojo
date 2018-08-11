@@ -722,8 +722,8 @@ if ($NoNewJob == 'NoNewJob') {
 												<div class="col-md-2 row-title" style="padding:0px;">
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){								
-																 ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
@@ -2040,7 +2040,10 @@ $(document).keydown(function(e) {
                 var dbClass_dis='InsertFields';
             var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a id = "' + subgrpId + '_' +groupId+ '_' +nxtSeq+ '" class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+
+            /*toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';*/
+			toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
                 atributeId = element['AttributeMasterId'];
@@ -3170,6 +3173,8 @@ $(document).keydown(function(e) {
                     $('#previous_' + subgrp).css('color', '#4397e6');
             }
               currentSeq = $(".GroupSeq_" + subgrp + "").val();
+			  
+			 $('#CurSeq').val(currentSeq);
             checkAllUrlAttPaginate(subgrp,currentSeq);
             
         }
@@ -4603,8 +4608,9 @@ function fetchbotminds()
 			//if(token!='')
 			
 }
-function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
+function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,FSeq){
 	
+	var Seq =$("#CurSeq").val();
 	/*if(Seq > 1){
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;	
@@ -4666,10 +4672,8 @@ function Rentcalcappend(){
 	var RentInc = $("#RentIncId").val();
 	var seq= $("#Rentseq").val();	
 	var RentFirstAttrId = $("#RentFirstAttrId").val();
-	var RentFirstAttrVal = $("#RentFirstAttrVal").val();	
-	
-	var SequenceVal = $("#SequenceVal").val();
-	
+	var RentFirstAttrVal = $("#RentFirstAttrVal").val();
+	var SequenceVal = $("#SequenceVal").val();	
 	var RentSubGroup = $("#RentSubGroup").val();	
 	var RentGroup = $("#RentGroup").val();
 
@@ -4701,14 +4705,7 @@ function Rentcalcappend(){
 		$.each(Arramount, function(index, el) {
              postData.enddatedata.push($(el).val());
         });
-               /* var arr = ["Mahesh", "Praveen", "DJ", "Jignesh", "Vulpes"];  
-                $.each(arr, function (index, value)  
-                {  
-                    alert(value);  
-                });  
-				*/
-          
-			//for(var i=0;i < totArr;i++){
+               
 				
 						for(var i=0;i < totArr;i++){
 													
@@ -4724,8 +4721,6 @@ function Rentcalcappend(){
              
                 
 			
-			//}
-	//$(".Apped-Rent").html(htmldata);
 
 }
 
