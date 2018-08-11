@@ -3085,7 +3085,7 @@ $newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
 copy($tsv, $newfile);
  
 */
-  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
+  $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3127,7 +3127,7 @@ copy($tsv, $newfile);
   //pr($array);        
                    //  $groupBase = 'Rent';
                         $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index');
- $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
 
      foreach($array as $attributeArr){  
 	   if(count($attributeArr)==1){
@@ -3192,61 +3192,57 @@ copy($tsv, $newfile);
              
                 
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
+           
                 $start_array = $seq + 1;
+                
 				$start_array_rent=$start_array;
 				 $count+=count($attributeArr);
 				$count_array_rent=$count;
 				//$seq = $c;
                $type_keys = $keys;
-             //  echo $start_array; 
-               // $count = $count + $seq;
-				//$rentSearchprevoud=$attributeArr[0];
+             
             }
             
             else{
+                
 		  $keyss = $type_keys;
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
-				
-				//if($count>count($attributeArr)){
-					//$start_array=3;
-				//$count=$start_array+count($attributeArr); }
-				//else {
-					//echo $start_array;
-              //  echo count($attributeArr);
+		
 					if($start_array!=1) {
+                                          //  echo 's';
 						$start_array=$start_array_rent;
-					$count=count($attributeArr)+$start_array;
+                                                if($start_array_rent != 1){
+                                                $count=count($attributeArr)+$start_array;
+                                                $start_array=$start_array_rent + 1;
+                                                }
+                                                else{
+                                                  $count=count($attributeArr);  
+                                                }
 					}
 					else{
+                                          //  echo 'd';
 					$start_array=1;
 					$count=count($attributeArr);
 					}
-             //   }
-				//}
+           
             }
-            
-			//echo 'str='.$start_array.'cnt='.$count;
-             
-//          if($count == 1){
-//            $count  = 2;
-//          }
-          
-        $count = $count - 1;
-        
-        // echo $start_array; 
-            for($c= $start_array; $c <= $count; $c++)
-            {  
-            //   print_r($keyss);
-				if($keys[0] != ''){
+  
+      
+            for($c= $start_array; $c < $count; $c++)
+            {
+                $temp = $keyss[0];
+				if(($keys[0] != '') && ($rentSearch == '')){
                  $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$t],'"');
-					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
+                                        $update['funcValGroup'][$c]['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
 				}
 				$start_array++;   
 				$t++;
-			if($c>$seq) 
+			if($c>$seq) {
 				$seq = $c;
+            }
+                       // echo $seq;
             }
         }
         if($tempGrpSearch == ''){
@@ -3269,7 +3265,8 @@ copy($tsv, $newfile);
 						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
 						if($keys[0] != ''){
 							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
-                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
+                                                    
+                                                        $update['funcValGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
                             $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
 					}
@@ -3279,7 +3276,7 @@ copy($tsv, $newfile);
 		}
     }
           
-  // echo '<pre>';
+ //  echo '<pre>';
   //  pr($update);
    echo json_encode($update);
  

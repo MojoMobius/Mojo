@@ -2015,14 +2015,16 @@ $(document).keydown(function(e) {
 			console.log(subgrpId);			
             var subGrpAttArr = subGrpAtt[groupId][subgrpId];
             var groupName = 'Organization Status';
-
+              
             var maxSeqCnt = $('.GroupSeq_' + subgrpId).attr("data");
             maxSeq='<?php echo json_encode($maxSeq);?>';
             maxSeqArr=JSON.parse(maxSeq);
-            
-            
             //maxSeqCnt=1;
+       
             var nxtSeq = parseInt(maxSeqCnt) + 1;
+            
+        
+            
             var prodDep='<?php echo $DependentMasterIds['ProductionField']; ?>';
             var cmdDep='<?php echo $DependentMasterIds['Comments']; ?>';
             var disDep='<?php echo $DependentMasterIds['Disposition']; ?>';
@@ -3625,8 +3627,8 @@ $(document).keydown(function(e) {
             var maxSeqCnt = $('.GroupSeq_' + subgrpId).attr("data");
             maxSeq='<?php echo json_encode($maxSeq);?>';
             maxSeqArr=JSON.parse(maxSeq);
-            
             //maxSeqCnt=1;
+            
             var nxtSeq = parseInt(maxSeqCnt) + 1;
             
             var prodDep='<?php echo $DependentMasterIds['ProductionField']; ?>';
@@ -4525,7 +4527,6 @@ function fetchbotminds()
                  data: ({ProjectId: ProjectId, domainId:domainId}),
                 success: function (res) { 
                    resArr=JSON.parse(res);
-
 						 $.each(resArr['singleAttr'], function( key, element ) {
                                                     if(element == 'A'){
                                                     $('select[name="'+key+'"]').val(element);
@@ -4534,24 +4535,31 @@ function fetchbotminds()
                                              } 
 						 });
                                               $.each(resArr['funcValGroup'], function( key, element ) {
-                                                  var values = element.split('_');   
+                                                  $.each(element, function( key, val ) {
+                                                  var values = val.split('_');   
                                                   var subGroup = values[0];
                                                           var group = values[1];
                                                             var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
                                                             var nxtSeq = parseInt(maxSeqCnt);
                                                               if(maxSeqCnt > 1) {
                                                             $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
+                                                          //  $('#'+MultiSubGroup+'_'+subGroup+'_'+nxtSeq).remove();
                                                             Load_totalAttInThisGrpCnt();
                                                             var nxtSeq = nxtSeq - 1;
                                                             $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
                                                         }   
                                                          });
-                                                         $.each(resArr['funcValGroup'], function( key, element ) {
-                                                  var values = element.split('_');   
-                                                  var subGroup = values[0];
-                                                          var group = values[1];
-                                                   addSubgrpAttribute(subGroup,group);
-                                           	 
+                                                         });
+                                                        var group;  var subGroup;
+                                                       $.each(resArr['funcValGroup'], function( key, element ) {
+                                                           
+                                                  $.each(element, function( key, val ) {
+                                                  var values = val.split('_');   
+                                                   subGroup = values[0];
+                                                          group = values[1];
+                                                   
+                                           	  });
+                                                  addSubgrpAttribute(subGroup,group);
 						 });
                                               $.each(resArr['funcValSingle'], function( key, element ) {
                                                       var values = element.split('_');   
