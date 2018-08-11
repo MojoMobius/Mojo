@@ -719,7 +719,7 @@ foreach ($valuesSub as $key => $val){
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){								
+																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){								
 																 ?>
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>,<?php echo $valprodFields['MainGroupId'];?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
@@ -4614,6 +4614,9 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
+	alert(newSubGroupId);
+	alert(newGroupId);
+	alert(FirstAttrId);
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = '2018-01-25';//$("#Commencement").val();	
 	var Expiration = '2020-01-25';//$("#Expiration").val();	

@@ -1639,7 +1639,7 @@ class GetjobcoreController extends AppController {
             $arr[] = '[' . $val['COLUMN_NAME'] . ']';
         endforeach;
         $NumericColumnNames = implode(",", $arr);
-
+//echo "Select $NumericColumnNames from $stagingTable where ProjectId = " . $ProjectId . " and RegionId = " . $RegionId . " and InputEntityId = " . $InputEntityId . " and ProductionEntity = " . $ProdEntityId . " and DependencyTypeMasterId = " . $RefUrlID[0]['Id'] . "";
         $multipleAttr = $connection->execute("Select $NumericColumnNames from $stagingTable where ProjectId = " . $ProjectId . " and RegionId = " . $RegionId . " and InputEntityId = " . $InputEntityId . " and ProductionEntity = " . $ProdEntityId . " and DependencyTypeMasterId = " . $RefUrlID[0]['Id'] . "")->fetchAll('assoc');
 
         foreach ($multipleAttr as $keys => $values) {
