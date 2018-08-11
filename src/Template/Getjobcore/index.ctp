@@ -721,9 +721,11 @@ if ($NoNewJob == 'NoNewJob') {
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
 
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){								
+																 <?php 
+																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
-																 ?>
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
@@ -847,11 +849,10 @@ if ($NoNewJob == 'NoNewJob') {
                                                                             }else{
                                                                               $minlength = $validate[$valprodFields['ProjectAttributeMasterId']]['MinLength']; 
                                                                             }
-                                                                    
-                                                                            if(!empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
-                                                                               $dbClassName .=" IsDatepicker "     ;
+                                                                            if(empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
+                                                                               $isDatePicker= '';
                                                                             }else{
-                                                                              $dbClassName .="";
+                                                                              $isDatePicker = 1;
                                                                             }
                                                                        
                                                                             
@@ -1015,14 +1016,13 @@ if ($NoNewJob == 'NoNewJob') {
                                                                                                 ?>>V</option>
                                                                     </select>
                                                                     <div>
-																	<!---- Sivachidambaram on 21 July 2018 --->
+                                                                                                                                        <?php if($isDatePicker == 1){   ?>
 																	<a href="javascript: void(0);"
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>
 																
-																	
-																	<!---- Sivachidambaram ends--->
+                                                                                                                                        <?php }	?>
                                                                         <?php
                                                                 $array1 = $valprodFields['AttributeMasterId'];
                                                                 $array2 = $HelpContantDetails;
@@ -1138,7 +1138,10 @@ if ($NoNewJob == 'NoNewJob') {
 <!--                <button type="button" href="#" class="btn btn-default offcanvas__trigger--open" onclick="multipleUrl();" id="multiplelinkbutton" data-rel="page-tag">Multiple Source Links</button>-->
                 <button type="button" class="btn btn-default offcanvas__trigger--close" onclick="loadReferenceUrl();" data-rel="page-tag" data-target="#exampleFillIn" data-toggle="modal">View Source</button>
                                <button class="btn btn-default" name='pdfPopUP' id='pdfPopUp' onclick="PdfPopup();" type="button">Undock</button>
+                               <?php if($ModuleId == 145) { ?>
 							   <button class="btn btn-default" name='fetchbotmind' id='fetchbotmind' onclick="fetchbotminds();" type="button">Fetch BotMinds</button>
+                                                           
+                               <?php } ?>
             </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
@@ -2040,7 +2043,10 @@ $(document).keydown(function(e) {
                 var dbClass_dis='InsertFields';
             var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a id = "' + subgrpId + '_' +groupId+ '_' +nxtSeq+ '" class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+
+            /*toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';*/
+			toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
                 atributeId = element['AttributeMasterId'];
@@ -3170,6 +3176,8 @@ $(document).keydown(function(e) {
                     $('#previous_' + subgrp).css('color', '#4397e6');
             }
               currentSeq = $(".GroupSeq_" + subgrp + "").val();
+			  
+			 $('#CurSeq').val(currentSeq);
             checkAllUrlAttPaginate(subgrp,currentSeq);
             
         }
@@ -4603,8 +4611,9 @@ function fetchbotminds()
 			//if(token!='')
 			
 }
-function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
+function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,FSeq){
 	
+	var Seq =$("#CurSeq").val();
 	/*if(Seq > 1){
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;	
@@ -4618,9 +4627,8 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
-	//alert(newSubGroupId);
-	//alert(newGroupId);
-	//alert(FirstAttrId);
+
+
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = '2018-01-25';//$("#Commencement").val();	
 	var Expiration = '2020-01-25';//$("#Expiration").val();	
@@ -4669,10 +4677,10 @@ function Rentcalcappend(){
 	var RentInc = $("#RentIncId").val();
 	var seq= $("#Rentseq").val();	
 	var RentFirstAttrId = $("#RentFirstAttrId").val();
-	var RentFirstAttrVal = $("#RentFirstAttrVal").val();	
-	alert(RentFirstAttrVal);
-	var SequenceVal = $("#SequenceVal").val();
-	
+
+	var RentFirstAttrVal = $("#RentFirstAttrVal").val();
+	var SequenceVal = $("#SequenceVal").val();	
+
 	var RentSubGroup = $("#RentSubGroup").val();	
 	var RentGroup = $("#RentGroup").val();
 
@@ -4704,21 +4712,16 @@ function Rentcalcappend(){
 		$.each(Arramount, function(index, el) {
              postData.enddatedata.push($(el).val());
         });
-               /* var arr = ["Mahesh", "Praveen", "DJ", "Jignesh", "Vulpes"];  
-                $.each(arr, function (index, value)  
-                {  
-                    alert(value);  
-                });  
-				*/
-          
-			//for(var i=0;i < totArr;i++){
+               
 				
 						for(var i=0;i < totArr;i++){
 													
 							
                          addSubgrpAttribute(RentSubGroup,RentGroup);
 						   seq = parseInt(seq) + parseInt(1);
-						 $('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
+						   
+						 $('#ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'').val(RentFirstAttrVal);
+						 //$('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
 						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').val(postData.enddatedata[i]);
 						 $('input[name="ProductionFields_'+BaseRent+'_'+ProductionField+'_'+seq+'"]').val(postData.Amountdata[i]);
@@ -4727,8 +4730,6 @@ function Rentcalcappend(){
              
                 
 			
-			//}
-	//$(".Apped-Rent").html(htmldata);
 
 }
 
@@ -4983,6 +4984,5 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
-
 </script> 
  

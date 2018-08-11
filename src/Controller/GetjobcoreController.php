@@ -3127,7 +3127,7 @@ copy($tsv, $newfile);
   //pr($array);        
                    //  $groupBase = 'Rent';
                         $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index');
- $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';
 
      foreach($array as $attributeArr){  
 	   if(count($attributeArr)==1){
@@ -3142,6 +3142,7 @@ copy($tsv, $newfile);
 					$subgrup = $subgrup[0];
 				}
 				 $tempGrpSearch = 'options';
+                                 $tempGrpId  = $groupidorg;
 			}
             else{
 				$groupId=array_search($attributeArr[0],$GroupAttribute);
@@ -3179,16 +3180,16 @@ copy($tsv, $newfile);
                 
                 $work_type = $SubGroupAttribute[$groupidorg][$subgrup];
                 
-                if($work_type = 'Rent'){
+                if($work_type == 'Rent'){
                    $final_type = 'Expense Type';
                 }
-                else if($work_type = 'Key Dates'){
+                else if($work_type == 'Key Dates'){
                     $final_type = 'Key Dates Type';
                 }
                 else {
                     $final_type = 'Option Type';
                 }
-                
+             
                 
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
                 $start_array = $seq + 1;
@@ -3197,6 +3198,7 @@ copy($tsv, $newfile);
 				$count_array_rent=$count;
 				//$seq = $c;
                $type_keys = $keys;
+             //  echo $start_array; 
                // $count = $count + $seq;
 				//$rentSearchprevoud=$attributeArr[0];
             }
@@ -3210,6 +3212,7 @@ copy($tsv, $newfile);
 				//$count=$start_array+count($attributeArr); }
 				//else {
 					//echo $start_array;
+              //  echo count($attributeArr);
 					if($start_array!=1) {
 						$start_array=$start_array_rent;
 					$count=count($attributeArr)+$start_array;
@@ -3217,16 +3220,21 @@ copy($tsv, $newfile);
 					else{
 					$start_array=1;
 					$count=count($attributeArr);
-					}				
+					}
+             //   }
 				//}
             }
             
 			//echo 'str='.$start_array.'cnt='.$count;
              
-          if($count == 1){
-            $count  = 2;
-          }
-            for($c= $start_array; $c < $count; $c++)
+//          if($count == 1){
+//            $count  = 2;
+//          }
+          
+        $count = $count - 1;
+        
+        // echo $start_array; 
+            for($c= $start_array; $c <= $count; $c++)
             {  
             //   print_r($keyss);
 				if($keys[0] != ''){
@@ -3237,7 +3245,7 @@ copy($tsv, $newfile);
 				}
 				$start_array++;   
 				$t++;
-			if($c>$seq)
+			if($c>$seq) 
 				$seq = $c;
             }
         }
@@ -3415,18 +3423,21 @@ foreach ($result as $set) {
           $ListAttrId.= '[' . $val . ']';
           $i++;
      }
+
+     
      $session = $this->request->session();
-      $moduleId = $session->read("moduleId");
+     $moduleId = $session->read("moduleId");
      $Attributes =implode(",",$setArr);
      $InputEntity=$_POST['InputEntityId'];
      $stagingtable = 'Staging_'.$moduleId.'_Data';
-     
+      
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
        //  $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $Prvseq = $_POST['prvseq'];
-        //$session = $this->request->session();
+
+
         
         $handskeysub = $_POST['handskeysub'];
         $ProjectId = $session->read("ProjectId");
