@@ -36,6 +36,9 @@
             font-size: 15px;
             font-weight: 500;
         }
+		.rent-icon{
+			padding:0px 5px;
+		}
 	</style>
  <script>	
   $('.IsDatepicker').Zebra_DatePicker({
@@ -723,11 +726,11 @@ if ($NoNewJob == 'NoNewJob') {
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,1);" data-target="#rentmodalAll" data-toggle="modal">
-																		click
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
+																		 <img src="images/rent.png" width="25" height="25">
 																	</a>	
 																<?php } ?>
 																</div>
@@ -2044,8 +2047,7 @@ $(document).keydown(function(e) {
             var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
 
-            /*toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal">click</a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';*/
-			toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:0px"></i><br>';
+            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right rent-icon" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal"><img src="images/rent.png" width="25" height="25"></a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:10px"></i><br>';			
 
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
@@ -4611,9 +4613,10 @@ function fetchbotminds()
 			//if(token!='')
 			
 }
-function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,FSeq){
-	
+function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
+	if(Seq ==0){
 	var Seq =$("#CurSeq").val();
+	}
 	/*if(Seq > 1){
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;	
@@ -4647,6 +4650,8 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	$("#RentComments").val(Comments);
 	$("#RentDisposition").val(Disposition);
 	$("#RentProductionField").val(ProductionField);
+	$(".hot_rent").html("");
+	$("#frequency").val("0");
 	
 }
 function Rentcalcsub(){

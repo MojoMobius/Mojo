@@ -3464,13 +3464,15 @@ foreach ($result as $set) {
        
    
         //$ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
-		$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
+		/*$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
                 foreach ($firstModuleId as $keys => $valuesval) {
                         $fineval[] = $keys;
                 }
 		$modulIdSS = $fineval[0];
+                
+                 */
    
-        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
         
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){
