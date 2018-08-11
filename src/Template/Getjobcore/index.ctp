@@ -4618,9 +4618,9 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
-	alert(newSubGroupId);
-	alert(newGroupId);
-	alert(FirstAttrId);
+	//alert(newSubGroupId);
+	//alert(newGroupId);
+	//alert(FirstAttrId);
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = '2018-01-25';//$("#Commencement").val();	
 	var Expiration = '2020-01-25';//$("#Expiration").val();	
@@ -4670,7 +4670,7 @@ function Rentcalcappend(){
 	var seq= $("#Rentseq").val();	
 	var RentFirstAttrId = $("#RentFirstAttrId").val();
 	var RentFirstAttrVal = $("#RentFirstAttrVal").val();	
-	
+	alert(RentFirstAttrVal);
 	var SequenceVal = $("#SequenceVal").val();
 	
 	var RentSubGroup = $("#RentSubGroup").val();	

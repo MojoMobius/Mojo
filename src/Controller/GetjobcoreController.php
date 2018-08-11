@@ -3401,6 +3401,7 @@ foreach ($result as $set) {
       $setArr = array(0 => $_POST['AttributeMasterId']);
      }
      //print_r($setArr);exit;
+	 
      $i=0;
      $ListAttrId='';
      $qc_datarownew='';
@@ -3414,19 +3415,18 @@ foreach ($result as $set) {
           $ListAttrId.= '[' . $val . ']';
           $i++;
      }
+     $session = $this->request->session();
+      $moduleId = $session->read("moduleId");
      $Attributes =implode(",",$setArr);
      $InputEntity=$_POST['InputEntityId'];
-     $stagingtable = 'Staging_'.$_POST['ModuleId'].'_Data';
-     
-     
+     $stagingtable = 'Staging_'.$moduleId.'_Data';
      
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
-         $moduleId = $_POST['ModuleId'];
+       //  $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $Prvseq = $_POST['prvseq'];
-        $session = $this->request->session();
-//        $moduleId = $session->read("moduleId");
+        //$session = $this->request->session();
         
         $handskeysub = $_POST['handskeysub'];
         $ProjectId = $session->read("ProjectId");
@@ -3455,7 +3455,7 @@ foreach ($result as $set) {
 		$modulIdSS = $fineval[0];
    
         $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
-        
+		
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){
                 $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
@@ -3490,8 +3490,6 @@ foreach ($result as $set) {
                 
                 }
                 
-        
-        
         
         
 		 $qc_data='<div style="padding: 10px;background: #fff;font-size: 17px;font-weight: 500;">'.$Title.'</div>';
