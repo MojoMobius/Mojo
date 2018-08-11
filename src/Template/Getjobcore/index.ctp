@@ -37,9 +37,7 @@
             font-weight: 500;
         }
 	</style>
- <script>
- 
-	
+ <script>	
   $('.IsDatepicker').Zebra_DatePicker({
                     direction: true,
                     format: 'd-m-Y'
@@ -658,7 +656,15 @@ if ($NoNewJob == 'NoNewJob') {
                                                         <?php
                                                       $attr_sub = array();
                                                         foreach ($AttributesListGroupWise[$key] as $keysub => $valuesSub) {
+																															
+																$ArrAttributes='';
+																foreach ($valuesSub as $keys => $vals){
+																 $ArrAttributes .=  $vals['AttributeMasterId']."-";
+																 $MainGroupId =  $vals['MainGroupId'];
+																 $SubGroupId =   $vals['SubGroupId'];
+														}
                                                             ?>
+															
 
                                             <div class="panel-body panel-height subgroupparentdivs subgroupparentdivs_<?php echo $key; ?>" style="border:0px;">
                                                             <?php
@@ -702,12 +708,7 @@ if ($NoNewJob == 'NoNewJob') {
                                                 <i id= "next_<?php echo $keysub; ?>" class="fa fa-angle-double-right pull-right m-r-5 <?php echo $pagination_validation_class; ?> validation_error_pagination" style="color:#4397e6"  onclick="Paginate('next', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i> 
                                                 <i id="previous_<?php echo $keysub; ?>" class="fa fa-angle-double-left pull-right <?php echo $pagination_validation_class; ?> validation_error_pagination" onclick="Paginate('previous', '<?php echo $keysub; ?>', '<?php echo $GroupSeqCnt; ?>');"></i>
 
-<?php 
-$ArrAttributes='';
-foreach ($valuesSub as $key => $val){
- $ArrAttributes .=  $val['AttributeMasterId']."-";
-}
-?>
+
 
                                                 <i class="fa fa-info-circle m-r-10 m-l-10 pull-right"  onclick="loadhandsondatafinal_all('<?php echo $ArrAttributes; ?>', '<?php echo $i; ?>', '<?php echo $key; ?>', '<?php echo $keysub; ?>',' <?php echo $AttributeSubGroupMasterJSON[$key][$keysub]; ?>','<?php echo $ModuleId; ?>');" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal"></i>
                                                                     <?php
@@ -718,9 +719,11 @@ foreach ($valuesSub as $key => $val){
                                                 
                                                 </div>
 												<div class="col-md-2 row-title" style="padding:0px;">
-																 <?php if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){								
+																 <?php 
+																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){								
 																 ?>
-																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $valprodFields['SubGroupId'];?>,<?php echo $valprodFields['MainGroupId'];?>,1);" data-target="#rentmodalAll" data-toggle="modal">
+																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,1);" data-target="#rentmodalAll" data-toggle="modal">
 																		click
 																	</a>	
 																<?php } ?>
@@ -4595,15 +4598,16 @@ function fetchbotminds()
 }
 function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId,Seq){
 	
-	if(Seq > 1){
+	/*if(Seq > 1){
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;	
 	}
 	else{	
-	var newSubGroupId = parseInt(SubGroupId) + parseInt(1);
-	var newGroupId = parseInt(GroupId) + parseInt(1);
-	}	
-	
+	//var newSubGroupId = parseInt(SubGroupId) + parseInt(1);
+	//var newGroupId = parseInt(GroupId) + parseInt(1);
+	}	*/
+	var newSubGroupId = SubGroupId;
+	var newGroupId = GroupId;
 	
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
@@ -4969,7 +4973,6 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
-
 
 </script> 
  
