@@ -1639,7 +1639,7 @@ class GetjobcoreController extends AppController {
             $arr[] = '[' . $val['COLUMN_NAME'] . ']';
         endforeach;
         $NumericColumnNames = implode(",", $arr);
-
+//echo "Select $NumericColumnNames from $stagingTable where ProjectId = " . $ProjectId . " and RegionId = " . $RegionId . " and InputEntityId = " . $InputEntityId . " and ProductionEntity = " . $ProdEntityId . " and DependencyTypeMasterId = " . $RefUrlID[0]['Id'] . "";
         $multipleAttr = $connection->execute("Select $NumericColumnNames from $stagingTable where ProjectId = " . $ProjectId . " and RegionId = " . $RegionId . " and InputEntityId = " . $InputEntityId . " and ProductionEntity = " . $ProdEntityId . " and DependencyTypeMasterId = " . $RefUrlID[0]['Id'] . "")->fetchAll('assoc');
 
         foreach ($multipleAttr as $keys => $values) {
@@ -2628,7 +2628,7 @@ class GetjobcoreController extends AppController {
         exit;
     }
 
-    function ajaxgetdatahandalldata() {
+    function ajaxgetdatahandalldataold() {
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
         $handskey = $_POST['handskey'];
@@ -3085,7 +3085,7 @@ $newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
 copy($tsv, $newfile);
  
 */
-  $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
+  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3164,7 +3164,7 @@ copy($tsv, $newfile);
              if($tempGrpSearch == ''){
 				$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
                 if($keys[0] != ''){
-					$update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_1']=$attributeArr[1];
+					$update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_1']=trim($attributeArr[1],'"');
                     $update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_1']='A';
                     }
                }
@@ -3239,8 +3239,8 @@ copy($tsv, $newfile);
             //   print_r($keyss);
 				if($keys[0] != ''){
                  $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
-					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$t];
-					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$t];
+					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$t],'"');
+					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
 				}
 				$start_array++;   
@@ -3258,7 +3258,7 @@ copy($tsv, $newfile);
 						$Projectkeys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','ProjectAttributeMasterId'), $attributeArr[0]);
 						$DisplayName = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','DisplayAttributeName'), $attributeArr[0]);
 						if($keys[0] != ''){
-							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$c];
+							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
 							$update['funcValSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c] = $keys[0].'_'.$Projectkeys[0].'_'.$groupidorg.'_'.$subgrup.'_'.$DisplayName[0].'_'.$attributeArr[$c];
 							$update['addAttrSingle']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
@@ -3268,8 +3268,8 @@ copy($tsv, $newfile);
 					for($c= 2; $c < count($attributeArr); $c++){
 						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
 						if($keys[0] != ''){
-							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$attributeArr[$c];
-                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.$attributeArr[$c];
+							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
+                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
                             $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
 					}
@@ -3399,4 +3399,122 @@ foreach ($result as $set) {
     echo $Htmlview;
      exit;
  }
+ 
+ function ajaxgetdatahandalldata() {
+     if($_POST['singleAttr']=="no"){
+     $Attr =explode("-",$_POST['AttributeMasterId']);
+     $setArr= array_filter($Attr);
+     }
+     else{
+      $setArr = array(0 => $_POST['AttributeMasterId']);
+     }
+     //print_r($setArr);exit;
+     $i=0;
+     $ListAttrId='';
+     $qc_datarownew='';
+     $tblheadnew='';
+    $totattr= count($setArr);
+    $OrderAttribute='[' . $setArr[0] . ']';
+     foreach ($setArr as $val){       
+         if($i > 0){
+         $ListAttrId.=",";
+         }
+          $ListAttrId.= '[' . $val . ']';
+          $i++;
+     }
+     $Attributes =implode(",",$setArr);
+     $InputEntity=$_POST['InputEntityId'];
+     $stagingtable = 'Staging_'.$_POST['ModuleId'].'_Data';
+     
+     
+     
+        $ProductionEntityId = $_POST['ProductionEntityId'];
+        $AttributeMasterId = $_POST['AttributeMasterId'];
+         $moduleId = $_POST['ModuleId'];
+        $Title = $_POST['title'];
+        $Prvseq = $_POST['prvseq'];
+        $session = $this->request->session();
+//        $moduleId = $session->read("moduleId");
+        
+        $handskeysub = $_POST['handskeysub'];
+        $ProjectId = $session->read("ProjectId");
+        $connection = ConnectionManager::get('default');
+        $user_id = $session->read("user_id");
+        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+
+
+        
+          $link = $connection->execute("SELECT RegionId FROM ProductionEntityMaster where ProjectId=" . $ProjectId . " AND Id='".$ProductionEntityId."'")->fetchAll('assoc');
+          
+        $RegionId = $link[0]['RegionId'];       
+
+	 $link2 = $connection->execute("SELECT FieldTypeName,Id FROM MC_DependencyTypeMaster WHERE FieldTypeName IN ('After Normalized') AND ProjectId=".$ProjectId)->fetchAll('assoc');
+     
+        foreach ($link2 as $keytype => $valuetype) {
+            $NormalizedId=$valuetype["Id"];
+        }
+       
+   
+        //$ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+		$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
+                foreach ($firstModuleId as $keys => $valuesval) {
+                        $fineval[] = $keys;
+                }
+		$modulIdSS = $fineval[0];
+   
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
+        
+        foreach($ProductionFields as $key=>$val){
+            if(in_array($val['AttributeMasterId'] , $setArr)){
+                $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
+                $handskeysub =$val['SubGroupId'];
+                $handskeymain =$val['MainGroupId'];
+            }
+        }
+       
+        $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc")->fetchAll('assoc');
+               //$seq=0;
+               $Rowdata=array();
+		foreach ($link4 as $key => $value) {
+                   // $seq++;
+                    $seq=$value['sequenceNumber'];
+                     $qc_datarownew.='<tr>';
+                   for($i=0;$i<$totattr;$i++){
+                      
+                        if($_POST['singleAttr']=="no"){
+                        $text_onclk ='onclick=Pucmterrorclk('.$handskeysub.','.$seq.')';
+                        }
+                        else{
+                      $text_onclk = "onclick=loadMultiFieldqcerror($AttributeMasterId,$seq,$Prvseq)";
+                        }
+                     $text_cls = "pu_cmts_seq";
+                     if($value[$setArr[0]] !=NULL)
+		     $qc_datarownew.='<td '.$text_onclk.' class ="'.$text_cls.'" cellspacing="10">'.$value[$setArr[$i]].'</td>';
+		  
+                   }
+                   
+                     $qc_datarownew.='</tr>';
+                    
+                
+                }
+                
+        
+        
+        
+        
+		 $qc_data='<div style="padding: 10px;background: #fff;font-size: 17px;font-weight: 500;">'.$Title.'</div>';
+		 $qc_data.='<table style="display:inline-table"><tr style="white-space: nowrap;">'.$tblheadnew.'</tr>';		 
+//		 $qc_data.='<tr >'.$tblheadtwo.'</tr>';		
+		 $qc_data.=$qc_datarownew;
+		 $qc_data.='</table>';
+		echo $qc_data;
+		//echo "hello";
+        //echo json_encode($valArr);
+	   
+	   exit;
+        
+    }
+     
+ 
+ 
 }
