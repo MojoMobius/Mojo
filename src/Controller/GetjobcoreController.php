@@ -3471,13 +3471,9 @@ foreach ($result as $set) {
                 
                  */
    
-<<<<<<< HEAD
+
         $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
-        
-=======
-        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
-		
->>>>>>> a82ddbf096aa7ff48e1952cf3701974e1710be97
+
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){
                 $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
