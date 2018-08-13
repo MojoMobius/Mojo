@@ -67,8 +67,7 @@ class AbstractionReportTable extends Table {
 
 
         $i = 1;
-        
-         $tableData = '<table><tr><td colspan="2"></td></tr><tr><td></td><td>';
+        $tableData = '<table><tr><td colspan="2"></td></tr><tr><td></td><td>';
         $j = count($options['condition']);
         $tableData .= '<table border="1" style="margin-top:10px;"><thead>';
         foreach ($options['condition'] as $inputKey => $input):
@@ -85,31 +84,37 @@ class AbstractionReportTable extends Table {
                     $tableData .= '<tbody>';
                     $tableData.='<td >' . $subval[$k]['DisplayAttributeName'] . '</td>';
 
-                    
-                    $tableData.='<td style="border: 1px solid"><table><tr>';
+
+                    $tableData.='<td><table style="border: 1px solid"><tr>';
                     $seqcnt = $subval[$n - $k]['seqcnt'];
                     $subseqcnt = $n - $k;
                     for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
-                        if(!empty($subval[$subseqcnt]['res'][$ksub])){
-                            $tableData.='<td style="border-right: 1px solid">'. $subval[$subseqcnt]['res'][$ksub] . '</td>';
-                        }else{
-                             $tableData.='<td></td>';
+                        $style = '';
+                        if($ksub < $seqcnt-1){
+                            $style = 'style="border-right: 1px solid"';
                         }
-                              
+                        if (!empty($subval[$subseqcnt]['res'][$ksub])) {
+                            $tableData.='<td '.$style.'>' . $subval[$subseqcnt]['res'][$ksub] . '</td>';
+                        } else {
+                            $tableData.='<td></td>';
+                        }
                     }
                     $tableData.= '</tr></table></td>';
                     $tableData.='<td >' . $subval[$n + $k]['DisplayAttributeName'] . '</td>';
-                    $tableData.='<td style="border: 1px solid"><table><tr>';
-                    
+                    $tableData.='<td><table style="border: 1px solid"><tr>';
+
                     $seqcnt = $subval[$n + $k]['seqcnt'];
                     $subseqcnt = $n + $k;
                     for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
-                        if(!empty($subval[$subseqcnt]['res'][$ksub])){
-                             $tableData.='<td style="border-right: 1px solid">' . $subval[$subseqcnt]['res'][$ksub] . '</td>';
-                        }else{
-                             $tableData.='<td></td>';
+                        $style =''; 
+                        if($ksub < $seqcnt-1){
+                            $style = 'style="border-right: 1px solid"';
                         }
-                            
+                        if (!empty($subval[$subseqcnt]['res'][$ksub])) {
+                            $tableData.='<td '.$style.'>' . $subval[$subseqcnt]['res'][$ksub] . '</td>';
+                        } else {
+                            $tableData.='<td></td>';
+                        }
                     }
                     $tableData.= '</tr></table></td>';
                     $tableData .= '</tbody>';
@@ -117,70 +122,78 @@ class AbstractionReportTable extends Table {
                 }
             endforeach;
             // sub header 
+
             foreach ($input['sub'] as $subheadkey => $subheadval):
-                   $tableData.='<tr>';
-                    $tableData .= '<tbody>';
-                    $tableData.='<td style="background-color:#E8F1B9;">' .  $AttributeSubGroupMaster[$inputKey][$subheadkey] . '</td>';
-                    $tableData.='<td style="border: 1px solid"></td><td ></td><td ></td></tbody></tr>';
-                   
-                    
-                $n = round(count($subheadval) / 2);
-                for ($k = 0; $k < $n; $k++) {
+                $rowcnt = round(count($subheadval));
+
+                for ($m = 0; $m < $rowcnt; $m++) {
+
                     $tableData.='<tr>';
                     $tableData .= '<tbody>';
-                    $tableData.='<td>' . $subheadval[$k]['DisplayAttributeName'] . '</td>';
-//                    $tableData.='<td >' . round($n - $k) . '</td>';
-                    
-                     $tableData.='<td style="border: 1px solid"><table ><tr>';
-                    $seqcnt = $subheadval[$n - $k]['seqcnt'];
-                    $subseqcnt = $n - $k;
-                    for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
-                        if(!empty($subheadval[$subseqcnt]['res'][$ksub])){
-                             $tableData.='<td style="border-right: 1px solid">'. $subheadval[$subseqcnt]['res'][$ksub] . '</td>';
-                        }else{
-                             $tableData.='<td></td>';
+                    $tableData.='<td style="background-color:#E8F1B9;">' . $AttributeSubGroupMaster[$inputKey][$subheadkey] . '</td>';
+                    $tableData.='<td style="border: 1px solid"></td><td ></td><td ></td></tbody></tr>';
+
+                    $n = round(count($subheadval[$m]) / 2);
+                    for ($k = 0; $k < $n; $k++) {
+                        $tableData.='<tr>';
+                        $tableData .= '<tbody>';
+                        $tableData.='<td>' . $subheadval[$m][$k]['DisplayAttributeName'] . '</td>';
+
+
+                        $tableData.='<td ><table style="border: 1px solid"><tr>';
+                        $style = '';
+                        $seqcnt = $subheadval[$m][$n - $k]['seqcnt'];
+                        $subseqcnt = $n - $k;
+                        for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
+                            if (!empty($subheadval[$m][$subseqcnt]['res'][$ksub])) {
+                                
+                                $tableData.='<td '.$style.'>' . $subheadval[$m][$subseqcnt]['res'][$ksub] . '</td>';
+                            } else {
+                                $tableData.='<td></td>';
+                            }
                         }
-                    }
-                    $tableData.= '</tr></table></td>';
-                    
-                    $tableData.='<td >' . $subheadval[$n + $k]['DisplayAttributeName'] . '</td>';
-                  
-                    $tableData.='<td style="border: 1px solid"><table ><tr>';
-                    $seqcnt = $subheadval[$n + $k]['seqcnt'];
-                    $subseqcnt = $n + $k;
-                    for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
-                         if(!empty($subheadval[$subseqcnt]['res'][$ksub])){
-                             $tableData.='<td style="border-right: 1px solid">' . $subheadval[$subseqcnt]['res'][$ksub] . '</td>';
-                        }else{
-                             $tableData.='<td></td>';
+                        $tableData.= '</tr></table></td>';
+
+                        $tableData.='<td >' . $subheadval[$m][$n + $k]['DisplayAttributeName'] . '</td>';
+
+                        $tableData.='<td style="border: 1px solid"><table ><tr>';
+                        $seqcnt = $subheadval[$m][$n + $k]['seqcnt'];
+                        $subseqcnt = $n + $k;
+                        for ($ksub = 0; $ksub < $seqcnt; $ksub++) {
+                            if (!empty($subheadval[$m][$subseqcnt]['res'][$ksub])) {
+                                $tableData.='<td '.$style.'>' . $subheadval[$m][$subseqcnt]['res'][$ksub] . '</td>';
+                            } else {
+                                $tableData.='<td></td>';
+                            }
                         }
-                            
+                        $tableData.= '</tr></table></td>';
+
+                        $tableData .= '</tbody>';
+                        $tableData.='</tr>';
                     }
-                    $tableData.= '</tr></table></td>';
-                    
-                    $tableData .= '</tbody>';
-                    $tableData.='</tr>';
                 }
+
+
+
             endforeach;
-            
+
             $tableData.='</table>  </td></tr><tr><td colspan="2"></td></tr></table>';
-            
-            
-            if($i < $j){
+
+
+            if ($i < $j) {
                 $tableData.='<table ><tr><td></td><td>';
                 $tableData.=' <table border="1" style="margin-top:10px;"><thead>';
             }
-            
+
             $i++;
         endforeach;
 
-         $tableData.='</table> </td></tr><tr><td colspan="2"></td></tr></table>';
+        $tableData.='</table> </td></tr><tr><td colspan="2"></td></tr></table>';
 
 //        echo $tableData;
 //        exit;
 
         return $tableData;
- 
     }
 
 }
