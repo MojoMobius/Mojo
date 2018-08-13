@@ -3473,7 +3473,6 @@ foreach ($result as $set) {
    
 
         $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
-
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){
                 $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
