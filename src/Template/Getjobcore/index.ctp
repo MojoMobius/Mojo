@@ -2112,7 +2112,7 @@ $(document).keydown(function(e) {
             var FirstAttrId =$("#FirstAttrGroup_"+subgrpId+""+groupId+"").val();
             
 
-            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a class="pull-right rent-icon" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal"><img src="images/rent.png" width="25" height="25"></a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:10px"></i><br>';			
+            toappendData = '<div ><font style="color:#62A8EA">Page : <b>' + nxtSeq + '</b></font><a id = "' + subgrpId + '_' +groupId+ '_' +nxtSeq+ '" class="pull-right rent-icon" href="" onclick="Rentcalc('+FirstAttrId+',<?php echo $DependentMasterIds["ProductionField"];?>,<?php echo $DependentMasterIds["Comments"]; ?>,<?php echo $DependentMasterIds["Disposition"]; ?>,'+subgrpId+','+groupId+','+nxtSeq+');" data-target="#rentmodalAll" data-toggle="modal"><img src="images/rent.png" width="25" height="25"></a><i class="fa fa-minus-circle removeGroup-field pull-right" data="' + subgrpId + '" style="top:10px"></i><br>';			
 
             $.each(subGrpAttArr, function (key, element) {
                 //alert (JSON.stringify(element));
@@ -3700,7 +3700,7 @@ $(document).keydown(function(e) {
             maxSeq='<?php echo json_encode($maxSeq);?>';
             maxSeqArr=JSON.parse(maxSeq);
             //maxSeqCnt=1;
-            
+             // alert(maxSeqCnt);
             var nxtSeq = parseInt(maxSeqCnt) + 1;
             
             var prodDep='<?php echo $DependentMasterIds['ProductionField']; ?>';
@@ -4610,33 +4610,36 @@ function fetchbotminds()
                                                   $('#'+key).val(element);
                                              } 
 						 });
-                                              $.each(resArr['funcValGroup'], function( key, element ) {
-                                                  $.each(element, function( key, val ) {
-                                                  var values = val.split('_');   
-                                                  var subGroup = values[0];
-                                                          var group = values[1];
-                                                            var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
-                                                            var nxtSeq = parseInt(maxSeqCnt);
-                                                              if(maxSeqCnt > 1) {
-                                                            $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
-                                                          //  $('#'+MultiSubGroup+'_'+subGroup+'_'+nxtSeq).remove();
-                                                            Load_totalAttInThisGrpCnt();
-                                                            var nxtSeq = nxtSeq - 1;
-                                                            $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
-                                                        }   
-                                                         });
-                                                         });
-                                                        var group;  var subGroup;
-                                                       $.each(resArr['funcValGroup'], function( key, element ) {
-                                                           
-                                                  $.each(element, function( key, val ) {
-                                                  var values = val.split('_');   
-                                                   subGroup = values[0];
-                                                          group = values[1];
-                                                   
-                                           	  });
-                                                  addSubgrpAttribute(subGroup,group);
-						 });
+//                                                  var group;  var subGroup;
+//                                              $.each(resArr['funcValGroup'], function( key, element ) {
+//                                                  $.each(element, function( key, val ) {
+//                                                  var values = val.split('_');   
+//                                                   subGroup = values[0];
+//                                                          group = values[1];
+//                                                            var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
+//                                                        //    alert(maxSeqCnt);
+//                                                           // var nxtSeq = parseInt(maxSeqCnt);
+//                                                           //   if(maxSeqCnt > 1) {
+//                                                           // $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
+//                                                          //  $('#'+MultiSubGroup+'_'+subGroup+'_'+nxtSeq).remove();
+//                                                           // Load_totalAttInThisGrpCnt();
+//                                                         //   var nxtSeq = nxtSeq - 1;
+//                                                         //   $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
+//                                                    //    }   
+//                                                         });
+//                                                          addSubgrpAttribute(subGroup,group);
+//                                                         });
+//                                                        var group;  var subGroup;
+//                                                       $.each(resArr['funcValGroup'], function( key, element ) {
+//                                                           
+//                                                  $.each(element, function( key, val ) {
+//                                                  var values = val.split('_');   
+//                                                   subGroup = values[0];
+//                                                          group = values[1];
+//                                                   
+//                                           	  });
+//                                                  addSubgrpAttribute(subGroup,group);
+//						 });
                                               $.each(resArr['funcValSingle'], function( key, element ) {
                                                       var values = element.split('_');   
                                                       var attrid = values[0];
@@ -4672,7 +4675,33 @@ function fetchbotminds()
                                               }
                                            //  } 
 						 });
-                                                 $.each(resArr['addAttrGroup'], function( key, element ) {
+                                                var group;  var subGroup;
+                                                       $.each(resArr['funcValGroup'], function( key, element ) {
+                                                           $.each(element, function( key, val ) {
+                                                  var values = val.split('_');   
+                                                   subGroup = values[0];
+                                                           group = values[1];
+                                                            var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
+                                                            var nxtSeq = parseInt(maxSeqCnt);
+                                                              if(maxSeqCnt > 1) {
+                                                            $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
+                                                            Load_totalAttInThisGrpCnt();
+                                                            var nxtSeq = nxtSeq - 1;
+                                                            $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
+                                                        } 
+                                                         });
+                                                         });
+                                                         var group;  var subGroup;
+                                                         $.each(resArr['funcValGroup'], function( key, element ) {
+                                                             $.each(element, function( key, val ) {
+                                                  var values = val.split('_');   
+                                                   subGroup = values[0];
+                                                           group = values[1];
+                                           	  });
+                                                   addSubgrpAttribute(subGroup,group);
+						 });
+                                             
+                                               $.each(resArr['addAttrGroup'], function( key, element ) {
                                                 //     if(element != ''){
 							 if(element == 'A'){
                                                      $('select[name="'+key+'"]').val(element);
@@ -4681,6 +4710,7 @@ function fetchbotminds()
                                              } 
                                         // }
 						 });
+                                                 
 						  $(".validationloader").hide();
 					}
                 
