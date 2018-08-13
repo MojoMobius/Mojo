@@ -491,8 +491,8 @@ width:100%;
 }
 .modal-content{
    background:#fff!important; 
-    height: 100%;    
-	}
+    min-height: 50%;    
+}
 .modal-body{
    background:#fff!important; 
     height: 100%;    
