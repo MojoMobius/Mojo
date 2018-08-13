@@ -1270,8 +1270,9 @@ jai*/
                 foreach ($DependentMasterIdsQuery as $vals) {
                     $DependentMasterIds[$vals['Type']] = $vals['Id'];
                 }
-
-                $InputEntityId = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . $next_status_id . ' AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
+//echo 'SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId in (' . $next_status_id,$next_status_id_rw . ') AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id; //exit;
+                $InputEntityId = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId in (' . $next_status_id.','.$next_status_id_rw . ') AND SequenceNumber=' . $page . ' AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id)->fetchAll('assoc');
+			//	pr($InputEntityId);
                 $DependencyTypeMaster = $connection->execute("SELECT Id,Type,FieldTypeName FROM MC_DependencyTypeMaster WHERE ProjectId=" . $ProjectId . " AND (DisplayInProdScreen=1 or FieldTypeName='General') AND RecordStatus=1")->fetchAll('assoc');
 				foreach ($DependencyTypeMaster as $vals) {
 					if($vals['DisplayInProdScreen']==1)
@@ -1321,6 +1322,7 @@ jai*/
                 foreach ($CengageProcessInputData as $key => $value) {
                     ////qc comment status find/////////////////////
                    // pr($value);
+				  // echo 'SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' and ModuleId='.$moduleId ; exit;
                      $QcCommentVal = $connection->execute('SELECT * FROM MV_QC_Comments where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId='.$value['AttributeMasterId'].' AND SequenceNumber='.$value['SequenceNumber'].' and ModuleId='.$moduleId )->fetchAll('assoc');
                     if(!empty($QcCommentVal)){
                        $qc_status= $QcCommentVal[0]['StatusId'];
@@ -1427,7 +1429,7 @@ jai*/
                 if ($cnt_InputEntity[0]['cnt'] != 0) {
 
                     if ($cnt_InputEntity_QcError[0]['cnt'] != 0) {
-                        $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][1];
+                        $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id_org][1];// exit;
                         $QcStatusId = 1;
                         $submitType = 'completed';
 						

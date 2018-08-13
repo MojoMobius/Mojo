@@ -776,12 +776,13 @@ class GetjobcoreController extends AppController {
             }
 
             if (!empty($PuNext_Status_ids)) {
-                $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
+                echo $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
             } else {
                 $next_status_id = $next_status_id;
             }
 
             $connection = ConnectionManager::get('default');
+			echo 'SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc';
             $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
             //pr($InprogressProductionjob); exit;
             //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
@@ -1639,7 +1640,7 @@ class GetjobcoreController extends AppController {
             $arr[] = '[' . $val['COLUMN_NAME'] . ']';
         endforeach;
         $NumericColumnNames = implode(",", $arr);
-
+//echo "Select $NumericColumnNames from $stagingTable where ProjectId = " . $ProjectId . " and RegionId = " . $RegionId . " and InputEntityId = " . $InputEntityId . " and ProductionEntity = " . $ProdEntityId . " and DependencyTypeMasterId = " . $RefUrlID[0]['Id'] . "";
         $multipleAttr = $connection->execute("Select $NumericColumnNames from $stagingTable where ProjectId = " . $ProjectId . " and RegionId = " . $RegionId . " and InputEntityId = " . $InputEntityId . " and ProductionEntity = " . $ProdEntityId . " and DependencyTypeMasterId = " . $RefUrlID[0]['Id'] . "")->fetchAll('assoc');
 
         foreach ($multipleAttr as $keys => $values) {
@@ -3038,7 +3039,7 @@ class GetjobcoreController extends AppController {
 		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
-	/*	$fields = array(
+		$fields = array(
             'username' => "khaleelurrehmanm@mobiusservices.com",
             'password' => "Lease@123",
             'grant_type' => "password"
@@ -3058,11 +3059,17 @@ class GetjobcoreController extends AppController {
 		$token= 'bearer '.$server_output->access_token;
 		$projectId=$projectConfigs['ApiProjectId'];
 		$templateId=$projectConfigs['ApiTemplateId'];
-		$documnetName=$JsonArray[$ProjectId].'_';
-	
+		$documnetName=$JsonArray[$ProjectId].'_'.$jobId.'_Lease.pdf';
+		//$projectId='95d832f0deb14e85a3f8dcac10414e75';
+		$filesize=filesize(HTMLfilesPath.$documnetName);
+		//$filesize=553383;
+		$namehash=md5($documnetName.$filesize);
+		$resourceurl='https://browser.botminds.ai/getPdfContent?file='.$projectId.'-'.$namehash;
+		$docid=md5($resourceurl);
+		//exit;
 		$ch = curl_init();
 		$curlConfig = array(
-        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/2c04845b5eb04b3a9f8b204dc725911e",
+        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/".$docid,
 	
         CURLOPT_HTTPHEADER=>array(
                                             'Content-Type: application/json',
@@ -3080,12 +3087,12 @@ $result2=json_decode($result);
  $tsv=str_replace(' ','%20',$result2->Result);
 
 //echo $tsv = "https://finonsstorage.blob.core.windows.net/exportkeywords/SH_SH%20US017P01%20-%20Lease_1532748815.tsv?sv=2017-07-29&sr=b&sig=SaglL1yWHJYVgD7NnmfjttHc%2B7y%2BHYtOTjNPhwzECL8%3D&se=2018-07-28T03%3A38%3A35Z&sp=r";
-$newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
+$filepath = "C:\\xampp\\htdocs\\mojo\webroot\\".$docid.".tsv";
 //exit;
 copy($tsv, $newfile);
  
-*/
-  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
+
+  $filepath = 'c:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3127,7 +3134,7 @@ copy($tsv, $newfile);
   //pr($array);        
                    //  $groupBase = 'Rent';
                         $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index');
- $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
 
      foreach($array as $attributeArr){  
 	   if(count($attributeArr)==1){
@@ -3142,6 +3149,7 @@ copy($tsv, $newfile);
 					$subgrup = $subgrup[0];
 				}
 				 $tempGrpSearch = 'options';
+                                 $tempGrpId  = $groupidorg;
 			}
             else{
 				$groupId=array_search($attributeArr[0],$GroupAttribute);
@@ -3179,66 +3187,69 @@ copy($tsv, $newfile);
                 
                 $work_type = $SubGroupAttribute[$groupidorg][$subgrup];
                 
-                if($work_type = 'Rent'){
+                if($work_type == 'Rent'){
                    $final_type = 'Expense Type';
                 }
-                else if($work_type = 'Key Dates'){
+                else if($work_type == 'Key Dates'){
                     $final_type = 'Key Dates Type';
                 }
                 else {
                     $final_type = 'Option Type';
                 }
-                
+             
                 
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
+           
                 $start_array = $seq + 1;
+                
 				$start_array_rent=$start_array;
 				 $count+=count($attributeArr);
 				$count_array_rent=$count;
 				//$seq = $c;
                $type_keys = $keys;
-               // $count = $count + $seq;
-				//$rentSearchprevoud=$attributeArr[0];
+             
             }
             
             else{
+                
 		  $keyss = $type_keys;
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
-				
-				//if($count>count($attributeArr)){
-					//$start_array=3;
-				//$count=$start_array+count($attributeArr); }
-				//else {
-					//echo $start_array;
+		
 					if($start_array!=1) {
+                                          //  echo 's';
 						$start_array=$start_array_rent;
-					$count=count($attributeArr)+$start_array;
+                                                if($start_array_rent != 1){
+                                                $count=count($attributeArr)+$start_array;
+                                                $start_array=$start_array_rent + 1;
+                                                }
+                                                else{
+                                                  $count=count($attributeArr);  
+                                                }
 					}
 					else{
+                                          //  echo 'd';
 					$start_array=1;
 					$count=count($attributeArr);
-					}				
-				//}
+					}
+           
             }
-            
-			//echo 'str='.$start_array.'cnt='.$count;
-             
-          if($count == 1){
-            $count  = 2;
-          }
+  
+      
             for($c= $start_array; $c < $count; $c++)
-            {  
-            //   print_r($keyss);
-				if($keys[0] != ''){
+            {
+                $temp = $keyss[0];
+				if(($keys[0] != '') && ($rentSearch == '')){
                  $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$t],'"');
-					$update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
+                                        $update['funcValGroup'][$c]['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
 				}
 				$start_array++;   
 				$t++;
-			if($c>$seq)
+			if($c>$seq) {
 				$seq = $c;
+            }
+                       // echo $seq;
             }
         }
         if($tempGrpSearch == ''){
@@ -3261,7 +3272,8 @@ copy($tsv, $newfile);
 						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
 						if($keys[0] != ''){
 							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
-                            $update['funcValGroup'][$subgrup.'_'.$groupidorg.'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
+                                                    
+                                                        $update['funcValGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
                             $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
 					}
@@ -3271,7 +3283,7 @@ copy($tsv, $newfile);
 		}
     }
           
-  // echo '<pre>';
+ //  echo '<pre>';
   //  pr($update);
    echo json_encode($update);
  
@@ -3283,24 +3295,30 @@ curl_close($ch);
 //	}
         
  function ajaxRentcal(){
-     //echo $_POST['Rentval']."hello";
+
+//echo $_POST['Rentval']."hello";
      
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;*/
-     
      
 $percentage = $_POST['RentInc'];
 $total = $_POST['BaseRent'];
 $PercentageAmount = ($percentage / 100) * $total;
 $Fromdate=date('Y-m-d',strtotime($_POST['Commencement']));
+
 $Todate=date('Y-m-d',strtotime($_POST['Expiration']));
+
+$Fromday=date('d',strtotime($_POST['Commencement']));
+$Today=date('d',strtotime($_POST['Expiration']));
+
 $start    = new \DateTime($Fromdate);
-$start->modify('first day of this month');
+$start->modify(''.$Fromday.' day of this month');
 $end      = new \DateTime($Todate);
-$end->modify('first day of next month');
+$end->modify(''.$Today.' day of next month');
 //$interval = \DateInterval::createFromDateString($_POST['Frequency']);
 $interval = \DateInterval::createFromDateString($_POST['Frequency']);
 $period   = new \DatePeriod($start, $interval, $end);
+//print_r($period);exit;
 //foreach ($period as $dt) {
 // echo $dt->format("Y-m-d") . "<br>\n";
 //}
@@ -3314,10 +3332,11 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  <th  width='20%'>Expense End</th>
 	  </tr>";
 foreach ($period as $dt) {
-    
   $StartDate=$dt->format("d-m-Y");
   $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
-  $End_date = date('d-m-Y', strtotime($Edate . ' -1 day'));
+  $Endcheck_date = date('Y-m-d', strtotime($Edate . ' -1 day'));  
+  $mindateArr=array($Edate,$Endcheck_date);
+  $Mindate=date("d-m-Y", strtotime(min($mindateArr)));
 $total =$total + ($percentage / 100) * $total;
 $n = $total;
 $whole = floor($n);      // 1
@@ -3332,7 +3351,7 @@ $total =number_format((float)$total, 2, '.', '');
 			  <td>'.$percentage.'<input type="hidden" name="percent[]" id="percent[]" value="'.$percentage.'" class="percent-class"></td>
 			  <td>'.$total.'<input type="hidden" name="totalamt[]" id="totalamt[]" value="'.$total.'" class="totalamt-class"></td>
 			  <td>'.$StartDate.'<input type="hidden" name="startdate[]" id="startdate[]" value="'.$StartDate.'" class="startdate-class"></td>
-			  <td>'.$End_date.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$End_date.'" class="enddate-class"></td>
+			  <td>'.$Mindate.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$Mindate.'" class="enddate-class"></td>
 			  </tr>';
 }
  $Htmlview.='</table">';
@@ -3401,11 +3420,13 @@ foreach ($result as $set) {
       $setArr = array(0 => $_POST['AttributeMasterId']);
      }
      //print_r($setArr);exit;
+	 
      $i=0;
      $ListAttrId='';
      $qc_datarownew='';
      $tblheadnew='';
     $totattr= count($setArr);
+    $OrderAttribute='[' . $setArr[0] . ']';
      foreach ($setArr as $val){       
          if($i > 0){
          $ListAttrId.=",";
@@ -3413,19 +3434,21 @@ foreach ($result as $set) {
           $ListAttrId.= '[' . $val . ']';
           $i++;
      }
+
+     
+     $session = $this->request->session();
+     $moduleId = $session->read("moduleId");
      $Attributes =implode(",",$setArr);
      $InputEntity=$_POST['InputEntityId'];
-     $stagingtable = 'Staging_'.$_POST['ModuleId'].'_Data';
-     
-     
-     
+     $stagingtable = 'Staging_'.$moduleId.'_Data';
+      
         $ProductionEntityId = $_POST['ProductionEntityId'];
         $AttributeMasterId = $_POST['AttributeMasterId'];
-         $moduleId = $_POST['ModuleId'];
+       //  $moduleId = $_POST['ModuleId'];
         $Title = $_POST['title'];
         $Prvseq = $_POST['prvseq'];
-        $session = $this->request->session();
-//        $moduleId = $session->read("moduleId");
+
+
         
         $handskeysub = $_POST['handskeysub'];
         $ProjectId = $session->read("ProjectId");
@@ -3447,14 +3470,16 @@ foreach ($result as $set) {
        
    
         //$ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
-		$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
+		/*$firstModuleId = $JsonArray['ModuleAttributes'][$RegionId];
                 foreach ($firstModuleId as $keys => $valuesval) {
                         $fineval[] = $keys;
                 }
 		$modulIdSS = $fineval[0];
+                
+                 */
    
-        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$modulIdSS]['production'];
-        
+
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
         foreach($ProductionFields as $key=>$val){
             if(in_array($val['AttributeMasterId'] , $setArr)){
                 $tblheadnew.="<td align='center'>".$val['DisplayAttributeName']."</td>";
@@ -3462,20 +3487,24 @@ foreach ($result as $set) {
                 $handskeymain =$val['MainGroupId'];
             }
         }
-        $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by SequenceNumber asc")->fetchAll('assoc');
-               $seq=0;
+       
+        $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc")->fetchAll('assoc');
+               //$seq=0;
+               $Rowdata=array();
 		foreach ($link4 as $key => $value) {
-                    $seq++;
+                   // $seq++;
+                    $seq=$value['sequenceNumber'];
                      $qc_datarownew.='<tr>';
                    for($i=0;$i<$totattr;$i++){
+                      
                         if($_POST['singleAttr']=="no"){
-                     $text_onclk ='onclick=Pucmterrorclk('.$handskeysub.','.$seq.')';
+                        $text_onclk ='onclick=Pucmterrorclk('.$handskeysub.','.$seq.')';
                         }
                         else{
                       $text_onclk = "onclick=loadMultiFieldqcerror($AttributeMasterId,$seq,$Prvseq)";
                         }
                      $text_cls = "pu_cmts_seq";
-                     if($value[$setArr[$i]] !=NULL)
+                     if($value[$setArr[0]] !=NULL)
 		     $qc_datarownew.='<td '.$text_onclk.' class ="'.$text_cls.'" cellspacing="10">'.$value[$setArr[$i]].'</td>';
 		  
                    }
@@ -3484,8 +3513,7 @@ foreach ($result as $set) {
                     
                 
                 }
-        
-        
+                
         
         
 		 $qc_data='<div style="padding: 10px;background: #fff;font-size: 17px;font-weight: 500;">'.$Title.'</div>';
