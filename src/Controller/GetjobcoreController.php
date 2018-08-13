@@ -776,12 +776,13 @@ class GetjobcoreController extends AppController {
             }
 
             if (!empty($PuNext_Status_ids)) {
-                $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
+                echo $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
             } else {
                 $next_status_id = $next_status_id;
             }
 
             $connection = ConnectionManager::get('default');
+			echo 'SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc';
             $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
             //pr($InprogressProductionjob); exit;
             //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
@@ -3038,7 +3039,7 @@ class GetjobcoreController extends AppController {
 		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
-	/*	$fields = array(
+		$fields = array(
             'username' => "khaleelurrehmanm@mobiusservices.com",
             'password' => "Lease@123",
             'grant_type' => "password"
@@ -3058,11 +3059,17 @@ class GetjobcoreController extends AppController {
 		$token= 'bearer '.$server_output->access_token;
 		$projectId=$projectConfigs['ApiProjectId'];
 		$templateId=$projectConfigs['ApiTemplateId'];
-		$documnetName=$JsonArray[$ProjectId].'_';
-	
+		$documnetName=$JsonArray[$ProjectId].'_'.$jobId.'_Lease.pdf';
+		//$projectId='95d832f0deb14e85a3f8dcac10414e75';
+		$filesize=filesize(HTMLfilesPath.$documnetName);
+		//$filesize=553383;
+		$namehash=md5($documnetName.$filesize);
+		$resourceurl='https://browser.botminds.ai/getPdfContent?file='.$projectId.'-'.$namehash;
+		$docid=md5($resourceurl);
+		//exit;
 		$ch = curl_init();
 		$curlConfig = array(
-        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/2c04845b5eb04b3a9f8b204dc725911e",
+        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/".$docid,
 	
         CURLOPT_HTTPHEADER=>array(
                                             'Content-Type: application/json',
@@ -3080,12 +3087,12 @@ $result2=json_decode($result);
  $tsv=str_replace(' ','%20',$result2->Result);
 
 //echo $tsv = "https://finonsstorage.blob.core.windows.net/exportkeywords/SH_SH%20US017P01%20-%20Lease_1532748815.tsv?sv=2017-07-29&sr=b&sig=SaglL1yWHJYVgD7NnmfjttHc%2B7y%2BHYtOTjNPhwzECL8%3D&se=2018-07-28T03%3A38%3A35Z&sp=r";
-$newfile = "C:\\xampp\\htdocs\\mojo\webroot\\test.tsv";
+$filepath = "C:\\xampp\\htdocs\\mojo\webroot\\".$docid.".tsv";
 //exit;
 copy($tsv, $newfile);
  
-*/
-  $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
+
+  $filepath = 'c:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
