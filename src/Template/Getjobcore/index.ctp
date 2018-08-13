@@ -774,7 +774,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
