@@ -366,7 +366,13 @@ class PuqueryController extends AppController {
                 else{
                   ///insert///
                  $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0')";
-            $QryInStatus = $connection->execute($InsertQryStatus);
+				$QryInStatus = $connection->execute($InsertQryStatus);
+				echo "Insert into Staging_6694031_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
+                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','1011','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')";
+				
+				$multipleAttrVal = $connection->execute("Insert into Staging_6694031_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
+                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','1011','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')");
+        
                   ///insert end///  
                 }
              }

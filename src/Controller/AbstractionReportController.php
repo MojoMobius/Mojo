@@ -178,9 +178,6 @@ class AbstractionReportController extends AppController {
             $groupwisearray11[] = $keys_sub;
         }
 
-
-
-
         $resqueryData = array();
         $result = array();
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
@@ -190,11 +187,11 @@ class AbstractionReportController extends AppController {
             $QueryDateTo = $this->request->data['QueryDateTo'];
             $ClientId = $this->request->data['ClientId'];
             $LeaseId = $this->request->data['LeaseId'];
-            
+
             $this->set('ClientId', $ClientId);
             $this->set('ProjectId', $ProjectId);
             $this->set('LeaseId', $LeaseId);
-            
+
 //            $this->pr($LeaseId);
             // get json array 
 
@@ -213,13 +210,13 @@ class AbstractionReportController extends AppController {
             }
 
 
-            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName IN ('General' ,'After Normalized','After Normalized_Reference URL','Disposition') ")->fetchAll('assoc');
+            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName IN ('General' ,'After Normalized','After Normalized_Reference URL') ")->fetchAll('assoc');
 //            $DependencyTypeMasterId = $queryData[0]['Id'];
             $DependencyTypeMasterIds = '';
-            if(!empty($queryData)){
+            if (!empty($queryData)) {
                 $DependencyTypeMasterIds = implode(',', array_column($queryData, 'Id'));
             }
-                      
+
             $mncnt = count($months);
             $i = 1;
             $noresult = 0;
@@ -230,9 +227,7 @@ class AbstractionReportController extends AppController {
 
                 if ($get_tableexist[0]['res'] > 0) {
 
-
                     $getqueryres = $connection->execute("select count(*) as cnt  from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) ")->fetchAll('assoc');
-
                     if (!empty($getqueryres[0]['cnt'])) {
                         break;
                     } else {
@@ -242,7 +237,7 @@ class AbstractionReportController extends AppController {
                     }
                 } else {
                     $noresult = 1;
-                    
+
                     break;
                 }
 
@@ -265,27 +260,25 @@ class AbstractionReportController extends AppController {
                 foreach ($ColumnNames as $key => $val):
                     $arr[] = $val['COLUMN_NAME'];
                 endforeach;
-                $NumericColumnNames = implode(",", $arr);
-
-
+//                $NumericColumnNames = implode(",", $arr);
                 // split attributes
                 $AttributeMast = array_chunk($arr, ceil(count($arr) / 2));
                 $AttributeMasterids1 = "[" . implode('],[', $AttributeMast[0]) . "]";
                 $AttributeMasterids2 = "[" . implode('],[', $AttributeMast[1]) . "]";
 //          $ProductionField = $DependentMasterIds['ProductionField'];
 //echo $AttributeMasterId;exit;
-                $LeaseIdColumn = "[".$AttributeMasterId."]";
+                $LeaseIdColumn = "[" . $AttributeMasterId . "]";
 
-                
-               $getInputEntityId = $connection->execute("select top 1 InputEntityId from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
-               $InputEntityId = $getInputEntityId[0]['InputEntityId'];
+                $getInputEntityId = $connection->execute("select top 1 InputEntityId from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND $LeaseIdColumn = '$LeaseId' ")->fetchAll('assoc');
+                $InputEntityId = $getInputEntityId[0]['InputEntityId'];
 //               $InputEntityId = 112152;
-//                print_r($getInputEntityId);exit;
-                
-                $getQuery1 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId' ")->fetchAll('assoc');
-  
-                
-                $getQuery2 = $connection->execute("select SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId'  ")->fetchAll('assoc');
+
+
+                $getQuery1 = $connection->execute("select Distinct SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids1 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId' ")->fetchAll('assoc');
+
+
+                $getQuery2 = $connection->execute("select Distinct SequenceNumber,ProductionEntityID ,InputEntityId ,$AttributeMasterids2 from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId'  ")->fetchAll('assoc');
+
 
                 $getQuery = array();
                 $cnt1 = count($getQuery1);
@@ -308,18 +301,19 @@ class AbstractionReportController extends AppController {
                 $subattrList = array();
                 $finalarray = array();
                 $arrtlist = array();
-
+                
                 foreach ($AttributeGroupMaster as $key => $val) {
                     $finalarray[$key]['main'] = $groupwisearray[$key];
                     if (!empty($JsonArray['AttributeSubGroupMaster'][$key])) {
                         foreach ($JsonArray['AttributeSubGroupMaster'][$key] as $keyatr => $valatr) {
-                            $finalarray[$key]['sub'][$keyatr] = $groupwisearray[$key][$keyatr];
+                            $finalarray[$key]['sub'][$keyatr][] = $groupwisearray[$key][$keyatr];
                             unset($finalarray[$key]['main'][$keyatr]);
                         }
                     }
                 }
 
                 foreach ($finalarray as $key => $val) {
+
                     foreach ($val['main'] as $key1 => $val1) {
                         foreach ($val1 as $key2 => $val2) {
                             $result = $this->arrayfilters($getQuery, intval($val2['AttributeMasterId']));
@@ -329,20 +323,60 @@ class AbstractionReportController extends AppController {
                         }
                     }
 
+
+
                     foreach ($val['sub'] as $subkey1 => $subval1) {
+ 
                         foreach ($subval1 as $subkey2 => $subval2) {
-                            $result = $this->arrayfilters($getQuery, intval($subval2['AttributeMasterId']));
-//                        $result = $this->arrayfilters($getQuery, intval(5061));
-                            $finalarray[$key]['sub'][$subkey1][$subkey2]['res'] = $result;
-                            $finalarray[$key]['sub'][$subkey1][$subkey2]['seqcnt'] = count($result);
+                            
+                            $getsubquery = $connection->execute("select Is_Distinct from MC_Subgroup_Config where ProjectId='$ProjectId' and Subgroup_Id ='$subkey1' ")->fetchAll('assoc');
+                            $Is_Distinct = $getsubquery[0]['Is_Distinct'];
+
+                            $ColumnNames = array_column($subval2, 'AttributeMasterId');
+                            // allowed only existing columns on table 
+                            $extColumnNames = array();
+                            foreach ($ColumnNames as $k => $v) {
+                                if (in_array($v, $arr)) {
+                                    $extColumnNames[] = $v;
+                                }
+                            }
+  
+                            if (!empty($Is_Distinct) && !empty($extColumnNames)) {
+
+                                $AttributeMasterids = " AND ([" . implode('] IS NOT NULL OR [', $extColumnNames) . "] IS NOT NULL)";
+                                $AttributeMasteridscolumn = " [" . implode('] ,[', $extColumnNames) . "] ";
+
+                                $getsubquery = $connection->execute("select $AttributeMasteridscolumn ,SequenceNumber,ProductionEntityID ,InputEntityId  from $stagingTable where ProjectId='$ProjectId' and DependencyTypeMasterId IN ($DependencyTypeMasterIds) AND InputEntityId = '$InputEntityId' $AttributeMasterids  ")->fetchAll('assoc');
+//                                  $this->pr($finalarray[$key]['sub'][$subkey1]);
+
+                                  
+                                foreach ($getsubquery as $subquerys => $subvals) {
+                                                                        
+                                    foreach ($subval2 as $subkey3 => $subval3) {
+                                        
+                                        $key_subs = intval($subval3['AttributeMasterId']);
+                                            $finalarray[$key]['sub'][$subkey1][$subquerys][$subkey3] = $subval3;
+                                        $finalarray[$key]['sub'][$subkey1][$subquerys][$subkey3]['res'][] = $subvals[$key_subs];
+                                        $finalarray[$key]['sub'][$subkey1][$subquerys][$subkey3]['seqcnt'] = 1;
+                                    }
+                                }
+                            } else {
+                              
+                             foreach ($subval2 as $subkey3 => $subval3) {
+                                    $result = $this->arrayfilters($getQuery, intval($subval3['AttributeMasterId']));
+//                          $result = $this->arrayfilters($getQuery, intval(5061));
+                                    $finalarray[$key]['sub'][$subkey1][$subkey2][$subkey3]['res'] = $result;
+                                    $finalarray[$key]['sub'][$subkey1][$subkey2][$subkey3]['seqcnt'] = count($result);
+                                }
+                            }
                         }
                     }
                 }
 
-				
 
+//                $this->pr($finalarray);
+//            $this->pr($finalarray,1);
 
-//            $this->pr($finalarray);
 
                 $productionData = '';
                 if (!empty($finalarray)) {
@@ -362,9 +396,6 @@ class AbstractionReportController extends AppController {
 
 
 //             $this->pr($stagingTable);
-//           
-//            $this->pr($stagingTable,1);
-//            $this->pr($getqueryres);
         }
     }
 
