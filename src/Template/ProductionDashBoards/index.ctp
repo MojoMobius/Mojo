@@ -345,9 +345,9 @@ if (count($Production_dashboard) > 0) {
                                             <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['Start_Date'] ?></td>
                                             <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['End_Date'] ?></td>
                                             <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['TimeTaken'] ?></td>
-                                            <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['UserId']; ?></td>
-                                           <!--  <td class="Cell" width="10%"><?php echo $User[$timeDetails[$key][$input['Id']]['UserId']]; ?></td>
-                                           <td class="Cell" width="10%"><?php //echo $timeDetails[$key][$input['Id']]['UserGroupId']; ?></td>-->
+                                          <!--  <td class="Cell" width="10%"><?php echo $timeDetails[$key][$input['Id']]['UserId']; ?></td>-->
+                                             <td class="Cell" width="10%"><?php echo $User[$timeDetails[$key][$input['Id']]['UserId']]; ?></td>
+                                          <!-- <td class="Cell" width="10%"><?php //echo $timeDetails[$key][$input['Id']]['UserGroupId']; ?></td>-->
                                             <?php
                                             }
                                         }

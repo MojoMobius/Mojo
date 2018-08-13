@@ -360,7 +360,7 @@ class TranslatemoduleController extends AppController {
             if (empty($basepdffilename)) {
 //                $basepdffilename = "test.html";
                 $this->Flash->error(__('Missing File name!'));
-                return $this->redirect(['action' => 'index']);
+              //  return $this->redirect(['action' => 'index']);
             }
 
             if (isset($this->request->data['save'])) {
