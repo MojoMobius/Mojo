@@ -534,6 +534,20 @@ width:100%;
     border-bottom:2px dashed #337AB7;
  
  }
+ .loader {
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #62A8EA;
+  border-bottom: 8px solid #62A8EA;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+	display: block;
+	position: absolute;
+	z-index: 9999;
+	margin: 130px 355px 0px 500px;
+}
 
     </style>
 
@@ -1378,6 +1392,7 @@ width:100%;
                                         <div id="right-pane">
 <div id="example1" class="hot handsontable htColumnHeaders">
 
+	<div class="loader" style="display:none;"></div>
 
 
 </div>
@@ -4092,6 +4107,7 @@ id = 0;
 }
  var ProductionEntityId = $("#ProductionEntity").val();
  var InputEntityId = $("#InputEntityId").val();
+ $(".loader").show();
 
         $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
@@ -4099,7 +4115,7 @@ id = 0;
             type: 'POST',
             data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"no"},
             success: function (res) {	
-	
+		 $(".loader").hide();
        
 	     $(".hot").html(res);
             }
@@ -4112,6 +4128,8 @@ id = 0;
 }
  var ProductionEntityId = $("#ProductionEntity").val();
  var InputEntityId = $("#InputEntityId").val();
+ $(".loader").show();
+
 
         $.ajax({
             url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
@@ -4119,9 +4137,10 @@ id = 0;
             type: 'POST',
             data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,prvseq:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"yes"},
             success: function (res) {	
-	
+	 $(".loader").hide();
        
-	     $(".hot").html(res);
+       
+	   $(".hot").html(res);
             }
         });
 	
@@ -5045,6 +5064,5 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
-
 </script> 
  
