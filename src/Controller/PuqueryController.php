@@ -310,7 +310,7 @@ class PuqueryController extends AppController {
     public function ajaxqueryinsert() { 
         
      $domainDate=date("Y-m-d", strtotime($_POST['cl_resp_date']) );
-    
+    $ModuleId=$_POST['ModuleId'];
          $connection = ConnectionManager::get('default');
          $session = $this->request->session();        
          $file = $this->request->data('file');
@@ -360,19 +360,18 @@ class PuqueryController extends AppController {
                  
                 if(!move_uploaded_file($_FILES['file']['tmp_name'], ''.$uploadFolder.'/' .$uploadFName))                        {
                     //$this->Flash->error('Invalid File .');
-                    echo "0";
+                     echo "0";
 		     exit;
                 }
                 else{
                   ///insert///
+                    
                  $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0')";
 				$QryInStatus = $connection->execute($InsertQryStatus);
-				echo "Insert into Staging_6694031_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
-                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','1011','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')";
-				
-				$multipleAttrVal = $connection->execute("Insert into Staging_6694031_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
-                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','1011','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')");
-        
+	
+				$multipleAttrVal = $connection->execute("Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
+                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')");
+       
                   ///insert end///  
                 }
              }
@@ -383,15 +382,16 @@ class PuqueryController extends AppController {
 		     exit;
                  }
                  else{
+                      echo "0";
+		     exit;
                   //  $this->Flash->error('Upload File Not Choosen!');
                  }
              }
-       
         
         ///file upload end//////////////////////
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
-      
+     
         $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
         $QryStatus = $connection->execute($UpdateQryStatus);
          /*if ($_POST['status'] == 3) {
@@ -410,7 +410,7 @@ class PuqueryController extends AppController {
             $QryStatus = $connection->execute($UpdateQryStatus);
                   
         }  */
-        echo '1';
+        echo "1";
         exit;
     }
      public function ajaxqueryinsertdqc() {  
