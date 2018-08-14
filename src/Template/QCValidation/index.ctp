@@ -474,8 +474,8 @@ width:100%;
                         <h3 class="page-title"><div class="col-md-8 font-size-14">
                           <div><b><?php  $n= 0; $prefix = '';
                         foreach ($staticFields as $key) { 
-                          if(!empty($staticFields[$n]['AttributeValue'])){
-                          echo $prefix.$staticFields[$n]['AttributeValue'];
+                          if(!empty($staticFields[$n])){
+                          echo $prefix.$staticFields[$n];
                             $prefix = ' | '; 
                             }
                              $n++; 
