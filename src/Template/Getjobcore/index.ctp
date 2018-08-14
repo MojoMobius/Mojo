@@ -492,7 +492,7 @@ width:100%;
 .modal-content{
    background:#fff!important; 
     min-height: 50%;    
-}
+	}
 .modal-body{
    background:#fff!important; 
     height: 100%;    
@@ -792,7 +792,7 @@ width:100%;
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
-																		 <img src="images/rent.png" width="25" height="25">
+																		<?php echo $this->Html->image('../webroot/images/rent.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>	
 																<?php } ?>
 																</div>
@@ -4116,7 +4116,7 @@ id = 0;
             data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"no"},
             success: function (res) {	
 		 $(".loader").hide();
-       
+	
 	     $(".hot").html(res);
             }
         });
@@ -4138,9 +4138,9 @@ id = 0;
             data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,prvseq:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"yes"},
             success: function (res) {	
 	 $(".loader").hide();
+	
        
-       
-	   $(".hot").html(res);
+	     $(".hot").html(res);
             }
         });
 	
