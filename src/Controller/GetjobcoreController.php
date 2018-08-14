@@ -3297,6 +3297,9 @@ exit;
 curl_close($ch); 
 		exit;
 	}    
+ function datecalculator() {
+		
+	}
  function ajaxRentcal(){
 
 //echo $_POST['Rentval']."hello";
