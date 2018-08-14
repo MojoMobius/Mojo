@@ -3053,28 +3053,30 @@ class GetjobcoreController extends AppController {
                                             ));
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		//pr($server_output);
         $server_output = curl_exec($ch);
 		curl_close($ch);
 		$server_output=json_decode($server_output);
-		$token= 'bearer '.$server_output->access_token;
+		$token= 'Bearer '.$server_output->access_token;
 		$projectId=$projectConfigs['ApiProjectId'];
 		$templateId=$projectConfigs['ApiTemplateId'];
-		$documnetName=$JsonArray[$ProjectId].'_'.$jobId.'_Lease.pdf';
+		  $documnetName=$JsonArray[$ProjectId].'_'.$jobId.'_Lease.pdf'; //exit;
 		//$projectId='95d832f0deb14e85a3f8dcac10414e75';
-		$filesize=filesize(HTMLfilesPath.$documnetName);
+		  $filesize=filesize('C:\inetpub\wwwroot\mojov2\webroot\htmlfiles\\'.$documnetName); //exit;
 		//$filesize=553383;
 		$namehash=md5($documnetName.$filesize);
 		$resourceurl='https://browser.botminds.ai/getPdfContent?file='.$projectId.'-'.$namehash;
-		$docid=md5($resourceurl);
+		 $docid=md5($resourceurl);
+		 //echo "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$docid."/".$templateId;
 		//exit;
 		$ch = curl_init();
 		$curlConfig = array(
-        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$templateId."/".$docid,
+        CURLOPT_URL            => "https://api.botminds.ai/api/document/exportkeywords/".$projectId."/".$docid."/".$templateId,
 	
         CURLOPT_HTTPHEADER=>array(
                                             'Content-Type: application/json',
 											'SubscriptionId:8e00b698c5464c5ea252d30e5056cea6',
-											'Authorization:Bearer Eu9387utC7tQECYn5OpGjR6i1Aakm4Nby7Av0_TNHQ6F6IJznMLx7xziYLeug1hKLx7mv3LYfby_rFqR6FUZ-MLeb2HHx0bG6q6m8UwEDvOragt-kBmTdDd6iiXq1S4Ncfp67yP-7addgJaiN6hAmNqPgi9vjgnFSZBa4N2sMpFL5tw6fUtZchmOsVGDv59aqyXxC2VDqHLAclMaE0CAVKShoMVYqVFyf4aozXwx1hnfzP3BL7yyOSg-jmnuaw9ZgcoOfwCzTvWP7qgjZkbeHODmXBLRrRlFb0EGfpt0IFKVaAxqVjMMmK2p7fZKKZeH5nDxhaWb5WhExGFe7cxeFYsaSKPXF1Q6gV-puY2pPpFRE4i1E63QZUgIc5JGRRrVRpNaehVMWJ0hN--d_CM0zpzaeKc4H6rKM0mAisAWb_t3h0mEROob4N6Egpp7qQpTkUAgr8hp0sAif-q-v7Jge_hfXz7pvJD7o5s8DuXtoMswMjYVh7EDmvXOJ-lSuvEA2hMLZCqk8bRY3_l-FCZHT1OUCKDMj5U6uAnVPqPokbwR7HMetX_ze1dt_fdoHXxd'
+											"Authorization:$token"
                                             )
 );
 curl_setopt_array($ch, $curlConfig);
@@ -3084,15 +3086,20 @@ $result = curl_exec($ch);
 
 $result2=json_decode($result);
 //pr($result2);
- $tsv=str_replace(' ','%20',$result2->Result);
+  $tsv=str_replace(' ','%20',$result2->Result);
 
 //echo $tsv = "https://finonsstorage.blob.core.windows.net/exportkeywords/SH_SH%20US017P01%20-%20Lease_1532748815.tsv?sv=2017-07-29&sr=b&sig=SaglL1yWHJYVgD7NnmfjttHc%2B7y%2BHYtOTjNPhwzECL8%3D&se=2018-07-28T03%3A38%3A35Z&sp=r";
-$filepath = "C:\\xampp\\htdocs\\mojo\webroot\\".$docid.".tsv";
+$filepath = "C:\inetpub\wwwroot\mojov2\webroot\\$documnetName.tsv";
 //exit;
-copy($tsv, $newfile);
- 
+//echo $tsv;
+//echo $filepath;
 
-  $filepath = 'c:\xampp\htdocs\mojo\webroot\test.tsv';
+if(!copy($tsv, $filepath)) {
+echo 'error in copy';
+exit;
+ }
+
+ // $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3239,7 +3246,7 @@ copy($tsv, $newfile);
             {
                 $temp = $keyss[0];
 				if(($keys[0] != '') && ($rentSearch == '')){
-                                        $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
+                 $update['addAttrGroup']['ProductionFields_'.$keyss[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=$type_name;
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$t],'"');
                                         $update['funcValGroup'][$c]['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
@@ -3272,8 +3279,9 @@ copy($tsv, $newfile);
 						$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
 						if($keys[0] != ''){
 							$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c]=trim($attributeArr[$c],'"');
+                                                    
                                                         $update['funcValGroup'][$c]['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$c],'"');
-                                                        $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
+                            $update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
                         } 
 					}
       
@@ -3288,11 +3296,7 @@ copy($tsv, $newfile);
  
 curl_close($ch); 
 		exit;
-	}
-	function datecalculator() {
-		
-	}
-        
+	}    
  function ajaxRentcal(){
 
 //echo $_POST['Rentval']."hello";
