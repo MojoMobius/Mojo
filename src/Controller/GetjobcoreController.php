@@ -92,7 +92,7 @@ class GetjobcoreController extends AppController {
         $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][12][$moduleId]['production']);
         $moduleName = $JsonArray['Module'][$moduleId];
         $this->set('moduleName', $moduleName);
-        echo $frameType = $JsonArray['ProjectConfig']['IsBulk'];
+        $frameType = $JsonArray['ProjectConfig']['IsBulk'];
         $limit = 1;
         $frameType = $JsonArray['ProjectConfig']['ProductionView'];
         $domainId = $JsonArray['ProjectConfig']['DomainId'];
@@ -782,7 +782,7 @@ class GetjobcoreController extends AppController {
             }
 
             $connection = ConnectionManager::get('default');
-			echo 'SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc';
+			//echo 'SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc';
             $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
             //pr($InprogressProductionjob); exit;
             //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
@@ -3290,9 +3290,9 @@ copy($tsv, $newfile);
 curl_close($ch); 
 		exit;
 	}
-//	function datecalculator() {
-//		
-//	}
+	function datecalculator() {
+		
+	}
         
  function ajaxRentcal(){
 
