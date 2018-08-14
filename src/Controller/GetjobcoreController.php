@@ -776,7 +776,7 @@ class GetjobcoreController extends AppController {
             }
 
             if (!empty($PuNext_Status_ids)) {
-                echo $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
+                 $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
             } else {
                 $next_status_id = $next_status_id;
             }
