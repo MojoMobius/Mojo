@@ -1292,12 +1292,14 @@ jai*/
                         $getDomainIdVal = $connection->execute('SELECT AttributeValue FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $value['AttributeMasterId'] . ') AND DependencyTypeMasterId in ('.implode(',',$staticDepenIds).')')->fetchAll('assoc');
 						
                         $staticFields = array_merge($staticFields,$getDomainIdVal);
-						
+			
                         }
 //                    if ($domainUrl) {
 //                        $getDomainUrlVal = $connection->execute('SELECT * FROM MC_CengageProcessInputData where ProjectId=' . $ProjectId . ' AND InputEntityId=' . $InputEntityId[0]['InputEntityId'] . ' AND AttributeMasterId IN (' . $domainUrl . ') AND ID=355729')->fetchAll('assoc');
 //                    }
                 }
+ $staticFields = array_map(current, $staticFields);
+ $staticFields = array_unique($staticFields);
  
                 $DependencyTypeMaster = $connection->execute("SELECT Id,Type,FieldTypeName FROM MC_DependencyTypeMaster WHERE ProjectId=" . $ProjectId . " AND DisplayInProdScreen=1 AND Type='InputValue' AND RecordStatus=1")->fetchAll('assoc');
                 $DependancyId = $DependencyTypeMaster[0]['Id'];
