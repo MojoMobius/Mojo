@@ -788,7 +788,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -842,6 +842,7 @@ width:100%;
 																
                                                     
                                                                         <?php
+																		
 																		
                                                                         for ($thisseq = 1; $thisseq <= $totalSeqCnt; $thisseq++) {
                                                                                     $tempSq = 1;
@@ -1049,11 +1050,7 @@ width:100%;
 																	$rentset++;
 																	?>
 																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
-																	 <input type="hidden" name="Commencement_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="Commencement_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $CommencementVal;?>">
-															<input type="hidden" name="Expiration_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="Expiration_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $ExpirationVal;?>">
-															<input type="hidden" name="BaseRent_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="BaseRent_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $BaseRentVal;?>">
-															<input type="hidden" name="RentInc_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="RentInc_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $RentIncVal;?>">
-																	 
+																	
 															
 																	<?php
 																}
@@ -4738,15 +4735,19 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	}	*/
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;
+	var CommencementId = $("#CommencementId").val();
+	var ExpirationId = $("#ExpirationId").val();	
+	var BaseRentId = $("#BaseRentId").val();	
+	var RentIncId = $("#RentIncId").val();
 	
-		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
 
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
-	var Commencement = $("#Commencement_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
-	var Expiration = $("#Expiration_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
-	var BaseRent = $("#BaseRent_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
-	var RentInc = $("#RentInc_"+newSubGroupId+""+newGroupId+""+Seq+"").val();
+	var Commencement = $("#ProductionFields_"+CommencementId+"_"+ProductionField+"_"+Seq+"").val();	
+	
+	var Expiration = $("#ProductionFields_"+ExpirationId+"_"+ProductionField+"_"+Seq+"").val();	
+	var BaseRent = $("#ProductionFields_"+BaseRentId+"_"+ProductionField+"_"+Seq+"").val();	
+	var RentInc = $("#ProductionFields_"+RentIncId+"_"+ProductionField+"_"+Seq+"").val();
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
 	$("#RentTitle").html(Title);///rent popup title
 	$("#RentFirstAttrVal").val(Title);
@@ -4818,13 +4819,13 @@ function Rentcalcappend(){
         $.each(Arramount, function(index, el) {
              postData.Amountdata.push($(el).val());
         });
-		$.each(Arramount, function(index, el) {
+		$.each(Arrpercent, function(index, el) {
              postData.percentdata.push($(el).val());
         });
-		$.each(Arramount, function(index, el) {
+		$.each(Arrstartdate, function(index, el) {
              postData.startdatedata.push($(el).val());
         });
-		$.each(Arramount, function(index, el) {
+		$.each(Arrenddate, function(index, el) {
              postData.enddatedata.push($(el).val());
         });
                
