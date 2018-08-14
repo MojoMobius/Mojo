@@ -788,7 +788,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -842,6 +842,7 @@ width:100%;
 																
                                                     
                                                                         <?php
+																		
                                                                         for ($thisseq = 1; $thisseq <= $totalSeqCnt; $thisseq++) {
                                                                                     $tempSq = 1;
                                                                                     if ($isDistinct !== false) {
@@ -1048,9 +1049,17 @@ width:100%;
 																	$rentset++;
 																	?>
 																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
+																	 <input type="hidden" name="Commencement_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="Commencement_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $CommencementVal;?>">
+															<input type="hidden" name="Expiration_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="Expiration_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $ExpirationVal;?>">
+															<input type="hidden" name="BaseRent_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="BaseRent_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $BaseRentVal;?>">
+															<input type="hidden" name="RentInc_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="RentInc_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $RentIncVal;?>">
+																	 
+															
 																	<?php
 																}
 																?>
+																
+																	 
                                                                     <textarea rows="1" cols="50" class="form-control <?php echo $dbClassName_Disposition; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>
                                                                 </div>
                                                                 </div>
@@ -1081,7 +1090,7 @@ width:100%;
                                                                                                 ?>>V</option>
                                                                     </select>
                                                                     <div>
-                                                                                                                                        <?php if($isDatePicker == 1){   ?>
+                                                                                                                                        <?php if($isDatePicker != 1){   ?>
 																	<a href="javascript: void(0);"
 																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
@@ -1166,10 +1175,7 @@ width:100%;
                                                 $attr_array[] = $attr1;
                                             }
                                             ?>
-															<input type="hidden" name="Commencement" id="Commencement" value="<?php echo $CommencementVal;?>">
-															<input type="hidden" name="Expiration" id="Expiration" value="<?php echo $ExpirationVal;?>">
-															<input type="hidden" name="BaseRent" id="BaseRent" value="<?php echo $BaseRentVal;?>">
-															<input type="hidden" name="RentInc" id="RentInc" value="<?php echo $RentIncVal;?>">
+															
 															
 															
 															<input type="hidden" name="CommencementId" id="CommencementId" value="<?php echo $Commencement;?>">
@@ -4736,12 +4742,11 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
 
-
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
-	var Commencement = $("#Commencement").val();	
-	var Expiration = $("#Expiration").val();	
-	var BaseRent = $("#BaseRent").val();	
-	var RentInc = $("#RentInc").val();
+	var Commencement = $("#Commencement_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
+	var Expiration = $("#Expiration_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
+	var BaseRent = $("#BaseRent_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
+	var RentInc = $("#RentInc_"+newSubGroupId+""+newGroupId+""+Seq+"").val();
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
 	$("#RentTitle").html(Title);///rent popup title
 	$("#RentFirstAttrVal").val(Title);
