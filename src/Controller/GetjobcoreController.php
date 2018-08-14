@@ -3341,8 +3341,11 @@ foreach ($period as $dt) {
   $StartDate=$dt->format("d-m-Y");
   $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
   $Endcheck_date = date('Y-m-d', strtotime($Edate . ' -1 day'));  
-  $mindateArr=array($Edate,$Endcheck_date);
+  
+  $CheckEdate=date("Y-m-d", strtotime($_POST['Expiration']));
+  $mindateArr=array($CheckEdate,$Endcheck_date);
   $Mindate=date("d-m-Y", strtotime(min($mindateArr)));
+
 $total =$total + ($percentage / 100) * $total;
 $n = $total;
 $whole = floor($n);      // 1
