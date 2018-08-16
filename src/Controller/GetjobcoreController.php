@@ -3312,6 +3312,49 @@ curl_close($ch);
        $E_dateformat= $JsonArray['ValidationRules'][$_POST['ExpirationId']]['Dateformat'];
 //echo $_POST['Rentval']."hello";
      
+       
+    ////format///
+ if($C_dateformat =='MM-dd-yy'){
+      $F_date=explode("-",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+ }
+ elseif($C_dateformat =='y-M-d'){
+      $F_date=explode("-",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
+     
+ }
+ elseif($C_dateformat =='M/d/y'){
+     
+      $F_date=explode("/",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+     
+ } 
+ elseif($C_dateformat =='M/d/y H:m'){
+      $F_date=explode("/",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+     
+ }
+ //expiredate
+ if($E_dateformat =='MM-dd-yy'){
+      $F_date=explode("-",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+ }
+ elseif($E_dateformat =='y-M-d'){
+      $F_date=explode("-",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
+     
+ }
+ elseif($E_dateformat =='M/d/y'){
+      $F_date=explode("/",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+ }  
+ elseif($E_dateformat =='M/d/y H:m'){
+      $F_date=explode("/",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+     
+ }
+   ////format end////
+ 
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;*/
  $date_set="yes";    
@@ -3322,9 +3365,7 @@ curl_close($ch);
   $CEdate=date("Y-m-d", strtotime($_POST['Expiration']));
   
   $CFdate = date('Y-m-d', strtotime($CSdate . $_POST['Frequency']));  
- 
   $mindateArr=array($CEdate,$CFdate);
- 
   $CheckMindate=date("Y-m-d", strtotime(min($mindateArr)));
   
 if($CheckMindate == $CEdate && $CEdate !=$CFdate){
