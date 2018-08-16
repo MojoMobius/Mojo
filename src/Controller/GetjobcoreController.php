@@ -1004,6 +1004,7 @@ class GetjobcoreController extends AppController {
                 $ProjectName = $JsonArray[$ProjectId];
 
                 $this->set('ProjectName', $ProjectName);
+                $this->set('JsonArray', $JsonArray);
                 $this->set('DependentMasterIds', $DependentMasterIds);
                 $this->set('processinputdata', $finalprodValue);
                 $this->set('GrpSercntArr', $finalGrpprodValue);
