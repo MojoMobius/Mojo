@@ -108,6 +108,17 @@
 			var displayDate = lastDate.getDate()+'-'+lastDate.getMonth()+'-'+lastDate.getFullYear();
 			//alert(lastDate);
 			$("#newDate").val(displayDate);
+			
+			var sDate = $("#newDate").val();
+		    var sarr = sDate.split("-");
+			if(sarr[1]==0){
+				alert("hello");
+				sarr[1] = 12;				
+				sarr[2] = sarr[2] - 1;
+			var Datenew = sarr[0]+'-'+sarr[1]+'-'+sarr[2];
+			
+			$("#newDate").val(Datenew);
+			}
 		}
 	</script>
 
