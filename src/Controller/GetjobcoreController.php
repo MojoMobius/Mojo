@@ -55,7 +55,7 @@ class GetjobcoreController extends AppController {
 
 //		$this->set('levelModule', $LevelModule);
 
-					$LevelModule = 1;
+			//		$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);		
 		$this->set('ModuleId', $moduleId);
 
@@ -1065,6 +1065,7 @@ class GetjobcoreController extends AppController {
                 } else if ($cnt_InputEntity_AcceptError[0]['cnt'] != 0) {
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
                     $submitType = 'Rework Accept';
+					if(!empty($QcbatchId))
                     $QCBatchMaster = $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount=" . $QcCompletedCount . " WHERE Id=" . $QcbatchId);
                 } else {
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
@@ -3039,7 +3040,7 @@ class GetjobcoreController extends AppController {
 		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
-		$fields = array(
+		/* $fields = array(
             'username' => "khaleelurrehmanm@mobiusservices.com",
             'password' => "Lease@123",
             'grant_type' => "password"
@@ -3098,8 +3099,8 @@ if(!copy($tsv, $filepath)) {
 echo 'error in copy';
 exit;
  }
-
- // $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
+ */
+  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
