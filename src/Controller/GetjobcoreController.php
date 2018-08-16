@@ -3306,7 +3306,25 @@ curl_close($ch);
      
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;*/
-     
+ $date_set="yes";    
+ 
+ ///////check date////////
+ 
+  $CSdate=date("Y-m-d", strtotime($_POST['Commencement']));
+  $CEdate=date("Y-m-d", strtotime($_POST['Expiration']));
+  
+  $CFdate = date('Y-m-d', strtotime($CSdate . $_POST['Frequency']));  
+ 
+  $mindateArr=array($CEdate,$CFdate);
+ 
+  $CheckMindate=date("Y-m-d", strtotime(min($mindateArr)));
+  
+if($CheckMindate == $CEdate && $CEdate !=$CFdate){
+    $date_set="no";  
+}
+  
+ ////// check date end//////
+ 
 $percentage = $_POST['RentInc'];
 $total = $_POST['BaseRent'];
 $PercentageAmount = ($percentage / 100) * $total;
@@ -3337,10 +3355,13 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  <th  width='20%'>Expense Start</th>
 	  <th  width='20%'>Expense End</th>
 	  </tr>";
+
 foreach ($period as $dt) {
+    
   $StartDate=$dt->format("d-m-Y");
   $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
   $Endcheck_date = date('Y-m-d', strtotime($Edate . ' -1 day'));  
+  
   
   $CheckEdate=date("Y-m-d", strtotime($_POST['Expiration']));
   $mindateArr=array($CheckEdate,$Endcheck_date);
@@ -3363,11 +3384,18 @@ $total =number_format((float)$total, 2, '.', '');
 			  <td>'.$Mindate.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$Mindate.'" class="enddate-class"></td>
 			  </tr>';
 }
+
  $Htmlview.='</table">';
+
  
-     
-    echo $Htmlview;
+     if($date_set=="yes"){
+     echo $Htmlview;
      exit;
+     }
+     else{
+     echo "0";
+     exit;
+    }
  }  
  
 function ajaxSearch(){  

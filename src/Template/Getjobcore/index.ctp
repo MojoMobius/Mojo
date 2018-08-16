@@ -789,7 +789,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -1482,14 +1482,14 @@ width:100%;
                             <div class="form-group">
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
-								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="datepick form-control" value="">
+								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="datepickstart form-control" value="">
 								   <input type="hidden" name="SequenceVal" id="SequenceVal"  class="form-control" value="">
 								   
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Expiration Date</label></div>
-								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="datepick form-control" value="">
+								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="datepickend form-control" value="">
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
@@ -4792,9 +4792,9 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	$("#RentFirstAttrId").val(FirstAttrId);///rent hidden file for append data load
 	$("#RentSubGroup").val(newSubGroupId);
 	$("#RentGroup").val(newGroupId);	
-	$("#CommencementVal").val(newCommencement);
+	$("#CommencementVal").val(Commencement);
 	$("#SequenceVal").val(Seq);
-	$("#ExpirationVal").val(newExpiration);
+	$("#ExpirationVal").val(Expiration);
 	$("#BaseRentVal").val(BaseRent);
 	$("#RentIncVal").val(RentInc);
 	$("#Rentseq").val(sequence);	
@@ -4814,8 +4814,7 @@ function Rentcalcsub(){
 	var BaseRent = $("#BaseRentVal").val();	
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
-
-
+	
 
  var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
    
@@ -4849,7 +4848,12 @@ function Rentcalcsub(){
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
                  data: ({ProjectId: ProjectId,Commencement: Commencement,Expiration: Expiration,BaseRent: BaseRent,RentInc: RentInc,Frequency: Frequency}),
                 success: function (res) { 
-                     $(".hot_rent").html(res);
+						if(res == 0){
+							alert("Date is Missmatch");
+						}
+						else{
+							 $(".hot_rent").html(res);
+						}
 					}
                 
             });
@@ -5175,7 +5179,11 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
 </script> 
  
 <script>
-  $('.datepick').Zebra_DatePicker({
+  $('.datepickstart').Zebra_DatePicker({
+          format: 'd-m-Y',
+          direction: false,
+          });
+		   $('.datepickend').Zebra_DatePicker({
           format: 'd-m-Y',
           direction: false,
           });
@@ -5210,6 +5218,5 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
                 return false;
     }
     return true;
-}
-	       
+}	       
 </script>
