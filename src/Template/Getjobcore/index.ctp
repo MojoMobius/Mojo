@@ -4814,6 +4814,9 @@ function Rentcalcsub(){
 	var BaseRent = $("#BaseRentVal").val();	
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
+
+	var CommencementId = $("#CommencementId").val();	
+	var ExpirationId = $("#ExpirationId").val();
 	
 
  var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
@@ -4822,14 +4825,7 @@ function Rentcalcsub(){
 	   alert("Please Enter All details");
        proceed="no";
 	}
-	else if(!isDatecheck(Commencement)){
-	  alert('Commencement Date invalid');
-	  proceed="no";
-	}
-	else if(!isDatecheck(Expiration)){
-		alert('Expiration Date invalid');
-		proceed="no";
-	}
+	
 	else if(!decimalOnly.test(RentInc) && RentInc !=''){ 
 	   alert('RentInc is invalid!');
 	   proceed="no";
@@ -4846,10 +4842,11 @@ function Rentcalcsub(){
 	 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
-                 data: ({ProjectId: ProjectId,Commencement: Commencement,Expiration: Expiration,BaseRent: BaseRent,RentInc: RentInc,Frequency: Frequency}),
+                 data: ({ProjectId: ProjectId,CommencementId: CommencementId,ExpirationId: ExpirationId,Commencement: Commencement,Expiration: Expiration,BaseRent: BaseRent,RentInc: RentInc,Frequency: Frequency}),
                 success: function (res) { 
 						if(res == 0){
-							alert("Date is Missmatch");
+							$(".hot_rent").html("");
+							alert("Commencement Date and Expiration Date is Missmatch");
 						}
 						else{
 							 $(".hot_rent").html(res);
@@ -5218,5 +5215,6 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
                 return false;
     }
     return true;
-}	       
+}	    
+   
 </script>

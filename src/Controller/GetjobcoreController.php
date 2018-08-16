@@ -3302,6 +3302,12 @@ curl_close($ch);
 	}
  function ajaxRentcal(){
 
+        $session = $this->request->session();
+        $ProjectId = $session->read("ProjectId");
+        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+      
+       $C_dateformat= $JsonArray['ValidationRules'][$_POST['CommencementId']]['Dateformat'];
+       $E_dateformat= $JsonArray['ValidationRules'][$_POST['ExpirationId']]['Dateformat'];
 //echo $_POST['Rentval']."hello";
      
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
@@ -3357,6 +3363,7 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  </tr>";
 
 foreach ($period as $dt) {
+
     
   $StartDate=$dt->format("d-m-Y");
   $Edate=date("d-m-Y", strtotime($_POST['Frequency'], strtotime($StartDate)));
@@ -3375,13 +3382,58 @@ if($fraction > 0){
 $total =number_format((float)$total, 2, '.', '');
 }
     
+  ////format///
+  if($C_dateformat =='MM-dd-yy'){
+       $newStartDate=$dt->format("m-d-Y");
+  }
+  elseif($C_dateformat =='y-M-d'){
+      
+       $newStartDate=$dt->format("Y-m-d");
+      
+  }
+  elseif($C_dateformat =='M/d/y'){
+      
+       $newStartDate=$dt->format("m/d/Y");
+      
+  }
+  elseif($C_dateformat =='M/d/y H:m'){
+      
+       $newStartDate=$dt->format("m/d/Y H:m");
+      
+  }
+  else{
+       $newStartDate=$dt->format("d-m-Y");
+  }
+  //expiredate
+  if($E_dateformat =='MM-dd-yy'){
+       $newEndDate=date("m-d-Y", strtotime($Mindate));
+  }
+  elseif($E_dateformat =='y-M-d'){
+      
+       $newEndDate=date("Y-m-d", strtotime($Mindate));
+      
+  }
+  elseif($E_dateformat =='M/d/y'){
+      
+       $newEndDate=date("m/d/Y", strtotime($Mindate));
+      
+  }
+  elseif($E_dateformat =='M/d/y H:m'){
+      
+       $newEndDate=date("m/d/Y H:m", strtotime($Mindate));
+      
+  }
+  else{
+      $newEndDate=date("d-m-Y", strtotime($Mindate));
+  }
+    ////format end////
   //  echo $dt->format("Y-m-d") . "<br>\n";
     
     $Htmlview.='<tr>
 			  <td>'.$percentage.'<input type="hidden" name="percent[]" id="percent[]" value="'.$percentage.'" class="percent-class"></td>
 			  <td>'.$total.'<input type="hidden" name="totalamt[]" id="totalamt[]" value="'.$total.'" class="totalamt-class"></td>
-			  <td>'.$StartDate.'<input type="hidden" name="startdate[]" id="startdate[]" value="'.$StartDate.'" class="startdate-class"></td>
-			  <td>'.$Mindate.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$Mindate.'" class="enddate-class"></td>
+			  <td>'.$newStartDate.'<input type="hidden" name="startdate[]" id="startdate[]" value="'.$newStartDate.'" class="startdate-class"></td>
+			  <td>'.$newEndDate.'<input type="hidden" name="enddate[]" id="enddate[]" value="'.$newEndDate.'" class="enddate-class"></td>
 			  </tr>';
 }
 
