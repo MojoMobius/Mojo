@@ -788,7 +788,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -842,6 +842,7 @@ width:100%;
 																
                                                     
                                                                         <?php
+																		
 																		
                                                                         for ($thisseq = 1; $thisseq <= $totalSeqCnt; $thisseq++) {
                                                                                     $tempSq = 1;
@@ -1049,7 +1050,7 @@ width:100%;
 																	$rentset++;
 																	?>
 																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
-																	 																	 
+
 															
 																	<?php
 																}
@@ -4734,15 +4735,17 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	}	*/
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;
-	var CommencementId = $("#CommencementId").val();	
+
+	var CommencementId = $("#CommencementId").val();
 	var ExpirationId = $("#ExpirationId").val();	
 	var BaseRentId = $("#BaseRentId").val();	
 	var RentIncId = $("#RentIncId").val();
-		  
+	
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
 
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = $("#ProductionFields_"+CommencementId+"_"+ProductionField+"_"+Seq+"").val();	
+
 	var Expiration = $("#ProductionFields_"+ExpirationId+"_"+ProductionField+"_"+Seq+"").val();	
 	var BaseRent = $("#ProductionFields_"+BaseRentId+"_"+ProductionField+"_"+Seq+"").val();	
 	var RentInc = $("#ProductionFields_"+RentIncId+"_"+ProductionField+"_"+Seq+"").val();
@@ -4761,6 +4764,7 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	var yy=d.getFullYear();
 	var newExpiration=dd+"-"+mm+"-"+yy;
 	
+
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
 	$("#RentTitle").html(Title);///rent popup title
 	$("#RentFirstAttrVal").val(Title);
