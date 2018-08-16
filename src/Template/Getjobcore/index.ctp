@@ -549,6 +549,7 @@ width:100%;
 	margin: 130px 355px 0px 500px;
 }
 
+
     </style>
 
     <body class="animsition site-navbar-small app-work">
@@ -1050,7 +1051,7 @@ width:100%;
 																	$rentset++;
 																	?>
 																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
-																	
+
 															
 																	<?php
 																}
@@ -1469,7 +1470,7 @@ width:100%;
             </div>
         </div>
 			 <div class="modal fade" id="rentmodalAll" aria-hidden="true" aria-labelledby="rentmodalAll" role="dialog" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="max-width:1250px;max-height:400px;">
                 <div class="modal-content">
 				<div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1477,18 +1478,18 @@ width:100%;
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Rent Calculation <span id="RentTitle"></span></h4>
                     </div>
-					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
+					<div class="modal-body" style="height:450px;overflow-y:auto;">                       
                             <div class="form-group">
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
-								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="datepick form-control" value="">
 								   <input type="hidden" name="SequenceVal" id="SequenceVal"  class="form-control" value="">
 								   
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Expiration Date</label></div>
-								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="datepick form-control" value="">
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
@@ -4735,6 +4736,7 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	}	*/
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;
+
 	var CommencementId = $("#CommencementId").val();
 	var ExpirationId = $("#ExpirationId").val();	
 	var BaseRentId = $("#BaseRentId").val();	
@@ -4744,19 +4746,55 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
 	var Commencement = $("#ProductionFields_"+CommencementId+"_"+ProductionField+"_"+Seq+"").val();	
-	
+
 	var Expiration = $("#ProductionFields_"+ExpirationId+"_"+ProductionField+"_"+Seq+"").val();	
 	var BaseRent = $("#ProductionFields_"+BaseRentId+"_"+ProductionField+"_"+Seq+"").val();	
 	var RentInc = $("#ProductionFields_"+RentIncId+"_"+ProductionField+"_"+Seq+"").val();
+	
+	var date= Commencement;
+	var d=new Date(date.split("/").reverse().join("-"));
+	var dd=d.getDate();
+	var mm=d.getMonth()+1;
+	var yy=d.getFullYear();
+	 for ( var i=1;i < 10 ; i++ ) {
+		  if(mm == i){
+			mm =  "0" + mm;
+		  }
+	  }
+	  for ( var i=1;i < 10 ; i++ ) {
+		  if(dd == i){
+			dd =  "0" + dd;
+		  }
+	  }
+	var newCommencement=dd+"-"+mm+"-"+yy;
+	
+	var date= Expiration;
+	var d=new Date(date.split("/").reverse().join("-"));
+	var dd=d.getDate();
+	var mm=d.getMonth()+1;
+	var yy=d.getFullYear();
+	  for ( var i=1;i < 10 ; i++ ) {
+		  if(mm == i){
+			mm =  "0" + mm;
+		  }
+	  }
+	  for ( var i=1;i < 10 ; i++ ) {
+		  if(dd == i){
+			dd =  "0" + dd;
+		  }
+	  }
+	var newExpiration=dd+"-"+mm+"-"+yy;
+	
+
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
 	$("#RentTitle").html(Title);///rent popup title
 	$("#RentFirstAttrVal").val(Title);
 	$("#RentFirstAttrId").val(FirstAttrId);///rent hidden file for append data load
 	$("#RentSubGroup").val(newSubGroupId);
 	$("#RentGroup").val(newGroupId);	
-	$("#CommencementVal").val(Commencement);
+	$("#CommencementVal").val(newCommencement);
 	$("#SequenceVal").val(Seq);
-	$("#ExpirationVal").val(Expiration);
+	$("#ExpirationVal").val(newExpiration);
 	$("#BaseRentVal").val(BaseRent);
 	$("#RentIncVal").val(RentInc);
 	$("#Rentseq").val(sequence);	
@@ -4768,13 +4806,44 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 }
 function Rentcalcsub(){
+	$(".hot_rent").html("");
+	var proceed ="yes";
 	var ProjectId = $("#ProjectId").val();
 	var Commencement = $("#CommencementVal").val();	
 	var Expiration = $("#ExpirationVal").val();	
 	var BaseRent = $("#BaseRentVal").val();	
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
+
+
+
+ var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
+   
+	if(Commencement=='' || Expiration=='' || BaseRent=='' || RentInc=='' || Frequency =='0'){
+	   alert("Please Enter All details");
+       proceed="no";
+	}
+	else if(!isDatecheck(Commencement)){
+	  alert('Commencement Date invalid');
+	  proceed="no";
+	}
+	else if(!isDatecheck(Expiration)){
+		alert('Expiration Date invalid');
+		proceed="no";
+	}
+	else if(!decimalOnly.test(RentInc) && RentInc !=''){ 
+	   alert('RentInc is invalid!');
+	   proceed="no";
+	}
+	else if(!decimalOnly.test(BaseRent) && BaseRent !=''){ 
+	   alert('Base Rent Initial amount is invalid!' );
+	   proceed="no";
+	   
+	}
+	else{
 	$(".hot_rent").html("Loading...");
+	}
+	if(proceed =="yes"){
 	 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
@@ -4784,6 +4853,7 @@ function Rentcalcsub(){
 					}
                 
             });
+	}
 }
 function Rentcalcappend(){
 	var Commencement = $("#CommencementId").val();	
@@ -5100,5 +5170,46 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
+		
+
 </script> 
  
+<script>
+  $('.datepick').Zebra_DatePicker({
+          format: 'd-m-Y',
+          direction: false,
+          });
+		  
+	function isDatecheck(txtDate)
+   {
+    var currVal = txtDate;
+    if(currVal == '')
+        return false;
+    
+    var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/; //Declare Regex
+    var dtArray = currVal.match(rxDatePattern); // is format OK?
+       
+    if (dtArray == null) 
+        return false;
+    
+    //Checks for mm/dd/yyyy format.
+    dtMonth = dtArray[3];
+    dtDay= dtArray[1];
+    dtYear = dtArray[5];    
+   
+    if (dtMonth < 1 || dtMonth > 12) 
+        return false;
+    else if (dtDay < 1 || dtDay> 31) 
+        return false;
+    else if ((dtMonth==4 || dtMonth==6 || dtMonth==9 || dtMonth==11) && dtDay ==31) 
+        return false;
+    else if (dtMonth == 2) 
+    {
+        var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
+        if (dtDay> 29 || (dtDay ==29 && !isleap)) 
+                return false;
+    }
+    return true;
+}
+	       
+</script>
