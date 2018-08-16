@@ -1049,11 +1049,7 @@ width:100%;
 																	$rentset++;
 																	?>
 																	 <input value="<?php echo $valprodFields['AttributeMasterId'];?>" type="hidden"  name="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="FirstAttrGroup_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId'];?>" >
-																	 <input type="hidden" name="Commencement_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="Commencement_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $CommencementVal;?>">
-															<input type="hidden" name="Expiration_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="Expiration_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $ExpirationVal;?>">
-															<input type="hidden" name="BaseRent_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="BaseRent_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $BaseRentVal;?>">
-															<input type="hidden" name="RentInc_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" id="RentInc_<?php echo $valprodFields['SubGroupId']."".$valprodFields['MainGroupId']."".$tempSq;?>" value="<?php echo $RentIncVal;?>">
-																	 
+																	 																	 
 															
 																	<?php
 																}
@@ -1484,14 +1480,14 @@ width:100%;
                             <div class="form-group">
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
-								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="CommencementVal" id="CommencementVal"  class="datepick form-control" value="">
 								   <input type="hidden" name="SequenceVal" id="SequenceVal"  class="form-control" value="">
 								   
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Expiration Date</label></div>
-								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="form-control" value="">
+								   <div class="col-md-6"><input type="text" name="ExpirationVal" id="ExpirationVal" class="datepick form-control" value="">
 								   </div>
                                 </div>
 								 <div class="form-group col-md-12">
@@ -4738,24 +4734,42 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	}	*/
 	var newSubGroupId = SubGroupId;
 	var newGroupId = GroupId;
-	
+	var CommencementId = $("#CommencementId").val();	
+	var ExpirationId = $("#ExpirationId").val();	
+	var BaseRentId = $("#BaseRentId").val();	
+	var RentIncId = $("#RentIncId").val();
 		  
 	var FirstAttrId =$("#FirstAttrGroup_"+newSubGroupId+""+newGroupId).val();	
 
 	var Title = $("#ProductionFields_"+FirstAttrId+"_"+ProductionField+"_"+Seq+"").val();	
-	var Commencement = $("#Commencement_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
-	var Expiration = $("#Expiration_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
-	var BaseRent = $("#BaseRent_"+newSubGroupId+""+newGroupId+""+Seq+"").val();	
-	var RentInc = $("#RentInc_"+newSubGroupId+""+newGroupId+""+Seq+"").val();
+	var Commencement = $("#ProductionFields_"+CommencementId+"_"+ProductionField+"_"+Seq+"").val();	
+	var Expiration = $("#ProductionFields_"+ExpirationId+"_"+ProductionField+"_"+Seq+"").val();	
+	var BaseRent = $("#ProductionFields_"+BaseRentId+"_"+ProductionField+"_"+Seq+"").val();	
+	var RentInc = $("#ProductionFields_"+RentIncId+"_"+ProductionField+"_"+Seq+"").val();
+	
+	var date= Commencement;
+	var d=new Date(date.split("/").reverse().join("-"));
+	var dd=d.getDate();
+	var mm=d.getMonth()+1;
+	var yy=d.getFullYear();
+	var newCommencement=dd+"-"+mm+"-"+yy;
+	
+	var date= Expiration;
+	var d=new Date(date.split("/").reverse().join("-"));
+	var dd=d.getDate();
+	var mm=d.getMonth()+1;
+	var yy=d.getFullYear();
+	var newExpiration=dd+"-"+mm+"-"+yy;
+	
 	var sequence=$(".GroupSeq_"+newSubGroupId).attr("data");
 	$("#RentTitle").html(Title);///rent popup title
 	$("#RentFirstAttrVal").val(Title);
 	$("#RentFirstAttrId").val(FirstAttrId);///rent hidden file for append data load
 	$("#RentSubGroup").val(newSubGroupId);
 	$("#RentGroup").val(newGroupId);	
-	$("#CommencementVal").val(Commencement);
+	$("#CommencementVal").val(newCommencement);
 	$("#SequenceVal").val(Seq);
-	$("#ExpirationVal").val(Expiration);
+	$("#ExpirationVal").val(newExpiration);
 	$("#BaseRentVal").val(BaseRent);
 	$("#RentIncVal").val(RentInc);
 	$("#Rentseq").val(sequence);	
@@ -4767,13 +4781,34 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	
 }
 function Rentcalcsub(){
+	$(".hot_rent").html("");
+	var proceed ="yes";
 	var ProjectId = $("#ProjectId").val();
 	var Commencement = $("#CommencementVal").val();	
 	var Expiration = $("#ExpirationVal").val();	
 	var BaseRent = $("#BaseRentVal").val();	
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
+
+ var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
+   
+	if(Commencement=='' || Expiration=='' || BaseRent=='' || RentInc=='' || Frequency =='0'){
+	   alert("Please Enter All details");
+       proceed="no";
+	}
+	else if(!decimalOnly.test(RentInc) && RentInc !=''){ 
+	   alert('RentInc is invalid!');
+	   proceed="no";
+	}
+	else if(!decimalOnly.test(BaseRent) && BaseRent !=''){ 
+	   alert('Base Rent Initial amount is invalid!' );
+	   proceed="no";
+	   
+	}
+	else{
 	$(".hot_rent").html("Loading...");
+	}
+	if(proceed =="yes"){
 	 $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
@@ -4783,6 +4818,7 @@ function Rentcalcsub(){
 					}
                 
             });
+	}
 }
 function Rentcalcappend(){
 	var Commencement = $("#CommencementId").val();	
@@ -4818,13 +4854,13 @@ function Rentcalcappend(){
         $.each(Arramount, function(index, el) {
              postData.Amountdata.push($(el).val());
         });
-		$.each(Arramount, function(index, el) {
+		$.each(Arrpercent, function(index, el) {
              postData.percentdata.push($(el).val());
         });
-		$.each(Arramount, function(index, el) {
+		$.each(Arrstartdate, function(index, el) {
              postData.startdatedata.push($(el).val());
         });
-		$.each(Arramount, function(index, el) {
+		$.each(Arrenddate, function(index, el) {
              postData.enddatedata.push($(el).val());
         });
                
@@ -5099,5 +5135,14 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
             }
 			*/
         }
+		
+
 </script> 
  
+<script>
+  $('.datepick').Zebra_DatePicker({
+          format: 'd-m-Y',
+          direction: false,
+          });
+		       
+</script>

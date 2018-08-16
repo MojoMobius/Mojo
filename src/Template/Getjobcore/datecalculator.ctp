@@ -19,7 +19,7 @@
 </tr>
 <tr>
 	<td>Days</td>
-	<td><input type="text" value="0" id="days" class="getdate onlyno"></td>
+	<td><input type="text" value="0" id="days" class="getdate "></td>
 </tr>
 <tr>
 	<td>New Date</td>
@@ -102,13 +102,35 @@
 			startDatenew = arr[2]+'-'+arr[1]+'-'+arr[0];
 			var lastDate = new Date(startDatenew);
 			
-			lastDate.setYear(lastDate.getFullYear() + parseInt(years));
+			lastDate.setDate(lastDate.getDate() + parseInt(days));
 			lastDate.setMonth(lastDate.getMonth() + parseInt(months)+1);
-			lastDate.setDate(lastDate.getDate() + parseInt(days));  
+			lastDate.setYear(lastDate.getFullYear() + parseInt(years));
+			
 			var displayDate = lastDate.getDate()+'-'+lastDate.getMonth()+'-'+lastDate.getFullYear();
 			//alert(lastDate);
 			$("#newDate").val(displayDate);
+			
+			var sDate = $("#newDate").val();
+		    var sarr = sDate.split("-");
+			if(sarr[1]==0){
+				alert("hello");
+				sarr[1] = 12;				
+				sarr[2] = sarr[2] - 1;
+			var Datenew = sarr[0]+'-'+sarr[1]+'-'+sarr[2];
+			
+			$("#newDate").val(Datenew);
+			}
+			
+					
+    
+    
+    //From: http://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
+
+			
+			
 		}
+		
+
 	</script>
 
         
