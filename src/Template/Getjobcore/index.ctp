@@ -4846,7 +4846,7 @@ function Rentcalcsub(){
                 success: function (res) { 
 						if(res == 0){
 							$(".hot_rent").html("");
-							alert("Commencement Date and Expiration Date is Missmatch");
+							alert("End date is lesser than the set frequency");
 						}
 						else{
 							 $(".hot_rent").html(res);
@@ -5215,6 +5215,5 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
                 return false;
     }
     return true;
-}	    
-   
+}	       
 </script>
