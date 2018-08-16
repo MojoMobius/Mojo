@@ -549,6 +549,7 @@ width:100%;
 	margin: 130px 355px 0px 500px;
 }
 
+
     </style>
 
     <body class="animsition site-navbar-small app-work">
@@ -788,7 +789,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -1469,7 +1470,7 @@ width:100%;
             </div>
         </div>
 			 <div class="modal fade" id="rentmodalAll" aria-hidden="true" aria-labelledby="rentmodalAll" role="dialog" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="max-width:1250px;max-height:400px;">
                 <div class="modal-content">
 				<div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1477,7 +1478,7 @@ width:100%;
                         </button>
                         <h4 class="modal-title" id="exampleModalTitle">Rent Calculation <span id="RentTitle"></span></h4>
                     </div>
-					<div class="modal-body" style="height:220px;overflow-y:auto;">                       
+					<div class="modal-body" style="height:450px;overflow-y:auto;">                       
                             <div class="form-group">
                                 <div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Commencement Date</label></div>
@@ -4755,6 +4756,16 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	var dd=d.getDate();
 	var mm=d.getMonth()+1;
 	var yy=d.getFullYear();
+	 for ( var i=1;i < 10 ; i++ ) {
+		  if(mm == i){
+			mm =  "0" + mm;
+		  }
+	  }
+	  for ( var i=1;i < 10 ; i++ ) {
+		  if(dd == i){
+			dd =  "0" + dd;
+		  }
+	  }
 	var newCommencement=dd+"-"+mm+"-"+yy;
 	
 	var date= Expiration;
@@ -4762,6 +4773,16 @@ function Rentcalc(AttrId,ProductionField,Comments,Disposition,SubGroupId,GroupId
 	var dd=d.getDate();
 	var mm=d.getMonth()+1;
 	var yy=d.getFullYear();
+	  for ( var i=1;i < 10 ; i++ ) {
+		  if(mm == i){
+			mm =  "0" + mm;
+		  }
+	  }
+	  for ( var i=1;i < 10 ; i++ ) {
+		  if(dd == i){
+			dd =  "0" + dd;
+		  }
+	  }
 	var newExpiration=dd+"-"+mm+"-"+yy;
 	
 
@@ -4794,11 +4815,21 @@ function Rentcalcsub(){
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
 
+
+
  var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
    
 	if(Commencement=='' || Expiration=='' || BaseRent=='' || RentInc=='' || Frequency =='0'){
 	   alert("Please Enter All details");
        proceed="no";
+	}
+	else if(!isDatecheck(Commencement)){
+	  alert('Commencement Date invalid');
+	  proceed="no";
+	}
+	else if(!isDatecheck(Expiration)){
+		alert('Expiration Date invalid');
+		proceed="no";
 	}
 	else if(!decimalOnly.test(RentInc) && RentInc !=''){ 
 	   alert('RentInc is invalid!');
@@ -5148,5 +5179,37 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
           format: 'd-m-Y',
           direction: false,
           });
-		       
+		  
+	function isDatecheck(txtDate)
+   {
+    var currVal = txtDate;
+    if(currVal == '')
+        return false;
+    
+    var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/; //Declare Regex
+    var dtArray = currVal.match(rxDatePattern); // is format OK?
+       
+    if (dtArray == null) 
+        return false;
+    
+    //Checks for mm/dd/yyyy format.
+    dtMonth = dtArray[3];
+    dtDay= dtArray[1];
+    dtYear = dtArray[5];    
+   
+    if (dtMonth < 1 || dtMonth > 12) 
+        return false;
+    else if (dtDay < 1 || dtDay> 31) 
+        return false;
+    else if ((dtMonth==4 || dtMonth==6 || dtMonth==9 || dtMonth==11) && dtDay ==31) 
+        return false;
+    else if (dtMonth == 2) 
+    {
+        var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
+        if (dtDay> 29 || (dtDay ==29 && !isleap)) 
+                return false;
+    }
+    return true;
+}
+	       
 </script>
