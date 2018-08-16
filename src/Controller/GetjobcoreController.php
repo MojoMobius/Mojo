@@ -3396,12 +3396,7 @@ $total =number_format((float)$total, 2, '.', '');
       
        $newStartDate=$dt->format("m/d/Y");
       
-  }
-  elseif($C_dateformat =='M/d/y H:m'){
-      
-       $newStartDate=$dt->format("m/d/Y H:m");
-      
-  }
+  } 
   else{
        $newStartDate=$dt->format("d-m-Y");
   }
@@ -3418,12 +3413,7 @@ $total =number_format((float)$total, 2, '.', '');
       
        $newEndDate=date("m/d/Y", strtotime($Mindate));
       
-  }
-  elseif($E_dateformat =='M/d/y H:m'){
-      
-       $newEndDate=date("m/d/Y H:m", strtotime($Mindate));
-      
-  }
+  }  
   else{
       $newEndDate=date("d-m-Y", strtotime($Mindate));
   }
