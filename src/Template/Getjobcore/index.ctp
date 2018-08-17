@@ -5185,7 +5185,7 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
           direction: false,
           });
 		  
-	function isDatecheck(txtDate)
+   function isDatecheck(txtDate)
    {
     var currVal = txtDate;
     if(currVal == '')
