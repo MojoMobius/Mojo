@@ -817,6 +817,7 @@ class GetjobcoreController extends AppController {
                         $productionjob[0]['StatusId'] = $NextStatusId;
                         $productionjob[0]['StatusId'] = 'Production In Progress';
                     }
+           
                     $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $NextStatusId . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . 'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
                     $productionjobNew = $InprogressProductionjob;
                     $this->set('productionjob', $productionjob[0]);
@@ -3308,6 +3309,64 @@ curl_close($ch);
       
        $C_dateformat= $JsonArray['ValidationRules'][$_POST['CommencementId']]['Dateformat'];
        $E_dateformat= $JsonArray['ValidationRules'][$_POST['ExpirationId']]['Dateformat'];
+       
+        ////format///
+  if($C_dateformat =='MM-dd-yy'){
+       $F_date=explode("-",$_POST['Commencement']);
+       $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+  }
+  elseif($C_dateformat =='y-M-d'){
+      
+       $F_date=explode("-",$_POST['Commencement']);
+       $_POST['Commencement']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
+      
+  }
+  elseif($C_dateformat =='M/d/y'){      
+       $F_date=explode("/",$_POST['Commencement']);
+       $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      
+  } 
+  elseif($C_dateformat =='M/d/y H:m'){
+      
+       $F_date=explode("/",$_POST['Commencement']);
+       $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      
+  } 
+  else{
+       $newStartDate=$dt->format("d-m-Y");
+       
+  }
+  //expiredate
+  if($E_dateformat =='MM-dd-yy'){
+       $F_date=explode("-",$_POST['Expiration']);
+       $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+  }
+  elseif($E_dateformat =='y-M-d'){
+      
+     
+       $F_date=explode("-",$_POST['Expiration']);
+       $_POST['Expiration']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
+      
+  }
+  elseif($E_dateformat =='M/d/y'){
+      
+      
+       $F_date=explode("/",$_POST['Expiration']);
+       $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      
+  }  
+  elseif($E_dateformat =='M/d/y H:m'){
+      
+       $F_date=explode("/",$_POST['Expiration']);
+       $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      
+  }  
+  else{
+      $newEndDate=date("d-m-Y", strtotime($Mindate));
+  }
+    ////format end////
+       
+       
 //echo $_POST['Rentval']."hello";
      
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
@@ -3315,6 +3374,8 @@ curl_close($ch);
  $date_set="yes";    
  
  ///////check date////////
+
+ 
  
   $CSdate=date("Y-m-d", strtotime($_POST['Commencement']));
   $CEdate=date("Y-m-d", strtotime($_POST['Expiration']));
