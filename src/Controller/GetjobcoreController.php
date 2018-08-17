@@ -55,7 +55,7 @@ class GetjobcoreController extends AppController {
 
 //		$this->set('levelModule', $LevelModule);
 
-					$LevelModule = 1;
+			//		$LevelModule = 1;
 		$this->set('levelModule', $LevelModule);		
 		$this->set('ModuleId', $moduleId);
 
@@ -1005,6 +1005,7 @@ class GetjobcoreController extends AppController {
                 $ProjectName = $JsonArray[$ProjectId];
 
                 $this->set('ProjectName', $ProjectName);
+                $this->set('JsonArray', $JsonArray);
                 $this->set('DependentMasterIds', $DependentMasterIds);
                 $this->set('processinputdata', $finalprodValue);
                 $this->set('GrpSercntArr', $finalGrpprodValue);
@@ -1066,6 +1067,7 @@ class GetjobcoreController extends AppController {
                 } else if ($cnt_InputEntity_AcceptError[0]['cnt'] != 0) {
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
                     $submitType = 'Rework Accept';
+					if(!empty($QcbatchId))
                     $QCBatchMaster = $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount=" . $QcCompletedCount . " WHERE Id=" . $QcbatchId);
                 } else {
                     $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
@@ -3040,7 +3042,7 @@ class GetjobcoreController extends AppController {
 		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
 		$projectConfigs=$JsonArray['ProjectConfig'];
-		$fields = array(
+		/* $fields = array(
             'username' => "khaleelurrehmanm@mobiusservices.com",
             'password' => "Lease@123",
             'grant_type' => "password"
@@ -3099,8 +3101,8 @@ if(!copy($tsv, $filepath)) {
 echo 'error in copy';
 exit;
  }
-
- // $filepath = 'D:\xampp\htdocs\mojo\webroot\test.tsv';
+ */
+  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3369,6 +3371,49 @@ curl_close($ch);
        
 //echo $_POST['Rentval']."hello";
      
+       
+    ////format///
+ if($C_dateformat =='MM-dd-yy'){
+      $F_date=explode("-",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+ }
+ elseif($C_dateformat =='y-M-d'){
+      $F_date=explode("-",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
+     
+ }
+ elseif($C_dateformat =='M/d/y'){
+     
+      $F_date=explode("/",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+     
+ } 
+ elseif($C_dateformat =='M/d/y H:m'){
+      $F_date=explode("/",$_POST['Commencement']);
+      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+     
+ }
+ //expiredate
+ if($E_dateformat =='MM-dd-yy'){
+      $F_date=explode("-",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+ }
+ elseif($E_dateformat =='y-M-d'){
+      $F_date=explode("-",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
+     
+ }
+ elseif($E_dateformat =='M/d/y'){
+      $F_date=explode("/",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+ }  
+ elseif($E_dateformat =='M/d/y H:m'){
+      $F_date=explode("/",$_POST['Expiration']);
+      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+     
+ }
+   ////format end////
+ 
     /* echo $_POST['ProjectId']."-".$_POST['Commencement']."-".$_POST['Expiration']."-".$_POST['BaseRent']."-".$_POST['RentInc']."-"."-".$_POST['Frequency'];
      exit;*/
  $date_set="yes";    
@@ -3381,9 +3426,7 @@ curl_close($ch);
   $CEdate=date("Y-m-d", strtotime($_POST['Expiration']));
   
   $CFdate = date('Y-m-d', strtotime($CSdate . $_POST['Frequency']));  
- 
   $mindateArr=array($CEdate,$CFdate);
- 
   $CheckMindate=date("Y-m-d", strtotime(min($mindateArr)));
   
 if($CheckMindate == $CEdate && $CEdate !=$CFdate){

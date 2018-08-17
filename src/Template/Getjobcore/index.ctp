@@ -789,7 +789,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -5175,14 +5175,57 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
 
 </script> 
  
+
 <script>
+
+var C_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$Commencement]['Dateformat']);?>';
+var E_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$Expiration]['Dateformat']);?>'; 
+
+var newEndDate = '';
+
+ if(E_dateformat =='"MM-dd-yy"'){
+      newEndDate='m-d-Y';
+ }
+ else if(E_dateformat =='"y-M-d"'){
+      newEndDate='Y-m-d';
+ }
+ else if(E_dateformat =='"M/d/y"'){
+        newEndDate='m/d/Y';
+ }
+ else if(E_dateformat =='"M/d/y H:m"'){
+      newEndDate='m/d/Y';
+ }
+ else{
+      newEndDate='d-m-Y';
+ }
+
+
+var newStartDate = '';
+
+ if(C_dateformat =='"MM-dd-yy"'){
+      newStartDate='m-d-Y';
+ }
+ else if(C_dateformat =='"y-M-d"'){
+      newStartDate='Y-m-d';
+ }
+ else if(C_dateformat =='"M/d/y"'){
+        newStartDate='m/d/Y';
+ }
+ else if(C_dateformat =='"M/d/y H:m"'){
+      newStartDate='m/d/Y';
+ }
+ else{
+      newStartDate='d-m-Y';
+ }
+
+
   $('.datepickstart').Zebra_DatePicker({
-          format: 'd-m-Y',
+          format: newStartDate,
           direction: false,
           });
-		   $('.datepickend').Zebra_DatePicker({
-          format: 'd-m-Y',
-          direction: false,
+	$('.datepickend').Zebra_DatePicker({
+            format: newEndDate,
+            direction: false,
           });
 		  
    function isDatecheck(txtDate)
@@ -5217,3 +5260,5 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
     return true;
 }	       
 </script>
+
+	
