@@ -20,7 +20,19 @@
     echo $this->Html->css('zebra_datepicker.css');
     echo $this->Html->script('zebra_datepicker');
     ?>
-	<style>
+  
+ <script>
+ $(document).ready(function () {
+ 
+  $('.IsDatepicker').Zebra_DatePicker({
+                    direction: true,
+                    format: 'd-m-Y'
+                });
+   });
+
+   </script>
+
+<style>
 	.Apped-Rent{
 		padding:0px 10px;
 	}
@@ -40,14 +52,7 @@
 			padding:0px 5px;
 		}
 	</style>
- <script>	
-  $('.IsDatepicker').Zebra_DatePicker({
-                    direction: true,
-                    format: 'd-m-Y'
-                });
 
-
-   </script>
 
 
 <?php
@@ -789,7 +794,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -922,7 +927,12 @@ width:100%;
                                                                             }else{
                                                                               $isDatePicker = 1;
                                                                             }
-                                                                       
+                                                                         if(!empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
+                                                                               $dbClassName .=" IsDatepicker "     ;
+                                                                            
+                                                                            }else{
+                                                                              $dbClassName .="";
+                                                                            }
                                                                             
                                                                             //Mandatory coding ends
                                                                             if($valprodFields['ControlName']=='TextBox' || $valprodFields['ControlName']=='Label') { 
@@ -4815,8 +4825,8 @@ function Rentcalcsub(){
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
 
-	var CommencementId = $("#CommencementId").val();	
-	var ExpirationId = $("#ExpirationId").val();
+	var CommencementId = '<?php echo $CommencementProjAttrmasterid;?>';	
+	var ExpirationId = '<?php echo $ExpirationProjAttrmasterid;?>';
 	
 
  var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
@@ -5178,8 +5188,8 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
 
 <script>
 
-var C_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$Commencement]['Dateformat']);?>';
-var E_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$Expiration]['Dateformat']);?>'; 
+var C_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$CommencementProjAttrmasterid]['Dateformat']);?>';
+var E_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$ExpirationProjAttrmasterid]['Dateformat']);?>'; 
 
 var newEndDate = '';
 

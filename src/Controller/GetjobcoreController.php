@@ -35,6 +35,18 @@ class GetjobcoreController extends AppController {
         // $this->loadHelper('Html');
         $this->loadComponent('RequestHandler');
     }
+    
+    
+  function searchForId($id, $array) {
+   foreach ($array as $key => $val) {
+    
+       if ($val['AttributeMasterId'] == $id) {
+           return $val['ProjectAttributeMasterId'];
+       }
+   }
+   return null;
+}
+
 
     public function index() {
         
@@ -88,8 +100,14 @@ class GetjobcoreController extends AppController {
          $this->set('RentInc', $RentInc);
 
 //////rent calculation end////         
-        
+      $prod = $JsonArray['ModuleAttributes'][1011][$moduleId]['production'];
+     $Commencementkey = $this->searchForId($Commencement,$prod);
+     $Expirationkey = $this->searchForId($Expiration,$prod);
+    $this->set('CommencementProjAttrmasterid',$Commencementkey);
+    $this->set('ExpirationProjAttrmasterid', $Expirationkey);
+              
         $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][12][$moduleId]['production']);
+        
         $moduleName = $JsonArray['Module'][$moduleId];
         $this->set('moduleName', $moduleName);
         $frameType = $JsonArray['ProjectConfig']['IsBulk'];
@@ -3404,7 +3422,6 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  <th  width='20%'>Expense Start</th>
 	  <th  width='20%'>Expense End</th>
 	  </tr>";
-
 foreach ($period as $dt) {
 
     
@@ -3438,7 +3455,7 @@ $total =number_format((float)$total, 2, '.', '');
       
        $newStartDate=$dt->format("m/d/Y");
       
-  } 
+  }
   elseif($C_dateformat =='M/d/y H:m'){
       
        $newStartDate=$dt->format("m/d/Y");
@@ -3457,6 +3474,7 @@ $total =number_format((float)$total, 2, '.', '');
       
   }
   elseif($E_dateformat =='M/d/y'){
+     
       
        $newEndDate=date("m/d/Y", strtotime($Mindate));
       
