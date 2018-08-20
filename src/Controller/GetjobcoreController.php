@@ -3325,13 +3325,13 @@ curl_close($ch);
   }
   elseif($C_dateformat =='M/d/y'){      
        $F_date=explode("/",$_POST['Commencement']);
-       $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+       $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
       
   } 
   elseif($C_dateformat =='M/d/y H:m'){
       
        $F_date=explode("/",$_POST['Commencement']);
-       $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+       $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
       
   } 
   else{
@@ -3354,13 +3354,13 @@ curl_close($ch);
       
       
        $F_date=explode("/",$_POST['Expiration']);
-       $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+       $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
       
   }  
   elseif($E_dateformat =='M/d/y H:m'){
       
        $F_date=explode("/",$_POST['Expiration']);
-       $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+       $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
       
   }  
   else{
