@@ -35,6 +35,18 @@ class GetjobcoreController extends AppController {
         // $this->loadHelper('Html');
         $this->loadComponent('RequestHandler');
     }
+    
+    
+  function searchForId($id, $array) {
+   foreach ($array as $key => $val) {
+    
+       if ($val['AttributeMasterId'] == $id) {
+           return $val['ProjectAttributeMasterId'];
+       }
+   }
+   return null;
+}
+
 
     public function index() {
         
@@ -88,8 +100,14 @@ class GetjobcoreController extends AppController {
          $this->set('RentInc', $RentInc);
 
 //////rent calculation end////         
-        
+      $prod = $JsonArray['ModuleAttributes'][1011][$moduleId]['production'];
+     $Commencementkey = $this->searchForId($Commencement,$prod);
+     $Expirationkey = $this->searchForId($Expiration,$prod);
+    $this->set('CommencementProjAttrmasterid',$Commencementkey);
+    $this->set('ExpirationProjAttrmasterid', $Expirationkey);
+              
         $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][12][$moduleId]['production']);
+        
         $moduleName = $JsonArray['Module'][$moduleId];
         $this->set('moduleName', $moduleName);
         $frameType = $JsonArray['ProjectConfig']['IsBulk'];
@@ -3140,25 +3158,25 @@ exit;
                 $groupwisearray[$key] = $keys_sub;
             }
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
-                       // echo '<pre>';
-  //pr($array);        
-                   //  $groupBase = 'Rent';
-                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index');
+                       
+                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'');
  $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
 
      foreach($array as $attributeArr){  
+         
 	   if(count($attributeArr)==1){
             $tempGrpSearch = '';
             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
-                //$groupId=array_search($groupBase,$GroupAttribute);
-				//$groupidorg
+               
 				if($groupidorg!=''){
 					$groupidorg=$groupId;
 					$subgrup = array_keys($SubGroupAttribute[$groupidorg]);
 					$subgrup = $subgrup[0];
 				}
 				 $tempGrpSearch = 'options';
+                                 if($tempGrpId!=$groupidorg)
+                                      $start_array=-1;
                                  $tempGrpId  = $groupidorg;
 			}
             else{
@@ -3187,64 +3205,45 @@ exit;
                }
          }
          if($tempGrpSearch != ''){
-			// pr($attributeArr);;
             $t=1;
-           //$count = count($attributeArr);
-             
             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
                 $type_name = $attributeArr[0];
-                
                 $work_type = $SubGroupAttribute[$groupidorg][$subgrup];
-                
                 if($work_type == 'Rent'){
                    $final_type = 'Expense Type';
                 }
                 else if($work_type == 'Key Dates'){
                     $final_type = 'Key Dates Type';
                 }
+				else if($work_type == 'Contacts'){
+                    $final_type = 'Contacts';
+                }
                 else {
                     $final_type = 'Option Type';
                 }
-             
-                
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
-           
-                $start_array = $seq + 1;
+                                                
                 
-				$start_array_rent=$start_array;
-				 $count+=count($attributeArr);
-				$count_array_rent=$count;
-				//$seq = $c;
+           if($start_array!=-1)
+           {
+               $start_array=$lastSequenc+1;
+                $count=count($attributeArr)+$start_array;
+                
+           }
+           else
+               $start_array=1;
                $type_keys = $keys;
-             
             }
             
             else{
                 
 		  $keyss = $type_keys;
-                $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
-		
-					if($start_array!=1) {
-                                          //  echo 's';
-						$start_array=$start_array_rent;
-                                                if($start_array_rent != 1){
-                                                $count=count($attributeArr)+$start_array;
-                                                $start_array=$start_array_rent + 1;
-                                                }
-                                                else{
-                                                  $count=count($attributeArr);  
-                                                }
-					}
-					else{
-                                          //  echo 'd';
-					$start_array=1;
-					$count=count($attributeArr);
-					}
-           
+                  $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
+                  $count=count($attributeArr);
+                  if($start_array!=1) 
+                      $count=(count($attributeArr)-1)+$start_array;
             }
-  
-      
             for($c= $start_array; $c < $count; $c++)
             {
                 $temp = $keyss[0];
@@ -3254,12 +3253,14 @@ exit;
                                         $update['funcValGroup'][$c]['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_'.$c] = $subgrup.'_'.$groupidorg.'_'.trim($attributeArr[$t],'"');
 					$update['addAttrGroup']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_'.$c]='A';
 				}
-				$start_array++;   
+				  
 				$t++;
 			if($c>$seq) {
 				$seq = $c;
+                                
+                              $lastSequenc=$c;
             }
-                       // echo $seq;
+                       
             }
         }
         if($tempGrpSearch == ''){
@@ -3293,8 +3294,7 @@ exit;
 		}
     }
           
- //  echo '<pre>';
-  //  pr($update);
+   
    echo json_encode($update);
  
 curl_close($ch); 
@@ -3373,43 +3373,50 @@ curl_close($ch);
      
        
     ////format///
+ $startFormat ='d-m-Y';   
+ $endFormat ='d-m-Y';    
+       
  if($C_dateformat =='MM-dd-yy'){
       $F_date=explode("-",$_POST['Commencement']);
       $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $startFormat ='m-d-Y';
  }
  elseif($C_dateformat =='y-M-d'){
       $F_date=explode("-",$_POST['Commencement']);
       $_POST['Commencement']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
-     
+      $startFormat ='Y-m-d';
  }
  elseif($C_dateformat =='M/d/y'){
      
       $F_date=explode("/",$_POST['Commencement']);
-      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
-     
+      $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $startFormat ='m/d/Y';
  } 
  elseif($C_dateformat =='M/d/y H:m'){
       $F_date=explode("/",$_POST['Commencement']);
-      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
-     
+      $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $startFormat ='m/d/Y';
  }
  //expiredate
  if($E_dateformat =='MM-dd-yy'){
       $F_date=explode("-",$_POST['Expiration']);
       $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+       $endFormat ='m-d-Y';
  }
  elseif($E_dateformat =='y-M-d'){
       $F_date=explode("-",$_POST['Expiration']);
       $_POST['Expiration']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
-     
+      $endFormat ='Y-m-d';
  }
  elseif($E_dateformat =='M/d/y'){
       $F_date=explode("/",$_POST['Expiration']);
-      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $endFormat ='m/d/Y';
  }  
  elseif($E_dateformat =='M/d/y H:m'){
       $F_date=explode("/",$_POST['Expiration']);
-      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $endFormat ='m/d/Y';
      
  }
    ////format end////
@@ -3465,7 +3472,6 @@ $period   = new \DatePeriod($start, $interval, $end);
 	  <th  width='20%'>Expense Start</th>
 	  <th  width='20%'>Expense End</th>
 	  </tr>";
-
 foreach ($period as $dt) {
 
     
@@ -3499,7 +3505,7 @@ $total =number_format((float)$total, 2, '.', '');
       
        $newStartDate=$dt->format("m/d/Y");
       
-  } 
+  }
   elseif($C_dateformat =='M/d/y H:m'){
       
        $newStartDate=$dt->format("m/d/Y");
@@ -3518,6 +3524,7 @@ $total =number_format((float)$total, 2, '.', '');
       
   }
   elseif($E_dateformat =='M/d/y'){
+     
       
        $newEndDate=date("m/d/Y", strtotime($Mindate));
       
@@ -3541,7 +3548,9 @@ $total =number_format((float)$total, 2, '.', '');
 			  </tr>';
 }
 
- $Htmlview.='</table">';
+  $Htmlview.='</table">';
+  $Htmlview.='<input type="hidden" name="startFormat" id="startFormat" value="'.$startFormat.'"">'
+          . '<input type="hidden" name="endFormat" id="endFormat" value="'.$endFormat.'" ">';
 
  
      if($date_set=="yes"){

@@ -14,13 +14,56 @@
 <link rel="stylesheet" media="screen" href="webroot/js/highlight/styles/github.css">
 <link rel="stylesheet" href="webroot/css/font-awesome/css/font-awesome.min.css">
 
-<?php 
+<script>
+  function datepickerformat(attrmasterid,attrdateformat){
+  $('.IsDatepicker_'+attrmasterid).Zebra_DatePicker({
+                    format: attrdateformat
+                });
 
+}                                                          
+</script>  
+
+<?php 
     use Cake\Routing\Router;
     echo $this->Html->css('zebra_datepicker.css');
     echo $this->Html->script('zebra_datepicker');
+
+
+function dateformatselectors($dat){
+ $newEndDate = '';
+ if($dat =='MM-dd-yy'){
+      $newEndDate='m-d-Y';
+ }
+ else if($dat =='y-M-d'){
+      $newEndDate='Y-m-d';
+ }
+ else if($dat =='M/d/y'){
+        $newEndDate='m/d/Y';
+ }
+ else if($dat =='M/d/y H:m'){
+      $newEndDate='m/d/Y';
+ }
+ else{
+      $newEndDate='d-m-Y';
+ }
+return $newEndDate;
+
+}
+
     ?>
-	<style>
+  
+ <script>
+ $(document).ready(function () {
+ 
+  $('.IsDatepicker').Zebra_DatePicker({
+                    direction: true,
+                    format: 'd-m-Y'
+                });
+   });
+
+   </script>
+
+<style>
 	.Apped-Rent{
 		padding:0px 10px;
 	}
@@ -40,14 +83,7 @@
 			padding:0px 5px;
 		}
 	</style>
- <script>	
-  $('.IsDatepicker').Zebra_DatePicker({
-                    direction: true,
-                    format: 'd-m-Y'
-                });
 
-
-   </script>
 
 
 <?php
@@ -548,6 +584,9 @@ width:100%;
 	z-index: 9999;
 	margin: 130px 355px 0px 500px;
 }
+#rent-loader {
+margin :-75px 355px 21px 1114px !important;
+}
 
 
     </style>
@@ -789,7 +828,7 @@ width:100%;
 
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
 																	<a href="" onclick="Rentcalc(<?php echo $valprodFields['AttributeMasterId'];?>,<?php echo $DependentMasterIds['ProductionField'];?>,<?php echo $DependentMasterIds['Comments']; ?>,<?php echo $DependentMasterIds['Disposition']; ?>,<?php echo $SubGroupId;?>,<?php echo $MainGroupId;?>,0);" data-target="#rentmodalAll" data-toggle="modal" class="rent-icon">
@@ -922,7 +961,12 @@ width:100%;
                                                                             }else{
                                                                               $isDatePicker = 1;
                                                                             }
-                                                                       
+                                                                         if(!empty($validate[$valprodFields['ProjectAttributeMasterId']]['IsDatepicker'])){
+                                                                                $dbClassName .=" IsDatepicker_".$valprodFields['ProjectAttributeMasterId'] ; 
+                                                                               
+                                                                            }else{
+                                                                              $dbClassName .="";
+                                                                            }
                                                                             
                                                                             //Mandatory coding ends
                                                                             if($valprodFields['ControlName']=='TextBox' || $valprodFields['ControlName']=='Label') { 
@@ -946,6 +990,7 @@ width:100%;
                                                                                 $inpClass = 'onchange="autoSave(' . $valprodFields['AttributeMasterId'] . ', ' . $DependentMasterIds['ProductionField'] . ', ' . $tempSq.');" class="wid-100per inputsubGrp_'.$key.'_'.$keysub.' form-control doOnBlur ' . $dbClassName . '" ';
                                                                             }
                                                                             ?>
+
                                                     
 															<div class="commonClass commonclass_<?php echo $valprodFields['MainGroupId']?>" id="groupAttr_<?php echo $valprodFields['AttributeMasterId'].'_'.$grpseq?>">
                                                             <div id="MultiField_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $thisseq; ?>" class="clearfix MultiField_<?php echo $valprodFields['AttributeMasterId']; ?> CampaignWiseFieldsDiv_<?php echo $key; ?> row form-responsive" style="<?php echo $disnone; ?>" >
@@ -1043,6 +1088,18 @@ width:100%;
                                                                                     ?>
                                                                     <span class="lighttext" value="<?php echo $InpValueFieldsValue; ?>" id="beforeText_<?php echo $key; ?>_<?php echo $keysub; ?>_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $tempSq; ?>" data-toggle="tooltip" title="<?php echo $InpValueFieldsValue; ?>"><?php echo $InpValueFieldsValue; ?></span><?php //echo $ScoreFieldsValue; ?>
 																	<span style="color:red;display:none;" class="lighttext validation_error" data-toggle="tooltip" id="<?php echo $ProdFieldsId."_error";?>"></span>
+
+
+<?php   if(!empty($validate[$valprodFields['ProjectAttributeMasterId']]['Dateformat'])){
+$dformat = dateformatselectors($validate[$valprodFields['ProjectAttributeMasterId']]['Dateformat']);
+                                                                ?>  
+                                                                     
+ <script>
+datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?php echo $dformat;?>');
+</script>              
+                                                                                     
+                                                                                     
+                                                                               <?php  }?>
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-md-2 form-text">
@@ -1471,7 +1528,7 @@ width:100%;
         </div>
 			 <div class="modal fade" id="rentmodalAll" aria-hidden="true" aria-labelledby="rentmodalAll" role="dialog" tabindex="-1">
             <div class="modal-dialog" style="max-width:1250px;max-height:400px;">
-                <div class="modal-content">
+                <div class="modal-content" id="modal-content">
 				<div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
@@ -1523,6 +1580,8 @@ width:100%;
                         </form>
                     </div>
 					  <div class="modal-footer">
+<div class="loader" style="display:none;" id="rent-loader"></div>
+
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">                        
 								
 						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Rentcalcappend();">Submit</button>
@@ -4815,8 +4874,8 @@ function Rentcalcsub(){
 	var RentInc = $("#RentIncVal").val();
 	var Frequency = $("#frequency").val();	
 
-	var CommencementId = $("#CommencementId").val();	
-	var ExpirationId = $("#ExpirationId").val();
+	var CommencementId = '<?php echo $CommencementProjAttrmasterid;?>';	
+	var ExpirationId = '<?php echo $ExpirationProjAttrmasterid;?>';
 	
 
  var decimalOnly = /^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/;
@@ -4856,7 +4915,28 @@ function Rentcalcsub(){
             });
 	}
 }
+
 function Rentcalcappend(){
+
+document.getElementById("rent-loader").style.display = "block";
+document.getElementById("modal-content").style.opacity = "0.5";
+ setTimeout(function(){
+                Rentcalcappendn();
+            }, 500);
+
+
+$("#modal-content").css("opacity", 1);
+}
+
+
+function Rentcalcappendn(){
+	
+       //$("#rent-loader").show();
+      
+
+	var startFormat = $("#startFormat").val();	
+	var endFormat = $("#endFormat").val();
+
 	var Commencement = $("#CommencementId").val();	
 	var GetSequence = $("#SequenceVal").val();
 	var Expiration = $("#ExpirationId").val();	
@@ -4910,15 +4990,28 @@ function Rentcalcappend(){
 						 $('#ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'').val(RentFirstAttrVal);
 						 //$('input[name="ProductionFields_'+RentFirstAttrId+'_'+ProductionField+'_'+seq+'"]').val(RentFirstAttrVal);
 						 $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').val(postData.startdatedata[i]);
+
 						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').val(postData.enddatedata[i]);
 						 $('input[name="ProductionFields_'+BaseRent+'_'+ProductionField+'_'+seq+'"]').val(postData.Amountdata[i]);
-						 $('input[name="ProductionFields_'+RentInc+'_'+ProductionField+'_'+seq+'"]').val(postData.percentdata[i]);						
+						 $('input[name="ProductionFields_'+RentInc+'_'+ProductionField+'_'+seq+'"]').val(postData.percentdata[i]);	
+
+
+var CommencementPEid = '<?php echo $CommencementProjAttrmasterid;?>';
+var ExpirationPEid = '<?php echo $ExpirationProjAttrmasterid;?>';
+ $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').addClass('IsDatepicker_'+CommencementPEid);
+                                                               
+datepickerformat(CommencementPEid,startFormat);
+						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').addClass('IsDatepicker_'+ExpirationPEid);
+                                                               
+datepickerformat(ExpirationPEid,endFormat);					
 						  }
-             
                 
-			
+		
+       $("#rent-loader").hide();	
 
 }
+
+
 
 function search_mode(){
 	
@@ -5178,8 +5271,8 @@ $('#ProductionFields_3242_101_1').val(PERSONNEL_ID);
 
 <script>
 
-var C_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$Commencement]['Dateformat']);?>';
-var E_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$Expiration]['Dateformat']);?>'; 
+var C_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$CommencementProjAttrmasterid]['Dateformat']);?>';
+var E_dateformat = '<?php echo json_encode($JsonArray['ValidationRules'][$ExpirationProjAttrmasterid]['Dateformat']);?>'; 
 
 var newEndDate = '';
 
