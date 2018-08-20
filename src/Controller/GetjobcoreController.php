@@ -3332,43 +3332,50 @@ curl_close($ch);
      
        
     ////format///
+ $startFormat ='d-m-Y';   
+ $endFormat ='d-m-Y';    
+       
  if($C_dateformat =='MM-dd-yy'){
       $F_date=explode("-",$_POST['Commencement']);
       $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $startFormat ='m-d-Y';
  }
  elseif($C_dateformat =='y-M-d'){
       $F_date=explode("-",$_POST['Commencement']);
       $_POST['Commencement']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
-     
+      $startFormat ='Y-m-d';
  }
  elseif($C_dateformat =='M/d/y'){
      
       $F_date=explode("/",$_POST['Commencement']);
-      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
-     
+      $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $startFormat ='m/d/Y';
  } 
  elseif($C_dateformat =='M/d/y H:m'){
       $F_date=explode("/",$_POST['Commencement']);
-      $_POST['Commencement']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
-     
+      $_POST['Commencement']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $startFormat ='m/d/Y';
  }
  //expiredate
  if($E_dateformat =='MM-dd-yy'){
       $F_date=explode("-",$_POST['Expiration']);
       $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+       $endFormat ='m-d-Y';
  }
  elseif($E_dateformat =='y-M-d'){
       $F_date=explode("-",$_POST['Expiration']);
       $_POST['Expiration']=$F_date[2]."-".$F_date[1]."-".$F_date[0];
-     
+      $endFormat ='Y-m-d';
  }
  elseif($E_dateformat =='M/d/y'){
       $F_date=explode("/",$_POST['Expiration']);
-      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $endFormat ='m/d/Y';
  }  
  elseif($E_dateformat =='M/d/y H:m'){
       $F_date=explode("/",$_POST['Expiration']);
-      $_POST['Expiration']=$F_date[1]."/".$F_date[0]."/".$F_date[2];
+      $_POST['Expiration']=$F_date[1]."-".$F_date[0]."-".$F_date[2];
+      $endFormat ='m/d/Y';
      
  }
    ////format end////
@@ -3498,7 +3505,9 @@ $total =number_format((float)$total, 2, '.', '');
 			  </tr>';
 }
 
- $Htmlview.='</table">';
+  $Htmlview.='</table">';
+  $Htmlview.='<input type="hidden" name="startFormat" id="startFormat" value="'.$startFormat.'"">'
+          . '<input type="hidden" name="endFormat" id="endFormat" value="'.$endFormat.'" ">';
 
  
      if($date_set=="yes"){
