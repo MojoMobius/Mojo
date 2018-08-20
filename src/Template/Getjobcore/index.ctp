@@ -20,7 +20,15 @@
                     format: attrdateformat
                 });
 
-}                                                          
+}      
+
+function datepickerformatpopup(attrmasterid,attrdateformat){
+  $('.IsnewDatepicker_'+attrmasterid).Zebra_DatePicker({
+                    format: attrdateformat
+                });
+
+}
+                                                    
 </script>  
 
 <?php 
@@ -1584,7 +1592,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 
                         <input type="hidden" name="ProductionEntity" id="ProductionEntity" value="<?php echo $productionjob['ProductionEntity']; ?>">                        
 								
-						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Rentcalcappend();">Submit</button>
+						<button type="button" class="btn btn-primary" onclick="Rentcalcappend();">Submit</button>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
                         <!--                            <button type="button" class="btn btn-primary">Submit</button>-->
@@ -2141,9 +2149,9 @@ $(document).keydown(function(e) {
             //var subGrpArrValidate='<?php echo str_replace("'", "\\'", json_encode($validate))?>';
             var subGrpArrValidate='<?php echo stripslashes(json_encode($validate))?>';
             var subGrpAttValidate = JSON.parse(subGrpArrValidate);
-			console.log(subGrpAtt);
-			console.log(groupId);
-			console.log(subgrpId);			
+			//console.log(subGrpAtt);
+			//console.log(groupId);
+			//console.log(subgrpId);			
             var subGrpAttArr = subGrpAtt[groupId][subgrpId];
             var groupName = 'Organization Status';
               
@@ -4925,15 +4933,15 @@ document.getElementById("modal-content").style.opacity = "0.5";
             }, 500);
 
 
-$("#modal-content").css("opacity", 1);
+
+
 }
 
 
 function Rentcalcappendn(){
 	
        //$("#rent-loader").show();
-      
-
+     
 	var startFormat = $("#startFormat").val();	
 	var endFormat = $("#endFormat").val();
 
@@ -4980,9 +4988,8 @@ function Rentcalcappendn(){
              postData.enddatedata.push($(el).val());
         });
                
-				
-						for(var i=0;i < totArr;i++){
-													
+			
+			for(var i=0;i < totArr;i++){
 							
                          addSubgrpAttribute(RentSubGroup,RentGroup);
 						   seq = parseInt(seq) + parseInt(1);
@@ -4998,17 +5005,18 @@ function Rentcalcappendn(){
 
 var CommencementPEid = '<?php echo $CommencementProjAttrmasterid;?>';
 var ExpirationPEid = '<?php echo $ExpirationProjAttrmasterid;?>';
- $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').addClass('IsDatepicker_'+CommencementPEid);
+ $('input[name="ProductionFields_'+Commencement+'_'+ProductionField+'_'+seq+'"]').addClass('IsnewDatepicker_'+CommencementPEid);
                                                                
-datepickerformat(CommencementPEid,startFormat);
-						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').addClass('IsDatepicker_'+ExpirationPEid);
+						 $('input[name="ProductionFields_'+Expiration+'_'+ProductionField+'_'+seq+'"]').addClass('IsnewDatepicker_'+ExpirationPEid);
                                                                
-datepickerformat(ExpirationPEid,endFormat);					
 						  }
-                
+
+                datepickerformatpopup(CommencementPEid,startFormat);
+                datepickerformatpopup(ExpirationPEid,endFormat);	
 		
        $("#rent-loader").hide();	
-
+        $("#modal-content").css("opacity", 1);
+       $('#rentmodalAll').modal('hide');
 }
 
 
