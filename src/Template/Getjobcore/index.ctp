@@ -641,6 +641,8 @@ margin :-75px 355px 21px 1114px !important;
                                     </div>
                                 </span>
                                 <?php echo $this->Form->input('', array('type' => 'hidden', 'id' => 'TimeTaken', 'name' => 'TimeTaken', 'value' => $hrms[0])); ?>
+
+<button class="btn btn-default" type="button" id="stopTimermode" data-target="#pausetimermodal" data-toggle="modal" data-backdrop="static" data-keyboard="false">Pause Timer</button>
                             </label>
                         </h3>
                     </div>
@@ -1509,6 +1511,46 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 								   <div class="col-md-6"> <label for="Query" >Middle Name</label></div>
 								   <div class="col-md-6"><input type="text" name="MIDDLE_NAME" id="MIDDLE_NAME"  class="form-control" value="">
 								   </div>
+
+
+<div class="modal fade" id="pausetimermodal" aria-hidden="true" aria-labelledby="pausetimermodal" role="dialog" tabindex="-1">
+            <div class="modal-dialog" style="max-width:1200px;">
+                <div class="modal-content">
+				<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Search Field</h4>
+                    </div>
+					<div class="modal-body" style="height:520px;overflow-y:auto;">                       
+                            <div class="form-group">
+							
+                                <div class="form-group col-md-6">
+								   <div class="col-md-6"> <label for="Query" >Transfer_Agent_Name</label></div>
+								   <div class="col-md-6"><input type="text" name="OSF_CO_NAME" id="OSF_CO_NAME"  class="form-control" value="">
+								   </div>
+                                </div>
+								 <div class="form-group col-md-6">
+								   <div class="col-md-6"> <label for="Query" >Company Name</label></div>
+								   <div class="col-md-6"><input type="text" name="FORMER_CO_NAME" id="FORMER_CO_NAME" class="form-control" value="">
+								   </div>
+                                </div>
+								
+                                </div>
+								 <div class="form-group col-md-6">
+								    
+								   <?php echo $this->Form->button('Search', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Searchdata();")) . ' '; ?>
+                                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> -->
+								 <div class="hot_search">
+								 </div>
+								</div>
+                            </div>
+                        </form>
+                    </div>
+					  
+				</div>
+            </div>
+
                                 </div>
 								<div class="form-group col-md-12">
 								   <div class="col-md-6"> <label for="Query" >Last Name</label></div>
@@ -1534,6 +1576,54 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 				</div>
             </div>
         </div>
+
+
+
+
+
+<!-- start pausetimermodal--->   
+ 
+<div class="modal fade" id="pausetimermodal" aria-hidden="true" aria-labelledby="pausetimermodal" role="dialog" tabindex="-1">
+            <div class="modal-dialog" style="max-width:388px;">
+                <div class="modal-content">
+				<div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalTitle">Timer</h4>
+                    </div>
+			<div class="modal-body" style="height:125px;overflow-y:auto;">                       
+                            <div class="form-group">
+							
+                                <div class="form-group col-md-6">
+				<div class="col-md-6"> 
+
+                                </div>
+				<div class="col-md-6">
+
+<button class="btn btn-default" type="button" id="startTimermode" data-toggle="modal">Start Timer</button>
+			</div>
+                                </div>
+								 <div class="form-group col-md-6">
+								   <div class="col-md-6"> 
+
+</div>
+                                <div class="col-md-6">
+
+                                </div>
+                                </div>
+				</div>
+                            </div>
+                        
+                    </div>
+					  
+				</div>
+            </div>
+     <!-- end pausetimermodal--->   
+
+
+
+
 			 <div class="modal fade" id="rentmodalAll" aria-hidden="true" aria-labelledby="rentmodalAll" role="dialog" tabindex="-1">
             <div class="modal-dialog" style="max-width:1250px;max-height:400px;">
                 <div class="modal-content" id="modal-content">
@@ -3440,7 +3530,42 @@ $(document).keydown(function(e) {
         document.getElementById('TimeTaken').value = hour + ":" + minutes + ":" + remainingSeconds;
         seconds++;
     }
-    var countdownTimer = setInterval('secondPassed()', 1000);
+   
+//var countdownTimer = setInterval('secondPassed()', 1000);
+
+
+
+var timer = null, 
+    interval = 1000,
+    value = 0;
+
+timer = setInterval(function () {
+     secondPassed();
+  }, interval); 
+
+$("#startTimermode").click(function() {
+
+  if (timer !== null){return;}
+  timer = setInterval(function () {
+     secondPassed();
+  }, interval); 
+
+ setTimeout(function () {
+           $("#pausetimermodal").hide();
+        }, 1500);
+    $("#ProductionArea").css("opacity",1);
+});
+
+$("#stopTimermode").click(function() {
+
+$("#ProductionArea").css("opacity",0.5);
+
+  clearInterval(timer);
+  timer = null
+  AjaxSave('');
+});
+
+
 
 </script>
 
@@ -4933,8 +5058,6 @@ document.getElementById("modal-content").style.opacity = "0.5";
             }, 500);
 
 
-
-
 }
 
 
@@ -5329,7 +5452,7 @@ var newStartDate = '';
             direction: false,
           });
 		  
-	function isDatecheck(txtDate)
+    function isDatecheck(txtDate)
    {
     var currVal = txtDate;
     if(currVal == '')
