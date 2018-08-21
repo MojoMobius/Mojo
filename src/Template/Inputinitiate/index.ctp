@@ -287,7 +287,7 @@ if (count($list) > 0) {
                                     <tr class="Heading">
                                         <th class="Cell" hidden="">Id</th> 
                                         <th class="Cell" width="10%">Project</th> 
-                                        <th class="Cell" width="10%">Region</th> 
+<!--                                        <th class="Cell" width="10%">Region</th> -->
                                         <th class="Cell" width="10%">File Name</th>
                                         <th class="Cell" width="10%">Status</th>
                                          <th class="Cell" width="10%">Response Data</th>
@@ -313,7 +313,7 @@ if (count($list) > 0) {
                                     <tr>
                                         <td hidden=""><?php echo $i; ?></td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
-                                        <td><?php echo $RegionName; ?></td>
+<!--                                        <?php //echo $RegionName; ?><td></td>-->
                                         <td><?php echo "<a href='$basefilepath_file'> ".$input['FileName']."</a>"; ?></td>
                                          <td><?php echo $StatusType[$input['InputToStatus']]; ?></td>
                                           <td><?php echo $input['ResponseData']; ?></td>

@@ -76,7 +76,7 @@ class InputinitiateController extends AppController {
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->Flash->success(__('File has been saved.'));
+            $this->Flash->success(__('File has been Uploaded Successfully.'));
             return $this->redirect(['action' => 'index']);
         }
 
