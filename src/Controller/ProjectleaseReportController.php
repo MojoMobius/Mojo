@@ -49,12 +49,13 @@ class ProjectleaseReportController extends AppController {
         exit;
     }
 
-    public function getvalues($array, $key,$d='',$dt='') {
+    public function getvalues($array, $key,$d='',$dt='',$s='') {
         $arr = array();
         if (!empty($array)) {
             $arr = array_column($array, $key);
             $msg = '';
             if (!empty($arr)) {
+                $i = 1;
                 foreach ($arr as $k => $v) {
                     if (!empty($v)) {
                         if(!empty($d)){
@@ -63,12 +64,18 @@ class ProjectleaseReportController extends AppController {
                         if(!empty($dt)){
                             $v = date('d-m-Y', strtotime($v));
                         }
+                        if(!empty($s)){
+                              $v = $i.". ". $v;
+                              $i++;
+                        }
+                        
                         $msg .=$v . ", ";
                     }
                 }
             }
-            $msg = rtrim($msg, ',');
-//            $this->pr($msg);exit;
+            
+            $msg = rtrim($msg, ', ');
+                      
             return $msg;
         }
 
@@ -225,8 +232,7 @@ class ProjectleaseReportController extends AppController {
             $DependencyTypeMasterId = $queryData[0]['Id'];
 
             $queryData = $connection->execute("select cpid.AttributeValue as fdrid,cpid.ProductionEntityID ,cpid.InputEntityId from ME_UserQuery as uq inner join MC_CengageProcessInputData as cpid on uq.ProductionEntityID=cpid.ProductionEntityID  where uq.ProjectId='$ProjectId' and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId' $conditions group by cpid.AttributeValue , cpid.ProductionEntityID,cpid.InputEntityId")->fetchAll('assoc');
-            
- 
+        
             $list = array();
             if (!empty($queryData)) {
                 foreach ($queryData as $key => $val) {
@@ -241,6 +247,9 @@ class ProjectleaseReportController extends AppController {
 
                     $sub_queryData = $connection->execute("SELECT * FROM ME_UserQuery as uq where uq.ProjectId='$ProjectId' and uq.ModuleId='$ModuleId' and uq.ProductionEntityID='$ProductionEntityID' AND uq.RegionId ='$RegionId'  $conditions")->fetchAll('assoc');
 
+//                    $sub_queryData[0]['Client_Response']= "tset tets";
+//                    $sub_queryData[] =$sub_queryData[0];
+                    
                     //and ProductionEntityID='$ProductionEntityID' 
 //                     $this->pr($sub_queryData);
 
@@ -250,9 +259,9 @@ class ProjectleaseReportController extends AppController {
                     $Client_Response_Date = "";
                     if (!empty($sub_queryData)) {
                         
-                        $TLComments = $this->getvalues($sub_queryData, 'TLComments');
+                        $TLComments = $this->getvalues($sub_queryData, 'TLComments','','','s');
                         $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate','D');
-                        $Client_Response = $this->getvalues($sub_queryData, 'Client_Response');
+                        $Client_Response = $this->getvalues($sub_queryData, 'Client_Response','','','s');
                         $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','','dt');
                     }
 

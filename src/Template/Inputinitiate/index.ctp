@@ -292,17 +292,23 @@ if (count($list) > 0) {
                                         <th class="Cell" width="10%">Status</th>
                                          <th class="Cell" width="10%">Response Data</th>
                                         <th class="Cell" width="10%">Created Date</th>
+                                        <th class="Cell" width="10%">File Import status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $i = 0;
+                                    
+                                    $recordstatusarray = array(1=>"Initiate",2=>"In Progress",3=>"Completed",4=>"Failed");
+                                    
+                                    
                                     foreach ($list as $inputVal => $input):
                                         $path = JSONPATH . '\\ProjectConfig_' . $input['ProjectId'] . '.json';
                                         $content = file_get_contents($path);
                                         $contentArr = json_decode($content, true);
                                         $RegionName = $contentArr['RegionList'][$input['Region']];
                                         $StatusType = $contentArr['ProjectStatus'];
+                                        $recordStatus = $input['RecordStatus'];
 
                                         $CreatedDate = $input['CreatedDate']; 
                                         $newCreatedDate = date('d-m-Y H:i:s', strtotime($CreatedDate));
@@ -318,6 +324,8 @@ if (count($list) > 0) {
                                          <td><?php echo $StatusType[$input['InputToStatus']]; ?></td>
                                           <td><?php echo $input['ResponseData']; ?></td>
                                         <td><?php echo $newCreatedDate; ?></td>
+                                        <td><?php echo $recordstatusarray[$recordStatus]; ?></td>
+                                        
                                     </tr>
                                     <?php
                                     $i++;
