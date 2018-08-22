@@ -21,8 +21,12 @@
                 });
 
 }      
+function datepickerformatpopupd(){
+alert(11);
+}
 
 function datepickerformatpopup(attrmasterid,attrdateformat){
+
   $('.IsnewDatepicker_'+attrmasterid).Zebra_DatePicker({
                     format: attrdateformat
                 });
@@ -839,7 +843,7 @@ margin :-75px 355px 21px 1114px !important;
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
 
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
 
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
@@ -1504,39 +1508,6 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 								   <div class="col-md-6"><input type="text" name="FORMER_CO_NAME" id="FORMER_CO_NAME" class="form-control" value="">
 								   </div>
                                 </div>
-								<!-- <div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >First Name</label></div>
-								   <div class="col-md-6"><input type="text" name="FIRST_NAME" id="FIRST_NAME"  class="form-control" value="">
-								   </div>
-                                </div>
-								 <div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >Middle Name</label></div>
-								   <div class="col-md-6"><input type="text" name="MIDDLE_NAME" id="MIDDLE_NAME"  class="form-control" value="">
-								   </div>
-
-
-<div class="modal fade" id="pausetimermodal" aria-hidden="true" aria-labelledby="pausetimermodal" role="dialog" tabindex="-1">
-            <div class="modal-dialog" style="max-width:1200px;">
-                <div class="modal-content">
-				<div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="exampleModalTitle">Search Field</h4>
-                    </div>
-					<div class="modal-body" style="height:520px;overflow-y:auto;">                       
-                            <div class="form-group">
-							
-                                <div class="form-group col-md-6">
-								   <div class="col-md-6"> <label for="Query" >Transfer_Agent_Name</label></div>
-								   <div class="col-md-6"><input type="text" name="OSF_CO_NAME" id="OSF_CO_NAME"  class="form-control" value="">
-								   </div>
-                                </div>
-								 <div class="form-group col-md-6">
-								   <div class="col-md-6"> <label for="Query" >Company Name</label></div>
-								   <div class="col-md-6"><input type="text" name="FORMER_CO_NAME" id="FORMER_CO_NAME" class="form-control" value="">
-								   </div>
-                                </div>
 								
                                 </div>
 								 <div class="form-group col-md-6">
@@ -1554,16 +1525,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
             </div>
 
                                 </div>
-								<div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >Last Name</label></div>
-								   <div class="col-md-6"><input type="text" name="LAST_NAME" id="LAST_NAME"  class="form-control" value="">
-								   </div>
-                                </div>
-								<div class="form-group col-md-12">
-								   <div class="col-md-6"> <label for="Query" >Competitor_Name</label></div>
-								   <div class="col-md-6"><input type="text" name="RentIncVal1" id="RentIncVal1"  class="form-control" value="">
-								   </div> -->
-                                </div>
+								
 								 <div class="form-group col-md-6">
 								    
 								   <?php echo $this->Form->button('Search', array('id' => 'Query', 'type' => 'button', 'name' => 'Query', 'value' => 'Query', 'class' => 'btn btn-primary', 'onclick' => "Searchdata();")) . ' '; ?>
@@ -1581,17 +1543,13 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 
 
 
-
-
 <!-- start pausetimermodal--->   
  
 <div class="modal fade" id="pausetimermodal" aria-hidden="true" aria-labelledby="pausetimermodal" role="dialog" tabindex="-1">
             <div class="modal-dialog" style="max-width:388px;">
                 <div class="modal-content">
 				<div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
+                        
                         <h4 class="modal-title" id="exampleModalTitle">Timer</h4>
                     </div>
 			<div class="modal-body" style="height:125px;overflow-y:auto;">                       
@@ -3560,11 +3518,13 @@ $("#startTimermode").click(function() {
 
 $("#stopTimermode").click(function() {
 
-$("#ProductionArea").css("opacity",0.5);
 
   clearInterval(timer);
   timer = null
   AjaxSave('');
+
+$("#ProductionArea").css("opacity",0.5);
+
 });
 
 

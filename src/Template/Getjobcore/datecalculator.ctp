@@ -1,3 +1,4 @@
+
 <br>
 <p ALIGN=CENTER><b>Date Calculator</b></p>
 <table align='center'>
@@ -31,6 +32,7 @@
 </tr>
 <tr>
 	<td><input type="button" value="Update" id="update" onclick="update_parent();"></td>
+	<td><input type="button" value="btn" id="update" onclick="button_parent();"></td>
 	<td><input type="button" value="Close" id="winclose" onclick="window.close();"></td>
 </tr>
 </table>
@@ -40,7 +42,7 @@
 			inpuId = '<?php echo urldecode($_GET['inputid']); ?>'; 
 			var arr1 = inpuId.split('"');
 			inpuId = arr1[1];
-				
+//				console.log(arr1);
 			$('#startDate').Zebra_DatePicker({
 				format: 'd-m-Y',
 				onSelect: function (dateText, inst) {
@@ -70,10 +72,21 @@
 			});
 			
 		});
+
 		
+function button_parent(){
+
+window.parent.datepickerformatpopup(1,2);
+
+var vals = $("#newDate").val();
+alert(vals);
+
+}
+
 		function update_parent() {
 			//alert('child');
 			var vals = $("#newDate").val();
+
             window.opener.setValue(inpuId, vals);
             window.close();
             return false;

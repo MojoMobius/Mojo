@@ -3301,7 +3301,21 @@ curl_close($ch);
 		exit;
 	}    
  function datecalculator() {
-		
+     $connection = ConnectionManager::get('default');
+     $session = $this->request->session();
+     $ProjectId = $session->read("ProjectId");
+     $moduleId = $session->read("moduleId");
+     $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+     $prod = $JsonArray['ModuleAttributes'][1011][$moduleId]['production'];
+     $this->set('JsonArray', $JsonArray);
+     $this->set('prod', $prod);
+//      
+//     $Commencementkey = $this->searchForId($Commencement,$prod);
+//     $Expirationkey = $this->searchForId($Expiration,$prod);
+//    $this->set('CommencementProjAttrmasterid',$Commencementkey);
+//    $this->set('ExpirationProjAttrmasterid', $Expirationkey);
+//     print_r($ProjectId);exit;
+                 
 	}
  function ajaxRentcal(){
 
