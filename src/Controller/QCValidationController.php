@@ -1179,18 +1179,21 @@ jai*/
             $module = $JsonArray['Module'];
             $module = array_keys($module);
          
-           $ProductionFields = array();
+               $ProductionFields = array();
            $StaticFields = array();
            foreach ($module as $key => $value) {
    $StaticFieldsarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['static'];   
-   $ProductionFieldsarr = $JsonArray['ModuleAttributes'][$RegionId][$value]['production'];  
-   if(!empty($ProductionFieldsarr))
-    $ProductionFields = array_merge($ProductionFields,$ProductionFieldsarr);
     if(!empty($StaticFieldsarr))
     $StaticFields = array_merge($StaticFields,$StaticFieldsarr);
  }
-            $AttributeGroupMaster = $JsonArray['AttributeGroupMasterDirect'];
-         //   $AttributeGroupMaster = $AttributeGroupMaster[$moduleId];
+ $moduleIdQCattr=$connection->execute("SELECT ModuleId FROM ME_Module_Level_Config where Project=$ProjectId and Modulegroup=1 order by LevelId DESC")->fetchAll('assoc');    
+					//pr($moduleId);
+                    $moduleIdQCattr=$moduleIdQCattr[0]['ModuleId'];
+ $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleIdQCattr]['production'];   
+            //$AttributeGroupMaster = $JsonArray['AttributeGroupMasterDirect'];
+			$AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
+            $AttributeGroupMaster = $AttributeGroupMaster[$moduleIdQCattr];
+        
 
             $groupwisearray = array();
             $subgroupwisearray = array();
@@ -1486,7 +1489,7 @@ jai*/
                     $productiontimemetricMain = $connection->execute("UPDATE MV_QC_TimeMetric SET StatusId=" . $completion_status . ",QcStatusId=" . $QcStatusId . ",QCEndDate='" . date('Y-m-d H:i:s') . "',QCTimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntityID=" . $ProductionEntity . " AND Module_Id=" . $moduleId);
                     if(count($cnt_InputEntity_TLRejectError[0]['cnt'])>0){
                         
-                    $moduleId=$connection->execute("SELECT ModuleId FROM ME_Module_Level_Config where Project=3346 and Modulegroup=1")->fetchAll('assoc');    
+                    $moduleId=$connection->execute("SELECT ModuleId FROM ME_Module_Level_Config where Project=$ProjectId and Modulegroup=1 order by LevelId DESC")->fetchAll('assoc');    
 					//pr($moduleId);
                     $table='Staging_'.$moduleId[0]['ModuleId'].'_Data';
                     $productionjob = $connection->execute("UPDATE $table SET StatusId=" . $completion_status . " WHERE ProductionEntity=" . $ProductionEntity);    

@@ -3745,6 +3745,20 @@ foreach ($result as $set) {
         
     }
      
- 
+ function GetFetchDate(){
+        $date=$_POST['inputdate'];
+        if($_POST['year'] != 0){
+            $date= date('d-m-Y', strtotime($date. $_POST['year'] .'year'));
+        }
+        if($_POST['month'] != 0){
+            $date= date('d-m-Y', strtotime($date. $_POST['month'] .'month'));
+        }
+         if($_POST['days'] != 0){
+            $date= date('d-m-Y', strtotime($date. $_POST['days'] .'days'));
+        }
+        
+        echo '<input type="text" value="'.$date.'" readonly id="newDate">';
+        exit;
+    }
  
 }
