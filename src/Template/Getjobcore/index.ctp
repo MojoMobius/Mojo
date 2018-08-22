@@ -631,6 +631,8 @@ margin :-75px 355px 21px 1114px !important;
                             <div class="col-md-4 font-size-14">
                         <?php echo "Project Name : ". $ProjectName; ?>
 
+<input type="hidden" name="timerstatus" id="timerstatus" class="form-control" value="0">
+
                     </div> <button class="btn btn-default" type="button" onclick="search_mode();" data-target="#searchmodal" data-toggle="modal">Search</button>
 			
                             <label class="pull-right font-size-14">Timer 
@@ -3504,7 +3506,7 @@ timer = setInterval(function () {
   }, interval); 
 
 $("#startTimermode").click(function() {
-
+$("#timerstatus").val(0);
   if (timer !== null){return;}
   timer = setInterval(function () {
      secondPassed();
@@ -3518,7 +3520,7 @@ $("#startTimermode").click(function() {
 
 $("#stopTimermode").click(function() {
 
-
+    $("#timerstatus").val(1);
   clearInterval(timer);
   timer = null
   AjaxSave('');
@@ -4007,10 +4009,30 @@ $("#ProductionArea").css("opacity",0.5);
        
        var file = 'http://mobiuslease.botminds.ai/login';
        myWindow = window.open("", "myWindow", "width=500, height=500");
-       myWindow.document.write('<iframe id="pdfframe"  src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
+       myWindow.document.write('<iframe id="pdfframe" src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
 
-      
+    setInterval('gettimercurrentstatus()', 3000);
+
    }
+
+ function gettimercurrentstatus() {
+        var timerstatus = $("#timerstatus").val();
+        if(timerstatus > 0){
+        parentPdfPopup(1);
+        }else{
+        parentPdfPopup(0);
+        }
+    }
+
+function parentPdfPopup(x) {
+if(x >0){
+    myWindow.document.getElementById("pdfframe").style.opacity = "0.4";
+}else{
+    myWindow.document.getElementById("pdfframe").style.opacity = "1";
+}
+
+}
+
     function onMyFrameLoad() {
         $('#loaded').val('loaded');
     }
