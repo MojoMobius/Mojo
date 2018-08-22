@@ -1,7 +1,11 @@
-
 <?php 
     use Cake\Routing\Router;
-	?>
+    
+    $inpuId = urldecode($_GET['inputid']);
+    $inpuIdarr = explode("_", $inpuId);
+    $attributeid = $inpuIdarr[1];
+?>
+
 <br>
 <p ALIGN=CENTER><b>Date Calculator</b></p>
 <table align='center'>
@@ -106,9 +110,30 @@
 		function update_parent() {
 			//alert('child');
 			var vals = $("#newDate").val();
-            window.opener.setValue(inpuId, vals);
-            window.close();
-            return false;
+                        
+                        if(vals == ''){
+                            alert("Please Choose the Date");
+                            $("#newDate").focus();
+                            return false;
+                        }
+                        
+			var attributeid = '<?php echo $attributeid;?>';
+                        
+                        $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculatrformat')); ?>",
+                 data: ({datevals: vals,attributeid: attributeid}),
+                success: function (res) {
+               window.opener.setValue(inpuId, res);
+                window.close();
+                return false;
+//            
+		}
+                
+                });
+                        
+                        
+           
 		}
 
 		function humanise() {

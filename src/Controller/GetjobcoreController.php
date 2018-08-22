@@ -3317,6 +3317,54 @@ curl_close($ch);
 //     print_r($ProjectId);exit;
                  
 	}
+        
+     
+       
+function dateformatselectors($datfrmt,$date){
+ // convert seconds into a specific format
+ $newEndDate = '';
+ if($datfrmt =='MM-dd-yy'){
+      $newEndDate='m-d-Y';
+ }
+ else if($datfrmt =='y-M-d'){
+      $newEndDate='Y-m-d';
+ }
+ else if($datfrmt =='M/d/y'){
+        $newEndDate='m/d/Y';
+ }
+ else if($datfrmt =='M/d/y H:m'){
+      $newEndDate='m/d/Y';
+ }
+ else{
+      $newEndDate='d-m-Y';
+ }
+
+ $date = date($newEndDate, strtotime($date));
+ 
+return $date;
+
+}
+
+ function datecalculatrformat() {
+     
+      $connection = ConnectionManager::get('default');
+     $session = $this->request->session();
+     $ProjectId = $session->read("ProjectId");
+     $moduleId = $session->read("moduleId");
+     $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+     $prod = $JsonArray['ModuleAttributes'][1011][$moduleId]['production'];
+     
+     $dateval = $this->request->data['datevals'];
+     $attributeid = $this->request->data['attributeid'];
+    
+     $productionattributeid = $this->searchForId($attributeid,$prod);
+     $dateformat=$JsonArray['ValidationRules'][$productionattributeid]['Dateformat'];
+     $date = $this->dateformatselectors($dateformat,$dateval);
+     echo $date;
+     exit;
+     
+ }
+        
  function ajaxRentcal(){
 
         $session = $this->request->session();
