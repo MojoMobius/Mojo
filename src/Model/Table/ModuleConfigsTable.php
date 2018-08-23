@@ -40,7 +40,7 @@ class ModuleConfigsTable extends Table {
         if ($contentArr['Module'] != '') {
             $tableData = '<div class="bs-example" style="margin-top:20px;">';
             $tableData .= '<table id="AddOptionTable" class="table table-striped">';
-            $tableData.='<thead><tr><th>Modules</th><th>Level</th><th>Maintain History</th><th>Input Mandatory</th><th>Visibility ' . $chkbox . '</th><th>Is Module</th><th>Is Url Monitoring ' . $IsURL . '</th>' . $IsHygineHeader . '</tr></thead>';
+            $tableData.='<thead><tr><th>Modules</th><th>Level</th><th>Maintain History</th><th>Input Mandatory</th><th>Visibility ' . $chkbox . '</th><th>Is Module</th><th>Is Url Monitoring ' . $IsURL . '</th><th>Simple Estimated Time</th><th>Medium Estimated Time</th><th>Complex Estimated Time</th>' . $IsHygineHeader . '</tr></thead>';
             $j = 1;
             foreach ($contentArr['Module'] as $key => $value):
                 $temp = '';
@@ -57,13 +57,18 @@ class ModuleConfigsTable extends Table {
                 $tableData.='<td> <div class="col-sm-12"> <input type="hidden" name="Module[' . $j . ']" value="' . $key . '">  ' . $value . '</div></td>';
                 $tableData.='<td><div class="col-sm-12">' . $temp . '</div></td>';
                 $tableData.='<td><div class="col-sm-12">' . '<Select class="form-control" id="history_' . $j . '" name="history[' . $j . ']"> <option value="0">--Select--</option> <option value="1">Yes</option>
-                                             <option value="2">No</option>' . '</Select></div></td>';
+                                             <option value="2" >No</option>' . '</Select></div></td>';
                 $tableData.='<td><div class="col-sm-12">' . '<Select class="form-control" id="mandatory_' . $j . '" name="mandatory[' . $j . ']"> <option value="0">--Select--</option> <option value="1">Yes</option>
                                              <option value="2">No</option></Select>' . '</div></td>';
                 $tableData.='<td> <div class="col-sm-12"> <input type="checkbox" class="chk-wid"  onClick="checkAllAtt(this, ' . $j . ')" id="checkbox[' . $j . ']" name="checkbox[' . $j . ']" value="' . $val . '"> </div> </td>';
                 $tableData.='<td><div class="col-sm-12">' . '<Select disabled="disabled" onchange="onSelectChange(' . $j . ')" class="form-control" id="IsModule_' . $j . '" name="IsModule[' . $j . ']"> <option value="0">--Select--</option> <option value="1">Production</option>
                                              <option value="2">QC Validation</option></Select>' . '</div></td>';
                 $tableData.='<td> <div class="col-sm-12"> <input type="checkbox" class="chk-wid-Url" onClick="checkAllUrlAtt()" id="IsURL[' . $j . ']" name="IsURL[' . $j . ']" value="' . $val . '"> </div> </td>';
+               
+                $tableData.='<td> <div class="col-sm-12"> <input type="text" class="chk-wid-Url"  id="IsSimple[' . $j . ']" name="IsSimple[' . $j . ']" value=""> </div> </td>';
+                $tableData.='<td> <div class="col-sm-12"> <input type="text" id="IsMedium[' . $j . ']" name="IsMedium[' . $j . ']" value=""> </div> </td>';
+                $tableData.='<td> <div class="col-sm-12"> <input type="text"  id="IsComplex[' . $j . ']" name="IsComplex[' . $j . ']" value=""> </div> </td>';
+                
                 if ($HygineCheckCount == 1) {
                     $tableData.='<td> <div class="col-sm-12"> <input disabled="disabled" type="checkbox" class="chk-wid-HygineCheck" onClick="checkAllHygineAtt()" id="IsHygineCheck[' . $j . ']" name="IsHygineCheck[' . $j . ']" value="' . $val . '"> </div> </td>';
                 }

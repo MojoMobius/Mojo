@@ -30,9 +30,10 @@ class ModuleConfigsController extends AppController {
     }
 
     public function index() {
-		//echo '<pre>';
+//		echo '<pre>';
 //print_r(scandir('\\\\10.101.11.76\\html\\Lease Services\\4. IMPLEMENTATION PHASE\\CBRE\\4.2 Output Management\\B Input Files\\MoJo_Lease\\Lease documents\\CN003P01\\'));exit;
         $Projects = $this->projectmasters->find('ProjectOption');
+     
         asort($Projects);
         $connection = ConnectionManager::get('default');
         $queries = $connection->execute("SELECT Project FROM ME_Module_Level_Config where RecordStatus = 1");
@@ -42,6 +43,7 @@ class ModuleConfigsController extends AppController {
                 unset($Projects[$key]);
             }
         }
+//           print_r($Projects);exit;
 
         $this->set('Projects', $Projects);
 
@@ -64,6 +66,11 @@ class ModuleConfigsController extends AppController {
             $IsInputMandatory = $this->request->data['mandatory'];
             $IsVisibility = $this->request->data['checkbox'];
             $IsModule = $this->request->data['IsModule'];
+            
+            $Simple_Estimated_Time = $this->request->data['IsSimple'];
+            $Medium_Estimated_Time = $this->request->data['IsMedium'];
+            $Complex_Estimated_Time = $this->request->data['IsComplex'];
+            
             $IsUrlMonitoring = $this->request->data['IsURL'];
             $IsHygineCheck = $this->request->data['IsHygineCheck'];
             $RecordStatus = '1';
@@ -74,15 +81,14 @@ class ModuleConfigsController extends AppController {
             $conditions = array(
                 'Project' => $this->request->data('ProjectId')
             );
-
+           
             if ($this->ModuleConfigs->exists($conditions)) {
                 $this->Flash->error(__('Project already exists.'));
             } else {
                 for ($i = 1; $i <= $level; $i++) {
                     $ModuleConfigs = $this->ModuleConfigs->newEntity($this->request->data());
                     $ModuleConfigs = $this->ModuleConfigs->patchEntity($ModuleConfigs, $this->request->data);
-                    $ModuleConfigs = $this->ModuleConfigs->patchEntity($ModuleConfigs, ['Project' => $Project, 'ModuleId' => $ModuleId[$i], 'ModuleName' => $ModuleName[$i], 'LevelId' => $LevelId[$i], 'IsHistoryTrack' => $IsHistoryTrack[$i], 'IsInputMandatory' => $IsInputMandatory[$i], 'CreatedBy' => $user_id, 'CreatedDate' => date("Y-m-d H:i:s"), 'RecordStatus' => 1, 'IsUrlMonitoring' => $IsUrlMonitoring[$i], 'IsHygineCheck' => $IsHygineCheck[$i], 'IsAllowedToDisplay' => $IsVisibility[$i], 'modulegroup' => $IsModule[$i]]);
-
+                    $ModuleConfigs = $this->ModuleConfigs->patchEntity($ModuleConfigs, ['Project' => $Project, 'ModuleId' => $ModuleId[$i], 'ModuleName' => $ModuleName[$i], 'LevelId' => $LevelId[$i], 'IsHistoryTrack' => $IsHistoryTrack[$i], 'IsInputMandatory' => $IsInputMandatory[$i], 'CreatedBy' => $user_id, 'CreatedDate' => date("Y-m-d H:i:s"), 'RecordStatus' => 1, 'IsUrlMonitoring' => $IsUrlMonitoring[$i], 'IsHygineCheck' => $IsHygineCheck[$i], 'IsAllowedToDisplay' => $IsVisibility[$i],'Simple_Estimated_Time'=>$Simple_Estimated_Time[$i],'Medium_Estimated_Time'=>$Medium_Estimated_Time[$i],'Complex_Estimated_Time'=>$Complex_Estimated_Time[$i], 'modulegroup' => $IsModule[$i]] );
 
                     $this->ModuleConfigs->save($ModuleConfigs);
                 }

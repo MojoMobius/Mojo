@@ -1,3 +1,11 @@
+<?php 
+    use Cake\Routing\Router;
+    
+    $inpuId = urldecode($_GET['inputid']);
+    $inpuIdarr = explode("_", $inpuId);
+    $attributeid = $inpuIdarr[1];
+?>
+
 <br>
 <p ALIGN=CENTER><b>Date Calculator</b></p>
 <table align='center'>
@@ -11,19 +19,19 @@
 </tr>
 <tr>
 	<td>Years</td>
-	<td><input type="text" value="0" id="years" class="getdate onlyno"></td>
+	<td><input type="text" value="0" id="years" class="getdate "></td>
 </tr>
 <tr>
 	<td>Months</td>
-	<td><input type="text" value="0" id="months" class="getdate onlyno"></td>
+	<td><input type="text" value="0" id="months" class="getdate "></td>
 </tr>
 <tr>
 	<td>Days</td>
-	<td><input type="text" value="0" id="days" class="getdate onlyno"></td>
+	<td><input type="text" value="0" id="days" class="getdate "></td>
 </tr>
 <tr>
 	<td>New Date</td>
-	<td><input type="text" value="" readonly id="newDate"></td>
+	<td><span id="Fetch-date"><input type="text" value="" readonly id="newDate"></span></td>
 </tr>
 <tr>
 	<td>&nbsp;</td>
@@ -40,16 +48,44 @@
 			inpuId = '<?php echo urldecode($_GET['inputid']); ?>'; 
 			var arr1 = inpuId.split('"');
 			inpuId = arr1[1];
+			
 				
 			$('#startDate').Zebra_DatePicker({
 				format: 'd-m-Y',
 				onSelect: function (dateText, inst) {
-					humanise();
+					//humanise();
+				var inputdate=$('#startDate').val();
+				var year=$('#years').val();
+				var month=$('#months').val();
+				var days=$('#days').val();
+					$.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'GetFetchDate')); ?>",
+                 data: ({inputdate: inputdate,year: year,month: month,days: days}),
+                success: function (res) { 
+							$("#Fetch-date").html(res);
+					}
+                
+            });
+					
 				}
 			});
 			
 			$(".getdate").keyup(function(){
-				humanise();
+				//humanise();
+				var inputdate=$('#startDate').val();
+				var year=$('#years').val();
+				var month=$('#months').val();
+				var days=$('#days').val();
+					$.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'GetFetchDate')); ?>",
+                 data: ({inputdate: inputdate,year: year,month: month,days: days}),
+                success: function (res) { 
+							$("#Fetch-date").html(res);
+					}
+                
+                });
 			});
 			
 			$(".onlyno").keydown(function (e) {
@@ -74,9 +110,30 @@
 		function update_parent() {
 			//alert('child');
 			var vals = $("#newDate").val();
-            window.opener.setValue(inpuId, vals);
-            window.close();
-            return false;
+                        
+                        if(vals == ''){
+                            alert("Please Choose the Date");
+                            $("#newDate").focus();
+                            return false;
+                        }
+                        
+			var attributeid = '<?php echo $attributeid;?>';
+                        
+                        $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculatrformat')); ?>",
+                 data: ({datevals: vals,attributeid: attributeid}),
+                success: function (res) {
+               window.opener.setValue(inpuId, res);
+                window.close();
+                return false;
+//            
+		}
+                
+                });
+                        
+                        
+           
 		}
 
 		function humanise() {
