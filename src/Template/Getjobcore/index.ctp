@@ -4801,6 +4801,9 @@ function fetchbotminds()
                  data: ({ProjectId: ProjectId, domainId:domainId}),
                 success: function (res) { 
                    resArr=JSON.parse(res);
+                   if(resArr == 'No Data'){
+                       alert("Fetch BotMinds are Empty");
+        }
 						 $.each(resArr['singleAttr'], function( key, element ) {
                                                     if(element == 'A'){
                                                     $('select[name="'+key+'"]').val(element);

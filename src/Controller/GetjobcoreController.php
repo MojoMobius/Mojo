@@ -3294,7 +3294,9 @@ exit;
 		}
     }
           
-   
+   if($update == ''){
+      $update = 'No Data';
+   }
    echo json_encode($update);
  
 curl_close($ch); 
