@@ -662,6 +662,7 @@ class ProductionDashBoardsController extends AppController {
 			foreach($Module as $value):
 			$tbl_view.='<th>'.$value.'</th>';
 			endforeach;
+			
 			$tbl_view.='</tr>';
 		////title end///
 	  
@@ -677,14 +678,16 @@ class ProductionDashBoardsController extends AppController {
 				foreach($Module_key as $val):
 				$j++;
 				///selected user start////////////
-				 $SavedUser = $connection->execute("select UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
+				 $SavedUser = $connection->execute("select Estimated_Time,UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
+                             
+                                
+				 $DbUser=$SavedUser[0]['UserId'];
                                  
-                                 
-				 $DbUser=$SavedUser[0]['UserId'];	 
+				 $Estimated_Time=$SavedUser[0]['Estimated_Time'];	 
 				///selected user end//////////////
                                 ///status check//////////////
                                  $readonly="";
-                                
+                               
                                  
                                  $EntityResult = $connection->execute("select StatusId from ProductionEntityMaster  where  Id ='" . $row . "'")->fetchAll('assoc');
                                  $Status_id=$EntityResult[0]['StatusId'];
@@ -712,14 +715,13 @@ class ProductionDashBoardsController extends AppController {
                                  ///status check end//////////////
                                  
 				
-                                $templateUser="<select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
+                                $templateUser="User <br> <select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
 					
 				
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
 					 $selected_mode="";
 					 if($DbUser == $values['Id']){
-					    $selected_mode="selected";	 						 
-					 }					 
+					    $selected_mode="selected";	 					 }					 
 							$templateUser.='<option value="'.$values['Id'].'" '.$selected_mode.'>';
 							$templateUser.=$values['Username'];
 							$templateUser.='</option>';
@@ -728,12 +730,16 @@ class ProductionDashBoardsController extends AppController {
 					
 					 $templateUser.='</select>';
                                          
+					 $templateUser.='<br> Estimated Time <br> ';
+					 $templateUser.='<input type="text" name="estimatedtime['.$j.'][]" id="estimatedtime" value="'.$Estimated_Time.'" >';
+                                         
 				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
 				
 				$tbl_view.='<input type="hidden" name="module['.$j.'][]" id="module" value="'.$val.'" class="form-control ">';
 				$tbl_view.='<td>'.$templateUser.'</td>';
 				endforeach;
 				///dynamic td end////
+                             
 				
 		   endforeach;
 	   }	   
@@ -765,6 +771,12 @@ class ProductionDashBoardsController extends AppController {
 		
 		endforeach;
 		
+                foreach($searcharray['estimatedtime'][$i] as $key =>$val):
+		 $queryUpdatetimemetric = "update ME_Production_TimeMetric set Estimated_Time='" . $val . "' where  ProductionEntityID ='" . $searcharray['entity'][$i][$key] . "' and  Module_Id='" . $searcharray['module'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
+         $connection->execute($queryUpdatetimemetric);
+		
+		endforeach;
+                
 		}//end for
 		
 		exit;

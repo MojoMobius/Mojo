@@ -32,7 +32,7 @@
 
 <div class="bs-example container-fluid">
     <table style='width:100%;' class='table table-striped table-center' id='example'>
-            <?php echo $this->Html->tableHeaders(array('S.No','Project Name','Module Name','Level Id','Is History Track','Is Input Mandatory','Is Visibility','Is Module','Is Url Monitoring','Is Hygine Check','Action'),array('class' => 'Heading'),array('class' => 'Cell'));
+            <?php echo $this->Html->tableHeaders(array('S.No','Project Name','Module Name','Level Id','Is History Track','Is Input Mandatory','Is Visibility','Is Module','Is Url Monitoring','Simple Estimated Time','Medium Estimated Time','Complex Estimated Time','Is Hygine Check','Action'),array('class' => 'Heading'),array('class' => 'Cell'));
             $i = 0;
             foreach ($query as $query):
 
@@ -50,6 +50,9 @@
                         array($Type[$query->IsAllowedToDisplay],array('class' => 'Cell')),
                         array($ModuleType[$query->modulegroup],array('class' => 'Cell')),
                         array($Type[$query->IsUrlMonitoring],array('class' => 'Cell')),
+                        array($query->Simple_Estimated_Time,array('class' => 'Cell')),
+                        array($query->Medium_Estimated_Time,array('class' => 'Cell')),
+                        array($query->Complex_Estimated_Time,array('class' => 'Cell')),
                         array($TypeArr[$query->IsHygineCheck],array('class' => 'Cell')),
                         array($Edit,array('class' => 'Cell')),
                         )
