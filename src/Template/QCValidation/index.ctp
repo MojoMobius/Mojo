@@ -3965,7 +3965,7 @@ echo "var mandatoryArr = ". $js_array . ";\n";
         var readonlyArr =<?php echo json_encode($ReadOnlyFields );?>;
         var i = 0;
         j = 0;
-
+ var SequenceNumber = $('#seq').val();
         var InputEntyId = "<?php echo $productionjob['InputEntityId'];?>";
         var result = new Array();
         $.ajax({
@@ -3993,8 +3993,8 @@ echo "var mandatoryArr = ". $js_array . ";\n";
                     if (resultData['attrcnt'] != '') {
                         for (var k = 0; k < (resultData['attrcnt']).length; k++) {
                             if ((resultData['attrcnt'][k]) == elt) {
-                                $('#Error_' + elt).addClass("qcGreen_popuptitle");
-                                $('#Error_' + elt).removeClass("qc_popuptitle");
+                                $('#Error_' +elt+'_'+SequenceNumber).addClass("qcGreen_popuptitle");
+                                $('#Error_' +elt+'_'+SequenceNumber).removeClass("qc_popuptitle");
                             } else {
                                 $('#Error_' + elt).addClass("qc_popuptitle");
                             }

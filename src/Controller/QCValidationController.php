@@ -1714,10 +1714,10 @@ jai*/
                     $ProductionFields[$key]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against_org . ');';
                 }
           
-                    //$OldDataresultError[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetOldDatavalue_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
-           //  $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetRebutalvalue($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
+                    $OldDataresultError[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetOldDatavalue_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
+             $OldDataresultRebutal[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetRebutalvalue($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
 			 
-			 // $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetQcComments_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
+			  $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->QCValidation->ajax_GetQcComments_seq($productionjobNew['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1,$moduleId);
 //             if (empty($InprogressProductionjob)) {
 //                    //     print_r($productionjob);
 //					if($productionjob[0]['InputEntityId']){
