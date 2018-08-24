@@ -838,7 +838,7 @@ class GetjobcoreController extends AppController {
            
                     $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $NextStatusId . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . 'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
                     $productionjobNew = $InprogressProductionjob;
-                    $this->set('productionjob', $productionjob[0]);
+                    $this->set('productionjob', $InprogressProductionjob[0]);
                 }
             } else {
 
@@ -3294,7 +3294,9 @@ exit;
 		}
     }
           
-   
+   if($update == ''){
+      $update = 'No Data';
+   }
    echo json_encode($update);
  
 curl_close($ch); 
