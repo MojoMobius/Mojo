@@ -258,6 +258,8 @@ echo $this->Form->end();
         $('#ProjectId').val('0');
         $('#LeaseId').val('');
         $('#ClientId').val('0');   
+        $('#QueryDateFrom').val('');   
+        $('#QueryDateTo').val('');   
 
     }
 </script>
