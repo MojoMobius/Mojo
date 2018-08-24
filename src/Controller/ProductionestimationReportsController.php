@@ -1,4 +1,5 @@
 <?php
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +12,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 
-class ProductionDashBoardsController extends AppController {
+class ProductionestimationReportsController extends AppController {
 
     public $paginate = [
         'limit' => 10,
@@ -23,6 +24,7 @@ class ProductionDashBoardsController extends AppController {
     public function initialize() {
         parent::initialize();
         $this->loadModel('ProductionDashBoards');
+        $this->loadModel('ProductionestimationReports');
         $this->loadModel('projectmasters');
         $this->loadComponent('RequestHandler');
     }
@@ -38,34 +40,34 @@ class ProductionDashBoardsController extends AppController {
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
         $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
         $ProListFinal = array('0' => '--Select Project--');
-		
+
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
-			
+
         endforeach;
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
-		
+
         $this->set('Projects', $ProListFinal);
         $this->set('sessionProjectId', $sessionProjectId);
-        
+
         $connection = ConnectionManager::get('default');
         $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
-		 
+
         $Cl_list = array('0' => '--Select--');
         foreach ($Cl_listarray as $values):
             $Cl_list[$values['Id']] = $values['ClientName'];
         endforeach;
         //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
         $this->set('Clients', $Cl_list);
-        
+
         if ($this->request->data['ClientId'] > 0) {
-                 $Clients = $this->ProductionDashBoards->find('client', ['ClientId' => $this->request->data['ClientId']]);
-                 $this->set('ClientId', $Clients);
-                } else {
-                   
-                    $this->set('ClientId', '');
+            $Clients = $this->ProductionDashBoards->find('client', ['ClientId' => $this->request->data['ClientId']]);
+            $this->set('ClientId', $Clients);
+        } else {
+
+            $this->set('ClientId', '');
         }
-        
+
 
         if (count($ProListFinal) == 2) {
             $ProjectId = $this->request->data['ProjectId'] = array_keys($ProListFinal)[1];
@@ -81,16 +83,14 @@ class ProductionDashBoardsController extends AppController {
 
         $path = JSONPATH . '\\ProjectConfig_' . $sessionProjectId . '.json';
         $content = file_get_contents($path);
-        $contentArr = json_decode($content, true);        
+        $contentArr = json_decode($content, true);
         $region = $regionMainList = $contentArr['RegionList'];
-       foreach($region as $key => $value){
-           $sessionRegion = $key;
-       }
-       // echo $sessionRegion;exit;
-//        $status_list = $contentArr['ProjectGroupStatus'][ProjectStatusProduction];
-        //  $status_list = $contentArr['ProjectGroupStatus']['Production'];
+        foreach ($region as $key => $value) {
+            $sessionRegion = $key;
+        }
+
         $status_list = $contentArr['ProjectStatus'];
-       // pr($status_list);
+        // pr($status_list);
         $status_list_module = $contentArr['ModuleStatusList'];
         $module_ids = array_keys($status_list_module);
         $array_with_lcvalues = array_map('strtolower', $status_list);
@@ -101,18 +101,18 @@ class ProductionDashBoardsController extends AppController {
         $domainId = $contentArr['ProjectConfig']['DomainId'];
         $moduleConfig = $contentArr['ModuleConfig'];
         asort($status_list);
-        $search_text='Query';
-       // pr($status_list);
-        foreach($status_list as $index => $string) {
-       // echo $string;
-        if (strpos($string, $search_text) !== FALSE){
-             $queryStatus= $index;
-        break;
+        $search_text = 'Query';
+        // pr($status_list);
+        foreach ($status_list as $index => $string) {
+            // echo $string;
+            if (strpos($string, $search_text) !== FALSE) {
+                $queryStatus = $index;
+                break;
+            }
         }
-    }
 
-   //pr($queryStatus);  
-   // exit;
+        //pr($queryStatus);  
+        // exit;
         //pr($status_list); 
         $second_condition_status_list = $completed_status_ids = [];
         foreach ($status_list as $keystat => $stat) {
@@ -136,11 +136,9 @@ class ProductionDashBoardsController extends AppController {
                 $completed_status_idsss[$keystatss] = $keystatss;
             }
         }
-        
+
         $readyforprod = implode(',', $completed_status_idsss);
-        
-       
-      
+
         $this->set('ProdDB_PageLimit', $ProdDB_PageLimit);
         $this->set('status_list_module', $status_list_module);
         $this->set('module_ids', $module_ids);
@@ -158,6 +156,7 @@ class ProductionDashBoardsController extends AppController {
             $this->set('RegionId', 0);
         }
 
+
         $this->set('CallUserGroupFunctions', '');
         if (count($ProListFinal) == 2 && count($regionMainList) == 1 && !isset($this->request->data['RegionId'])) {
             $this->set('CallUserGroupFunctions', 'yes');
@@ -170,20 +169,6 @@ class ProductionDashBoardsController extends AppController {
         } else {
             $UserGroupId = '';
             $this->set('UserGroupId', '');
-        }
-		
-//       if(isset($this->request->data['reportSP_data']))
-//        {
-//            $this->ProductionDashBoards->SpRunFuncRPEMMonthWise();
-//            $this->Flash->success(__('Report generate has been completed!'));
-//            return $this->redirect(['action' => 'index']);
-//        }
-
-
-        if (isset($this->request->data['load_data'])) {
-            $this->ProductionDashBoards->getLoadData();
-            $this->Flash->success(__('Load has been completed!'));
-            return $this->redirect(['action' => 'index']);
         }
 
         if (isset($this->request->data['status']))
@@ -220,23 +205,19 @@ class ProductionDashBoardsController extends AppController {
             $this->set('postbatch_UserGroupId', '');
 
 
-		
         if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
 
-            $CheckSPDone = $this->ProductionDashBoards->find('CheckSPDone', ['ProjectId' => $_POST['ProjectId']]);
-
             $conditions = '';
-		
+
             if ($this->request->data['UserGroupId'] > 0) {
-				
-                $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'],'UserGroupId' =>$this->request->data['UserGroupId'], 'UserId' => $session->read('user_id')]);
-				
-              
+
+                $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserGroupId' => $this->request->data['UserGroupId'], 'UserId' => $session->read('user_id')]);
+
                 $this->set('User', $user_id_list);
             }
 
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
+            $QueryDateFrom = $batch_from = $this->request->data('batch_from');
+            $QueryDateTo = $batch_to = $this->request->data('batch_to');
             $user_id = $this->request->data('user_id');
             $status = $this->request->data('status');
             $query = $this->request->data('query');
@@ -262,13 +243,9 @@ class ProductionDashBoardsController extends AppController {
 
                 $AttributeOrder = $contentArr['AttributeOrder'][$_POST['RegionId']];
                 $attributeIds = [];
-//                foreach($AttributeOrder as $keys=>$values) {
-//                    $attributeIds[] = $values['AttributeId'];
-//                }
 
                 $conditions_status = '';
                 $conditions_timemetric = '';
-
 
                 if ($batch_from != '' && $batch_to == '') {
                     $batch_to = $batch_from;
@@ -277,161 +254,85 @@ class ProductionDashBoardsController extends AppController {
                     $batch_from = $batch_to;
                 }
 
-
-                $conditions.="  ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
-                //$conditionsIs.="  ActStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ActStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
-
-                if ((count($user_id) == 1 && $user_id[0] > 0) || (count($user_id) > 1)) {
-                    $conditions_timemetric.=' AND UserId IN(' . implode(",", $user_id) . ')';
-                    //$conditions_status.=' AND b.[' . $ModuleId . '] IN(' . implode(",", $user_id) . ')';
-                }
-
-                if (!empty($status) && count($status) > 0) {
-                    $conditions.=' AND StatusId IN(' . implode(",", $status) . ')';
-                    $conditionsIs.='  StatusId IN(' . $readyforprod . ')';
-//                    $statusresult = array_diff($status, $completed_status_ids);
-//                    if (!empty($statusresult))
-//                        $conditions_status.=' AND StatusId IN(' . implode(",", $statusresult) . ')';
-//                    else
-//                        $conditions_status.=' AND StatusId IN(0)';
-                        
-                        $conditions_status.=' AND StatusId IN(' . implode(",", $status) . ')';
+                if ($QueryDateFrom != '' && $QueryDateTo != '') {
+                    $months = $this->getmonthlist($QueryDateFrom, $QueryDateTo);
+                } elseif ($QueryDateFrom != '' && $QueryDateTo == '') {
+                    $months = $this->getmonthlist($QueryDateFrom, $QueryDateFrom);
+                } elseif ($QueryDateFrom == '' && $QueryDateTo != '') {
+                    $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
                 } else {
-                    if (!empty($status_list) && count($status_list) > 0) {
-                        $conditions.=" AND StatusId in (" . implode(',', array_keys($status_list)) . ")";
-                        $conditionsIs.=" StatusId in (" . implode(',', array_keys($completed_status_idsss)) . ")";
-                        //                $conditions_status.=' AND StatusId IN(3)';
-                        //$conditions_status.=" AND StatusId in (" . implode(',', array_keys($second_condition_status_list)) . ")";
-                        $conditions_status.=" AND StatusId in (" . implode(',', array_keys($status_list)) . ")";
+                    $QueryDateFrom = date("Y-m-d");
+                    $QueryDateTo = date("Y-m-d");
+                    $months = $this->getmonthlist($QueryDateTo, $QueryDateTo);
+                }
+//                $ProjectId = 3346;
+                $arrayResult = array();
+//                $months[] = "_6_2018";
+
+                foreach ($months as $key => $dt) {
+
+//            $prodtimematricstab = "Report_ProductionTimeMetric_6_2018";
+
+                    $prodEntitymastertab = "Report_ProductionEntityMaster" . $dt;
+                    $prodtimeMatricstab = "ME_Production_TimeMetric" . $dt;
+
+                    $get_tableexist_TimeMatrix = $connection->execute("IF OBJECT_ID (N'$prodtimeMatricstab', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res ")->fetchAll('assoc');
+
+                    $get_tableexist_Entitymaster = $connection->execute("IF OBJECT_ID (N'$prodEntitymastertab', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res ")->fetchAll('assoc');
+
+
+                    // check table exists 
+                    if ($get_tableexist_TimeMatrix[0]['res'] > 0 && $get_tableexist_Entitymaster[0]['res'] > 0) {
+
+                        // Get availabel columns
+                        $result = $connection->execute("SELECT top 1 * FROM $prodtimeMatricstab WHERE ProjectId = '$ProjectId'")->fetchAll('assoc');
+                        $modulekeys = array_keys($module);
+                        $TableColumnkeys = array_keys($result[0]);
+                        $AvlTablecolumns = array();
+                        foreach ($modulekeys as $key => $val) {
+                            if (in_array($val, $TableColumnkeys)) {
+                                $AvlTablecolumns[] = $val;
+                            }
+                        }
+
+                        $conditions.=" AND Module_Id IN (" . implode(',', array_keys($module)) . ")";
+
+                        $prodEntityconditions.=" AND ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
+
+                        $domainattrid = "[" . $domainId . "]";
+                        $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
+                        $DependencyTypeMasterId = $queryData[0]['Id'];
+
+                        $Production_dashboard = $connection->execute("SELECT distinct rpem.InputEntityId, $domainattrid as fdrid ,rpem.InputEntityId as Id,rpem.StatusId,rpem.ProductionStartDate,rpem.ProductionEndDate,rpem.ProjectId FROM $prodtimeMatricstab as rpetm inner join $prodEntitymastertab as rpem ON rpetm.InputEntityId =rpem.InputEntityId WHERE rpem.ProjectId = '$ProjectId' $prodEntityconditions  AND rpem.DependencyTypeMasterId='$DependencyTypeMasterId'")->fetchAll('assoc');
+
+                        foreach ($Production_dashboard as $key => $val) {
+
+                            $InputEntityId = $val['InputEntityId'];
+                            $conditionsInputEntity .= "AND InputEntityId ='$InputEntityId'";
+                            $Production_dashboard_module = $connection->execute("SELECT ProductionEntityID,Module_Id,UserId,Start_Date,End_Date,TimeTaken,Estimated_Time FROM $prodtimeMatricstab as rpetm WHERE rpetm.ProjectId = '$ProjectId' $conditions $conditionsInputEntity")->fetchAll('assoc');
+
+                            $Production_dashboard_modules = array();
+                            foreach ($Production_dashboard_module as $k => $v) {
+                                $Production_dashboard_modules[$v['Module_Id']] = $v;
+                                $timetak = explode(".", $v['TimeTaken']);
+                                $Production_dashboard_modules[$v['Module_Id']]['TimeTaken'] = $timetak[0];
+                            }
+                            $Production_dashboard[$key]['module'] = $Production_dashboard_modules;
+                        }
+                        $arrayResult = array_merge($arrayResult, $Production_dashboard);
+                    } else {
+                        continue;
                     }
                 }
-
-                if ($query != '') {
-                    $conditions.= " AND [" . $domainId . "] LIKE '%" . $query . "%' ";
-                    $conditions_status.= " AND [" . $domainId . "] LIKE '%" . $query . "%' ";
-                }
-				
-                $ProductionDashboard = $this->ProductionDashBoards->find('users', ['condition' => $conditions, 'Module' => $ModuleStatus, 'conditionsIs' => $conditionsIs,'conditions_timemetric' => $conditions_timemetric, 'Project_Id' => $ProjectId, 'domainId' => $domainId, 'RegionId' => $RegionId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'AttributeIds' => $attributeIds, 'CheckSPDone' => $CheckSPDone]);
-                //pr($ProductionDashboard);exit;
-                if ($ProductionDashboard == 'RunReportSPError') {
-                    $this->Flash->error(__("Please click 'Report Generate' button to generate results and search again."));
-                    $this->set('RunReportSPError', 'RunReportSPError');
-                } else {
-                    $ProductionDashboardarr = $ProductionDashboard[0];
-                    $timeDetails = $ProductionDashboard[1];
-                    //pr($timeDetails); die;
-                    $i = 0;
-                    $Production_dashboard = array();
-                    foreach ($ProductionDashboardarr as $Production):
-                        $Production_dashboard[$i]['InputEntityId'] = $Production['InputEntityId'];
-                        $Production_dashboard[$i]['priority'] = $Production['priority'];
-                        $Production_dashboard[$i]['AttributeValue'] = $Production['domainId'];
-                        $Production_dashboard[$i]['ProjectId'] = $Production['ProjectId'];
-                        $Production_dashboard[$i]['RegionId'] = $Production['RegionId'];
-                        $Production_dashboard[$i]['StatusId'] = $Production['StatusId'];
-                        $Production_dashboard[$i]['domainId'] = $Production['domainId'];
-                        $Production_dashboard[$i]['Id'] = $Production['Id'];
-
-                        foreach ($module as $key => $val) {
-                            $Production_dashboard[$i][$key]['UserId'] = $Production[$key];
-                        }
-                        if ($Production['ProductionStartDate'] != '') {
-                            $Production_dashboard[$i]['ProductionStartDate'] = date("d-m-Y H:i:s", strtotime($Production['ProductionStartDate']));
-                        } else {
-                            $Production_dashboard[$i]['ProductionStartDate'] = '';
-                        }
-                        if ($Production['ProductionEndDate'] != '') {
-                            $Production_dashboard[$i]['ProductionEndDate'] = date("d-m-Y H:i:s", strtotime($Production['ProductionEndDate']));
-                        } else {
-                            $Production_dashboard[$i]['ProductionEndDate'] = '';
-                        }
-
-                        if ($Production['CreatedDate'] != '') {
-                            $Production_dashboard[$i]['CreatedDate'] = date("d-m-Y H:i:s", strtotime($Production['CreatedDate']));
-                        } else {
-                            $Production_dashboard[$i]['CreatedDate'] = '';
-                        }
-
-                        $Production_dashboard[$i]['month'] = date("n", strtotime($Production['ProductionStartDate']));
-                        $Production_dashboard[$i]['year'] = date("Y", strtotime($Production['ProductionStartDate']));
-
-                        if ($Production['TotalTimeTaken'] != '')
-                            $Production_dashboard[$i]['TotalTimeTaken'] = date(" H:i:s", strtotime($Production['TotalTimeTaken']));
-                        else
-                            $Production_dashboard[$i]['TotalTimeTaken'] = '';
-
-                        $Production_dashboard[$i]['UserGroupId'] = $Production['UserGroupId'];
-
-                        $i++;
-                    endforeach;
-
-
-                    if (isset($this->request->data['downloadFile'])) {
-                        $productionData = '';
-                        $productionData = $this->ProductionDashBoards->find('export', ['ProjectId' => $ProjectId, 'condition' => $Production_dashboard, 'time' => $timeDetails]);
-                        $this->layout = null;
-                        if (headers_sent())
-                            throw new Exception('Headers sent.');
-                        while (ob_get_level() && ob_end_clean());
-                        if (ob_get_level())
-                            throw new Exception('Buffering is still active.');
-                        header("Content-type: application/vnd.ms-excel");
-                        header("Content-Disposition:attachment;filename=ProductionDashboards.xls");
-                        echo $productionData;
-                        exit;
-                    }
-
-                    if (empty($Production_dashboard)) {
-                        $this->Flash->error(__('No Record found for this combination!'));
-                    }
-
-                    $this->set('Production_dashboard', $Production_dashboard);
-                    $this->set('timeDetails', $timeDetails);
-                }
-            }
-        } else if (isset($this->request->data['productivityReport_submit']) || isset($this->request->data['productivityReport_downloadFile'])) {
-
-            $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
-            $this->set('User', $user_id_list);
-
-            $RegionId = $this->request->data('RegionId');
-            $UserGroupId = $this->request->data('UserGroupId');
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
-            $user_id = $this->request->data('user_id');
-            $status = $this->request->data('status');
-            $query = $this->request->data('query');
-            $selected_month_first = strtotime($batch_to);
-            $month_start = date('Y-m-d', strtotime('first day of this month', $selected_month_first));
-            $selected_month_last = strtotime($batch_from);
-            $month_end = date('Y-m-d', strtotime('last day of this month', $selected_month_last));
-
-            if (empty($user_id)) {
-                $user_id = array_keys($user_id_list);
-            }
-            if (empty($user_id)) {
-                $this->Flash->error(__('No UserId(s) found for this UserGroup combination!'));
-                $ShowErrorOnly = TRUE;
-            }
-
-            if ($ShowErrorOnly) {
                 
-            } else {
-                $moduleDetails = array();
-                foreach ($module as $key => $val) {
-                    if (($moduleConfig[$key]['IsAllowedToDisplay'] == 1) && ($moduleConfig[$key]['IsModuleGroup'] == 1))
-                        $moduleDetails[] = $key;
+                if (empty($arrayResult)) {
+                    $this->Flash->error(__('No Record found for this combination!'));
+//                    return $this->redirect(['action' => 'index']);
                 }
-                //pr($moduleDetails); pr($module); 
-                $this->set('moduleDetails', $moduleDetails);
-
-                $ProductionDashboard = $this->ProductionDashBoards->find('productivityReportDetails', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'User_id_list' => $user_id_list, 'ModuleDetails' => $moduleDetails]);
-                $this->set('Production_dashboard', $ProductionDashboard);
-                //pr($ProductionDashboard); pr($module); die;
-
-                if (isset($this->request->data['productivityReport_downloadFile'])) {
-                    //$productionData = '';
-                    $productionData = $this->ProductionDashBoards->find('productivityReportDetailsExport', ['condition' => $ProductionDashboard, 'module' => $module, 'moduleDetails' => $moduleDetails]);
+                
+                if (isset($this->request->data['downloadFile']) && !empty($arrayResult)) {
+                    $productionData = '';
+                    $productionData = $this->ProductionestimationReports->find('export', ['ProjectId' => $ProjectId, 'condition' => $arrayResult]);
                     $this->layout = null;
                     if (headers_sent())
                         throw new Exception('Headers sent.');
@@ -439,87 +340,42 @@ class ProductionDashBoardsController extends AppController {
                     if (ob_get_level())
                         throw new Exception('Buffering is still active.');
                     header("Content-type: application/vnd.ms-excel");
-                    header("Content-Disposition:attachment;filename=ProductivityReport.xls");
+                    header("Content-Disposition:attachment;filename=ProductionEstimationtimetakenReports.xls");
                     echo $productionData;
                     exit;
                 }
 
-                if (empty($ProductionDashboard)) {
-                    $this->Flash->error(__('No Record found for this combination!'));
-                }
-            }
-
-            $this->render('/ProductionDashBoards/Productivity_Report');
-        } else if (isset($this->request->data['ModuleSummary_submit']) || isset($this->request->data['ModuleSummary_downloadFile'])) {
-
-            $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
-            $this->set('User', $user_id_list);
-
-            $RegionId = $this->request->data('RegionId');
-            $UserGroupId = $this->request->data('UserGroupId');
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
-            $user_id = $this->request->data('user_id');
-            $status = $this->request->data('status');
-            $query = $this->request->data('query');
-            $selected_month_first = strtotime($batch_to);
-            $month_start = date('Y-m-d', strtotime('first day of this month', $selected_month_first));
-            $selected_month_last = strtotime($batch_from);
-            $month_end = date('Y-m-d', strtotime('last day of this month', $selected_month_last));
-
-            if (empty($user_id)) {
-                $user_id = array_keys($user_id_list);
-            }
-            if (empty($user_id)) {
-                $this->Flash->error(__('No UserId(s) found for this UserGroup combination!'));
-                $ShowErrorOnly = TRUE;
-            }
-
-            if ($ShowErrorOnly) {
                 
-            } else {
-                $moduleDetails = array();
-                foreach ($module as $key => $val) {
-                    if (($moduleConfig[$key]['IsAllowedToDisplay'] == 1) && ($moduleConfig[$key]['IsModuleGroup'] == 1))
-                        $moduleDetails[$key] = $val;
-                }
-                $this->set('moduleDetails', $moduleDetails);
 
-                $ProductionDashboard = $this->ProductionDashBoards->find('ModuleSummaryDetails', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'UserGroupId' => $UserGroupId, 'ModuleStatus' => $status_list_module, 'ModuleDetails' => $moduleDetails, 'status_list' => $status_list, 'user_id' => $user_id]);
-                $this->set('UGNamedetails', $ProductionDashboard['0']);
-                $this->set('Production_dashboard', $ProductionDashboard['1']);
-                //pr($ProductionDashboard); die;
-
-                if (isset($this->request->data['ModuleSummary_downloadFile'])) {
-                    //$productionData = '';
-                    $productionData = $this->ProductionDashBoards->find('ModuleSummaryDetailsExport', ['condition' => $ProductionDashboard['1'], 'UGNamedetails' => $ProductionDashboard['0']]);
-                    $this->layout = null;
-                    if (headers_sent())
-                        throw new Exception('Headers sent.');
-                    while (ob_get_level() && ob_end_clean());
-                    if (ob_get_level())
-                        throw new Exception('Buffering is still active.');
-                    header("Content-type: application/vnd.ms-excel");
-                    header("Content-Disposition:attachment;filename=ModuleSummary.xls");
-                    echo $productionData;
-                    exit;
-                }
-
-                if (empty($ProductionDashboard)) {
-                    $this->Flash->error(__('No Record found for this combination!'));
-                }
+                $this->set('Production_dashboard', $arrayResult);
+//                $this->set('timeDetails', $timeDetails);
             }
-
-            $this->render('/ProductionDashBoards/Module_Summary');
         } else {
-            $this->set('Production_dashboard', $Production_dashboard);
-            $this->set('timeDetails', $timeDetails);
+            $this->set('Production_dashboard', $arrayResult);
+//            $this->set('timeDetails', $timeDetails);
         }
     }
 
-    function ajaxregion() {
-        echo $region = $this->ProductionDashBoards->find('region', ['ProjectId' => $_POST['projectId']]);
-        exit;
+    public function getmonthlist($date1, $date2) {
+
+        $ts1 = strtotime($date1);
+        $ts2 = strtotime($date2);
+
+        $year1 = date('Y', $ts1);
+        $year2 = date('Y', $ts2);
+
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2);
+
+        $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+        if ($diff > 0) {
+            for ($i = 0; $i <= $diff; $i++) {
+                $months[] = date('_n_Y', strtotime("$date1 +$i month"));
+            }
+        } else {
+            $months[] = date('_n_Y', strtotime($date1));
+        }
+        return $months;
     }
 
     function ajaxstatus() {
@@ -527,261 +383,21 @@ class ProductionDashBoardsController extends AppController {
         exit;
     }
 
-  /*  function ajaxcengageproject() {
-        echo $CengageCnt = $this->ProductionDashBoards->find('cengageproject', ['ProjectId' => $_POST['projectId']]);
-        exit;
-    }
-*/
     function getusergroupdetails() {
-      
+
         $session = $this->request->session();
         echo $module = $this->ProductionDashBoards->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
 
-    function getresourcedetails() {		
-     
+    function getresourcedetails() {
+
         $session = $this->request->session();
-        echo $module = $this->ProductionDashBoards->find('resourcedetails', ['ProjectId' => $_POST['projectId'],'UserGroupId' => $_POST['userGroupId'], 'RegionId' => $_POST['regionId']]);
+        echo $module = $this->ProductionestimationReports->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'UserGroupId' => $_POST['userGroupId'], 'RegionId' => $_POST['regionId']]);
         exit;
     }
 
-    function ajaxupdateuser() {
-        echo $updateuser = $this->ProductionDashBoards->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
-        exit;
-    }
-    
-     function ajaxdirectabstraction() {
-		 
-      $connection = ConnectionManager::get('default');
-	  $id=$_POST['ProductionEntityId'];
-	  $ProjectId=$_POST['ProjectId'];
-	  //echo $ProjectId;exit;
-	   $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
-           $content = file_get_contents($path);
-           $contentArr = json_decode($content, true);
-           $abstractionModuleid = array_search('Abstraction',$contentArr['Module']);
-           
-           parse_str($_POST['Inputentityids'], $searchInputentity);
-            parse_str($_POST['ids'], $searcharray);
-           parse_str($_POST['domainId'], $domainarray);
-           
-         $tbl_view.="<table class='table table-striped table-center'><tr><th>Id</th><th>Status</th>";
-         $tbl_view.='</tr>';
-                        
-          foreach($searcharray['priority'] as $key=>$val){
-                 
-              $inputentityId = $searchInputentity['InputEntityId'][$val];
-             	
-               $queryUpdate = $connection->execute("select isbotminds from ProductionEntityMaster where InputEntityId='$inputentityId'")->fetchAll('assoc');
-                $isbotminds=$queryUpdate[0]['isbotminds'];
-                
-                $isbotminds_yes = $isbotminds == 1?'selected':'';
-                $isbotminds_no = $isbotminds == 0?'selected':'';
-                
-                
-                $templateUser="<select  name='status[$inputentityId]' class='form-control statusids' >"
-                        . "<option value=0> --Select --</option>"  
-                        . "<option value=1 $isbotminds_yes>Yes</option>"
-                        ."<option value=0 $isbotminds_no>No</option>";
-                       
-                 $templateUser.='</select>';
-                 
-              $tbl_view.='<tr><td>'.$domainarray['domain'][$val].'</td>'
-                      . '<td>'.$templateUser
-                      . '</td></tr>';
-              
-          }
-            $tbl_view.="</table>";
-          
-//           print_r($domainarray);exit;
-//           print_r($abstractionModuleid);exit;
-       
-	   echo $tbl_view;
-        exit;
-    }
-    
-     function ajaxdirectabstractionsubmit() {
-         
-         $connection = ConnectionManager::get('default');
-		parse_str($_POST['statusids'], $searcharray);
-		  $ProjectId=$_POST['ProjectId'];
-                
-           $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
-           $content = file_get_contents($path);
-           $contentArr = json_decode($content, true);
-           $abstractionModuleid = array_search('Abstraction',$contentArr['Module']);
-           
-                foreach($searcharray['status'] as $key => $val){
-                  $queryUpdate = "Update ProductionEntityMaster set isbotminds='$val' where InputEntityId='$key'";	
-         $connection->execute($queryUpdate);
-        
-                     $queryUpdate = "Update Staging_".$abstractionModuleid."_Data set isbotminds='$val' where InputEntityId='$key'";	
-                 
-         $connection->execute($queryUpdate);
-                    
-                }
-                
-            $array = array("status"=>1);
-            echo json_encode($array);
-                exit;
-     }
-    
-	 function ajaxgetdata() {
-		 
-      $connection = ConnectionManager::get('default');
-	  $id=$_POST['ProductionEntityId'];
-	  $ProjectId=$_POST['ProjectId'];
-	  //echo $ProjectId;exit;
-	   $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
-            $content = file_get_contents($path);
-            $contentArr = json_decode($content, true);
-			//pr($contentArr);exit;
-			$Module=array();
-			$Module_key=array();
-			foreach($contentArr['ModuleConfig'] as $key => $value){
-				if($value['IsModuleGroup'] > 0){
-					$Module[]=$contentArr['Module'][$key];
-					$Module_key[]=$key;
-                                        $Curlevel[$key]=$value['Level'];
-                                        
-				}
-			}
-				
-	  parse_str($_POST['ProductionEntityId'], $searcharray);
-	  
-	  parse_str($_POST['domainId'], $domainarray);
-	  parse_str($_POST['savedId'], $saved_priority);
-	  parse_str($_POST['statusId'], $statusarray);
-	
-	///html file start////////////
-	   $tbl_view='<form method="post" accept-charset="utf-8" class="form-horizontal allocateforms" id="projectforms">';
-        
-		///title start///		
-			$tbl_view.="<table class='table table-striped table-center'><tr><th>Id</th><th>Priority</th>";
-			foreach($Module as $value):
-			$tbl_view.='<th>'.$value.'</th>';
-			endforeach;
-			
-			$tbl_view.='</tr>';
-		////title end///
-	  
-	   if(!empty($searcharray['priority'])){
-		   $i=0;
-		   
-		   foreach($searcharray['priority'] as $row):	
-		    $j=0;		   
-		    $i++;
-                    
-				$tbl_view.='<tr><td>'.$domainarray['domain'][$row].'</td><td><input type="text" name="pri_id['.$row.']" id="pri_id'.$row.'" value="'.$saved_priority['pri_saved'][$row].'" class="form-control " onkeyup="numericvalidation('.$row.');"></td>';
-				////dynamic td///////
-				foreach($Module_key as $val):
-				$j++;
-				///selected user start////////////
-				 $SavedUser = $connection->execute("select Estimated_Time,UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
-                             
-                                
-				 $DbUser=$SavedUser[0]['UserId'];
-                                 
-				 $Estimated_Time=$SavedUser[0]['Estimated_Time'];	 
-				///selected user end//////////////
-                                ///status check//////////////
-                                 $readonly="";
-                               
-                                 
-                                 $EntityResult = $connection->execute("select StatusId from ProductionEntityMaster  where  Id ='" . $row . "'")->fetchAll('assoc');
-                                 $Status_id=$EntityResult[0]['StatusId'];
-                                
-                                 foreach($contentArr['ModuleStatus'] as $key => $value){
-                                      foreach($value as $inkey => $invalue){
-                                        if($invalue ==  $contentArr['ProjectStatus'][$Status_id]){
-                                           $Levelmodule=$Curlevel[$key];     
-
-                                        }
-                                      }
-			         }
-                                 
-                                 if(!empty($StatusQuery)){
-				 
-                                /* $CheckSts=explode(",",$Sts);
-                                 if(!in_array($statusarray['status'][$row], $CheckSts)){*/
-                                   //$statusarray['status'][$row]=2;
-                                 
-                                 if($Levelmodule > $Curlevel[$val]){
-                                  $readonly="disabled";
-                                  }
-								  
-                                 }
-                                 ///status check end//////////////
-                                 
-				
-                                $templateUser="User <br> <select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
-					
-				
-					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
-					 $selected_mode="";
-					 if($DbUser == $values['Id']){
-					    $selected_mode="selected";	 					 }					 
-							$templateUser.='<option value="'.$values['Id'].'" '.$selected_mode.'>';
-							$templateUser.=$values['Username'];
-							$templateUser.='</option>';
-					endforeach;
-					
-					
-					 $templateUser.='</select>';
-                                         
-					 $templateUser.='<br> Estimated Time <br> ';
-					 $templateUser.='<input type="text" name="estimatedtime['.$j.'][]" id="estimatedtime" value="'.$Estimated_Time.'" >';
-                                         
-				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
-				
-				$tbl_view.='<input type="hidden" name="module['.$j.'][]" id="module" value="'.$val.'" class="form-control ">';
-				$tbl_view.='<td>'.$templateUser.'</td>';
-				endforeach;
-				///dynamic td end////
-                             
-				
-		   endforeach;
-	   }	   
-	   
-	   $tbl_view.="</table>";
-	   $tbl_view.='<input type="hidden" name="no_of_column" id="no_of_column" value="'.count($Module).'">';
-	   $tbl_view.='<input type="hidden" name="ProjectId" id="ProjectId" value="'.$ProjectId.'">';
-	   $tbl_view .='</form>'; 
-	   
-	///html file end////////////
-       
-	   echo $tbl_view;
-        exit;
-    }
-	function ajaxgetdatasubmit(){
-		$connection = ConnectionManager::get('default');
-		parse_str($_POST['userId'], $searcharray);
-		
-		foreach($searcharray['pri_id'] as $key => $val):
-		  $queryUpdate = "update ProductionEntityMaster set priority='" . $val . "' where Id='" . $key . "'";	
-         $connection->execute($queryUpdate);
-		endforeach;
-		
-		for($i=1; $i <= $searcharray['no_of_column']; $i++){
-		
-		foreach($searcharray['UserId'][$i] as $key =>$val):
-		 $queryUpdatetimemetric = "update ME_Production_TimeMetric set UserId='" . $val . "' where  ProductionEntityID ='" . $searcharray['entity'][$i][$key] . "' and  Module_Id='" . $searcharray['module'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
-         $connection->execute($queryUpdatetimemetric);
-		
-		endforeach;
-		
-                foreach($searcharray['estimatedtime'][$i] as $key =>$val):
-		 $queryUpdatetimemetric = "update ME_Production_TimeMetric set Estimated_Time='" . $val . "' where  ProductionEntityID ='" . $searcharray['entity'][$i][$key] . "' and  Module_Id='" . $searcharray['module'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
-         $connection->execute($queryUpdatetimemetric);
-		
-		endforeach;
-                
-		}//end for
-		
-		exit;
-	}
-	public function ajaxProject() {
+    public function ajaxProject() {
         $session = $this->request->session();
         $sessionProjectId = $session->read("ProjectId");
         $userid = $session->read('user_id');
@@ -790,10 +406,9 @@ class ProductionDashBoardsController extends AppController {
         //$this->set('Projects', $ProListFinal);
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
-        $ProList = $this->ProductionDashBoards->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId'],'RegionId' => $_POST['RegionId']]);
-       echo $ProList;
-       exit;
-        
-   }
+        $ProList = $this->ProductionDashBoards->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user, 'ClientId' => $_POST['ClientId'], 'RegionId' => $_POST['RegionId']]);
+        echo $ProList;
+        exit;
+    }
 
 }

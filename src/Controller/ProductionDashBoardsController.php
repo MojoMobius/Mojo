@@ -658,7 +658,7 @@ class ProductionDashBoardsController extends AppController {
 	   $tbl_view='<form method="post" accept-charset="utf-8" class="form-horizontal allocateforms" id="projectforms">';
         
 		///title start///		
-			$tbl_view.="<table class='table table-striped table-center'><tr><th>Id</th><th>Priority</th>";
+			$tbl_view.="<table class='table table-striped table-center'  style='width:985px !important'><tr><th>Id</th><th>Priority</th>";
 			foreach($Module as $value):
 			$tbl_view.='<th>'.$value.'</th>';
 			endforeach;
@@ -714,8 +714,8 @@ class ProductionDashBoardsController extends AppController {
                                  }
                                  ///status check end//////////////
                                  
-				
-                                $templateUser="User <br> <select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
+				$templateUser="<table><tbody><tr><td style='padding-left:2%;'>User </td><td style='padding-left:5%;'>EST</td></tr>";
+                                $templateUser.="<tr><td><select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
 					
 				
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
@@ -730,8 +730,8 @@ class ProductionDashBoardsController extends AppController {
 					
 					 $templateUser.='</select>';
                                          
-					 $templateUser.='<br> Estimated Time <br> ';
-					 $templateUser.='<input type="text" name="estimatedtime['.$j.'][]" id="estimatedtime" value="'.$Estimated_Time.'" >';
+					 $templateUser.='</td><td> ';
+					 $templateUser.='&nbsp;&nbsp;<input type="text" name="estimatedtime['.$j.'][]" id="estimatedtime" value="'.$Estimated_Time.'" > </td></tr></table>';
                                          
 				$tbl_view.='<input type="hidden" name="entity['.$j.'][]" id="entity" value="'.$row.'" class="form-control ">';
 				
