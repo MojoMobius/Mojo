@@ -953,7 +953,7 @@ width:100%;
                 <!--                <button type="button" class="btn btn-primary pull-right">Submit</button>-->
                 <button type="Submit" name='Submit' value="Submit" class="btn btn-primary pull-right" onclick="return formSubmit();"> Submit </button>
                 <!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
-                               <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
+<!--                               <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>-->
 
             </div>
         </div>

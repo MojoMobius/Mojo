@@ -357,7 +357,8 @@ class PuqueryController extends AppController {
              if (in_array($ext, $allowed)) {
                  
                  $uploadFName=$file_info."_".$DomainId."_".$ProjectId.".".$ext;
-                 
+                 $uploadFName = str_replace("'", "''", $uploadFName);
+						 $uploadFName = str_replace(" ", "_", $uploadFName);
                 if(!move_uploaded_file($_FILES['file']['tmp_name'], ''.$uploadFolder.'/' .$uploadFName))                        {
                     //$this->Flash->error('Invalid File .');
                      echo "0";
@@ -365,12 +366,16 @@ class PuqueryController extends AppController {
                 }
                 else{
                   ///insert///
-                    
-                 $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0')";
+
+                    $uploadFNameStaging[$att_masterId] = $uploadFName;
+	 $uploadFNameStaging =json_encode($uploadFNameStaging);
+	
+                 $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted,HtmlFileName) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0','" . $uploadFName . "')";
 				$QryInStatus = $connection->execute($InsertQryStatus);
 	
-				$multipleAttrVal = $connection->execute("Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
-                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')");
+	
+				$multipleAttrVal = $connection->execute("Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus,HtmlFileName)"
+                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "','" . $uploadFNameStaging . "')");
        
                   ///insert end///  
                 }
@@ -379,11 +384,12 @@ class PuqueryController extends AppController {
                  if($ext !=""){
                   //$this->Flash->error('Invalid uploaded file format !');
                      echo "0";
-		     exit;
+					 exit;
+		     
                  }
                  else{
-                      echo "0";
-		     exit;
+                     // echo "0";
+		    // exit;
                   //  $this->Flash->error('Upload File Not Choosen!');
                  }
              }
