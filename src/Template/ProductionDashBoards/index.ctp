@@ -292,7 +292,7 @@ if (count($Production_dashboard) > 0) {
                                                 }
                                             }
                                             ?>
-                                        <th class="Cell" width="10%">Reallocate</th>   
+<!--                                        <th class="Cell" width="10%">Reallocate</th>   -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -368,9 +368,9 @@ if (count($Production_dashboard) > 0) {
 //                                            }
 //                                            $teset = "reallocate('$projectId','$status',$i);";
                                         ?>
-                                        <td class="Cell lastrow" overflow="hidden" width="10%"> <?php if($input['StatusId']==$queryStatus){ ?> 
+<!--                                        <td class="Cell lastrow" overflow="hidden" width="10%"> <?php if($input['StatusId']==$queryStatus){ ?> 
                                             <a href="#popup1"> <input type="radio" name="reallocate" onclick="reallocate('<?php echo $InputEntityId; ?>', '<?php echo $module[$i]; ?>')"></a><?php } ?> 
-                                        </td>
+                                        </td>-->
                                     </tr>
                                     <?php
 //                                        }
