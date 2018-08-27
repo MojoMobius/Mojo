@@ -192,9 +192,11 @@ if(!empty($queryResult)){ ?>
                             </h4>
         </div>
                    <div class="col-md-3">
+                        <?php if($DQCStatus == 1) {  ?>
                        <a target="_blank" href="<?php echo Router::url(array('controller'=>'Puquerylist','action'=>'index','PEid' => $data2[0]['ProductionEntityId'],'ModuleId'=>$data2[0]['ModuleId']));?>" >Click to view</a>
                            
                              <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">DQC Completed</button>
+                             <?php } ?>
                              <button name ='frmsubmit' type="button" onclick="return updateQuerysub('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">Submit</button>
         </div>
                         </div>

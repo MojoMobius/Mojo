@@ -156,7 +156,17 @@ class PuqueryController extends AppController {
             $ModuleId = $this->request->data('ModuleId');
             $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
             $this->set('User', $user_id_list);
-
+            $moduleIdLevel=$connection->execute("SELECT ModuleId FROM ME_Module_Level_Config where Project=$ProjectId and Modulegroup=1")->fetchAll('assoc');    
+		    $moduleIdLevel=$moduleIdLevel[0]['ModuleId'];
+		
+			if($ModuleId == $moduleIdLevel){
+			$DQCStatus = 1;
+			}
+			else{
+			$DQCStatus = 0;
+			}
+			
+			$this->set('DQCStatus', $DQCStatus);
             if (empty($user_id)) {
                 $user_id = array_keys($user_id_list);
             }
