@@ -177,6 +177,7 @@ if(!empty($queryResult)){ ?>
                 <div class="panel-body"> 
                     <?php $j=0;
                         foreach($data as $key2=>$data2){
+						
                     ?>
                     <!-- Second Inner Collpse Starts-->
                     <div class="panel panel-default">
@@ -192,11 +193,12 @@ if(!empty($queryResult)){ ?>
                             </h4>
         </div>
                    <div class="col-md-3">
-                        <?php if($DQCStatus == 1) {  ?>
+				   <?php if($DQCStatus == 1) {  ?>
                        <a target="_blank" href="<?php echo Router::url(array('controller'=>'Puquerylist','action'=>'index','PEid' => $data2[0]['ProductionEntityId'],'ModuleId'=>$data2[0]['ModuleId']));?>" >Click to view</a>
                            
-                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">DQC Completed</button>
-                             <?php } ?>
+                             <button name ='frmsubmit' type="button" onclick="updateQuerydqc('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>', '<?php echo $key ?>');" class="btn btn-default btn-sm">DQC Completed</button>
+							 
+							 <?php } ?>
                              <button name ='frmsubmit' type="button" onclick="return updateQuerysub('<?php echo $data2[0]['StatusId'];?>','<?php echo $data2[0]['ProductionEntityId'];?>', '<?php echo $data2[0]['ModuleId']?>');" class="btn btn-default btn-sm">Submit</button>
         </div>
                         </div>
@@ -396,14 +398,14 @@ if(!empty($queryResult)){ ?>
             }
         });
     }
-    function updateQuerydqc(stsId,ProductionEntityId,ModuleId) {
+    function updateQuerydqc(stsId,ProductionEntityId,ModuleId,UserId) {
             			
           var ProjectId = $("#ProjectId").val(); 
             var result = new Array();
              $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'ajaxqueryinsertdqc')); ?>",
-                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId}),
+                  data: ({statusId: stsId,ProductionEntityId: ProductionEntityId, ModuleId: ModuleId, ProjectId: ProjectId, UserId:UserId}),
                 success: function (res) { 
 			if(res == '0'){
                            //$("#message"+ProductionEntityId).show(); 
