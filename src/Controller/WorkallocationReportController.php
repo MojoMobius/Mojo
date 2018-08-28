@@ -20,7 +20,7 @@ use Cake\Datasource\ConnectionManager;
  *
  * @property \App\Model\Table\ImportInitiates $ImportInitiates
  */
-class ProjectleaseReportController extends AppController {
+class WorkallocationReportController extends AppController {
 
     /**
      * to initialize the model/utilities gonna to be used this page
@@ -43,44 +43,6 @@ class ProjectleaseReportController extends AppController {
         $this->loadModel('ProjectleaseReport');
     }
 
-    public function pr($array) {
-        echo "<pre>";
-        print_r($array);
-        exit;
-    }
-
-    public function getvalues($array, $key,$d='',$dt='',$s='') {
-        $arr = array();
-        if (!empty($array)) {
-            $arr = array_column($array, $key);
-            $msg = '';
-            if (!empty($arr)) {
-                $i = 1;
-                foreach ($arr as $k => $v) {
-                    if (!empty($v)) {
-                        if(!empty($d)){
-                            $v = date('d-m-Y', strtotime($v));
-                        }
-                        if(!empty($dt)){
-                            $v = date('d-m-Y', strtotime($v));
-                        }
-                        if(!empty($s)){
-                              $v = $i.". ". $v;
-                              $i++;
-                        }
-                        
-                        $msg .=$v . ", ";
-                    }
-                }
-            }
-            
-            $msg = rtrim($msg, ', ');
-                      
-            return $msg;
-        }
-
-        return $arr;
-    }
 
     public function index() {
         $connection = ConnectionManager::get('default');
@@ -94,6 +56,13 @@ class ProjectleaseReportController extends AppController {
         $moduleId = $session->read("moduleId");
 
 
+        $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
+        $Cl_list = array('0' => '--Select--');
+        foreach ($Cl_listarray as $values):
+            $Cl_list[$values['Id']] = $values['ClientName'];
+        endforeach;
+        $this->set('Clients', $Cl_list);
+        
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
@@ -307,6 +276,45 @@ class ProjectleaseReportController extends AppController {
         }
     }
 
+     public function pr($array) {
+        echo "<pre>";
+        print_r($array);
+        exit;
+    }
+
+    public function getvalues($array, $key,$d='',$dt='',$s='') {
+        $arr = array();
+        if (!empty($array)) {
+            $arr = array_column($array, $key);
+            $msg = '';
+            if (!empty($arr)) {
+                $i = 1;
+                foreach ($arr as $k => $v) {
+                    if (!empty($v)) {
+                        if(!empty($d)){
+                            $v = date('d-m-Y', strtotime($v));
+                        }
+                        if(!empty($dt)){
+                            $v = date('d-m-Y', strtotime($v));
+                        }
+                        if(!empty($s)){
+                              $v = $i.". ". $v;
+                              $i++;
+                        }
+                        
+                        $msg .=$v . ", ";
+                    }
+                }
+            }
+            
+            $msg = rtrim($msg, ', ');
+                      
+            return $msg;
+        }
+
+        return $arr;
+    }
+    
     function ajaxgetgroupurl($ProjectId, $RegionId, $moduleId, $ProdEntityId, $InputEntityId) {
         $connection = ConnectionManager::get('default');
 //        $ProjectId = $_POST['ProjectId'];
@@ -433,6 +441,7 @@ class ProjectleaseReportController extends AppController {
 
     function getusergroupdetails() {
         $session = $this->request->session();
+       
         echo $module = $this->Puquery->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
