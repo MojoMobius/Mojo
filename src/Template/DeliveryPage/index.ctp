@@ -39,7 +39,7 @@ table td input{
         <div class="row">
 		  <div class="col-md-5">
                     <div class="form-group">
-                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client</label>
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client <span class="mandatory"> *</span></label>
                         <div class="col-sm-6" style="line-height: 0px;">
                              <?php
                              
@@ -72,7 +72,7 @@ table td input{
 
         <div class="col-md-5">
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-6 control-label">From<span class="mandatory"> *</span>:</label>
+                <label for="inputEmail3" class="col-sm-6 control-label">From:</label>
                 <div class="col-sm-6 prodash-txt">
                     <?php 
                         echo $this->Form->input('', array('id' => 'QueryDateFrom', 'name' => 'QueryDateFrom', 'class'=>'form-control' , 'value'=>$QueryDateFrom )); 
@@ -121,7 +121,7 @@ table td input{
 <!-- ******************************************************************************************************************************************************* -->
 
     <div style="padding-bottom:50px;">
-      <input type="submit" id="submit" name="submit" value="Submit Status" style="margin-left:40px;width:140px;float:left;padding-bottom:2 px;" class="btn btn-primary btn-sm">
+      <input type="submit" id="submit" name="submit" value="Submit Status" style="margin-left:40px;width:140px;float:left;padding-bottom:2 px;" class="btn btn-primary btn-sm" onclick="return SubMandatory();">
 	</div>
 
 <div class="container-fluid">
@@ -158,11 +158,11 @@ if (count($result) > 0) {
                     ?>
                                     <tr>
                                         <td ><?php echo $i;?></td>
-                                        <td ><input type="checkbox" name="chk_status[]" id="chk_status<?php echo $data1['Id'];?>"value="<?php echo $data1['Id'];?>"></td>
+                                        <td ><input type="checkbox" name="chk_status[]" id="chk_status<?php echo $data1['Id'];?>" value="<?php echo $data1['Id'];?>" class="arrayforms"></td>
                                         <td ><?php echo $project_name;?></td>
                                         <td ><?php echo $data1['fdrid'];?> </td>
                                         <td ><?php echo $data1['ProductionStartDate'];?></td>
-                                        <td ><?php echo $data1['TotalTimeTaken'];?></td>
+                                        <td ><?php echo date('H:i:s',strtotime($data1['TotalTimeTaken']));?></td>
                                     </tr>
 
                             <?php 
@@ -272,5 +272,12 @@ function Mandatory()
 			}
 
     }
-
+function SubMandatory(){
+	 var arraydata = $('.arrayforms').serialize() ;
+            if (arraydata == '') {
+                alert('Select Checkbox for status delivered');
+                $('#ClientId').focus();
+                return false;
+            }
+}	
 </script> 
