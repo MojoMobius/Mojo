@@ -1278,7 +1278,20 @@ class GetjobcoreController extends AppController {
         return $lists;
     }
 
-    function ajaxgeapivalidation($listdata, $listdata_back, $project_scope_id) {
+    function is_numeric_array($array)
+    {
+    foreach ($array as $a => $b) {
+    if (is_int($b)) {
+    return 1;
+    }else{
+        return 2;
+    }
+    }
+    }
+
+
+
+    function ajaxgeapivalidation($listdata, $listdata_back, $project_scope_id,$validation_apiurl) {
         try {
             $connection = ConnectionManager::get('default');
 
@@ -1286,16 +1299,17 @@ class GetjobcoreController extends AppController {
 //            $listdata_back = $_POST['listdata'];
 //            $listdata_back = $listdata_back;
 //            $listdata = $this->ajaxgeapivalidationremovekey($project_scope_id, $listdata);
-
-            echo $listdata_json = json_encode($listdata); exit;
+//echo $validation_apiurl;
+            
+//           echo $listdata_json = json_encode($listdata); exit;
+           $listdata_json = json_encode($listdata); 
             $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL,"http://localhost/project/api.php");
-            curl_setopt($ch, CURLOPT_URL, $this->validation_apiurl);
+
+            curl_setopt($ch, CURLOPT_URL, $validation_apiurl);
 //        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
             curl_setopt($ch, CURLOPT_POST, 1);
 
             //attach encoded JSON string to the POST fields
-//        curl_setopt($ch, CURLOPT_POSTFIELDS,"postvar1=value1&postvar2=value2&postvar3=value3");
             curl_setopt($ch, CURLOPT_POSTFIELDS, array("mojo_json"=>$listdata_json));
 
             // receive server response ...
@@ -1304,14 +1318,41 @@ class GetjobcoreController extends AppController {
 
             curl_close($ch);
             $result = json_decode($server_output, true);
-            if (!empty($result) && !empty($result['FDRID']) ) {
+              
+                            
+            if (!empty($result) && (!empty($result['FDRID']) || !empty($result['LeaseID']))  ) {
                 $res_array = $result["Validation Output"];
 
                 if (!empty($res_array)) {
+                            
                     foreach ($res_array as $key => $val) {
                         foreach ($val as $key1 => $val1) {
-                            foreach ($val1 as $key2 => $val2) {
-
+//                            echo "<pre>s";print_r($key1);
+//                            echo "<pre>s";print_r($val);
+//                            echo "<pre>s";print_r($listdata_back);
+//                            
+//                            exit;
+                         
+//         $arrkey[] = "Location_Type";
+        
+         $arrkey = array_keys($val1);
+         $arraytype = $this->is_numeric_array($arrkey);
+         if($arraytype == 1){
+             
+                $res_array[$key][$key1]['ext'] = implode(",", array_keys($val1));
+                                $res_array[$key][$key1]['key'] = $listdata_back[$key][$key1]["key"];
+                                $array_pagination_cls = explode("_", $res_array[$key][$key1]["key"]);
+                                unset($array_pagination_cls[1]);
+                                $res_array[$key][$key1]['pagination_key'] = implode("_", $array_pagination_cls);
+                                foreach ($val1 as $key3 => $val3) {
+                                    $txt = implode("<br>", $val3['error']);
+                                    $res_array[$key][$key1][$key3]['error_txt'] = $txt;
+                                }
+             
+             
+         }else{
+             
+              foreach ($val1 as $key2 => $val2) {
                                 $res_array[$key][$key1][$key2]['ext'] = implode(",", array_keys($val2));
                                 $res_array[$key][$key1][$key2]['key'] = $listdata_back[$key][$key1][$key2]["key"];
                                 $array_pagination_cls = explode("_", $res_array[$key][$key1][$key2]["key"]);
@@ -1323,6 +1364,8 @@ class GetjobcoreController extends AppController {
                                     $res_array[$key][$key1][$key2][$key3]['error_txt'] = $txt;
                                 }
                             }
+         }
+                           
                         }
                     }
                 }
@@ -1380,12 +1423,12 @@ class GetjobcoreController extends AppController {
                 }
             }
             if(empty($ar)){
-                $ar[1] = null;
+                $ar[1] = "";
             }
             
             $ar['cnt'] = count($ar);
         } else {
-            $ar[1] = null;
+            $ar[1] = "";
             $ar['cnt'] = 1;
         }
         
@@ -1427,7 +1470,7 @@ class GetjobcoreController extends AppController {
         }
 
         $attr_array = $_POST['attr_array'];
-
+   
         if (!empty($attr_array)) {
             $list_data[$ProjectId] = array();
             $list_data_main = $listdata = array();
@@ -1458,7 +1501,9 @@ class GetjobcoreController extends AppController {
                     $getQuery[$key] = isset($getQuery2[$key]) ? $getQuery2[$key] + $val : $val;
                 }
             }
-
+//            echo "<pre>s";
+//            print_r($attr_array);exit;
+            
             foreach ($attr_array as $key => $val) {
                 // header1 - name 
                 foreach ($val['sub'] as $subkey => $subvalue) {
@@ -1468,13 +1513,21 @@ class GetjobcoreController extends AppController {
                         $ssattrname = $ssvalue['AttributeName']; // get header name 3
 
                       $array = $this->arrayfilters($getQuery, intval($ssvalue['AttributeMasterId']));
+                    
                       $array_cnt = $array;
                        unset($array['cnt']);
-                    
-                        $list_data_main[$val['name']][$subtitle][$ssattrname] = $array_cnt;
-                        $listdata[$val['name']][$subtitle][$ssattrname] = $array;
+                       
+                       if (!empty($subtitle)) {
+                            $list_data_main[$val['name']][$subtitle][$ssattrname] = $array_cnt;
+                            $listdata[$val['name']][$subtitle][$ssattrname] = $array;
 
-                        $list_data_main[$val['name']][$subtitle][$ssattrname]['key'] = "ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
+                            $list_data_main[$val['name']][$subtitle][$ssattrname]['key'] = "ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
+                        } else {
+                            $list_data_main[$val['name']][$ssattrname] = $array_cnt;
+                            $listdata[$val['name']][$ssattrname] = $array;
+
+                            $list_data_main[$val['name']][$ssattrname]['key'] = "ProductionFields_" . $ssvalue['AttributeMasterId'] . "_" . $DependentMasterIds['ProductionField'];
+                        }
                     }
                 }
             }
@@ -1483,7 +1536,12 @@ class GetjobcoreController extends AppController {
         $list[$project_scope_id] = $listdata;
         $lists['array'] = $list;
 
-        $result = $this->ajaxgeapivalidation($lists, $list_data_main, $project_scope_id);
+        
+        $getApiurl = $connection->execute("SELECT FilePath FROM ME_FileStoragePath where ProjectId='$ProjectId' and ProcessName = 'validation'")->fetchAll('assoc');
+        $validation_apiurl = $getApiurl[0]['FilePath'];
+       
+     
+        $result = $this->ajaxgeapivalidation($lists, $list_data_main, $project_scope_id,$validation_apiurl);
         echo json_encode($result);
         exit;
     }
