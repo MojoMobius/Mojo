@@ -117,24 +117,31 @@ class DeliveryPageController extends AppController {
         if (isset($this->request->data['QueryDateFrom']))
             $this->set('QueryDateFrom', $this->request->data['QueryDateFrom']);
         else
-            $this->set('QueryDateFrom', date('d-m-Y'));
+            //$this->set('QueryDateFrom', date('d-m-Y'));
+            $this->set('QueryDateFrom', '');
  if (isset($this->request->data['submit'])){
 	 $StsArr=$this->request->data['chk_status'];
 	// print_r($StsArr);exit;
-	 foreach($StsArr as $row){
-		 echo $row;
-		    //$queryUpdate = "update ProductionEntityMaster set StatusId='" . $userid . "' where Id='" . $row . "'";
-            //$connection->execute($queryUpdate);
-	 }
-	 exit;
+    $ProjectId = $this->request->data('ProjectId'); 
+	$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+	$updateStatus=array_search('Delivered',$JsonArray['ProjectStatus']);
+	if(!empty($StsArr)){
+	 foreach($StsArr as $row){           
+		    $queryUpdate = "update ProductionEntityMaster set StatusId='" . $updateStatus . "' where Id='" . $row . "'";
+            $connection->execute($queryUpdate);
+	 }	 
+            $this->Flash->success(__('Delivered Successfully.'));
+	}
+	
  }
        
 			
-        if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
+        if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile']) || isset($this->request->data['submit'])) {
 
             $ProjectId = $this->request->data('ProjectId');
             $conditions = '';
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+			$finalStatus=array_search('Ready for Autotranslation',$JsonArray['ProjectStatus']);
             $resources = $JsonArray['UserList'];
             $domainId = $JsonArray['ProjectConfig']['DomainId'];
 			$Pro_name=$JsonArray[$ProjectId];
@@ -147,12 +154,28 @@ class DeliveryPageController extends AppController {
             $RegionId = $this->request->data('RegionId');
             $ClientId = $this->request->data('ClientId');
             $arrayResult = array();
+			$SDate="";
+			$EDate="";
+			if($batch_from !=""){
+			$SDate= "AND ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00'";
+			}
+			if($batch_to !=""){
+			$EDate= "AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
+			}
+			
 			///query start/////////
 			
 			$Query = $connection->execute("SELECT pem.Id,pem.TotalTimeTaken,cpid.AttributeValue as fdrid,pem.ProductionStartDate,pem.ProjectId FROM ProductionEntityMaster as pem
 			LEFT JOIN ProjectMaster as pm ON pm.ProjectId=pem.ProjectId
 			LEFT JOIN MC_CengageProcessInputData as cpid ON cpid.ProductionEntityID=pem.ID
-			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId'")->fetchAll('assoc');
+			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' AND cpid.SequenceNumber=1 AND cpid.AttributeMasterId='$AttributeMasterId' $SDate $EDate  AND pem.StatusId='".$finalStatus."' ")->fetchAll('assoc');
+			
+			/*
+			$Query = $connection->execute("SELECT pem.Id,pem.TotalTimeTaken,cpid.AttributeValue as fdrid,pem.ProductionStartDate,pem.ProjectId FROM ProductionEntityMaster as pem
+			LEFT JOIN ProjectMaster as pm ON pm.ProjectId=pem.ProjectId
+			LEFT JOIN MC_CengageProcessInputData as cpid ON cpid.ProductionEntityID=pem.ID
+			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' AND cpid.SequenceNumber=1 AND cpid.AttributeMasterId='$AttributeMasterId' AND ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59' AND pem.StatusId='".$finalStatus."'")->fetchAll('assoc');
+			*/
             
 			///query end/////////   
 				$arrayResult=$Query;
