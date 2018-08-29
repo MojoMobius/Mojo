@@ -162,7 +162,7 @@ if (count($result) > 0) {
                                         <td ><?php echo $project_name;?></td>
                                         <td ><?php echo $data1['fdrid'];?> </td>
                                         <td ><?php echo $data1['ProductionStartDate'];?></td>
-                                        <td ><?php echo $data1['TotalTimeTaken'];?></td>
+                                        <td ><?php echo date('H:i:s',strtotime($data1['TotalTimeTaken']));?></td>
                                     </tr>
 
                             <?php 
