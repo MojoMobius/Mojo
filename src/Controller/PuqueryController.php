@@ -368,9 +368,10 @@ class PuqueryController extends AppController {
                     
                  $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0')";
 				$QryInStatus = $connection->execute($InsertQryStatus);
-	
-				$multipleAttrVal = $connection->execute("Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus)"
-                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "')");
+	echo "Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus,HtmlFileName)"
+                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "','" . $uploadFName . "')";
+				$multipleAttrVal = $connection->execute("Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus,HtmlFileName)"
+                . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "','" . $uploadFName . "')");
        
                   ///insert end///  
                 }
@@ -379,11 +380,12 @@ class PuqueryController extends AppController {
                  if($ext !=""){
                   //$this->Flash->error('Invalid uploaded file format !');
                      echo "0";
-		     exit;
+					 exit;
+		     
                  }
                  else{
-                      echo "0";
-		     exit;
+                     // echo "0";
+		    // exit;
                   //  $this->Flash->error('Upload File Not Choosen!');
                  }
              }
@@ -392,7 +394,8 @@ class PuqueryController extends AppController {
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
      
-        $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
+         $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
+		//exit;
         $QryStatus = $connection->execute($UpdateQryStatus);
          /*if ($_POST['status'] == 3) {
            $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
