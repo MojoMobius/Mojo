@@ -41,8 +41,8 @@ class WorkallocationReportController extends AppController {
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');
         $this->loadModel('ProjectleaseReport');
+//        $this->loadModel('WorkallocationReport');
     }
-
 
     public function index() {
         $connection = ConnectionManager::get('default');
@@ -62,7 +62,7 @@ class WorkallocationReportController extends AppController {
             $Cl_list[$values['Id']] = $values['ClientName'];
         endforeach;
         $this->set('Clients', $Cl_list);
-        
+
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
@@ -77,7 +77,16 @@ class WorkallocationReportController extends AppController {
 
 //        $this->request->data['ProjectId'] = 3346;
 //        $ProjectId = 3346;
-//$this->request->data['ProjectId'] = 3369;
+//        $this->pr($Cl_list);
+
+        if (isset($this->request->data['ClientId'])) {
+            $ClientId = $this->request->data['ClientId'];
+            $this->set('ClientId', $ClientId);
+        } else {
+            $this->set('ClientId', 0);
+            $ClientId = 0;
+        }
+
         if (isset($this->request->data['ProjectId'])) {
             $this->set('ProjectId', $this->request->data['ProjectId']);
             $ProjectId = $this->request->data['ProjectId'];
@@ -85,44 +94,29 @@ class WorkallocationReportController extends AppController {
             $this->set('ProjectId', 0);
             $ProjectId = 0;
         }
-
-        if (isset($this->request->data['ProjectId'])) {
-            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-            $resources = $JsonArray['UserList'];
-            $domainId = $JsonArray['ProjectConfig']['DomainId'];
-            $AttributeMasterId = $JsonArray['ProjectConfig']['DomainId'];
-            $region = $regionMainList = $JsonArray['RegionList'];
-            $modules = $JsonArray['Module'];
-            $ModuleId = array_search($moduleIdtxt, $modules);
-
-            $ProjectName = $JsonArray[$ProjectId];
-
-            $modulesConfig = $JsonArray['ModuleConfig'];
-            $modulesArr = array();
-
-            $modulesArr[$ModuleId] = $moduleIdtxt;
-            ksort($modulesArr);
-        }
+        $JsonArray = array();
+//        if (isset($this->request->data['ProjectId'])) {
+//            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+//            $resources = $JsonArray['UserList'];
+//            $domainId = $JsonArray['ProjectConfig']['DomainId'];
+//            $AttributeMasterId = $JsonArray['ProjectConfig']['DomainId'];
+//            $region = $regionMainList = $JsonArray['RegionList'];
+//            $modules = $JsonArray['Module'];
+//            $this->set('modulesarray', $modules);
+////            $ModuleId = array_search($moduleIdtxt, $modules);
+//
+//            $ProjectName = $JsonArray[$ProjectId];
+//
+//            $modulesConfig = $JsonArray['ModuleConfig'];
+//            $modulesArr = array();
+//
+//            $modulesArr[$ModuleId] = $moduleIdtxt;
+//            ksort($modulesArr);
+//        }
 
         $this->set('resources', $resources);
         $this->set('modules', $modulesArr);
-
-        if (isset($this->request->data['QueryDateFrom'])) {
-            $QueryDateFrom = $this->request->data['QueryDateFrom'];
-            $this->set('QueryDateFrom', $this->request->data['QueryDateFrom']);
-        } else {
-            $this->set('QueryDateFrom', '');
-            $QueryDateFrom = '';
-        }
-
-
-        if (isset($this->request->data['QueryDateTo'])) {
-            $QueryDateTo = $this->request->data['QueryDateTo'];
-            $this->set('QueryDateTo', $this->request->data['QueryDateTo']);
-        } else {
-            $this->set('QueryDateTo', '');
-            $QueryDateTo = '';
-        }
+        $this->set('contentArr', $JsonArray);
 
 
         if (isset($this->request->data['user_id']))
@@ -158,6 +152,8 @@ class WorkallocationReportController extends AppController {
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
 
             $ProjectId = $this->request->data['ProjectId'];
+            
+               
             $RegionId = $this->request->data['regionId'];
 //            $ModuleId = $this->request->data['ModuleId'];
             $UserGroupId = $this->request->data['UserGroupId'];
@@ -173,90 +169,108 @@ class WorkallocationReportController extends AppController {
                 $this->set('postuser_id', '');
 
 
-            $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'UserId' => $session->read('user_id'), 'UserGroupId' => $UserGroupId]);
+            $user_id_list = $this->WorkallocationReport->find('resourceDetailsArrayOnly', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'UserId' => $session->read('user_id'), 'UserGroupId' => $UserGroupId]);
             $this->set('User', $user_id_list);
 
+            
             if (empty($user_id)) {
                 $user_id = array_keys($user_id_list);
             }
 
             $conditions = "";
+            $results = array();
+            $prod_conditions = '';
 
-            if (!empty($user_id)) {
-                $conditions.="  AND uq.UserID in (" . implode(',', $user_id) . ")";
+//            if (!empty($ProjectId)) {
+//                $prod_conditions = " AND ptm.ProjectId= '$ProjectId'";
+//            }
+
+            $userslist = array();
+
+            if (empty($user_id) && empty($ProjectId)) {
+
+                $sql = "select ptm.UserId,ptm.ProjectId from ME_Production_TimeMetric as ptm inner join MC_CengageProcessInputData as cpid on ptm.InputEntityId = cpid.InputEntityId where ptm.Start_Date is Null AND ptm.UserId IS NOT NULL AND ptm.End_Date is Null group by ptm.UserId,ptm.ProjectId ";
+
+                $userslist = $connection->execute($sql)->fetchAll('assoc');
+            } elseif (!empty($ProjectId)) {
+                $userslist = $user_id_list ;
+//                foreach ($user_id as $key => $val) {
+//                    $userslist[$key]['UserId'] = $val;
+//                    $userslist[$key]['ProjectId'] = $ProjectId;
+//                   
+//                }
             }
-            if ($QueryDateFrom != '' && $QueryDateTo != '') {
-                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-            }
-            if ($QueryDateFrom != '' && $QueryDateTo == '') {
-                $conditions.="  AND QueryRaisedDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00' AND QueryRaisedDate <='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 23:00:00'" ;
-            }
-            if ($QueryDateFrom == '' && $QueryDateTo != '') {
-                $conditions.="  AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 00:00:00' AND QueryRaisedDate ='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
-            }
 
-//            $conditions = "";
 
-            $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
-            $DependencyTypeMasterId = $queryData[0]['Id'];
+//            $this->pr($userslist);
 
-            $queryData = $connection->execute("select cpid.AttributeValue as fdrid,cpid.ProductionEntityID ,cpid.InputEntityId from ME_UserQuery as uq inner join MC_CengageProcessInputData as cpid on uq.ProductionEntityID=cpid.ProductionEntityID  where uq.ProjectId='$ProjectId' and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId' $conditions group by cpid.AttributeValue , cpid.ProductionEntityID,cpid.InputEntityId")->fetchAll('assoc');
-        
-            $list = array();
-            if (!empty($queryData)) {
-                foreach ($queryData as $key => $val) {
 
-                    $ProductionEntityID = $val['ProductionEntityID'];
-                    $InputEntityId = $val['InputEntityId'];
-                    $doclist = $this->ajaxgetgroupurl($ProjectId, $RegionId, $ModuleId, $ProductionEntityID, $InputEntityId);
-             
-                    $list['leaseid'] = $val['fdrid'];
-                    $list['noofdocuments'] = $doclist['noofdocuments'];
-                    $list['pdfname'] = $doclist['pdfname'];
+            foreach ($userslist as $key => $val) {
 
-                    $sub_queryData = $connection->execute("SELECT * FROM ME_UserQuery as uq where uq.ProjectId='$ProjectId' and uq.ModuleId='$ModuleId' and uq.ProductionEntityID='$ProductionEntityID' AND uq.RegionId ='$RegionId'  $conditions")->fetchAll('assoc');
+                $UserId = $val['UserId'];
+                $ProjectId = $val['ProjectId'];
+                $conditions = " AND ptm.UserId in ('$UserId')";
+                $prod_conditions = " AND ptm.ProjectId= '$ProjectId'";
 
-//                    $sub_queryData[0]['Client_Response']= "tset tets";
-//                    $sub_queryData[] =$sub_queryData[0];
-                    
-                    //and ProductionEntityID='$ProductionEntityID' 
-//                     $this->pr($sub_queryData);
+                $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+                $AttributeMasterId = $JsonArray['ProjectConfig']['DomainId'];
+                $modules = $JsonArray['Module'];
+                  
 
-                    $TLComments = "";
-                    $QueryRaisedDate = "";
-                    $Client_Response = "";
-                    $Client_Response_Date = "";
-                    if (!empty($sub_queryData)) {
-                        
-                        $TLComments = $this->getvalues($sub_queryData, 'TLComments','','','s');
-                        $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate','D');
-                        $Client_Response = $this->getvalues($sub_queryData, 'Client_Response','','','s');
-                        $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','','dt');
+                $queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
+                $DependencyTypeMasterId = $queryData[0]['Id'];
+
+                $sql = "select cpid.AttributeValue as fdrid, cpid.ProjectId,cpid.DependencyTypeMasterId,ptm.UserId,ptm.Estimated_Time,ptm.TimeTaken,ptm.Module_Id from ME_Production_TimeMetric as ptm inner join MC_CengageProcessInputData as cpid on ptm.InputEntityId = cpid.InputEntityId where ptm.Start_Date is Null AND ptm.End_Date is Null  and cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.AttributeMasterId='$AttributeMasterId' $conditions $prod_conditions";
+
+                $result = $connection->execute($sql)->fetchAll('assoc');
+
+                $formatresult = array();
+                $moduleresult = array();
+                // get no of jobs 
+                if (!empty($result)) {
+
+                    foreach ($modules as $modkey => $modval) {
+                        $moduleres = $this->search($result, 'Module_Id', $modkey);
+                        if (!empty($moduleres)) {
+                            $moduleresult[$modkey] = $moduleres;
+                        }
                     }
+                    if (!empty($moduleresult)) {
+                        foreach ($moduleresult as $modkey => $modval) {
+                            $fdrids = array_column($modval, 'fdrid');
+                            $Estimated_Times = array_column($modval, 'Estimated_Time');
+                            $Estimated_Time = array_sum($Estimated_Times);
+                            $formatresult['numberofjobs'] = count($modval);
+                            $formatresult['fdrid'] = implode(',', $fdrids);
+                            $formatresult['UserId'] = $modval[0]['UserId'];
+                            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $modval[0]['ProjectId']]);
+                            $formatresult['ProjectId'] = $modval[0]['ProjectId'];
+                            $formatresult['ProjectName'] = $JsonArray[$formatresult['ProjectId']];
+                            $formatresult['ClientName'] = $Cl_list[$ClientId];
+                            $formatresult['userName'] = $user_id_list[$formatresult['UserId']];
+                            $formatresult['moduleName'] = $modules[$modkey];
 
-                    $list['holdcomments'] = $TLComments;
-                    $list['holdreportdate'] = $QueryRaisedDate;
-                    $list['ProjectName'] = $ProjectName;
+                            $formatresult['Estimated_Time'] = $Estimated_Time;
+                            $formatresult['DependencyTypeMasterId'] = $modval[0]['DependencyTypeMasterId'];
 
-                    $list['Client_Response'] = $Client_Response;
-                    $list['Client_Response_Date'] = $Client_Response_Date;
-
-                    $queryData = $connection->execute("SELECT StatusId FROM ProductionEntityMaster where Id='$ProductionEntityID'")->fetchAll('assoc');
-                    $statusid = $queryData[0]['StatusId'];
-                    $list['status'] = $JsonArray['ProjectStatus'][$statusid];
-                    $result[] = $list;
+                            $formatresult['Module_Id'] = $modkey;
+                            if (!empty($formatresult)) {
+                                $results[] = $formatresult;
+                            }
+                        }
+                    }
                 }
             }
 
-//              $this->pr($result);exit;
+// $this->pr($results);
 
-            $this->set('result', $result);
+            $this->set('result', $results);
 
             if (isset($this->request->data['downloadFile'])) {
 
                 $productionData = '';
-                if (!empty($result)) {
-                    $productionData = $this->ProjectleaseReport->find('export', ['ProjectId' => $ProjectId, 'condition' => $result]);
+                if (!empty($results)) {
+                    $productionData = $this->WorkallocationReport->find('export', ['ProjectId' => $ProjectId, 'result' => $results]);
                     $this->layout = null;
                     if (headers_sent())
                         throw new Exception('Headers sent.');
@@ -264,25 +278,43 @@ class WorkallocationReportController extends AppController {
                     if (ob_get_level())
                         throw new Exception('Buffering is still active.');
                     header("Content-type: application/vnd.ms-excel");
-                    header("Content-Disposition:attachment;filename=QAreviewreport.xls");
+                    header("Content-Disposition:attachment;filename=Workallocationreport.xls");
                     echo $productionData;
                     exit;
                 }
             }
 
-            if (empty($result)) {
+            if (empty($results)) {
                 $this->Flash->error(__('No Record found for this combination!'));
             }
         }
     }
 
-     public function pr($array) {
-        echo "<pre>";
-        print_r($array);
-        exit;
+    public function search($array, $key, $value) {
+        $results = array();
+
+        if (is_array($array)) {
+            if (isset($array[$key]) && $array[$key] == $value) {
+                $results[] = $array;
+            }
+
+            foreach ($array as $subarray) {
+                $results = array_merge($results, $this->search($subarray, $key, $value));
+            }
+        }
+
+        return $results;
     }
 
-    public function getvalues($array, $key,$d='',$dt='',$s='') {
+    public function pr($array, $n = '') {
+        echo "<pre>";
+        print_r($array);
+        if (empty($n)) {
+            exit;
+        }
+    }
+
+    public function getvalues($array, $key, $d = '', $dt = '', $s = '') {
         $arr = array();
         if (!empty($array)) {
             $arr = array_column($array, $key);
@@ -291,30 +323,30 @@ class WorkallocationReportController extends AppController {
                 $i = 1;
                 foreach ($arr as $k => $v) {
                     if (!empty($v)) {
-                        if(!empty($d)){
+                        if (!empty($d)) {
                             $v = date('d-m-Y', strtotime($v));
                         }
-                        if(!empty($dt)){
+                        if (!empty($dt)) {
                             $v = date('d-m-Y', strtotime($v));
                         }
-                        if(!empty($s)){
-                              $v = $i.". ". $v;
-                              $i++;
+                        if (!empty($s)) {
+                            $v = $i . ". " . $v;
+                            $i++;
                         }
-                        
+
                         $msg .=$v . ", ";
                     }
                 }
             }
-            
+
             $msg = rtrim($msg, ', ');
-                      
+
             return $msg;
         }
 
         return $arr;
     }
-    
+
     function ajaxgetgroupurl($ProjectId, $RegionId, $moduleId, $ProdEntityId, $InputEntityId) {
         $connection = ConnectionManager::get('default');
 //        $ProjectId = $_POST['ProjectId'];
@@ -323,7 +355,6 @@ class WorkallocationReportController extends AppController {
 //        $ProdEntityId = $_POST['ProdEntityId'];
 //        $ProdEntityId = 108904;
 //        $InputEntityId = 110190;
-
 //        $AttrGroup = $_POST['AttrGroup'];
 //        $AttrSubGroup = $_POST['AttrSubGroup'];
 //        $AttrId = $_POST['AttrId'];
@@ -441,14 +472,14 @@ class WorkallocationReportController extends AppController {
 
     function getusergroupdetails() {
         $session = $this->request->session();
-       
-        echo $module = $this->Puquery->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
+
+        echo $module = $this->WorkallocationReport->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
 
     function getresourcedetails() {
         $session = $this->request->session();
-        echo $module = $this->Puquery->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
+        echo $module = $this->WorkallocationReport->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
         exit;
     }
 
@@ -466,6 +497,18 @@ class WorkallocationReportController extends AppController {
         $this->render('index');
     }
 
-   
-
+    public function ajaxProject() {
+        $session = $this->request->session();
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+        $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+        $ProList = $this->WorkallocationReport->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user, 'ClientId' => $_POST['ClientId'], 'RegionId' => $_POST['RegionId']]);
+        echo $ProList;
+        exit;
+    }
+    
 }

@@ -4,19 +4,41 @@ use Cake\Routing\Router
 ?>
 <div class="container-fluid mt15">
     <div class="formcontent">
-        <h4>DQC Report</h4>
+        <h4>Work Allocation Report</h4>
             <?php echo $this->Form->create('',array('class'=>'form-horizontal','id'=>'projectforms')); ?>
         <div class="row">
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
-                    <div class="col-sm-6 prodash-txt">
-                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getusergroupdetails();getresourcedetails();'));?>  
-                        <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
+             <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client<span class="mandatory"> *</span></label>
+                        <div class="col-sm-6" style="line-height: 0px;">
+                             <?php
+                       
+                         echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId, 'onchange' => 'getProject()'));
+                       
+                    ?>
+                    
+                     
+                        </div>
                     </div>
                 </div>
-            </div>
+            <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
+             <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Project</label>
+                        <div class="col-sm-6" style="line-height: 0px;">
+                              <div id="LoadProject">
+                                  <?php 
+                     echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId,'style' => 'width:220px;height:100px','multiple'=>'true', 'onchange' => 'getusergroupdetails();'));  
+                      
+                        ?>
+                         
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            
+            
 <!--getModule(this.value);-->
             <div class="col-md-4 hide">
                 <div class="form-group">
@@ -61,7 +83,13 @@ use Cake\Routing\Router
                 </div>
             </div>
 
-        <div class="col-md-4">
+       
+
+
+        </div>
+        <div class="row">
+            
+             <div class="col-md-4">
                 <div class="form-group">
                    <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
                     <div class="col-sm-6 ">
@@ -76,33 +104,8 @@ use Cake\Routing\Router
                     </div>
                 </div>
             </div>
-
-
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-6 control-label">Query Date From :</label>
-                    <div class="col-sm-6 prodash-txt">
-                    <?php 
-                        echo $this->Form->input('', array('id' => 'QueryDateFrom', 'name' => 'QueryDateFrom', 'class'=>'form-control' , 'value'=>$QueryDateFrom )); 
-                    ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-6 control-label">To:</label>
-                    <div class="col-sm-6 prodash-txt">
-                    <?php 
-                        echo $this->Form->input('', array('id' => 'QueryDateTo', 'name' => 'QueryDateTo', 'class'=>'form-control','value'=>$QueryDateTo )); 
-                    ?>
-                    </div>
-                </div>
-            </div>
-
-
+            
+           
         </div>
 
         <div class="form-group" style="text-align:center;" >
@@ -201,35 +204,32 @@ if (count($result) > 0) {
                                 <thead>
                                     <tr class="Heading">
                                         <th style='width:5%;'>S.No</th>
+                                        <th style='width:10%;'>Client</th>
                                         <th style='width:10%;'>Project</th>
-                                        <th style='width:5%;'>Lease ID</th>
-                                        <th style='width:5%;'>No. of Documents</th>
-                                        <th style='width:25%;'>PDF Name</th>
-
-                                        <th style='width:5%;'>Status</th>
-                                        <th style='width:15%;'>On-Hold Comments</th>
-                                        <th style='width:10%;'>On-hold reported date</th>
-                                        <th style='width:10%;'>Client Responses</th>
-                                        <th style='width:10%;'>Client resolution date</th>
+                                        <th style='width:10%;'>User Name</th>
+                                        <th style='width:10%;'>Module</th>
+                                        <th style='width:10%;'>No of Allocated Jobs</th>
+                                        <th style='width:10%;'>Allocated Jobs</th>
+                                        <th style='width:10%;'>Estimation Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                     <?php 
                         $i = 1;
+                      
                         foreach($result as $key1=>$data1){
                     ?>
                                     <tr>
                                         <td style='width:5%;'><?php echo $i;?></td>
-                                        <td style='width:10%;'><?php echo $data1['ProjectName'];?></td>
-                                        <td style='width:5%;'><?php echo $data1['leaseid'];?></td>
-                                        <td style='width:5%;'><?php echo $data1['noofdocuments'];?> </td>
-                                        <td style='width:25%;'><?php echo $data1['pdfname'];?></td>
-
-                                        <td style='width:5%;'><?php echo $data1['status'];?></td>
-                                        <td style='width:15%;'><?php echo $data1['holdcomments'];?></td>
-                                        <td style='width:10%;'><?php echo $data1['holdreportdate'];?></td>
-                                        <td style='width:10%;'><?php echo $data1['Client_Response'];?></td>
-                                        <td style='width:10%;'><?php echo $data1['Client_Response_Date'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['ClientName']; ?></td>
+                                        <td style='width:10%;'><?php echo $data1['ProjectName']; ?></td>
+                                        <td style='width:10%;'><?php echo $data1['userName'];?> </td>
+                                         <td style='width:10%;'><?php echo $data1['moduleName'];?></td>                                 
+                                        <td style='width:8%;'><?php echo $data1['numberofjobs'];?></td>
+                                       
+                                        <td style='width:15%;'><?php echo $data1['fdrid'];?></td>
+                                        <td style='width:10%;'><?php echo $data1['Estimated_Time'];?></td>
+                                        
                                     </tr>
 
                             <?php 
@@ -277,10 +277,9 @@ echo $this->Form->end();
     function getusergroupdetails() {
         var ProjectId = $('#ProjectId').val();
         var RegionId = $('#RegionId').val();
-
         $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'getusergroupdetails')); ?>",
+            url: "<?php echo Router::url(array('controller' => 'WorkallocationReport', 'action' => 'getusergroupdetails')); ?>",
             data: ({projectId: ProjectId, regionId: RegionId}),
             dataType: 'text',
             async: false,
@@ -292,11 +291,15 @@ echo $this->Form->end();
                 });
                 optionValues.join(',')
                 $('#UserGroupId').prepend('<option selected value="' + optionValues + '">All</option>');
-//                getresourcedetails();
+                getresourcedetails();
 
             }
         });
     }
+
+function getStatus(){
+    return true;
+}
 
     function getresourcedetails() {
         var ProjectId = $('#ProjectId').val();
@@ -305,7 +308,7 @@ echo $this->Form->end();
 
         $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'getresourcedetails')); ?>",
+            url: "<?php echo Router::url(array('controller' => 'WorkallocationReport', 'action' => 'getresourcedetails')); ?>",
             data: ({projectId: ProjectId, regionId: RegionId, userGroupId: UserGroupId}),
             dataType: 'text',
             async: false,
@@ -318,40 +321,46 @@ echo $this->Form->end();
 
     function formSubmitValidation() {
 
-        if ($('#ProjectId').val() == 0) {
-            alert('Select Project Name');
-            $('#ProjectId').focus();
+        if ($('#ClientId').val() == 0) {
+            alert('Please Select Client ');
+            $('#ClientId').focus();
             return false;
         }
 
-//        if ($('#ModuleId').val() == 0) {
-//            alert('Select Module Name');
-//            $('#ModuleId').focus();
-//            return false;
-//        }
-        if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
-            alert('Select From Date');
-            return false;
-        }
-//        if ($('#user_id').val() == '') {
-//            alert('Select Resource');
-//            return false;
-//        }
+       
     }
 
     function ClearFields() {
         $('#ProjectId').val('0');
         $('#UserGroupId').val('');
         //$('#ModuleId').val('0');
-        $('#QueryDateFrom').val('');
-        $('#QueryDateTo').val('');
+        $('#ClientId').val('0');
         $('#user_id').find('option').remove();
     }
+    
+function getProject(){
+    
+  var RegionId=$("#RegionId").val();
+  var id=$("#ClientId").val();
+  $("#LoadProject").html('Loading...');
+            $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'WorkallocationReport', 'action' => 'ajaxProject')); ?>',
+            
+            data: {ClientId: id,RegionId: RegionId},
+            type: 'POST',
+            success: function (res) { 
+	     $("#LoadProject").html(res);
+            }
+        });
+}    
+
 </script>
 
 
+
 <?php
-if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
+
+if ( (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) && !empty($postbatch_UserGroupId) ) {
     ?>
 <script>
     $(window).bind("load", function () {
