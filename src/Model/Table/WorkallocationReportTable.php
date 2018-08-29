@@ -41,7 +41,7 @@ use Cake\Datasource\ConnectionManager;
  *
  * @package       app.Model
  */
-class ProjectleaseReportTable extends Table {
+class WorkallocationReportTable extends Table {
 
     public function initialize(array $config) {
         $this->table('ME_UserQuery');
@@ -49,7 +49,168 @@ class ProjectleaseReportTable extends Table {
         $this->addBehavior('Timestamp');
     }
 
+    
+    function findResourceDetailsArrayOnly(Query $query, array $options) {
+        $ProjectId = $options['ProjectId'];
+        $RegionId = $options['RegionId'];
+        $UserGroupId = $options['UserGroupId'];
 
+     
+
+        $connection = ConnectionManager::get('default');
+
+        $ProjectIds = implode(',',$ProjectId);
+        $queries = $connection->execute("select UGMapping.UserId,UGMapping.ProjectId from MV_UserGroupMapping as UGMapping"
+                . " where UGMapping.ProjectId IN ($ProjectIds) AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
+                . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
+                   FROM (SELECT CAST('<M>' + REPLACE([RoleId], ',', '</M><M>') + '</M>' AS XML) AS String  
+                        FROM ME_ProjectRoleMapping where ProjectId  IN ($ProjectIds) AND ModuleId = 3 AND RecordStatus = 1) AS A CROSS APPLY String.nodes ('/M') AS Split(a)"
+                . ") GROUP BY UGMapping.UserId,UGMapping.ProjectId");
+        $queries = $queries->fetchAll('assoc');
+        $template = array();
+        if (!empty($queries)) {
+            foreach ($queries as $key => $val):
+                $path = JSONPATH . '\\ProjectConfig_' . $val['ProjectId'] . '.json';
+        $content = file_get_contents($path);
+        $contentArr = json_decode($content, true);
+        $user_list = $contentArr['UserList'];
+                
+        $template[$key]['UserId'] = $val['UserId'];
+        $template[$key][$val['UserId']] = $user_list[$val['UserId']];
+        $template[$key]['ProjectId'] = $val['ProjectId'];
+        
+//                $template[$val['UserId']] = $user_list[$val['UserId']];
+//                $template[$val['UserId']] = $user_list[$val['UserId']];
+            endforeach;
+        }
+        return $template;
+    }
+    
+     public function findajaxProjectNameList(Query $query, array $options) {
+         $proId = $options['proId'];
+         $ClientId = $options['ClientId']; 
+		 $RegionId = $options['RegionId'];
+        $clientCheck="";
+        if($ClientId > 0){
+        $clientCheck="client_id ='".$ClientId."' and ";    
+        }
+         $test = implode(',', $options['proId']);
+        $connection = ConnectionManager::get('default');
+        
+        
+         $modulesArr =  $connection->execute('select ProjectName,ProjectId from ProjectMaster where '.$clientCheck.' ProjectId in (' . $test . ') AND RecordStatus = 1');
+        
+       
+      
+        $template = '';
+        $template = '<select name="ProjectId[]" multiple="multiple" id="ProjectId" class="form-control" onchange="getusergroupdetails('.$RegionId.');getStatus(this.value);"><option value=0>--Select--</option>';
+        if (!empty($modulesArr)) {
+
+            foreach ($modulesArr as $key => $value) {             
+               
+                $template.='<option  value="' . $value['ProjectId'] . '">';
+                $template.=$value['ProjectName'];
+                $template.='</option>';
+            }
+            $template.='</select>';
+            return $template;
+            
+        } else {
+            $template.='</select>';
+            return $template;
+        }
+    }
+    
+    function findResourcedetails(Query $query, array $options) {
+        $ProjectId = $options['ProjectId'];
+        $RegionId = $options['RegionId'];
+        $UserGroupId = $options['UserGroupId'];
+        
+        $ProjectIds = implode(",", $ProjectId);
+
+        if ($options['UserId'] != '') {
+            $UserId = $options['UserId'];
+        }
+
+      
+
+        $connection = ConnectionManager::get('default');
+
+//        $queries = $connection->execute("select UGMapping.UserId from MV_UserGroupMapping as UGMapping"
+//                . " where UGMapping.ProjectId = " . $ProjectId . " AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 GROUP BY UGMapping.UserId");
+//        $queries = $queries->fetchAll('assoc');
+
+        $queries = $connection->execute("select UGMapping.UserId,UGMapping.ProjectId from MV_UserGroupMapping as UGMapping"
+                . " where UGMapping.ProjectId IN ($ProjectIds) AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
+                . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
+                   FROM (SELECT CAST('<M>' + REPLACE([RoleId], ',', '</M><M>') + '</M>' AS XML) AS String  
+                        FROM ME_ProjectRoleMapping where ProjectId IN ($ProjectIds) AND ModuleId = 3 AND RecordStatus = 1) AS A CROSS APPLY String.nodes ('/M') AS Split(a)"
+                . ") GROUP BY UGMapping.UserId,UGMapping.ProjectId order by UGMapping.ProjectId");
+        $queries = $queries->fetchAll('assoc');
+
+        $template = '';
+        $template.='<select multiple=true name="user_id[]" id="user_id"  class="form-control" style="height:100px;width:150px">';
+        if (!empty($queries)) {
+         
+            foreach ($queries as $key => $val):
+                
+        $path = JSONPATH . '\\ProjectConfig_' . $val['ProjectId'] . '.json';
+        $content = file_get_contents($path);
+        $contentArr = json_decode($content, true);
+        $user_list = $contentArr['UserList'];
+        
+                if ($key == $UserId) {
+                    $selected = '';
+                } else {
+                    $selected = '';
+                }
+                $template.='<option ' . $selected . ' value="' . $val['UserId'] . '" >';
+                $template.= $user_list[$val['UserId']];
+                $template.='</option>';
+            endforeach;
+            $template.='</select>';
+            return $template;
+        } else {
+            $template.='</select>';
+            return $template;
+        }
+    }
+    
+    function findUsergroupdetails(Query $query, array $options) {
+        $ProjectId = $options['ProjectId'];
+        $RegionId = $options['RegionId'];
+        $UserId = $options['UserId'];
+
+        if ($options['UserGroupId'] != '') {
+            $UserGroupId = $options['UserGroupId'];
+        }
+
+        $ProjectIds = implode(",", $ProjectId);
+        
+        $connection = ConnectionManager::get('default');
+        $queries = $connection->execute("select UGMapping.UserGroupId,UGMaster.GroupName from MV_UserGroupMapping as UGMapping INNER JOIN MV_UserGroupMaster as UGMaster ON UGMapping.UserGroupId = UGMaster.Id"
+                . " where UGMapping.ProjectId IN ($ProjectIds) AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserId = " . $UserId . " AND UGMapping.RecordStatus = 1 AND UGMaster.RecordStatus = 1 GROUP BY UGMapping.UserGroupId,UGMaster.GroupName");
+        $queries = $queries->fetchAll('assoc');
+        $template = '';
+        $template.='<select name="UserGroupId" id="UserGroupId"  class="form-control" style="margin-top:17px;"  onchange="getresourcedetails()">';
+        if (!empty($queries)) {
+            foreach ($queries as $key => $val):
+                if ($key == $UserGroupId) {
+                    $selected = 'selected';
+                } else {
+                    $selected = '';
+                }
+                $template.='<option ' . $selected . ' value="' . $val['UserGroupId'] . '" >';
+                $template.=$val['GroupName'];
+                $template.='</option>';
+            endforeach;
+            $template.='</select>';
+            return $template;
+        } else {
+            $template.='</select>';
+            return $template;
+        }
+    }
     
     public function findModule(Query $query, array $options) {
 
@@ -74,7 +235,7 @@ class ProjectleaseReportTable extends Table {
                     $modulesArr[$key] = $val;
                 }
             }
-           
+
             ksort($modulesArr);
             foreach ($modulesArr as $key => $value) {
                 if ($key == $ModuleId) {
@@ -93,42 +254,37 @@ class ProjectleaseReportTable extends Table {
             return $template;
         }
     }
-    
+
     function findExport(Query $query, array $options) {
-//      echo "<pre>sd";   print_r($options); 
-//      exit;
+
         $ProjectId = $options['ProjectId'];
-      
-          $tableData = '<table border=1><thead>';
-            $tableData.='<tr class="Heading"><th>S No</th><th>Project</th><th>Lease ID</th><th>No. of Documents</th><th>PDF Name</th><th>Status</th><th>On-Hold Comments</th><th>On-hold reported date</th><th>Client Responses</th><th>Client resolution date</th>';
+
+        $tableData = '<table border=1><thead>';
+        $tableData.='<tr class="Heading">'
+                . '<th>S No</th><th>Client</th><th>Project</th>'
+                . '<th>User Name</th><th>Module</th><th>No of Allocated Jobs</th>'
+                . '<th>Allocated Jobs</th><th>Estimation Time</th>';
         $tableData.= '</tr>';
         $tableData.='</thead>';
         $i = 1;
-        foreach ($options['condition'] as $inputVal => $input):
-	    //pr($input);exit;
+
+        foreach ($options['result'] as $inputVal => $input):
             $tableData .= '<tbody>';
-                $tableData.='<tr><td>' . $i . '</td>';
-                $tableData.='<td>' . $input['ProjectName'] . '</td>';
-                $tableData.='<td>' . $input['leaseid'] . '</td>';
-                $tableData.='<td>' . $input['noofdocuments'] . '</td>';
-                $tableData.='<td>' . $input['pdfname'] . '</td>';
-				$tableData.='<td>' . $input['status'] . '</td>';
-				$tableData.='<td>' . $input['holdcomments'] . '</td>';
-				$tableData.='<td>' . $input['holdreportdate'] . '</td>';
-				$tableData.='<td>' . $input['Client_Response'] . '</td>';
-				$tableData.='<td>' . $input['Client_Response_Date'] . '</td>';
-                
-                $tableData.='</tr>';
-        
+            $tableData.='<tr><td>' . $i . '</td>';
+            $tableData.='<td>' . $input['ClientName'] . '</td>';
+            $tableData.='<td>' . $input['ProjectName'] . '</td>';
+            $tableData.='<td>' . $input['userName'] . '</td>';
+            $tableData.='<td>' . $input['moduleName'] . '</td>';
+            $tableData.='<td>' . $input['numberofjobs'] . '</td>';
+            $tableData.='<td>' . $input['fdrid'] . '</td>';
+            $tableData.='<td>' . $input['Estimated_Time'] . '</td>';
+
+            $tableData.='</tr>';
+
             $i++;
         endforeach;
         $tableData.='</tbody></table>';
-    
         return $tableData;
     }
-    
-    
-    
-    
-    
+
 }
