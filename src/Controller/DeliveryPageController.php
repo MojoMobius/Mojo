@@ -121,12 +121,16 @@ class DeliveryPageController extends AppController {
  if (isset($this->request->data['submit'])){
 	 $StsArr=$this->request->data['chk_status'];
 	// print_r($StsArr);exit;
+	$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+	$updateStatus=array_search('Delivered',$JsonArray['ProjectStatus']);
 	 foreach($StsArr as $row){
-		 echo $row;
-		    //$queryUpdate = "update ProductionEntityMaster set StatusId='" . $userid . "' where Id='" . $row . "'";
-            //$connection->execute($queryUpdate);
+		 $ProjectId = $this->request->data('ProjectId');
+            $conditions = '';
+            
+		    $queryUpdate = "update ProductionEntityMaster set StatusId='" . $updateStatus . "' where Id='" . $row . "'";
+            $connection->execute($queryUpdate);
 	 }
-	 exit;
+	
  }
        
 			
@@ -135,6 +139,7 @@ class DeliveryPageController extends AppController {
             $ProjectId = $this->request->data('ProjectId');
             $conditions = '';
             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+			$finalStatus=array_search('Abstraction Rework Sense Completed',$JsonArray['ProjectStatus']);
             $resources = $JsonArray['UserList'];
             $domainId = $JsonArray['ProjectConfig']['DomainId'];
 			$Pro_name=$JsonArray[$ProjectId];
@@ -152,7 +157,7 @@ class DeliveryPageController extends AppController {
 			$Query = $connection->execute("SELECT pem.Id,pem.TotalTimeTaken,cpid.AttributeValue as fdrid,pem.ProductionStartDate,pem.ProjectId FROM ProductionEntityMaster as pem
 			LEFT JOIN ProjectMaster as pm ON pm.ProjectId=pem.ProjectId
 			LEFT JOIN MC_CengageProcessInputData as cpid ON cpid.ProductionEntityID=pem.ID
-			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId'")->fetchAll('assoc');
+			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId' and pem.StatusId='".$finalStatus."'")->fetchAll('assoc');
             
 			///query end/////////   
 				$arrayResult=$Query;
