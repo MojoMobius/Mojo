@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Requirement : REQ-003
  * Form : Input Initation
@@ -20,7 +19,7 @@ use Cake\Datasource\ConnectionManager;
  *
  * @property \App\Model\Table\ImportInitiates $ImportInitiates
  */
-class PuqueryController extends AppController {
+class DeliveryPageController extends AppController {
 
     /**
      * to initialize the model/utilities gonna to be used this page
@@ -36,13 +35,157 @@ class PuqueryController extends AppController {
         parent::initialize();
         $this->loadModel('projectmasters');
         $this->loadModel('importinitiates');
-        $this->loadModel('Puquery');
+        $this->loadModel('deliveryPage');
         $this->loadModel('GetJob');
+        $this->loadModel('ProductionDashBoards');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Paginator');
     }
+   public function index() {
+        $session = $this->request->session();
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+        $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+        $ProList = $this->deliveryPage->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
+        $ProListFinal = array('0' => '--Select Project--');
 
-    public function index() {
+        foreach ($ProList as $values):
+            $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
+
+        endforeach;
+        //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+
+        $this->set('Projects', $ProListFinal);
+        $this->set('sessionProjectId', $sessionProjectId);
+
+        $connection = ConnectionManager::get('default');
+        $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
+
+        $Cl_list = array('0' => '--Select--');
+        foreach ($Cl_listarray as $values):
+            $Cl_list[$values['Id']] = $values['ClientName'];
+        endforeach;
+        //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+        $this->set('Clients', $Cl_list);
+
+        if ($this->request->data['ClientId'] > 0) {
+            $Clients = $this->deliveryPage->find('client', ['ClientId' => $this->request->data['ClientId']]);
+            $this->set('ClientId', $Clients);
+        } else {
+
+            $this->set('ClientId', '');
+        }
+
+
+        if (count($ProListFinal) == 2) {
+            $ProjectId = $this->request->data['ProjectId'] = array_keys($ProListFinal)[1];
+        }
+
+        if (isset($this->request->data['ProjectId'])) {
+            $this->set('ProjectId', $this->request->data['ProjectId']);
+            $ProjectId = $this->request->data['ProjectId'];
+        } else {
+            $this->set('ProjectId', 0);
+            $ProjectId = 0;
+        }
+
+        $path = JSONPATH . '\\ProjectConfig_' . $sessionProjectId . '.json';
+        $content = file_get_contents($path);
+        $contentArr = json_decode($content, true);
+        $region = $regionMainList = $contentArr['RegionList'];
+        foreach ($region as $key => $value) {
+            $sessionRegion = $key;
+        }
+
+   
+    
+        
+       
+
+//pr($completed_status_idsss); exit;
+       
+
+        if (isset($this->request->data['QueryDateTo']))
+            $this->set('QueryDateTo', $this->request->data['QueryDateTo']);
+        else
+            $this->set('QueryDateTo', '');
+
+        if (isset($this->request->data['QueryDateFrom']))
+            $this->set('QueryDateFrom', $this->request->data['QueryDateFrom']);
+        else
+            $this->set('QueryDateFrom', date('d-m-Y'));
+ if (isset($this->request->data['submit'])){
+	 $StsArr=$this->request->data['chk_status'];
+	// print_r($StsArr);exit;
+	 foreach($StsArr as $row){
+		 echo $row;
+		    //$queryUpdate = "update ProductionEntityMaster set StatusId='" . $userid . "' where Id='" . $row . "'";
+            //$connection->execute($queryUpdate);
+	 }
+	 exit;
+ }
+       
+			
+        if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
+
+            $ProjectId = $this->request->data('ProjectId');
+            $conditions = '';
+            $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+            $resources = $JsonArray['UserList'];
+            $domainId = $JsonArray['ProjectConfig']['DomainId'];
+			$Pro_name=$JsonArray[$ProjectId];
+            $AttributeMasterId = $JsonArray['ProjectConfig']['DomainId'];
+			$queryData = $connection->execute("SELECT Id FROM MC_DependencyTypeMaster where ProjectId='$ProjectId' and FieldTypeName='General' ")->fetchAll('assoc');
+            $DependencyTypeMasterId = $queryData[0]['Id'];
+
+            $QueryDateFrom = $batch_from = $this->request->data('QueryDateFrom');
+            $QueryDateTo = $batch_to = $this->request->data('QueryDateTo');
+            $RegionId = $this->request->data('RegionId');
+            $ClientId = $this->request->data('ClientId');
+            $arrayResult = array();
+			///query start/////////
+			
+			$Query = $connection->execute("SELECT pem.Id,pem.TotalTimeTaken,cpid.AttributeValue as fdrid,pem.ProductionStartDate,pem.ProjectId FROM ProductionEntityMaster as pem
+			LEFT JOIN ProjectMaster as pm ON pm.ProjectId=pem.ProjectId
+			LEFT JOIN MC_CengageProcessInputData as cpid ON cpid.ProductionEntityID=pem.ID
+			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId'")->fetchAll('assoc');
+            
+			///query end/////////   
+				$arrayResult=$Query;
+                
+                if (empty($arrayResult)) {
+                    $this->Flash->error(__('No Record found for this combination!'));
+//                    return $this->redirect(['action' => 'index']);
+                }
+                
+                if (isset($this->request->data['downloadFile']) && !empty($arrayResult)) {
+                    $productionData = '';
+                    $productionData = $this->ProductionestimationReports->find('export', ['ProjectId' => $ProjectId, 'condition' => $arrayResult]);
+                    $this->layout = null;
+                    if (headers_sent())
+                        throw new Exception('Headers sent.');
+                    while (ob_get_level() && ob_end_clean());
+                    if (ob_get_level())
+                        throw new Exception('Buffering is still active.');
+                    header("Content-type: application/vnd.ms-excel");
+                    header("Content-Disposition:attachment;filename=ProductionEstimationtimetakenReports.xls");
+                    echo $productionData;
+                    exit;
+                }
+
+                
+
+                $this->set('result', $arrayResult);
+                $this->set('project_name', $Pro_name);
+           
+        } 
+    }
+
+    public function indexold() {
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
@@ -53,7 +196,7 @@ class PuqueryController extends AppController {
         $MojoProjectIds = $this->projectmasters->find('Projects');
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
-        $ProList = $this->Puquery->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
+        $ProList = $this->deliveryPage->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
         $ProListFinal = array('0' => '--Select Project--');
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
@@ -61,6 +204,22 @@ class PuqueryController extends AppController {
         //$ProListFinal = ['0' => '--Select Project--', '2294' => 'Mojo URL Monitoring'];
         $this->set('Projects', $ProListFinal);
 		
+		$connection = ConnectionManager::get('default');
+        $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
+		 
+        $Cl_list = array('0' => '--Select--');
+        foreach ($Cl_listarray as $values):
+            $Cl_list[$values['Id']] = $values['ClientName'];
+        endforeach;
+        //$ProListFinal = ['0' => '--Select Project--', '2278' => 'ADMV_YP'];
+        $this->set('Clients', $Cl_list);
+		if ($this->request->data['ClientId'] > 0) {
+                 $Clients = $this->deliveryPage->find('client', ['ClientId' => $this->request->data['ClientId']]);
+                 $this->set('ClientId', $Clients);
+                } else {
+                   
+                    $this->set('ClientId', '');
+        }
 		
 		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
@@ -97,7 +256,7 @@ class PuqueryController extends AppController {
         }
 
         if (isset($this->request->data['ProjectId']) || isset($this->request->data['RegionId'])) {
-            $region = $this->Puquery->find('region', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'SetIfOneRow' => 'yes']);
+            $region = $this->deliveryPage->find('region', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'SetIfOneRow' => 'yes']);
             $this->set('RegionId', $region);
         } else {
             $this->set('RegionId', 0);
@@ -109,7 +268,7 @@ class PuqueryController extends AppController {
         }
 
         if (isset($this->request->data['UserGroupId'])) {
-            $UserGroup = $this->Puquery->find('usergroupdetails', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
+            $UserGroup = $this->deliveryPage->find('usergroupdetails', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
             $this->set('UserGroupId', $UserGroup);
             $UserGroupId = $this->request->data('UserGroupId');
         } else {
@@ -138,7 +297,7 @@ class PuqueryController extends AppController {
             $this->set('postuser_id', '');
 
         if (isset($this->request->data['ProjectId']) || isset($this->request->data['ModuleId'])) {
-            $Modules = $this->Puquery->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'ModuleId' => $this->request->data['ModuleId']]);
+            $Modules = $this->deliveryPage->find('module', ['ProjectId' => $this->request->data['ProjectId'], 'ModuleId' => $this->request->data['ModuleId']]);
             $this->set('ModuleIds', $Modules);
         } else {
             $this->set('ModuleIds', 0);
@@ -156,7 +315,7 @@ class PuqueryController extends AppController {
             $QueryDateTo = $this->request->data('QueryDateTo');
             $QueryDateFrom = $this->request->data('QueryDateFrom');
             $ModuleId = $this->request->data('ModuleId');
-            $user_id_list = $this->Puquery->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
+            $user_id_list = $this->deliveryPage->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
             $this->set('User', $user_id_list);
 			
 			$moduleIdLevel=$connection->execute("SELECT ModuleId FROM ME_Module_Level_Config where Project=$ProjectId and Modulegroup=1")->fetchAll('assoc');    
@@ -242,44 +401,44 @@ class PuqueryController extends AppController {
     }
 
     function ajaxregion() {
-        echo $region = $this->Puquery->find('region', ['ProjectId' => $_POST['projectId']]);
+        echo $region = $this->deliveryPage->find('region', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
 
     function ajaxfilelist() {
-        echo $file = $this->Puquery->find('filelist');
+        echo $file = $this->deliveryPage->find('filelist');
         exit;
     }
 
     function ajaxstatus() {
-        echo $file = $this->Puquery->find('status', ['ProjectId' => $_POST['projectId'], 'importType' => $_POST['importType']]);
+        echo $file = $this->deliveryPage->find('status', ['ProjectId' => $_POST['projectId'], 'importType' => $_POST['importType']]);
         exit;
     }
 
     function ajaxmodule() {
-        echo $module = $this->Puquery->find('module', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'ModuleId' => $ModuleId]);
+        echo $module = $this->deliveryPage->find('module', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'ModuleId' => $ModuleId]);
         exit;
     }
 
     function getusergroupdetails() {
         $session = $this->request->session();
-        echo $module = $this->Puquery->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
+        echo $module = $this->deliveryPage->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
 
     function getresourcedetails() {
        // echo $_POST['projectId']."-".$_POST['regionId']."-".$_POST['userGroupId'];exit;
         $session = $this->request->session();
-        echo $module = $this->Puquery->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
+        echo $module = $this->deliveryPage->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
         exit;
     }
 
     public function delete($id = null) {
-        $Puquery = $this->Puquery->get($id);
+        $Puquery = $this->deliveryPage->get($id);
         if ($id) {
             $user_id = $this->request->session()->read('user_id');
-            $Puquery = $this->Puquery->patchEntity($Puquery, ['ModifiedBy' => $user_id, 'ModifiedDate' => date("Y-m-d H:i:s"), 'RecordStatus' => 0]);
-            if ($this->Puquery->save($Puquery)) {
+            $Puquery = $this->deliveryPage->patchEntity($Puquery, ['ModifiedBy' => $user_id, 'ModifiedDate' => date("Y-m-d H:i:s"), 'RecordStatus' => 0]);
+            if ($this->deliveryPage->save($Puquery)) {
                 $this->Flash->success(__('Import Initiate deleted Successfully'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -386,12 +545,11 @@ class PuqueryController extends AppController {
 	
                  $InsertQryStatus = "Insert into MC_CengageProcessInputData (ProjectId, RegionId, InputEntityId, ProductionEntityID, AttributeMasterId, ProjectAttributeMasterId, AttributeValue, DependencyTypeMasterId, SequenceNumber, AttributeMainGroupId, AttributeSubGroupId, RecordStatus, CreatedDate, RecordDeleted,HtmlFileName) VALUES ('".$ProjectId."', '".$RegionId."','".$InputEntityId."','".$_POST['ProductionEntityId']."','".$att_masterId."','".$Projectatt_masterId."','".$uploadFName."','".$selDependencyData[0]['Id']."','".$SeqNumber."','".$selData[0]['AttributeMainGroupId']."','".$selData[0]['AttributeSubGroupId']."','1','".date('Y-m-d H:i:s')."','0','" . $uploadFName . "')";
 				$QryInStatus = $connection->execute($InsertQryStatus);
-
 	
 	
 				$multipleAttrVal = $connection->execute("Insert into Staging_".$ModuleId."_Data (BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,[" . $att_masterId . "],SequenceNumber,StatusId,DependencyTypeMasterId,RecordStatus,HtmlFileName)"
                 . "values('" . $BatchId . "','" . $BatchCreated . "','" . $ProjectId . "','".$RegionId."','" . $InputEntityId . "','" . $_POST['ProductionEntityId'] . "','" . $uploadFName . "','" . $SeqNumber . "',4,'" . $selDependencyData[0]['Id'] . "','" . 1 . "','" . $uploadFNameStaging . "')");
-
+       
                   ///insert end///  
                 }
              }
@@ -413,8 +571,7 @@ class PuqueryController extends AppController {
         $user = $session->read("user_id");
         $ProjectId = $session->read("ProjectId");
      
-         $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
-		//exit;
+        $UpdateQryStatus = "update ME_UserQuery set Client_Response='" . trim($_POST['cl_resp']) . "' ,Client_Response_Date='" . $domainDate . "' ,UploadFile='".$uploadFName."' ,TLComments='" . trim($_POST['mobiusComment']) . "' ,StatusID='" . $_POST['status'] . "' ,ModifiedBy=$user,ModifiedDate='" . date('Y-m-d H:i:s') . "' where Id='" . $_POST['queryID'] . "' ";
         $QryStatus = $connection->execute($UpdateQryStatus);
          /*if ($_POST['status'] == 3) {
            $moduleTable = 'Staging_' . $_POST['ModuleId'] . '_Data';
@@ -471,6 +628,41 @@ class PuqueryController extends AppController {
          exit;
      
      }
+	 public function ajaxProject() {
+        $session = $this->request->session();
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+        $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+        $ProList = $this->deliveryPage->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId'],'RegionId' => $_POST['RegionId']]);
+       echo $ProList;
+       exit;
+        
+   }
+       public function getmonthlist($date1, $date2) {
+
+        $ts1 = strtotime($date1);
+        $ts2 = strtotime($date2);
+
+        $year1 = date('Y', $ts1);
+        $year2 = date('Y', $ts2);
+
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2);
+
+        $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+        if ($diff > 0) {
+            for ($i = 0; $i <= $diff; $i++) {
+                $months[] = date('_n_Y', strtotime("$date1 +$i month"));
+            }
+        } else {
+            $months[] = date('_n_Y', strtotime($date1));
+        }
+        return $months;
+    }
    
 
 }

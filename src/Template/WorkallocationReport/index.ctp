@@ -4,46 +4,79 @@ use Cake\Routing\Router
 ?>
 <div class="container-fluid mt15">
     <div class="formcontent">
-        <h4>Abstraction Report</h4>
+        <h4>DQC Report</h4>
             <?php echo $this->Form->create('',array('class'=>'form-horizontal','id'=>'projectforms')); ?>
         <div class="row">
 
             <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Client<span class="mandatory"> *</span></label>
-                        <div class="col-sm-6" style="line-height: 0px;">
-                             <?php
-                       
-                         echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId));
-
-                    ?>
-                     <input type="hidden" name="RegionId" id="RegionId" value="<?php echo  $SessionRegionId;?>">
-                     
-                        </div>
-                    </div>
-                </div>
-            
-            <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-6 control-label">Project <span class="mandatory"> *</span></label>
+                    <label for="inputEmail3" class="col-sm-6 control-label">Project </label>
                     <div class="col-sm-6 prodash-txt">
-                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId));?>  
-                        
+                   <?php echo $this->Form->input('', array('options' => $Projects, 'id' => 'ProjectId', 'name' => 'ProjectId', 'class' => 'form-control', 'value' => $ProjectId, 'onchange' => 'getusergroupdetails();getresourcedetails();'));?>  
                         <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
+<!--getModule(this.value);-->
+            <div class="col-md-4 hide">
                 <div class="form-group">
-                    <label for="UserGroupId" class="col-sm-6 control-label">Lease Id<span class="mandatory"> *</span></label>
-                    <div class="col-sm-6 ">
-                       <div id="LoadUserGroup">
-                            <input type="text" name="LeaseId" id="LeaseId" value="<?php echo $LeaseId;?>">
-                       </div>
+                    <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Module</label>
+                    <div class="col-sm-6" style="margin-top:3px;">
+                        <div id="LoadModule">
+                    <?php 
+                    
+                    if ($ModuleIds == '') {
+                      
+                    $Modules = array(0 => '--Select--'); ?>
+
+                        <?php
+                        echo $this->Form->input('', array('options' => $Modules, 'id' => 'ModuleIds', 'name' => 'ModuleIds', 'class' => 'form-control prodash-txt', 'value' => $ModuleIds, 'onchange' => 'getusergroupdetails();getresourcedetails();'));
+                        //echo $ModuleList;
+                            ?>
+
+                    <?php }else{
+                        echo $ModuleIds;
+                    } ?>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="UserGroupId" class="col-sm-6 control-label">User Group</label>
+                    <div class="col-sm-6 prodash-txt">
+                    <?php
+                        if ($UserGroupId == '') {
+                            $UserGroup = array(0 => '--Select--');
+                            echo '<div id="LoadUserGroup">';
+                            echo $this->Form->input('', array('options' => $UserGroup, 'id' => 'UserGroupId', 'name' => 'UserGroupId', 'class' => 'form-control', 'value' => $UserGroupId, 'selected' => $UserGroupId, 'onchange' => 'getresourcedetails'));
+                            echo '</div>';
+                        } else {
+                            echo $UserGroupId;
+                        }
+                    ?>
+                    </div>
+                </div>
+            </div>
+
+        <div class="col-md-4">
+                <div class="form-group">
+                   <label for="inputPassword3" class="col-sm-6 control-label">Resource</label>
+                    <div class="col-sm-6 ">
+                        <div id="LoadUserDetails">
+                        <?php
+//                        echo "<pre>s";print_r($postuser_id);exit;
+                        
+                            echo $this->Form->input('', array('options' => $User, 'class' => 'form-control', 'selected' => $postuser_id, 'value' => $postuser_id, 'id' => 'user_id', 'name' => 'user_id', 'style' => 'height:100px;margin-top: -15px;', 'multiple' => true));
+                        ?>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
 
         </div>
         <div class="row">
@@ -75,10 +108,10 @@ use Cake\Routing\Router
         <div class="form-group" style="text-align:center;" >
             <div class="col-sm-12">
                 <input type="hidden" name='formSubmit'>
-                <button type="submit" name = 'check_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Export Report</button>
+                <button type="submit" name = 'check_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Submit</button>
                 <button type="button" name = 'clear'class="btn btn-primary btn-sm" onclick="return ClearFields();">Clear</button>
                     <?php
-// echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return formSubmitValidation()', 'type' => 'submit'));   ?>
+ echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return formSubmitValidation()', 'type' => 'submit'));   ?>
             </div>
         </div>
 		<?php echo $this->Form->end(); ?>
@@ -87,9 +120,6 @@ use Cake\Routing\Router
 
 
 <style type='text/css'>
-    .mandatory {
-    color: red;
-}
     .comments{top:0 !important;left:0 !important;position:relative !important;color:black !important;}
     .frmgrp_align{margin-left: 15px !important;margin-right: 0px !important;}
 
@@ -226,41 +256,129 @@ echo $this->Form->end();
 <script type="text/javascript">
 
 
+    function getModule() {
+//        var result = new Array();
+        var ProjectId = $('#ProjectId').val();
+        var RegionId = $('#RegionId').val();
+
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'projectleasereport', 'action' => 'ajaxmodule')); ?>",
+            data: ({ProjectId: ProjectId, RegionId: RegionId}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+                document.getElementById('LoadModule').innerHTML = result;
+            }
+        });
+    }
+
+    function getusergroupdetails() {
+        var ProjectId = $('#ProjectId').val();
+        var RegionId = $('#RegionId').val();
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'getusergroupdetails')); ?>",
+            data: ({projectId: ProjectId, regionId: RegionId}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+                document.getElementById('LoadUserGroup').innerHTML = result;
+                var optionValues = [];
+                $('#UserGroupId option').each(function () {
+                    optionValues.push($(this).val());
+                });
+                optionValues.join(',')
+                $('#UserGroupId').prepend('<option selected value="' + optionValues + '">All</option>');
+//                getresourcedetails();
+
+            }
+        });
+    }
+
+    function getresourcedetails() {
+        var ProjectId = $('#ProjectId').val();
+        var RegionId = $('#RegionId').val();
+        var UserGroupId = $('#UserGroupId').val();
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo Router::url(array('controller' => 'Puquery', 'action' => 'getresourcedetails')); ?>",
+            data: ({projectId: ProjectId, regionId: RegionId, userGroupId: UserGroupId}),
+            dataType: 'text',
+            async: false,
+            success: function (result) {
+                document.getElementById('LoadUserDetails').innerHTML = result;
+            }
+        });
+    }
+
+
     function formSubmitValidation() {
 
-
-        if ($('#ClientId').val() == 0) {
-            alert('Select Client Id');
-            $('#ClientId').focus();
-            return false;
-        }
-     
         if ($('#ProjectId').val() == 0) {
             alert('Select Project Name');
             $('#ProjectId').focus();
             return false;
         }
-        
-        if ($('#LeaseId').val() == 0) {
-            alert('Please Enter LeaseId ');
-            $('#LeaseId').focus();
-            return false;
-        }
-        
-//        if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
-//            alert('Select From Date');
+
+//        if ($('#ModuleId').val() == 0) {
+//            alert('Select Module Name');
+//            $('#ModuleId').focus();
 //            return false;
 //        }
-
+        if ($('#QueryDateFrom').val() == '' && $('#QueryDateTo').val() == '') {
+            alert('Select From Date');
+            return false;
+        }
+//        if ($('#user_id').val() == '') {
+//            alert('Select Resource');
+//            return false;
+//        }
     }
 
     function ClearFields() {
         $('#ProjectId').val('0');
-        $('#LeaseId').val('');
-        $('#ClientId').val('0');   
-        $('#QueryDateFrom').val('');   
-        $('#QueryDateTo').val('');   
-
+        $('#UserGroupId').val('');
+        //$('#ModuleId').val('0');
+        $('#QueryDateFrom').val('');
+        $('#QueryDateTo').val('');
+        $('#user_id').find('option').remove();
     }
 </script>
 
+
+<?php
+if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
+    ?>
+<script>
+    $(window).bind("load", function () {
+        getusergroupdetails();
+        
+        var optionValues = [];
+        $('#UserGroupId option').each(function () {
+            optionValues.push($(this).val());
+        });
+        optionValues.join(',')
+       // $('#UserGroupId').prepend('<option selected value="' + optionValues + '">All</option>');
+        $("#UserGroupId option[value='<?php echo $postbatch_UserGroupId; ?>']").prop('selected', true);
+        
+        //$("#user_id option[value='<?php //echo $UserId; ?>']").prop('selected', true);
+    });
+</script>
+    <?php
+}
+
+if ($CallUserGroupFunctions == 'yes') {
+    ?>
+<script>
+    $(window).bind("load", function () {
+        var regId = $('#RegionId').val();
+      //  getusergroupdetails(regId);
+    });
+</script>
+    <?php
+}
+?>

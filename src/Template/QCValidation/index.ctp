@@ -953,7 +953,7 @@ width:100%;
                 <!--                <button type="button" class="btn btn-primary pull-right">Submit</button>-->
                 <button type="Submit" name='Submit' value="Submit" class="btn btn-primary pull-right" onclick="return formSubmit();"> Submit </button>
                 <!--                <button type="button" name='Save' value="Save" id="save_btn" class="btn btn-primary pull-right m-r-5" onclick="AjaxSave('');">Save</button>-->
-                               <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>
+<!--                               <button type="button" class="btn btn-default pull-right m-r-5" data-target="#querymodal" data-toggle="modal">Query</button>-->
 
             </div>
         </div>
@@ -3965,7 +3965,7 @@ echo "var mandatoryArr = ". $js_array . ";\n";
         var readonlyArr =<?php echo json_encode($ReadOnlyFields );?>;
         var i = 0;
         j = 0;
-
+ var SequenceNumber = $('#seq').val();
         var InputEntyId = "<?php echo $productionjob['InputEntityId'];?>";
         var result = new Array();
         $.ajax({
@@ -3993,8 +3993,8 @@ echo "var mandatoryArr = ". $js_array . ";\n";
                     if (resultData['attrcnt'] != '') {
                         for (var k = 0; k < (resultData['attrcnt']).length; k++) {
                             if ((resultData['attrcnt'][k]) == elt) {
-                                $('#Error_' + elt).addClass("qcGreen_popuptitle");
-                                $('#Error_' + elt).removeClass("qc_popuptitle");
+                                $('#Error_' +elt+'_'+SequenceNumber).addClass("qcGreen_popuptitle");
+                                $('#Error_' +elt+'_'+SequenceNumber).removeClass("qc_popuptitle");
                             } else {
                                 $('#Error_' + elt).addClass("qc_popuptitle");
                             }
