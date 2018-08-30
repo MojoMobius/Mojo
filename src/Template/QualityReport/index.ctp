@@ -264,10 +264,13 @@ if (count($result) > 0) {
                                         <td><?php echo $val['project_name']; ?></td>
                                         <td><?php echo $val['date'];?> </td>
                                         <td><?php echo $val['leaseId'];?></td>
-										<?php foreach($result[$Headkey]['CommentHead'] as $keyhead => $head){ 
+										<?php 
+										$total_percent=0;
+										foreach($result[$Headkey]['CommentHead'] as $keyhead => $head){
+										$total_percent += count($val['comments'][$keyhead]);
 										?>										
 											 <td>
-											 <?php foreach($val['comments'][$keyhead] as $valcomments){
+											 <?php foreach($val['comments'][$keyhead][$key1] as $valcomments){
 												 ?><p> <?php echo $valcomments;?> </p>
 											 <?php } ?>
 											 </td>
@@ -279,8 +282,8 @@ if (count($result) > 0) {
 										<?php
 										}
 										?>
-                                        <td><?php echo $val['project_name']; ?></td>
-                                        
+                                       <td><?php echo $com_per= 1 -( $total_percent / $val['totalAttributes']) ;
+										 echo number_format((float)$com_per, 2, '.', ''); ?></td>
                                     </tr>
 
                             <?php 

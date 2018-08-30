@@ -260,7 +260,7 @@ class QualityReportController extends AppController {
 					$prodEntitymastertab = "Report_ProductionEntityMaster" . $dt;
                     $prodtimeMatricstab = "ME_Production_TimeMetric" . $dt;
 					$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $valpro]);
-					$totalAttributes = 	$JsonArray['TotalAttributes'];
+					$totalAttributes = 	$JsonArray['ProjectConfig']['TotalAttributes'];
 						
 					 $DomainId = "[".$JsonArray['ProjectConfig']['DomainId']."]";
 					 $DomId = $JsonArray['ProjectConfig']['DomainId'];
@@ -299,7 +299,7 @@ class QualityReportController extends AppController {
 						$Record_data['project_name']=$ProName;
 						$Record_data['date']=$value['ProductionStartDate'];
 						$Record_data['totalAttributes']=$totalAttributes;
-						$Record_data['comments'][$value['ModuleId']][]=$value['QCComments'];
+						$Record_data['comments'][$value['ModuleId']][$value['InputEntityId']][]=$value['QCComments'];
 						$Record_datas[$value['InputEntityId']]=$Record_data;
 						
 				
