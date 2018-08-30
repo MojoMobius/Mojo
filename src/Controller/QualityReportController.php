@@ -174,6 +174,17 @@ class QualityReportController extends AppController {
 
         $resqueryData = array();
         $result = array();
+		if (isset($this->request->data['QueryDateTo']))
+            $this->set('QueryDateTo', $this->request->data['QueryDateTo']);
+			else
+				$this->set('QueryDateTo', '');
+
+			if (isset($this->request->data['QueryDateFrom']))
+				$this->set('QueryDateFrom', $this->request->data['QueryDateFrom']);
+			else            
+				$this->set('QueryDateFrom', date("d-m-Y"));
+			
+			
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
 
             $ProjectId = $this->request->data['ProjectId'];            
@@ -185,15 +196,7 @@ class QualityReportController extends AppController {
             $QueryDateFrom = $this->request->data['QueryDateFrom'];
             $QueryDateTo = $this->request->data['QueryDateTo'];
 			
-			if (isset($this->request->data['QueryDateTo']))
-            $this->set('QueryDateTo', $this->request->data['QueryDateTo']);
-			else
-				$this->set('QueryDateTo', '');
-
-			if (isset($this->request->data['QueryDateFrom']))
-				$this->set('QueryDateFrom', $this->request->data['QueryDateFrom']);
-			else            
-				$this->set('QueryDateFrom', '');
+			
 			
 
             $user_id = $this->request->data['user_id'];
@@ -250,7 +253,15 @@ class QualityReportController extends AppController {
 			}*/
 		$Cl_listarray = $connection->execute("SELECT Id,ClientName FROM ClientMaster WHERE Id='".$ClientId."'")->fetchAll('assoc');
          
-			
+			$SDate="";
+			$EDate="";
+			$UserId="";
+			if($QueryDateFrom !=""){
+			$SDate= "AND rpm.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00'";
+			}
+			if($QueryDateTo !=""){
+			$EDate= "AND rpm.ProductionStartDate <='" . date('Y-m-d', strtotime($QueryDateTo)) . " 23:59:59'";
+			}
 			
             $Record_data=array();
 			 $CommentHead=array();
@@ -288,7 +299,7 @@ class QualityReportController extends AppController {
 					
 					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate from $prodEntitymastertab as rpm
 					LEFT JOIN MV_QC_Comments as cm ON cm.InputEntityId = rpm.InputEntityId
-					where rpm.ProjectId ='".$valpro."' $DomainWhere";
+					where rpm.ProjectId ='".$valpro."' $DomainWhere $SDate $EDate";
                     $listArr = $connection->execute($sql)->fetchAll('assoc');
 					
 					foreach($listArr as $value){		

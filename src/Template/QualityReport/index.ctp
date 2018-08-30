@@ -2,6 +2,11 @@
 
 use Cake\Routing\Router
 ?>
+<style>
+    .mandatory{
+        color:red;
+    }
+</style>
 <div class="container-fluid mt15">
     <div class="formcontent">
         <h4>Quality Report</h4>
@@ -25,7 +30,7 @@ use Cake\Routing\Router
             <input type="hidden" name="regionId" id="RegionId" value="<?php echo $RegionId;?>" />
              <div class="col-md-4">
                     <div class="form-group">
-                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Project</label>
+                        <label for="inputEmail3" style="margin-top: 5px;" class="col-sm-6 control-label">Project<span class="mandatory"> *</span></label>
                         <div class="col-sm-6" style="line-height: 0px;">
                               <div id="LoadProject">
                                   <?php 
@@ -91,7 +96,7 @@ use Cake\Routing\Router
             
              <div class="col-md-4">
                 <div class="form-group">
-                   <label for="inputPassword3" class="col-sm-6 control-label">From</label>
+                   <label for="inputPassword3" class="col-sm-6 control-label">From <span class="mandatory"> *</span></label>
                     <div class="col-sm-6 ">
                          <?php 
                         echo $this->Form->input('', array('id' => 'QueryDateFrom', 'name' => 'QueryDateFrom', 'class'=>'form-control' , 'value'=>$QueryDateFrom )); 
@@ -265,9 +270,10 @@ if (count($result) > 0) {
                                         <td><?php echo $val['date'];?> </td>
                                         <td><?php echo $val['leaseId'];?></td>
 										<?php 
-										$total_percent=0;
+										$total_percent=array();
 										foreach($result[$Headkey]['CommentHead'] as $keyhead => $head){
-										$total_percent += count($val['comments'][$keyhead]);
+										$total_percent[]= count($val['comments'][$keyhead][$key1]);
+										$cnt= count($val['comments'][$keyhead][$key1]);
 										?>										
 											 <td>
 											 <?php foreach($val['comments'][$keyhead][$key1] as $valcomments){
@@ -276,14 +282,17 @@ if (count($result) > 0) {
 											 </td>
                                          <td>
 										 <?php 
-										 $com_percentage= 1 -( count($val['comments'][$keyhead]) / $val['totalAttributes']) ;
-										 echo number_format((float)$com_percentage, 2, '.', '');
+										 $com_percentage= 1 - ( $cnt / $val['totalAttributes']) ;
+										 echo  number_format((float)$com_percentage, 2, '.', '');
 										 ?></td>
 										<?php
 										}
 										?>
-                                       <td><?php echo $com_per= 1 -( $total_percent / $val['totalAttributes']) ;
-										 echo number_format((float)$com_per, 2, '.', ''); ?></td>
+                                       <td><?php 
+									   $totalcnt=array_sum($total_percent);
+									   
+									    $tot_perc= 1 -( $totalcnt / $val['totalAttributes']) ;
+										 echo number_format((float)$tot_perc, 2, '.', ''); ?></td>
                                     </tr>
 
                             <?php 
@@ -378,6 +387,16 @@ function getStatus(){
         if ($('#ClientId').val() == 0) {
             alert('Please Select Client ');
             $('#ClientId').focus();
+            return false;
+        }
+		if ($('#projectId').val() == 0 || $('#projectId').val() == '') {
+            alert('Please Select Project ');
+            $('#projectId').focus();
+            return false;
+        }
+		if ($('#QueryDateFrom').val() == '') {
+            alert('Please Select Date ');
+            $('#QueryDateFrom').focus();
             return false;
         }
 
