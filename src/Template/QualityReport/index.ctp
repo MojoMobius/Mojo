@@ -207,7 +207,11 @@ use Cake\Routing\Router
 
 </script>
 
-
+<?php
+foreach($result as $key=>$val){
+	$Headkey=$key;
+}
+?>
 
 <div class="container-fluid">
     <div class="bs-example">
@@ -228,7 +232,7 @@ use Cake\Routing\Router
                                         <th style='width:10%;'>Project Name</th>
                                         <th style='width:5%;'>Date</th>
                                         <th style='width:10%;'>LeaseId</th>
-										<?php foreach( $result[0]['CommentHead'] as $head){ 
+										<?php foreach( $result[$Headkey]['CommentHead'] as $head){ 
 										?>										
                                         <th style='width:10%;'><?php echo $head." Comments";?></th>
                                         <th style='width:10%;'><?php echo $head." Percentage";?></th>
@@ -259,15 +263,19 @@ if (count($result) > 0) {
                                         <td><?php echo $val['Client']; ?></td>
                                         <td><?php echo $val['project_name']; ?></td>
                                         <td><?php echo $val['date'];?> </td>
-                                        <td><?php echo $lease_id;?></td>
-										<?php foreach($result[0]['CommentHead'] as $keyhead => $head){ 
+                                        <td><?php echo $val['leaseId'];?></td>
+										<?php foreach($result[$Headkey]['CommentHead'] as $keyhead => $head){ 
 										?>										
 											 <td>
 											 <?php foreach($val['comments'][$keyhead] as $valcomments){
 												 ?><p> <?php echo $valcomments;?> </p>
 											 <?php } ?>
 											 </td>
-                                         <td><?php echo $com_percentage= 1 -( count($val['comments'][$keyhead]) / $val['totalAttributes']) ;?></td>
+                                         <td>
+										 <?php 
+										 $com_percentage= 1 -( count($val['comments'][$keyhead]) / $val['totalAttributes']) ;
+										 echo number_format((float)$com_percentage, 2, '.', '');
+										 ?></td>
 										<?php
 										}
 										?>

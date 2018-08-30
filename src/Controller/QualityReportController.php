@@ -277,38 +277,35 @@ class QualityReportController extends AppController {
 					$ColumnNames = $connection->execute("SELECT DISTINCT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='$prodEntitymastertab' and ISNUMERIC(COLUMN_NAME) = 1")->fetchAll('assoc');
 					$ColArr=array_column($ColumnNames, 'COLUMN_NAME');					
 					if(in_array($DomId,$ColArr)){
-						$DomainColumn="rpm.".$DomainId.",";
+						$DomainColumn="rpm.".$DomainId." as FDR,";
+						$DomainWhere = "and rpm.".$DomainId." IS NOT NULL";
 					}
 					else{
 						$DomainColumn='';
+						
+						$DomainWhere='';
 					}
 					
-					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.QCComments,rpm.ProductionStartDate from $prodEntitymastertab as rpm
+					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate from $prodEntitymastertab as rpm
 					LEFT JOIN MV_QC_Comments as cm ON cm.InputEntityId = rpm.InputEntityId
-					where rpm.ProjectId ='".$valpro."' and rpm.InputEntityId='110168'";
+					where rpm.ProjectId ='".$valpro."' $DomainWhere";
                     $listArr = $connection->execute($sql)->fetchAll('assoc');
-					//echo"<pre>";print_r($listArr);
 					
-					foreach($listArr as $value){
-							$LeaseId='';						
-                       	if($DomainColumn!=""){
-							$LeaseId=$value[$DomainId];
-						}						
+					foreach($listArr as $value){		
 						
-						$Record_data['CommentHead']=$CommentName;			
+						$Record_data['CommentHead']=$CommentName;						
 						$Record_data['Client']=$Cl_listarray[0]['ClientName'];					
-						$Record_data['leaseId'][]=$LeaseId;
-						$Record_data['project_name']=$ProName;
+						$Record_data['leaseId']=$value['FDR'];		
 						$Record_data['project_name']=$ProName;
 						$Record_data['date']=$value['ProductionStartDate'];
 						$Record_data['totalAttributes']=$totalAttributes;
 						$Record_data['comments'][$value['ModuleId']][]=$value['QCComments'];
-						$Record_datas[]=$Record_data;
-					}
-					
+						$Record_datas[$value['InputEntityId']]=$Record_data;
+						
+				
+					}					
 				 }
 				}
-				
 				
 			/////////////rahamath end/////////////////////////
            
