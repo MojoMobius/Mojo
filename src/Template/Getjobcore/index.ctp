@@ -985,6 +985,10 @@ margin :-75px 355px 21px 1114px !important;
                                                                             }else{
                                                                               $dbClassName .="";
                                                                             }
+ if($valprodFields['ControlName']=='DropDownList') {
+                                                                                 $dbClassName .=" proddropdown";
+                                                                            }
+
                                                                             
                                                                             //Mandatory coding ends
                                                                             if($valprodFields['ControlName']=='TextBox' || $valprodFields['ControlName']=='Label') { 
@@ -1779,7 +1783,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
          var project_scope_id = "<?php echo $staticFields[0]; ?>";
     
        function AjaxValidation(){
-            console.log(attr_array);
+           // console.log(attr_array);
             $(".formsubmit_validation_endisable").show();
             $(".validationloader").show();
             $(".validation_error").hide();
@@ -1827,9 +1831,14 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                        $("#validationerrorcnt").html(error_count);
                        $(".validationerrorcnt").show();
                         if(error_count > 0){
+   
+
                               $.each( listerror, function( key, val ) {
                              $.each( val, function( skey, sval ) {
-                                 $.each( sval, function( sskey, ssval ) {
+
+if (typeof sval.ext === 'undefined') {
+
+ $.each( sval, function( sskey, ssval ) {
                                      strArray = ssval.ext.split(",");
                                      for (i = 0; i < strArray.length; i++) {
                                            if(strArray[i] > 1){
@@ -1842,6 +1851,26 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                                      }
                                      }
                                  });
+ 
+
+}else{
+
+                                strArray = sval.ext.split(",");
+                                     for (i = 0; i < strArray.length; i++) {
+                                           if(strArray[i] > 1){
+                                               $("."+sval.pagination_key).css("color", "red");
+                                           }
+
+                                         if(strArray[i].length > 0){
+                                           $("#"+sval.key+"_"+strArray[i]+"_error").html(sval[strArray[i]]["error_txt"]);
+                                           $("#"+sval.key+"_"+strArray[i]+"_error").show();
+                                     }
+                                     }
+
+}
+
+
+                                
 
                                  });
                          });
