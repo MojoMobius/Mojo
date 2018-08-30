@@ -256,6 +256,11 @@ class QualityReportController extends AppController {
 			$SDate="";
 			$EDate="";
 			$UserId="";
+			if(!empty($this->request->data['user_id'])){
+				$UserId=implode(",",$this->request->data['user_id']);
+				$Listuser="and cm.UserId IN ($UserId)";
+			}
+			
 			if($QueryDateFrom !=""){
 			$SDate= "AND rpm.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00'";
 			}
@@ -299,7 +304,7 @@ class QualityReportController extends AppController {
 					
 					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate from $prodEntitymastertab as rpm
 					LEFT JOIN MV_QC_Comments as cm ON cm.InputEntityId = rpm.InputEntityId
-					where rpm.ProjectId ='".$valpro."' $DomainWhere $SDate $EDate";
+					where rpm.ProjectId ='".$valpro."' $DomainWhere $SDate $EDate $Listuser";
                     $listArr = $connection->execute($sql)->fetchAll('assoc');
 					
 					foreach($listArr as $value){		
