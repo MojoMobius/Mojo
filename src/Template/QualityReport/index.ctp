@@ -406,6 +406,8 @@ function getStatus(){
     function ClearFields() {
         $('#ProjectId').val('0');
         $('#UserGroupId').val('');
+        $('#QueryDateFrom').val('');
+        $('#QueryDateTo').val('');
         //$('#ModuleId').val('0');
         $('#ClientId').val('0');
         $('#user_id').find('option').remove();
