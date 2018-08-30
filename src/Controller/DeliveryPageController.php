@@ -152,12 +152,30 @@ class DeliveryPageController extends AppController {
             $RegionId = $this->request->data('RegionId');
             $ClientId = $this->request->data('ClientId');
             $arrayResult = array();
+			$SDate="";
+			$EDate="";
+			if($batch_from !=""){
+			$SDate= "AND ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00'";
+			}
+			if($batch_to !=""){
+			$EDate= "AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
+			}
+			
 			///query start/////////
 			
 			$Query = $connection->execute("SELECT pem.Id,pem.TotalTimeTaken,cpid.AttributeValue as fdrid,pem.ProductionStartDate,pem.ProjectId FROM ProductionEntityMaster as pem
 			LEFT JOIN ProjectMaster as pm ON pm.ProjectId=pem.ProjectId
 			LEFT JOIN MC_CengageProcessInputData as cpid ON cpid.ProductionEntityID=pem.ID
-			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' and cpid.SequenceNumber=1 and cpid.AttributeMasterId='$AttributeMasterId' and pem.StatusId='".$finalStatus."'")->fetchAll('assoc');
+
+			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' AND cpid.SequenceNumber=1 AND cpid.AttributeMasterId='$AttributeMasterId' $SDate $EDate  AND pem.StatusId='".$finalStatus."' ")->fetchAll('assoc');
+			
+			/*
+			$Query = $connection->execute("SELECT pem.Id,pem.TotalTimeTaken,cpid.AttributeValue as fdrid,pem.ProductionStartDate,pem.ProjectId FROM ProductionEntityMaster as pem
+			LEFT JOIN ProjectMaster as pm ON pm.ProjectId=pem.ProjectId
+			LEFT JOIN MC_CengageProcessInputData as cpid ON cpid.ProductionEntityID=pem.ID
+			WHERE pem.ProjectId='".$ProjectId."' AND pm.client_id='".$ClientId."' AND cpid.DependencyTypeMasterId='$DependencyTypeMasterId' AND cpid.SequenceNumber=1 AND cpid.AttributeMasterId='$AttributeMasterId' AND ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59' AND pem.StatusId='".$finalStatus."'")->fetchAll('assoc');
+			*/
+
             
 			///query end/////////   
 				$arrayResult=$Query;
