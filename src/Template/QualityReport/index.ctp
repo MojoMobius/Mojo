@@ -377,16 +377,21 @@ function getStatus(){
 
     function formSubmitValidation() {
 
+          var Proselect="No";
         if ($('#ClientId').val() == 0) {
             alert('Please Select Client ');
             $('#ClientId').focus();
             return false;
         }
-		if ($('#projectId').val() == 0 || $('#projectId').val() == '') {
-            alert('Please Select Project ');
+		 $( "#LoadProject select option:selected" ).each(function() {
+           Proselect="Yes";		  
+		 });		
+          if (Proselect == "No" ) {
+			alert('Please Select Client ');
             $('#projectId').focus();
             return false;
-        }
+		  }	
+		
 		if ($('#QueryDateFrom').val() == '') {
             alert('Please Select Date ');
             $('#QueryDateFrom').focus();
