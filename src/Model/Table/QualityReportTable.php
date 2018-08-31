@@ -133,7 +133,7 @@ class QualityReportTable extends Table {
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
         $UserGroupId = $options['UserGroupId'];
-        
+        //print_r($_POST['user_id']);exit;
         $ProjectIds = implode(",", $ProjectId);
 
         if ($options['UserId'] != '') {
@@ -159,6 +159,11 @@ class QualityReportTable extends Table {
         $template.='<select multiple=true name="user_id[]" id="user_id"  class="form-control" style="height:100px;width:150px">';
         if (!empty($queries)) {
          $UniqueUser=array();
+		 $i=0;
+		// print_r($UserId);
+		 
+		// print_r($queries);exit;
+		 
             foreach ($queries as $key => $val):
 			if (!in_array($val['UserId'], $UniqueUser)){
 			$UniqueUser[]=$val['UserId'];
@@ -168,8 +173,8 @@ class QualityReportTable extends Table {
         $contentArr = json_decode($content, true);
         $user_list = $contentArr['UserList'];
         
-                if ($key == $UserId) {
-                    $selected = '';
+                if ($val['UserId'] == $UserId[$i]) {
+                    $selected = 'selected';
                 } else {
                     $selected = '';
                 }
@@ -177,6 +182,7 @@ class QualityReportTable extends Table {
                 $template.= $user_list[$val['UserId']];
                 $template.='</option>';
 			}//if end
+			$i++;
             endforeach;
             $template.='</select>';
             return $template;
@@ -267,28 +273,57 @@ class QualityReportTable extends Table {
     }
 
     function findExport(Query $query, array $options) {
-
+		$tHead="";
+	 foreach($result[$Headkey]['CommentHead'] as $head){ 
+																			
+         $tHead.="<th>".$head." Comments</th>";
+		 $tHead.="<th>".$head." Percentage</th>";
+										
+		}
+	
         $ProjectId = $options['ProjectId'];
 
         $tableData = '<table border=1><thead>';
         $tableData.='<tr class="Heading">'
                 . '<th>S No</th><th>Client</th><th>Project</th>'
-                . '<th>User Name</th><th>Module</th><th>No of Allocated Jobs</th>'
-                . '<th>Allocated Jobs</th><th>Estimation Time</th>';
+                . '<th>Date</th><th>LeaseId</th>'.$tHead.'<th>Overall Percentage</th>';
         $tableData.= '</tr>';
         $tableData.='</thead>';
         $i = 1;
 
         foreach ($options['result'] as $inputVal => $input):
+		
             $tableData .= '<tbody>';
             $tableData.='<tr><td>' . $i . '</td>';
-            $tableData.='<td>' . $input['ClientName'] . '</td>';
-            $tableData.='<td>' . $input['ProjectName'] . '</td>';
-            $tableData.='<td>' . $input['userName'] . '</td>';
-            $tableData.='<td>' . $input['moduleName'] . '</td>';
+            $tableData.='<td>' . $input['Client'] . '</td>';
+            $tableData.='<td>' . $input['project_name'] . '</td>';
+            $tableData.='<td>' . $input['date'] . '</td>';
+            $tableData.='<td>' . $input['leaseId'] . '</td>';
             $tableData.='<td>' . $input['numberofjobs'] . '</td>';
             $tableData.='<td>' . $input['fdrid'] . '</td>';
-            $tableData.='<td>' . $input['Estimated_Time'] . '</td>';
+			$total_percent=array();
+			foreach($result[$Headkey]['CommentHead'] as $keyhead => $head){
+			$total_percent[]= count($val['comments'][$keyhead][$key1]);
+			$cnt= count($val['comments'][$keyhead][$key1]);
+			$com_percentage= 1 - ( $cnt / $val['totalAttributes']) ;
+		    $ModulePercentage=  number_format((float)$com_percentage, 2, '.', '');
+			
+			
+			  $tableData.='<td>';
+					foreach($val['comments'][$keyhead][$key1] as $valcomments){
+					 $tableData.='<p>'.$valcomments.'</p>';
+					} 
+				  $tableData.='</td>';
+			  $tableData.='<td>'.$ModulePercentage.'</td>';
+				
+				$tableData.='</td>';
+				  
+			}
+			$totalcnt=array_sum($total_percent);
+			$tot_perc= 1 -( $totalcnt / $val['totalAttributes']) ;
+			$TotPercent= number_format((float)$tot_perc, 2, '.', '');
+			
+            $tableData.='<td>' . $TotPercent . '</td>';
 
             $tableData.='</tr>';
 

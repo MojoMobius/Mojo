@@ -244,7 +244,7 @@ foreach($result as $key=>$val){
 										<?php
 										}
 										?>
-                                        <th style='width:10%;'>overall percentage</th>
+                                        <th style='width:10%;'>Overall Percentage</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -253,14 +253,7 @@ foreach($result as $key=>$val){
 						
 if (count($result) > 0) {
                         foreach($result as $key1=>$val){
-							$lease_id="";
-							
-							foreach($val['leaseId'] as $lease){
-								if($val['leaseId'] !=""){
-									$lease_id=$lease;
-								}
-							}
-							
+														
 							
                     ?>
                                     <tr>

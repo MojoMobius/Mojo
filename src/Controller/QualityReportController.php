@@ -92,10 +92,12 @@ class QualityReportController extends AppController {
 		
 		
         $ProListFinal = array('0' => '--Select Project--');
-		$ProListFinal[] = 'All';
+		if(!empty($this->request->data['ClientId'])){
+		$ProListFinal[$strPro] = 'All';
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
         endforeach;
+		}
 
 
         $this->set('Projects', $ProListFinal);
@@ -151,10 +153,13 @@ class QualityReportController extends AppController {
 
 //        print_r($this->request->data['user_id']) ;exit;
 
-        if (isset($this->request->data['user_id']))
+        if (isset($this->request->data['user_id'])){
             $this->set('postuser_id', $this->request->data['user_id']);
-        else
+			
+		}
+        else{
             $this->set('postuser_id', '');
+		}
 
 
 //            $this->set('User', array());
@@ -172,6 +177,10 @@ class QualityReportController extends AppController {
         else
             $this->set('postbatch_UserGroupId', '');
 
+		
+		
+		
+		
         $resqueryData = array();
         $result = array();
 		if (isset($this->request->data['QueryDateTo']))
@@ -302,15 +311,17 @@ class QualityReportController extends AppController {
 						$DomainWhere='';
 					}
 					
-					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate from $prodEntitymastertab as rpm
+					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate,cl.ClientName from $prodEntitymastertab as rpm
 					LEFT JOIN MV_QC_Comments as cm ON cm.InputEntityId = rpm.InputEntityId
+					LEFT JOIN ProjectMaster as pm ON pm.ProjectId = rpm.ProjectId
+					LEFT JOIN ClientMaster as cl ON cl.Id = pm.client_id
 					where rpm.ProjectId ='".$valpro."' $DomainWhere $SDate $EDate $Listuser";
                     $listArr = $connection->execute($sql)->fetchAll('assoc');
 					
 					foreach($listArr as $value){		
 						
 						$Record_data['CommentHead']=$CommentName;						
-						$Record_data['Client']=$Cl_listarray[0]['ClientName'];					
+						$Record_data['Client']=$value['ClientName'];					
 						$Record_data['leaseId']=$value['FDR'];		
 						$Record_data['project_name']=$ProName;
 						$Record_data['date']=$value['ProductionStartDate'];
@@ -332,8 +343,8 @@ class QualityReportController extends AppController {
             if (isset($this->request->data['downloadFile'])) {
 
                 $productionData = '';
-                if (!empty($results)) {
-                    $productionData = $this->QualityReport->find('export', ['ProjectId' => $ProjectId, 'result' => $results]);
+                if (!empty($Record_datas)) {
+                    $productionData = $this->QualityReport->find('export', ['ProjectId' => $ProjectId, 'result' => $Record_datas]);
                     $this->layout = null;
                     if (headers_sent())
                         throw new Exception('Headers sent.');
@@ -540,9 +551,9 @@ class QualityReportController extends AppController {
         exit;
     }
 
-    function getresourcedetails() {
+	function getresourcedetails() {
         $session = $this->request->session();
-        echo $module = $this->QualityReport->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
+        echo $module = $this->QualityReport->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'],'UserId' => $_POST['user_id'], 'UserGroupId' => $_POST['userGroupId']]);
         exit;
     }
 
