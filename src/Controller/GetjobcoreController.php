@@ -2078,6 +2078,7 @@ class GetjobcoreController extends AppController {
                         if ($attKey != '') {
                             if (is_array($attVal))
                                 $attVal = implode(',', $attVal);
+                            $attVal=  str_replace("'", "''", $attVal);
                             $updateFields.="[" . $attKey . "]=N'" . $attVal . "',";
                         }
                     }
@@ -2108,10 +2109,12 @@ class GetjobcoreController extends AppController {
                             if ($attKey != '') {
                                 if (is_array($attVal))
                                     $attVal = implode(',', $attVal);
+                                $attVal=  str_replace("'", "''", $attVal);
                                 $insertcolumn.="[" . $attKey . "],";
                                 $insertFields.="N'" . $attVal . "',";
                             }
                         }
+                        
                         // echo "INSERT INTO Staging_".$moduleId."_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$next_status_id,$ProductionEntityID)";
                         $updateTable = $connection->execute("INSERT INTO Staging_" . $moduleId . "_Data ($insertcolumn UserId,DependencyTypeMasterId,SequenceNumber,ProjectId,RegionId,InputEntityId,StatusId,ProductionEntity,ActStartDate,BatchID,BatchCreated,TimeTaken) values($insertFields $user_id,$depKey,$seqKey,$ProjectId,$RegionId,$InputEntityId,$StatusId,$ProductionEntityID,'$ActStartDate','$BatchId','$BatchCreated','$TimeTaken')");
                     }
@@ -3217,12 +3220,15 @@ exit;
             }
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
                        
-                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'');
+                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'Alterations',17=>'Assignment/Sublet',18=>'Audit Rights',19=>'Holdover',20=>'Insurance - Building',21=>'Late Charges',22=>'Parking',23=>'Permitted Use',24=>'Relocation',25=>'Signage',26=>'Surrender/Reinstatement',27=>'Utilities',28=>'Safety Equipment',29=>'');
  $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
 
      foreach($array as $attributeArr){  
-         
+         //echo $attributeArr[0];
+         //echo '<br>';
 	   if(count($attributeArr)==1){
+               //if($tempGrpId!=$groupidorg)
+                        //$lastSequenc=1;
             $tempGrpSearch = '';
             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
@@ -3233,8 +3239,11 @@ exit;
 					$subgrup = $subgrup[0];
 				}
 				 $tempGrpSearch = 'options';
-                                 if($tempGrpId!=$groupidorg)
-                                      $start_array=-1;
+                               //  echo $tempGrpId."!=".$groupidorg;
+                                 if($tempGrpId!=$groupidorg){
+                                      echo $start_array=-1;
+                                 // $lastSequenc=1;
+                                 }
                                  $tempGrpId  = $groupidorg;
 			}
             else{
@@ -3255,6 +3264,8 @@ exit;
         else {
 			
              if($tempGrpSearch == ''){
+                     if($tempGrpId!=$groupidorg)
+                        $lastSequenc=1;
 				$keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $attributeArr[0]);
                 if($keys[0] != ''){
 					$update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[0]['Id'].'_1']=trim($attributeArr[1],'"');
@@ -3277,12 +3288,18 @@ exit;
 				else if($work_type == 'Contacts'){
                     $final_type = 'Contacts';
                 }
+                else if($work_type == 'Lease Clauses'){
+                    $final_type = 'Clauses Type';
+                }
                 else {
                     $final_type = 'Option Type';
                 }
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
-                                                
-                
+             //echo '<br>' ;                                  ;
+             //echo $attributeArr[0];
+             //echo '-';
+             //echo $start_array   ;
+             //echo '<br>' ;
            if($start_array!=-1)
            {
                $start_array=$lastSequenc+1;
@@ -3291,7 +3308,10 @@ exit;
            }
            else
                $start_array=1;
+           $seq=1;$lastSequenc=1;
+           $count=count($attributeArr);
                $type_keys = $keys;
+              
             }
             
             else{
@@ -3302,6 +3322,7 @@ exit;
                   if($start_array!=1) 
                       $count=(count($attributeArr)-1)+$start_array;
             }
+            //echo '<br>'.$start_array.'-'.$count.'<br>';
             for($c= $start_array; $c < $count; $c++)
             {
                 $temp = $keyss[0];
@@ -3316,7 +3337,7 @@ exit;
 			if($c>$seq) {
 				$seq = $c;
                                 
-                              $lastSequenc=$c;
+                               $lastSequenc=$c;
             }
                        
             }
@@ -3355,6 +3376,7 @@ exit;
    if($update == ''){
       $update = 'No Data';
    }
+   //pr($update);
    echo json_encode($update);
  
 curl_close($ch); 
@@ -3779,10 +3801,7 @@ foreach ($result as $set) {
         $connection = ConnectionManager::get('default');
         $user_id = $session->read("user_id");
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-
-
-        
-          $link = $connection->execute("SELECT RegionId FROM ProductionEntityMaster where ProjectId=" . $ProjectId . " AND Id='".$ProductionEntityId."'")->fetchAll('assoc');
+        $link = $connection->execute("SELECT RegionId FROM ProductionEntityMaster where ProjectId=" . $ProjectId . " AND Id='".$ProductionEntityId."'")->fetchAll('assoc');
           
         $RegionId = $link[0]['RegionId'];       
 
