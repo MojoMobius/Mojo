@@ -1783,8 +1783,9 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
          var project_scope_id = "<?php echo $staticFields[0]; ?>";
     
        function AjaxValidation(){
+AjaxSave();
            // console.log(attr_array);
-            $(".formsubmit_validation_endisable").show();
+           // $(".formsubmit_validation_endisable").show();
             $(".validationloader").show();
             $(".validation_error").hide();
              $(".validationerrorcnt").hide();
@@ -4888,29 +4889,22 @@ function fetchbotminds()
                                            //  } 
 						 });
                                                 var group;  var subGroup;
-                                                       $.each(resArr['funcValGroup'], function( key, element ) {
-                                                           $.each(element, function( key, val ) {
-                                                  var values = val.split('_');   
-                                                   subGroup = values[0];
-                                                           group = values[1];
-                                                            var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
-                                                            var nxtSeq = parseInt(maxSeqCnt);
-                                                              if(maxSeqCnt > 1) {
-                                                            $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
-                                                            Load_totalAttInThisGrpCnt();
-                                                            var nxtSeq = nxtSeq - 1;
-                                                            $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
-                                                        } 
-                                                         });
-                                                         });
-                                                         var group;  var subGroup;
+                                                      
+                                                         var group;  var subGroup;var availTerm;
                                                          $.each(resArr['funcValGroup'], function( key, element ) {
-                                                             $.each(element, function( key, val ) {
+                                                           
+                                                             $.each(element, function( key2, val ) {
                                                   var values = val.split('_');   
                                                    subGroup = values[0];
                                                            group = values[1];
+                                                            availTerm=key2;
+//alert(availTerm);
                                            	  });
+alert(availTerm);
+alert($('#'+availTerm).length);
+                                                    if($('#'+availTerm).length<1){
                                                    addSubgrpAttribute(subGroup,group);
+                                                }
 						 });
                                              
                                                $.each(resArr['addAttrGroup'], function( key, element ) {
