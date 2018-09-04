@@ -682,20 +682,20 @@ margin :-75px 355px 21px 1114px !important;
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link active" data-toggle="tab" href="#exampleTabsOne" aria-controls="exampleTabsOne" role="tab">Source</a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
+<!--                                        <li class="nav-item" role="presentation">
                                             <a class="nav-link" data-toggle="tab" href="#mainurl" aria-controls="mainurl" role="tab">Website</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link" data-toggle="tab" href="#googletab" aria-controls="googletab" role="tab">Google Search</a>
-                                        </li>
+                                        </li>-->
                                     </ul>
                                     <div class="tab-content" id="leftpane">
                                         <div class="tab-pane active" id="exampleTabsOne" role="tabpanel" style="display:none !important;">
 										
-                                            <object width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" data="	" width="auto" height="auto"></object>
+                                            <iframe width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" src="	" width="auto" height="auto"></iframe>
 
                                         </div>
-                                        <div class="tab-pane" id="googletab" role="tabpanel">
+<!--                                        <div class="tab-pane" id="googletab" role="tabpanel">
                                             <div>
                                                 <div class="goto"><a href="javascript: void(0);" onclick="$('#frame2').attr('data', 'https://www.google.com/ncr').hide().show();"> Go to Google </a></div>
                                                 <div><object onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame2" sandbox="" data="https://www.google.com/ncr"></object></div>
@@ -703,12 +703,12 @@ margin :-75px 355px 21px 1114px !important;
                                         </div>
                                         <div class="tab-pane" id="mainurl" role="tabpanel">
 										 <iframe onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" target='_parent'   src="http://mobiuslease.botminds.ai/login" ></iframe>
-                                           <!--<object onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" sandbox="" data="<?php //echo $getDomainUrl; ?>" ></object> -->
+                                           <object onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" sandbox="" data="<?php //echo $getDomainUrl; ?>" ></object> 
                                            <?php if(empty($getDomainUrl)){
                                                 echo '<p><span style="font-weight:bold">No Website found...</span></p>';
                                             }
                                            ?>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -767,10 +767,10 @@ margin :-75px 355px 21px 1114px !important;
                                             <a id='<?php echo $key; ?>' class="panel-title <?php echo $collapsed; ?>" data-parent="#exampleAccordionContinuous" data-toggle="collapse" href="#exampleCollapseContinuousOne<?php echo $i; ?>" aria-controls="exampleCollapseContinuousOne<?php echo $i; ?>" <?php echo $ariaexpanded; ?>>
         <?php echo $GroupName; ?>
                                                 <span class="badge CntBadge" id="CntBadge_<?php echo $key; ?>"></span>
-                                                <span class="pull-right m-r-45">Status : 
+<!--                                                <span class="pull-right m-r-45">Status : 
                                                     <span id="currentADMVDoneCnt_<?php echo $key; ?>"></span>/
                                                     <span id="totalAttInThisGrpCnt_<?php echo $key; ?>"></span>
-                                                </span>
+                                                </span>-->
                                             </a>
                                         </div>
                                         <!--                                    ----------------------------first campaign start--------------------------------------->
@@ -985,10 +985,6 @@ margin :-75px 355px 21px 1114px !important;
                                                                             }else{
                                                                               $dbClassName .="";
                                                                             }
- if($valprodFields['ControlName']=='DropDownList') {
-                                                                                 $dbClassName .=" proddropdown";
-                                                                            }
-
                                                                             
                                                                             //Mandatory coding ends
                                                                             if($valprodFields['ControlName']=='TextBox' || $valprodFields['ControlName']=='Label') { 
@@ -1065,8 +1061,19 @@ margin :-75px 355px 21px 1114px !important;
                                                                                         //        echo '<textarea ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur .'>'.$ProdFieldsValue.'</textarea>';
                                                                                         //    }
                                                                                         //       echo '</select>';
-
-                                                                                        if(!empty($valprodFields['Options'])){
+                                                                                                     if ($inputHeaders  != ''){
+                                                                                                           $inpName = 'name="' . $ProdFieldsName . '[]" ';
+                                                                                            $ProdFieldsValueArr=explode(',',$ProdFieldsValue);
+                                                                                                          echo '<select ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur . ' multiple="true">';
+                                                                                            foreach ($inputHeaders as $ke => $va) {
+                                                                                            $sele = "";
+                                                                                            if (in_array($va,$ProdFieldsValueArr))
+                                                                                                $sele = "selected";
+                                                                                            echo '<option value="' . $va . '" ' . $sele . '>' . $va . '</option>';
+                                                                                        }
+                                                                                          echo '</select>';
+                                                                                           } 
+                                                                                        else if(!empty($valprodFields['Options'])){
                                                                                             $inpName = 'name="' . $ProdFieldsName . '[]" ';
                                                                                             $ProdFieldsValueArr=explode(',',$ProdFieldsValue);
                                                                                             echo '<select ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur . ' multiple="true">';
@@ -1093,7 +1100,15 @@ margin :-75px 355px 21px 1114px !important;
                                                                                     }
                                                                                     else if ($inpuControlType == "DropDownList") {
                                                                                         echo '<select ' . $inpClass . $inpId . $inpName . $inpOnClick . $inpOnBlur .'><option value="">--Select--</option>';
-                                                                                        if(!empty($valprodFields['Options'])){
+                                                                                       if ($inputHeaders  != ''){
+                                                                                            foreach ($inputHeaders as $ke => $va) {
+                                                                                            $sele = "";
+                                                                                            if ($va == $ProdFieldsValue)
+                                                                                                $sele = "selected";
+                                                                                            echo '<option value="' . $va . '" ' . $sele . '>' . $va . '</option>';
+                                                                                        }
+                                                                                       }
+                                                                                        else if(!empty($valprodFields['Options'])){
                                                                                         foreach ($valprodFields['Options'] as $ke => $va) {
                                                                                             $sele = "";
                                                                                             if ($va == $ProdFieldsValue)
@@ -1137,39 +1152,36 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 																?>
 																
 																	 
-                                                                    <textarea rows="1" cols="50" class="form-control <?php echo $dbClassName_Disposition; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>
+<!--                                                                    <textarea rows="1" cols="50" class="form-control <?php echo $dbClassName_Disposition; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>-->
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-md-3 form-status">
                                                                 <div class="form-group status">
-                                                                    <select style="padding-RIGHT:59px" id="<?php echo $key.'_'.$keysub.'_'.$valprodFields["AttributeMasterId"].'_'.$tempSq;?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName_Disposition; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect subGrpDisp_<?php echo $key; ?>_<?php echo $keysub; ?>">
+                                                                   <select style="padding-RIGHT:59px" id="<?php echo $key.'_'.$keysub.'_'.$valprodFields["AttributeMasterId"].'_'.$tempSq;?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName_Disposition; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect subGrpDisp_<?php echo $key; ?>_<?php echo $keysub; ?>">
                                                                         <option value="">--</option>
-                                                                        <option value="A" <?php
+                                                                      
+                                                                     
+                                                                        <option value="/" <?php
                                                                        // echo "DispositionFieldsValue_".$DispositionFieldsValue;
-                                                                    if ($DispositionFieldsValue == "A") {
+                                                                    if ($DispositionFieldsValue == "/") {
                                                                                         echo 'selected';
                                                                     }
-                                                                        ?>>A</option>
-                                                                        <option value="D" <?php
-                                                                                                if ($DispositionFieldsValue == "D") {
+                                                                        ?>>/</option>
+                                                                        <option value="+" <?php
+                                                                                                if ($DispositionFieldsValue == "+") {
                                                                                         echo 'selected';
                                                                                                 }
-                                                                                                ?>>D</option>
-                                                                        <option value="M" <?php
-                                                                                                if ($DispositionFieldsValue == "M") {
+                                                                                                ?>>+</option>
+                                                                        <option value="," <?php
+                                                                                                if ($DispositionFieldsValue == ",") {
                                                                                         echo 'selected';
                                                                                                 }
-                                                                                                ?>>M</option>
-                                                                        <option value="V" <?php
-                                                                                if ($DispositionFieldsValue == "V") {
-                                                                echo 'selected';
-                                                                                }
-                                                                                                ?>>V</option>
+                                                                                                ?>>,</option>
                                                                     </select>
                                                                     <div>
                                                                                                                                         <?php if($isDatePicker == 1){   ?>
 																	<a href="javascript: void(0);"
-																		onclick='window.open ("<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
+																		onclick='window.open ("<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'datecalculator', 'inputid'=> urlencode($inpId), 'prefix'=>false)); ?>", "mywindow","menubar=1,resizable=1,width=350,height=400");'>
 																		<?php echo $this->Html->image('../webroot/images/calculator1.png', array('alt' => 'Date Calculator', 'width' => '25'));?>
 																	</a>
 																
@@ -1290,6 +1302,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 							   <button class="btn btn-default" name='fetchbotmind' id='fetchbotmind' onclick="fetchbotminds();" type="button">Fetch BotMinds</button>
                                                            
                                <?php } ?>
+                                                           <button class="btn btn-default" onclick="fetchmappings();"  name="fetchmapping" id="fetchmapping" type="button" data-rel="page-tag" data-target="#mappingValues" data-toggle="modal">Fetch Mapping</button>
             </div>
              <?php if(!empty($QueryDetails['Query'])){
                         $style_endisble = "display:block;";
@@ -1463,7 +1476,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">Ã—</span>
+                            <span aria-hidden="true">x</span>
                         </button>
                         <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>
                     </div>
@@ -1490,7 +1503,36 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
         </div>
        
         <!-- Popup new Modal -->
-        
+        <div class="modal fade modal-fill-in" id="mappingValues" aria-hidden="false" aria-labelledby="exampleFillInHandson" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+<!--                        <h4 class="modal-title" id="exampleFillInHandsonModalTitle"></h4>-->
+                    </div>
+                    <div class="modal-body">
+                        <div id="example" class="container-fluid" style="margin-bottom:-10px;">
+                            <div id="vertical">
+                                <div id="top-pane">
+                                    <div id="horizontal" style="height: 100%; width: 100%;">
+                                        <div id="right-pane">
+<div id="example1" class="fetchValue">
+
+	<div class="loader" style="display:none;"></div>
+
+
+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal -->
 				 <div class="modal fade" id="searchmodal" aria-hidden="true" aria-labelledby="searchmodal" role="dialog" tabindex="-1">
             <div class="modal-dialog" style="max-width:1200px;">
@@ -1783,9 +1825,8 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
          var project_scope_id = "<?php echo $staticFields[0]; ?>";
     
        function AjaxValidation(){
-AjaxSave();
-           // console.log(attr_array);
-           // $(".formsubmit_validation_endisable").show();
+            console.log(attr_array);
+            $(".formsubmit_validation_endisable").show();
             $(".validationloader").show();
             $(".validation_error").hide();
              $(".validationerrorcnt").hide();
@@ -1818,7 +1859,7 @@ AjaxSave();
             
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxapidatapreparation')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxapidatapreparation')); ?>",
                 data: ({ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status,TimeTaken:TimeTaken,attr_array:attr_array,project_scope_id:project_scope_id}),
                 dataType: 'json',
                 async: true,
@@ -1832,14 +1873,9 @@ AjaxSave();
                        $("#validationerrorcnt").html(error_count);
                        $(".validationerrorcnt").show();
                         if(error_count > 0){
-   
-
                               $.each( listerror, function( key, val ) {
                              $.each( val, function( skey, sval ) {
-
-if (typeof sval.ext === 'undefined') {
-
- $.each( sval, function( sskey, ssval ) {
+                                 $.each( sval, function( sskey, ssval ) {
                                      strArray = ssval.ext.split(",");
                                      for (i = 0; i < strArray.length; i++) {
                                            if(strArray[i] > 1){
@@ -1852,26 +1888,6 @@ if (typeof sval.ext === 'undefined') {
                                      }
                                      }
                                  });
- 
-
-}else{
-
-                                strArray = sval.ext.split(",");
-                                     for (i = 0; i < strArray.length; i++) {
-                                           if(strArray[i] > 1){
-                                               $("."+sval.pagination_key).css("color", "red");
-                                           }
-
-                                         if(strArray[i].length > 0){
-                                           $("#"+sval.key+"_"+strArray[i]+"_error").html(sval[strArray[i]]["error_txt"]);
-                                           $("#"+sval.key+"_"+strArray[i]+"_error").show();
-                                     }
-                                     }
-
-}
-
-
-                                
 
                                  });
                          });
@@ -2394,7 +2410,7 @@ $(document).keydown(function(e) {
 
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxLoadfirstattribute')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxLoadfirstattribute')); ?>",
                 data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, groupId: FirstGroupId, seq: sequence}),
                 dataType: 'text',
                 async: true,
@@ -2407,10 +2423,13 @@ $(document).keydown(function(e) {
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
 							
                             $('#exampleTabsOne').show();
-                            var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-							//alert(htmlfileinitial);
+                        //    var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
+                          var htmlfileinitial = "https://docs.google.com/viewer?url=http://13.127.184.22/MojoV2htmlfiles/BHP_Shipping_Schedule.xlsx&embedded=true";
+						//	alert(htmlfileinitial);
 							//htmlfileinitial='SH_SH_US017P01-Lease.pdf';
-                            document.getElementById('frame1').data = htmlfileinitial;
+                            document.getElementById('frame1').src = htmlfileinitial;
+                            
+                           
 							
 							var object = document.getElementById("frame1");
 							object.onload = function () {
@@ -2452,7 +2471,7 @@ $(document).keydown(function(e) {
                  });
 //            $.ajax({
 //                type: "POST",
-//                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxLoadfirstattribute')); ?>",
+//                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxLoadfirstattribute')); ?>",
 //                data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, Attr: FirstAttrId, ProjAttr: FirstProjAttrId, MainGrp: FirstGroupId, SubGrp: FirstSubGroupId}),
 //                dataType: 'text',
 //                async: true,
@@ -2568,7 +2587,7 @@ $(document).keydown(function(e) {
 
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxhelptooltip')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxhelptooltip')); ?>",
                 data: ({ProjectId: projectid, RegionId: regionid, attributeId: attributeId}),
                 dataType: 'text',
                 async: true,
@@ -2605,7 +2624,7 @@ $(document).keydown(function(e) {
 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxinsertreferenceurl')); ?>",
+                    url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxinsertreferenceurl')); ?>",
                     data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, Seq: sequence}),
                     dataType: 'text',
                     async: true,
@@ -2691,7 +2710,7 @@ $(document).keydown(function(e) {
                 $('#multiplelinkbutton').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetafterreferenceurl')); ?>",
+                    url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxgetafterreferenceurl')); ?>",
                     data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, Attr: attr, ProjAttr: projattr, MainGrp: maingroup, SubGrp: subgroup, seq: seq}),
                     dataType: 'text',
                     async: true,
@@ -2788,7 +2807,7 @@ $(document).keydown(function(e) {
             if (getConform) {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxdeletereferenceurl')); ?>",
+                    url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxdeletereferenceurl')); ?>",
                     data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, Attr: attr, ProjAttr: projattr, MainGrp: maingroup, SubGrp: subgroup, Id: id, Seq: sequence}),
                     dataType: 'text',
                     async: true,
@@ -2833,7 +2852,7 @@ $(document).keydown(function(e) {
 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxloadmultipleurl')); ?>",
+                    url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxloadmultipleurl')); ?>",
                     data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
                     dataType: 'text',
                     async: true,
@@ -2907,7 +2926,7 @@ $(document).keydown(function(e) {
 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxloadgroupurl')); ?>",
+                    url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxloadgroupurl')); ?>",
                     data: ({NewUrl: text, ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
                     dataType: 'text',
                     async: true,
@@ -3201,7 +3220,7 @@ $(document).keydown(function(e) {
             
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetgroupurl')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxgetgroupurl')); ?>",
                 data: ({ProjectId: projectid, RegionId: regionid, InputEntityId: inputentityid, ProdEntityId: prodentityid, AttrGroup: attrGrpid, AttrSubGroup: attrSubGrpid, AttrId: attrid, ProjAttrId: Projattrid, seq: sequence}),
                 dataType: 'text',
                 async: true,
@@ -3264,7 +3283,7 @@ $(document).keydown(function(e) {
             var result = new Array();
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxqueryposing')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxqueryposing')); ?>",
                 data: ({query: query, InputEntyId: InputEntyId, RegionId: regionid}),
                 dataType: 'text',
                 async: false,
@@ -3456,10 +3475,12 @@ $(document).keydown(function(e) {
             $("#save_btn").html("Please wait! Saving...");
             var status = "<?php echo $productionjob['StatusId']; ?>";
             //$("#save_btn").attr("disabled", "disabled");
-            
+          // alert(Updatedata);
+       //    alert(Inputdata);
+           
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsave')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxsave')); ?>",
                 data: ({Updatedata: Updatedata, Inputdata: Inputdata, ProjectId: ProjectId, RegionId: RegionId, ProductionEntityID: ProductionEntityID, InputEntityId: InputEntityId, StatusId: status,TimeTaken:TimeTaken}),
                 dataType: 'json',
                 async: false,
@@ -3578,87 +3599,87 @@ $("#ProductionArea").css("opacity",0.5);
         });
     }
 
-   function Load_verifiedAttrCnt(thisObj) {
-        
-        var closestDisVal = thisObj.parent().parent().parent().find(".dispositionSelect").val();
-        //if(closestDisVal=="") {
-       // var thisinpuval = thisObj.val().toLowerCase();
-        var ElementType=thisObj.is(':radio');
-        //alert(ElementType);
-        
-        if(thisObj.is(':radio')){
-             var thisinpuval =   thisObj.filter(':checked').val();
-             if(typeof thisinpuval=='undefined')
-                 thisinpuval='';
-        }
-        
-        else
-		var thisinpuval = thisObj.val();
-            
-           
-       // var spaninpuval = thisObj.parent().find('.lighttext').text().toLowerCase();
-		var spaninpuval = thisObj.parent().find('.lighttext').text();
-
-//alert(thisinpuval+'-'+spaninpuval);
-        if (spaninpuval === thisinpuval && spaninpuval != "") {
-            thisObj.parent().parent().parent().find(".dispositionSelect").val('V');
-        }
-
-        if (spaninpuval != thisinpuval && spaninpuval != "" && thisinpuval != "") {
-            thisObj.parent().parent().parent().find(".dispositionSelect").val('M');
-        }
-
-        if (spaninpuval != thisinpuval && spaninpuval == "" && thisinpuval != "" ) {
-            thisObj.parent().parent().parent().find(".dispositionSelect").val('A');
-        }
-		
-	if (spaninpuval != thisinpuval && spaninpuval != "" && thisinpuval == "") {
-            thisObj.parent().parent().parent().find(".dispositionSelect").val('D');
-        }
-            
-        if (spaninpuval == "" && thisinpuval == "") {
-            thisObj.parent().parent().parent().find(".dispositionSelect").val('');
-        }
-        //}
-    }
-    
-    function Load_verifiedAttrCnt_forselect(thisObj) {
-        var closestDisVal = thisObj.parent().parent().parent().parent().find(".dispositionSelect").val();
-        var thisinpuval = thisObj.val();
-         
-        if(thisinpuval != null){
-        var thisinpuval = thisObj.val().join(',');
-       
-   }
-   else{
-       var thisinpuval = thisObj.val();
-   }
-  
-       // var spaninpuval = thisObj.parent().find('.lighttext').text().toLowerCase();
-		var spaninpuval = thisObj.parent().next('.lighttext').text();
-        if (spaninpuval === thisinpuval && spaninpuval != "") {
-            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('V');
-        }
-
-        if (spaninpuval != thisinpuval && spaninpuval != "" && thisinpuval != "") {
-            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('M');
-        }
-
-        if (spaninpuval != thisinpuval && spaninpuval == "" && thisinpuval != "" ) {
-            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('A');
-        }
-		
-		if (spaninpuval != thisinpuval && spaninpuval != "" && (thisinpuval == "" || thisinpuval == null)) {
-            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('D');
-        }
-  if (spaninpuval == "" && (thisinpuval == "" || thisinpuval == null)) {
-            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('');
-        }
-    }
+//   function Load_verifiedAttrCnt(thisObj) {
+//        
+//        var closestDisVal = thisObj.parent().parent().parent().find(".dispositionSelect").val();
+//        //if(closestDisVal=="") {
+//       // var thisinpuval = thisObj.val().toLowerCase();
+//        var ElementType=thisObj.is(':radio');
+//        //alert(ElementType);
+//        
+//        if(thisObj.is(':radio')){
+//             var thisinpuval =   thisObj.filter(':checked').val();
+//             if(typeof thisinpuval=='undefined')
+//                 thisinpuval='';
+//        }
+//        
+//        else
+//		var thisinpuval = thisObj.val();
+//            
+//           
+//       // var spaninpuval = thisObj.parent().find('.lighttext').text().toLowerCase();
+//		var spaninpuval = thisObj.parent().find('.lighttext').text();
+//
+////alert(thisinpuval+'-'+spaninpuval);
+//        if (spaninpuval === thisinpuval && spaninpuval != "") {
+//            thisObj.parent().parent().parent().find(".dispositionSelect").val('V');
+//        }
+//
+//        if (spaninpuval != thisinpuval && spaninpuval != "" && thisinpuval != "") {
+//            thisObj.parent().parent().parent().find(".dispositionSelect").val('M');
+//        }
+//
+//        if (spaninpuval != thisinpuval && spaninpuval == "" && thisinpuval != "" ) {
+//            thisObj.parent().parent().parent().find(".dispositionSelect").val('A');
+//        }
+//		
+//	if (spaninpuval != thisinpuval && spaninpuval != "" && thisinpuval == "") {
+//            thisObj.parent().parent().parent().find(".dispositionSelect").val('D');
+//        }
+//            
+//        if (spaninpuval == "" && thisinpuval == "") {
+//            thisObj.parent().parent().parent().find(".dispositionSelect").val('');
+//        }
+//        //}
+//    }
+//    
+//    function Load_verifiedAttrCnt_forselect(thisObj) {
+//        var closestDisVal = thisObj.parent().parent().parent().parent().find(".dispositionSelect").val();
+//        var thisinpuval = thisObj.val();
+//         
+//        if(thisinpuval != null){
+//        var thisinpuval = thisObj.val().join(',');
+//       
+//   }
+//   else{
+//       var thisinpuval = thisObj.val();
+//   }
+//  
+//       // var spaninpuval = thisObj.parent().find('.lighttext').text().toLowerCase();
+//		var spaninpuval = thisObj.parent().next('.lighttext').text();
+//        if (spaninpuval === thisinpuval && spaninpuval != "") {
+//            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('V');
+//        }
+//
+//        if (spaninpuval != thisinpuval && spaninpuval != "" && thisinpuval != "") {
+//            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('M');
+//        }
+//
+//        if (spaninpuval != thisinpuval && spaninpuval == "" && thisinpuval != "" ) {
+//            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('A');
+//        }
+//		
+//		if (spaninpuval != thisinpuval && spaninpuval != "" && (thisinpuval == "" || thisinpuval == null)) {
+//            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('D');
+//        }
+//  if (spaninpuval == "" && (thisinpuval == "" || thisinpuval == null)) {
+//            thisObj.parent().parent().parent().parent().find(".dispositionSelect").val('');
+//        }
+//    }
 
     function getJob()
     {
-        window.location.href = "Getjobcore?job=newjob";
+        window.location.href = "MappingProduction?job=newjob";
     }
     
 
@@ -4164,7 +4185,7 @@ if(x >0){
             
             var subGrpAttArr = subGrpAtt[key][keysub];
         $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahand')); ?>',
+            url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxgetdatahand')); ?>',
             dataType: 'json',
             type: 'POST',
             data: {ProductionEntityId: ProductionEntityId, AttributeMasterId: id},
@@ -4243,7 +4264,7 @@ if(x >0){
             },
             beforeRemoveRow: function (change, source) {
                 $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxremoverow')); ?>',
+                    url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxremoverow')); ?>',
                     dataType: 'json',
                     type: 'POST',
                     data: {changes: change, data: hot.getData()}, // contains changed cells' data
@@ -4261,7 +4282,7 @@ if(x >0){
                 data[0] = hot.sortIndex[data[0]] ? hot.sortIndex[data[0]][0] : data[0];
                 clearTimeout(autosaveNotification);
                 $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsavedatahand')); ?>',
+                    url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxsavedatahand')); ?>',
                     dataType: 'json',
                     type: 'POST',
                     data: {changes: change, data: hot.getData()}, // contains changed cells' data
@@ -4283,7 +4304,7 @@ if(x >0){
 
 
             $.ajax({
-                url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsavehandson')); ?>',
+                url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxsavehandson')); ?>',
                 dataType: 'json',
                 type: 'POST',
                 data: {keyval: keyval, changed: changes,ProductionEntityId:ProductionEntityId,data: hot.getData()}, // contains changed cells' data
@@ -4320,7 +4341,7 @@ id = 0;
  $(".loader").show();
 
         $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
+            url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxgetdatahandalldata')); ?>',
             dataType: 'text',
             type: 'POST',
             data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,handskey:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"no"},
@@ -4342,7 +4363,7 @@ id = 0;
 
 
         $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxgetdatahandalldata')); ?>',
+            url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxgetdatahandalldata')); ?>',
             dataType: 'text',
             type: 'POST',
             data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId, AttributeMasterId: id ,prvseq:key,handskeysub:keysub,title:submenu,ModuleId:ModuleId,singleAttr:"yes"},
@@ -4440,7 +4461,7 @@ id = 0;
             },
             beforeRemoveRow: function (change, source) {
                 $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxremoverow')); ?>',
+                    url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxremoverow')); ?>',
                     dataType: 'json',
                     type: 'POST',
                     data: {changes: change, data: hot.getData()}, // contains changed cells' data
@@ -4458,7 +4479,7 @@ id = 0;
                 data[0] = hot.sortIndex[data[0]] ? hot.sortIndex[data[0]][0] : data[0];
                 clearTimeout(autosaveNotification);
                 $.ajax({
-                    url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsavedatahand')); ?>',
+                    url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxsavedatahand')); ?>',
                     dataType: 'json',
                     type: 'POST',
                     data: {changes: change, data: hot.getData()}, // contains changed cells' data
@@ -4480,7 +4501,7 @@ id = 0;
 
 
             $.ajax({
-                url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxsavehandson')); ?>',
+                url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxsavehandson')); ?>',
                 dataType: 'json',
                 type: 'POST',
                 data: {keyval: keyval, changed: changes,ProductionEntityId:ProductionEntityId,data: hot.getData()}, // contains changed cells' data
@@ -4518,7 +4539,7 @@ id = 0;
         var result = new Array();
         $.ajax({
             type: "POST",
-            url: "<?php echo Router::url(array('controller'=>'Getjobcore','action'=>'ajaxloadresult'));?>",
+            url: "<?php echo Router::url(array('controller'=>'MappingProduction','action'=>'ajaxloadresult'));?>",
             data: ({id: id, value: value, toid: toid,Region:Region}),
             dataType: 'text',
             async: false,
@@ -4743,7 +4764,7 @@ function goToMsg(id){
 
 	     $(".hot_query").html('Loading...');
             $.ajax({
-            url: '<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'querysubmit')); ?>',
+            url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'querysubmit')); ?>',
             
             data: {Query: arraydata,QueryId: arrayid, QueryName:arrayname,ProductionEntity:ProductionEntity},
             type: 'POST',
@@ -4769,7 +4790,7 @@ function goToMsg(id){
             var result = new Array();
             $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxquerypostingmulti')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxquerypostingmulti')); ?>",
                 data: ({multiquery: arraydata, InputEntyId: InputEntyId, RegionId: regionid}),               
                 success: function (res) { 
                         if(res =="success"){
@@ -4809,7 +4830,7 @@ function fetchbotminds()
 	token='';
 	 $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxGetAPIToken')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxGetAPIToken')); ?>",
                  data: ({ProjectId: ProjectId, domainId:domainId}),
                 success: function (res) { 
                    resArr=JSON.parse(res);
@@ -4888,25 +4909,30 @@ function fetchbotminds()
                                               }
                                            //  } 
 						 });
-                                              //  var group;  var subGroup;
-                                                      
-                                                         var group;  var subGroup;var availTerm;
-                                                         $.each(resArr['funcValGroup'], function( key, element ) {
-                                                           var availTerm;
-                                                             $.each(element, function( key2, val ) {
+                                                var group;  var subGroup;
+                                                       $.each(resArr['funcValGroup'], function( key, element ) {
+                                                           $.each(element, function( key, val ) {
                                                   var values = val.split('_');   
                                                    subGroup = values[0];
                                                            group = values[1];
-                                                            availTerm=key2;
-//alert(availTerm);
-//alert(availTerm);
-//alert($('#'+availTerm).length);
- if($('#'+availTerm).length == 0){
-                                                   addSubgrpAttribute(subGroup,group);
-                                                }
+                                                            var maxSeqCnt = $('.GroupSeq_' + subGroup).attr("data");
+                                                            var nxtSeq = parseInt(maxSeqCnt);
+                                                              if(maxSeqCnt > 1) {
+                                                            $('#'+subGroup+'_'+group+'_'+nxtSeq).parent().remove();
+                                                            Load_totalAttInThisGrpCnt();
+                                                            var nxtSeq = nxtSeq - 1;
+                                                            $('.GroupSeq_' + subGroup).attr("data", nxtSeq);
+                                                        } 
+                                                         });
+                                                         });
+                                                         var group;  var subGroup;
+                                                         $.each(resArr['funcValGroup'], function( key, element ) {
+                                                             $.each(element, function( key, val ) {
+                                                  var values = val.split('_');   
+                                                   subGroup = values[0];
+                                                           group = values[1];
                                            	  });
-
-                                                   
+                                                   addSubgrpAttribute(subGroup,group);
 						 });
                                              
                                                $.each(resArr['addAttrGroup'], function( key, element ) {
@@ -5045,7 +5071,7 @@ function Rentcalcsub(){
 	if(proceed =="yes"){
 	 $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxRentcal')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxRentcal')); ?>",
                  data: ({ProjectId: ProjectId,CommencementId: CommencementId,ExpirationId: ExpirationId,Commencement: Commencement,Expiration: Expiration,BaseRent: BaseRent,RentInc: RentInc,Frequency: Frequency}),
                 success: function (res) { 
 						if(res == 0){
@@ -5173,7 +5199,7 @@ function Searchdata(){
 	$(".hot_search").html("Loading...");
 	 $.ajax({
                 type: "POST",
-                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxSearch')); ?>",
+                url: "<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxSearch')); ?>",
                  data: ({OSF_CO_NAME: OSF_CO_NAME,FORMER_CO_NAME:FORMER_CO_NAME}),
                 success: function (res) { 
 				
@@ -5495,7 +5521,30 @@ var newStartDate = '';
                 return false;
     }
     return true;
-}	       
+}
+</script>
+<script>
+    function fetchmappings()
+{
+
+  
+ var ProductionEntityId = $("#ProductionEntity").val();
+ var InputEntityId = $("#InputEntityId").val();
+ $(".loader").show();
+
+        $.ajax({
+            url: '<?php echo Router::url(array('controller' => 'MappingProduction', 'action' => 'ajaxgetmappingvalues')); ?>',
+            dataType: 'text',
+            type: 'POST',
+            data: {InputEntityId: InputEntityId,ProductionEntityId: ProductionEntityId},
+            success: function (res) {	
+            
+		 $(".loader").hide();
+	
+	     $(".fetchValue").html(res);
+            }
+        });
+}
 </script>
 
 	
