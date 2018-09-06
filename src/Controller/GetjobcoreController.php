@@ -3185,20 +3185,34 @@ exit;
  $load_keys=false;
  $array = array();
  
-    if (!file_exists($filepath)){ return $array; }
-    $content = file($filepath);
-   // echo '<pre>';
- 
-    for ($x=0; $x < count($content); $x++){
-        if (trim($content[$x]) != ''){
-            $line = explode("\t", trim($content[$x]));
-            if ($load_keys){
-                $key = array_shift($line);
-                $array[$key] = $line;
-            }
-            else { $array[] = $line; }
-        }
-    }
+//    if (!file_exists($filepath)){ return $array; }
+//    $content = file($filepath);
+//   // echo '<pre>';
+// 
+//    for ($x=0; $x < count($content); $x++){
+//        if (trim($content[$x]) != ''){
+//            $line = explode("\t", trim($content[$x]));
+//            if ($load_keys){
+//                $key = array_shift($line);
+//                $array[$key] = $line;
+//            }
+//            else { $array[] = $line; }
+//        }
+//    }
+    
+    $fp = fopen('C:\xampp\htdocs\mojo\webroot\test.tsv','r');
+$result = array();
+
+while (($line = fgetcsv($fp, 0, "\t")) !== FALSE) if ($line) { 
+    //echo $line;
+    if($line[0]!='')
+        $array[] = $line; 
+    
+}
+fclose($fp);
+
+
+//pr($result);
   //pr($array);
   $ProductionFields = $JsonArray['ModuleAttributes']['1011'][145]['production'];
   $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
@@ -3206,7 +3220,7 @@ exit;
   
         $connection = ConnectionManager::get('default');
         $ProdFieldID = $connection->execute("Select Id from MC_DependencyTypeMaster where Type in ('ProductionField','Disposition') AND ProjectId=" . $ProjectId)->fetchAll('assoc');
-        
+       
   foreach ($GroupAttribute as $key => $value) {
                 $groupwisearray[$key] = $value;
                 $keys = array_map(function($v) use ($key, $emparr) {
@@ -3220,12 +3234,12 @@ exit;
             }
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
                        
-                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'Alterations',17=>'Assignment/Sublet',18=>'Audit Rights',19=>'Holdover',20=>'Insurance - Building',21=>'Late Charges',22=>'Parking',23=>'Permitted Use',24=>'Relocation',25=>'Signage',26=>'Surrender/Reinstatement',27=>'Utilities',28=>'Safety Equipment',29=>'');
+                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'Alterations',17=>'Assignment/Sublet',18=>'Audit Rights',19=>'Holdover',20=>'Insurance - Building',21=>'Late Charges',22=>'Parking',23=>'Permitted Use',24=>'Relocation',25=>'Signage',26=>'Surrender/Reinstatement',27=>'Utilities',28=>'Safety Equipment',29=>'CAM/OpEx/ServChrg',30=>'RE Tax',31=>'Insurance');
  $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
 
      foreach($array as $attributeArr){  
          //echo $attributeArr[0];
-         //echo '<br>';
+        // echo '<br>';
 	   if(count($attributeArr)==1){
                //if($tempGrpId!=$groupidorg)
                         //$lastSequenc=1;
@@ -3239,9 +3253,9 @@ exit;
 					$subgrup = $subgrup[0];
 				}
 				 $tempGrpSearch = 'options';
-                               //  echo $tempGrpId."!=".$groupidorg;
+                                // echo $tempGrpId."!=".$groupidorg;
                                  if($tempGrpId!=$groupidorg){
-                                      echo $start_array=-1;
+                                       $start_array=-1;
                                  // $lastSequenc=1;
                                  }
                                  $tempGrpId  = $groupidorg;
@@ -3272,7 +3286,7 @@ exit;
                     $update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_1']='A';
                     }
                }
-         }
+         }  
          if($tempGrpSearch != ''){
             $t=1;
             $rentSearch  = in_array($attributeArr[0], $option_list);
@@ -3322,7 +3336,7 @@ exit;
                   if($start_array!=1) 
                       $count=(count($attributeArr)-1)+$start_array;
             }
-            //echo '<br>'.$start_array.'-'.$count.'<br>';
+           // echo '<br>'.$start_array.'-'.$count.'<br>';
             for($c= $start_array; $c < $count; $c++)
             {
                 $temp = $keyss[0];
@@ -3341,7 +3355,7 @@ exit;
             }
                        
             }
-        }
+        }   //echo 'coming'; exit;
         if($tempGrpSearch == ''){
 			if(count($attributeArr) > 2){
 				$groupAddition = $connection->execute("Select Is_Distinct from MC_Subgroup_Config where Primary_Group_Id = $groupidorg AND Subgroup_Id = $subgrup AND RecordStatus = 1 AND ProjectId=" . $ProjectId)->fetchAll('assoc');
@@ -3372,11 +3386,11 @@ exit;
 			}
 		}
     }
-          
+         
    if($update == ''){
       $update = 'No Data';
    }
-   //pr($update);
+  // pr($update);
    echo json_encode($update);
  
 curl_close($ch); 
