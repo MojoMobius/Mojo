@@ -167,8 +167,9 @@ if ($NoNewJob == 'NoNewJob') {
         width: 4px;
         background: #e4eaec;
     }
-    textarea{border:1px solid #e4eaec;resize:none;}
-    
+    textarea{border:1px solid #e4eaec;resize:none;height:55px !important;}
+    .form-group{margin-bottom:0px;}
+    .form-responsive{padding:0px 0px 5px 0px !important;}
     /*        iframe{border:none;width:100%;height: 369px;}*/
     object{height: 81% !important;
            position: absolute;}
@@ -660,7 +661,7 @@ margin :-75px 355px 21px 1114px !important;
         ?>	
         <!-- Breadcrumb Ends -->
         <div class="panel m-l-30 m-r-30">
-            <div class="panel-body">
+            <div class="panel-body p-t-10">
 			
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
@@ -1029,7 +1030,7 @@ margin :-75px 355px 21px 1114px !important;
 																	
                                                                 </div>	
                                                                 </div>
-                                                                <div class="col-md-4 form-text">
+                                                                <div class="col-md-7 form-text">
                                                                 <div class="form-group">
 																
 																
@@ -1124,7 +1125,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                                                                                <?php  }?>
                                                                 </div>
                                                                 </div>
-                                                                <div class="col-md-2 form-text">
+                                                                <div class="col-md-2 form-text" style="display:none">
                                                                 <div class="form-group comments">
 																<?php if($rentset==0){
 																	$rentset++;
@@ -1140,7 +1141,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                                                                     <textarea rows="1" cols="50" class="form-control <?php echo $dbClassName_Disposition; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>
                                                                 </div>
                                                                 </div>
-                                                                <div class="col-md-3 form-status">
+                                                                <div class="col-md-2 form-status">
                                                                 <div class="form-group status">
                                                                     <select style="padding-RIGHT:59px" id="<?php echo $key.'_'.$keysub.'_'.$valprodFields["AttributeMasterId"].'_'.$tempSq;?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName_Disposition; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect subGrpDisp_<?php echo $key; ?>_<?php echo $keysub; ?>">
                                                                         <option value="">--</option>
@@ -3549,7 +3550,9 @@ $("#timerstatus").val(0);
 });
 
 $("#stopTimermode").click(function() {
-
+ setTimeout(function () {
+           $("#pausetimermodal").show();
+        }, 1500);
     $("#timerstatus").val(1);
   clearInterval(timer);
   timer = null
@@ -4687,7 +4690,7 @@ id = 0;
         padding: 0 10px;
     }
 	.link-style,.pu_cmts_seq{
-	cursor: pointer;
+	cursor: pointer; font-size:14px;
 	}
         .Zebra_DatePicker_Icon_Inside{
             left: 163px !important;
@@ -4821,6 +4824,7 @@ function fetchbotminds()
                                                     $('select[name="'+key+'"]').val(element);
                                                     }else{
                                                   $('#'+key).val(element);
+                                                  $('#'+key).css("border-color","green");
                                              } 
 						 });
 //                                                  var group;  var subGroup;
@@ -4885,26 +4889,29 @@ function fetchbotminds()
                                                      $('select[name="'+key+'"]').val(element);
                                                     }else{
                                                   $('#'+key).val(element);
+                                                    $('#'+key).css("border-color","green");
                                               }
                                            //  } 
 						 });
-                                                var group;  var subGroup;
+                                              //  var group;  var subGroup;
                                                       
                                                          var group;  var subGroup;var availTerm;
                                                          $.each(resArr['funcValGroup'], function( key, element ) {
-                                                           
+                                                           var availTerm;
                                                              $.each(element, function( key2, val ) {
                                                   var values = val.split('_');   
                                                    subGroup = values[0];
                                                            group = values[1];
                                                             availTerm=key2;
 //alert(availTerm);
-                                           	  });
-alert(availTerm);
-alert($('#'+availTerm).length);
-                                                    if($('#'+availTerm).length<1){
+//alert(availTerm);
+//alert($('#'+availTerm).length);
+ if($('#'+availTerm).length == 0){
                                                    addSubgrpAttribute(subGroup,group);
                                                 }
+                                           	  });
+
+                                                   
 						 });
                                              
                                                $.each(resArr['addAttrGroup'], function( key, element ) {
@@ -4913,6 +4920,7 @@ alert($('#'+availTerm).length);
                                                      $('select[name="'+key+'"]').val(element);
                                                     }else{
                                                   $('#'+key).val(element);
+                                                  $('#'+key).css("border-color","green");
                                              } 
                                         // }
 						 });

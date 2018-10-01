@@ -291,8 +291,8 @@ if (count($Production_dashboard) > 0) {
                                             if(($moduleConfig[$key]['IsAllowedToDisplay']==1) && ($moduleConfig[$key]['IsModuleGroup']==1)){
 //                                                echo "<pre>s";print_r($key);print_r($User);exit;
                                         ?>
-                                        <td class="Cell" width="10%"><?php echo $input['module'][$key]['Start_Date']; ?></td>
-                                        <td class="Cell" width="10%"><?php echo $input['module'][$key]['End_Date']; ?></td>
+                                        <td class="Cell" width="10%"><?php echo date('d-m-Y H:i:s',strtotime($input['module'][$key]['Start_Date'])); ?></td>
+                                        <td class="Cell" width="10%"><?php echo date('d-m-Y H:i:s',strtotime($input['module'][$key]['End_Date'])); ?></td>
                                         <td class="Cell" width="10%"><?php echo $input['module'][$key]['Estimated_Time']; ?></td>
                                         <td class="Cell" width="10%"><?php echo $input['module'][$key]['TimeTaken']; ?></td>
                                    

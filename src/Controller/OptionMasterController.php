@@ -56,12 +56,12 @@ class OptionMasterController extends AppController {
             $valid_headers = array('id', 'value', 'order');
             $file = $this->request->data('file');
             if ($file['name'] != '') {
-                if (!move_uploaded_file($_FILES['file']['tmp_name'], 'tmp/' . $_FILES['file']['name'])) {
+                if (!move_uploaded_file($_FILES['file']['tmp_name'], 'jai/' . $_FILES['file']['name'])) {
                     die('Error uploading file - check destination is writeable.');
                 }
                 $myfile = $file['tmp_name'];
                 //$inputFileName = $myfile;
-                $inputFileName = 'tmp/' . $_FILES['file']['name'];
+                $inputFileName = 'jai/' . $_FILES['file']['name'];
                 try {
                     $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
                     $objReader = PHPExcel_IOFactory::createReader($inputFileType);
@@ -200,7 +200,7 @@ class OptionMasterController extends AppController {
         } else {
             $ProjectMaster = TableRegistry::get('Projectmaster');
             $ProList = $ProjectMaster->find();
-            $OptionMaster = $this->OptionMaster->newEntity();
+           // $OptionMaster = $this->OptionMaster->newEntity();
             $ProListopt = '';
             $call = 'getRegion(this.value);';
             $ProListopt = '<select name="ProjectId" id="ProjectId" class="form-control" onchange="' . $call . '"><option value=0>--Select--</option>';
@@ -213,7 +213,7 @@ class OptionMasterController extends AppController {
             $ProListopt.='</select>';
         }
         $OptionMasters = array();
-        $OptionMasters = $this->OptionMaster->attributelist();
+       // $OptionMasters = $this->OptionMaster->attributelist();
         $i = 0;
         $Option_Masters = array();
         $this->loadModel('OptionMasters');

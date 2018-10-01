@@ -191,14 +191,14 @@ class ValidationrulesTable extends Table {
                 $checkedisdatepicker='checked=""';
             else
                 $checkedisdatepicker='';    
-            $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsDatepicker[]" '.$checkedisdatepicker.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+            $templatenew.='<td><input class="form-control" type="checkbox" id="IsDatepick_'.$mojo['AttributeMasterId'].'" name="IsDatepicker[]" '.$checkedisdatepicker.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" onclick="updteDatechk('.$mojo['AttributeMasterId'].');" ></td>';
             //isdatepicker ends 
             //isdatecalculator starts
             if($MappedAttribute[$i]['IsDatecalculator']=='1')
                 $checkedisdatecalculator='checked=""';
             else
                 $checkedisdatecalculator='';    
-            $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsDatecalculator[]" '.$checkedisdatecalculator.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+            $templatenew.='<td><input class="form-control" type="checkbox" id="IsDatecal_'.$mojo['AttributeMasterId'].'" name="IsDatecalculator[]" '.$checkedisdatecalculator.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" onclick="updteDatechk('.$mojo['AttributeMasterId'].');" ></td>';
             //isdatecalculator ends 
             //isrentcalculator starts
                 if($MappedAttribute[$i]['IsRentcalculator']=='1')
@@ -225,7 +225,7 @@ class ValidationrulesTable extends Table {
             if($MappedAttribute[$i]['DateFormat']==''){
              $selected ='selected';
              
-              $templatenew.='<option value="MM-dd-yy">MM-DD-YYYY</option>'; 
+              $templatenew.='<option value="M-d-y">MM-DD-YYYY</option>'; 
              $templatenew.='<option value="y-M-d">YYYY-MM-DD</option>';
              $templatenew.='<option value="M/d/y">MM/DD/YYYY</option>';
              $templatenew.='<option value="M/d/y H:m">MM/DD/YYYY H:M</option>';

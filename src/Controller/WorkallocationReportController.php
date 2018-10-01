@@ -64,9 +64,11 @@ class WorkallocationReportController extends AppController {
         $this->set('Clients', $Cl_list);
 
         $MojoProjectIds = $this->projectmasters->find('Projects');
+        //pr($MojoProjectIds); exit;
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
         $ProList = $this->Puquery->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
+       // pr($ProList); exit;
         $ProListFinal = array('0' => '--Select Project--');
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
@@ -74,6 +76,8 @@ class WorkallocationReportController extends AppController {
 
 
         $this->set('Projects', $ProListFinal);
+       // pr($ProListFinal);
+       // exit;
 
 //        $this->request->data['ProjectId'] = 3346;
 //        $ProjectId = 3346;
@@ -153,7 +157,7 @@ class WorkallocationReportController extends AppController {
 
             $ProjectId = $this->request->data['ProjectId'];
             
-               
+             // pr($ProjectId) ; exit; 
             $RegionId = $this->request->data['regionId'];
 //            $ModuleId = $this->request->data['ModuleId'];
             $UserGroupId = $this->request->data['UserGroupId'];

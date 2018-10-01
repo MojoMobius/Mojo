@@ -34,7 +34,7 @@ class InputinitiateController extends AppController {
         $phpExcel = new \PHPExcel_IOFactory();
         $session = $this->request->session();
         $user_id = $session->read('user_id');
-        $uploadFolder = "InputFiles";
+        $uploadFolder = "D:/xampp/htdocs/mojo/webroot/inputfiles";
         $connection = ConnectionManager::get('default');
         if ($this->request->is('post')) {
 
@@ -45,36 +45,88 @@ class InputinitiateController extends AppController {
             $CreatedBy = $user_id;
 
             $file = $this->request->data('file');
-            if ($file['name'] != '') {
+            $total = count($_FILES['file']['name']);
 
+            // Loop through each file
 
-//                Check the input file 
-                $allowed = array('xls', 'xlsx');
-                $filename = $file['name'];
+for( $i=0 ; $i < $total ; $i++ ) {
+    //pr($_FILES['file']);
+$filename = $_FILES['file']['name'][$i];
+  //Get the temp file path
+      if ($filename != '') {
+          $allowed = array('xls', 'xlsx', 'pdf');
+  
+ 
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
+  //Make sure we have a file path
                 if (!in_array($ext, $allowed)) {
                     $this->Flash->error('Invalid Input File .');
                     return $this->redirect(['action' => 'index']);
                 }
+                $tmpFilePath = $_FILES['file']['tmp_name'][$i];
 
-                if (!file_exists($uploadFolder)) {
-                    mkdir($uploadFolder, 0777, true);
-                }
-                $apendfilename = date("YmdHis") . "_";
-                if (!move_uploaded_file($_FILES['file']['tmp_name'], $uploadFolder . '/' . $_FILES['file']['name'])) {
-                    die('Error uploading file - check destination is writeable.');
-                }
-                $myfile = $file['tmp_name'];
-                //$inputFileName = $myfile;
-                $inputFileName = $_FILES['file']['name'];
+  //Make sure we have a file path
+  if ($tmpFilePath != ""){
+    //Setup our new file path
+     
+    $newFilePath = $uploadFolder . '/' . $_FILES['file']['name'][$i];
+
+    //Upload the file into the temp dir
+    if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+$inputFileName = $_FILES['file']['name'][$i];
 
 
                 $insert = "INSERT INTO ME_InputInitiation (ProjectId,Region,FileName,InputToStatus,RecordStatus,CreatedBy,CreatedDate)values('$ProjectId','$RegionId','$inputFileName','$StatusId','1','$CreatedBy','$CreatedDate')";
                 $insertQry = $connection->execute($insert);
-            } else {
+      //Handle other code here
+
+    }
+  }
+//                if (!file_exists($uploadFolder)) {
+//                    mkdir($uploadFolder, 0777, true);
+//                }
+//                if (!move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadFolder . '/' . $_FILES['file']['name'][$i])) {
+//                    die('Error uploading file - check destination is writeable.');
+//                }
+                
+                
+      }
+      else {
                 $this->Flash->success(__('Invalid Input File .'));
                 return $this->redirect(['action' => 'index']);
             }
+}
+          
+//            if ($file['name'] != '') {
+//
+//
+////                Check the input file 
+//                $allowed = array('xls', 'xlsx');
+//                $filename = $file['name'];
+//                $ext = pathinfo($filename, PATHINFO_EXTENSION);
+//                if (!in_array($ext, $allowed)) {
+//                    $this->Flash->error('Invalid Input File .');
+//                    return $this->redirect(['action' => 'index']);
+//                }
+//
+//                if (!file_exists($uploadFolder)) {
+//                    mkdir($uploadFolder, 0777, true);
+//                }
+//                $apendfilename = date("YmdHis") . "_";
+//                if (!move_uploaded_file($_FILES['file']['tmp_name'], $uploadFolder . '/' . $_FILES['file']['name'])) {
+//                    die('Error uploading file - check destination is writeable.');
+//                }
+//                $myfile = $file['tmp_name'];
+//                //$inputFileName = $myfile;
+//                $inputFileName = $_FILES['file']['name'];
+//
+//
+//                $insert = "INSERT INTO ME_InputInitiation (ProjectId,Region,FileName,InputToStatus,RecordStatus,CreatedBy,CreatedDate)values('$ProjectId','$RegionId','$inputFileName','$StatusId','1','$CreatedBy','$CreatedDate')";
+//                $insertQry = $connection->execute($insert);
+//            } else {
+//                $this->Flash->success(__('Invalid Input File .'));
+//                return $this->redirect(['action' => 'index']);
+//            }
 
             $this->Flash->success(__('File has been Uploaded Successfully.'));
             return $this->redirect(['action' => 'index']);

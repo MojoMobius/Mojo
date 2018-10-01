@@ -186,7 +186,7 @@ class ModuleConfigsController extends AppController {
 
             $IsModuleValue = '0';
         }
-		$this->request->data['FromStatus']=implode(",", array_keys($this->request->data['FromStatus']));
+		$this->request->data['FromStatus']=implode(",", array_values($this->request->data['FromStatus']));
 
 //pr($this->request->data['FromStatus']); exit;
         if ($this->request->is(['post', 'put'])) {

@@ -1002,11 +1002,16 @@ function directabstractionsubmit(){
      
 function priority(){
  //var n = $("input[name^='priority']").length;
- 
+ var arraydata='';
  var arraydata = $('.Pri_ids:checked').serialize();
- var arraydomain = $('.domain_ids').serialize();
+ if(arraydata==''){
+     alert('Please select any one Job to Allocate/Prioritize!')
+     return false;
+ }
+        var arraydomain = $('.domain_ids').serialize();
  var arraystatus = $('.status_ids').serialize();
  var arraysaved = $('.pri_saved_ids').serialize();
+ 
  var Proid=$('#ProjectId').val();
  
  $(".hot").html("Loading...");
@@ -1019,7 +1024,7 @@ function priority(){
 			$(".hot").html(res);
             }
         });
-}    
+        }
 function prioritysubmit(){
  //var n = $("input[name^='priority']").length;
  

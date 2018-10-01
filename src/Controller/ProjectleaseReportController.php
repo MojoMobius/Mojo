@@ -258,13 +258,13 @@ class ProjectleaseReportController extends AppController {
                     $Client_Response = "";
                     $Client_Response_Date = "";
                     if (!empty($sub_queryData)) {
-                        
+                        $Query = $this->getvalues($sub_queryData, 'Query','','','s');
                         $TLComments = $this->getvalues($sub_queryData, 'TLComments','','','s');
                         $QueryRaisedDate = $this->getvalues($sub_queryData, 'QueryRaisedDate','D');
                         $Client_Response = $this->getvalues($sub_queryData, 'Client_Response','','','s');
                         $Client_Response_Date = $this->getvalues($sub_queryData, 'Client_Response_Date','','dt');
                     }
-
+                    $list['Query'] = $Query;    
                     $list['holdcomments'] = $TLComments;
                     $list['holdreportdate'] = $QueryRaisedDate;
                     $list['ProjectName'] = $ProjectName;

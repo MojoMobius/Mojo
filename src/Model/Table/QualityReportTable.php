@@ -111,7 +111,7 @@ class QualityReportTable extends Table {
 			 }
       
         $template = '';
-        $template = '<select name="ProjectId[]" multiple="multiple" id="ProjectId" class="form-control" onchange="getusergroupdetails('.$RegionId.');getStatus(this.value);"><option value=0>--Select--</option>';
+        $template = '<select name="ProjectId[]" multiple="multiple" id="ProjectId" class="form-control" onchange="getusergroupdetails('.$RegionId.');getStatus(this.value);">';
         if (!empty($modulesArr)) {
 			 $template.='<option  value="' . $Strpro . '">All</option>';
             foreach ($modulesArr as $key => $value) {           

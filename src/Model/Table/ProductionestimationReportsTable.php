@@ -458,8 +458,8 @@ class ProductionestimationReportsTable extends Table {
                 $tableData.='<td>' . $status_list[$input['StatusId']] . '</td>';
                 foreach ($module as $key => $val) {
                     if (($moduleConfig[$key]['IsAllowedToDisplay'] == 1) && ($moduleConfig[$key]['IsModuleGroup'] == 1)) {
-                        $tableData.='<td>' . $input['module'][$key]['Start_Date'] . '</td>';
-                        $tableData.='<td>' . $input['module'][$key]['End_Date'] . '</td>';
+                        $tableData.='<td>' . date('d-m-Y H:i:s',strtotime($input['module'][$key]['Start_Date'])) . '</td>';
+                        $tableData.='<td>' .  date('d-m-Y H:i:s',strtotime($input['module'][$key]['End_Date'])) . '</td>';
                         $tableData.='<td>' . $input['module'][$key]['Estimated_Time'] . '</td>';
                         $tableData.='<td>' . $input['module'][$key]['TimeTaken'] . '</td>';
                         $tableData.='<td>' . $user_list[$input['module'][$key]['UserId']] . '</td>';

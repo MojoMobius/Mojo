@@ -221,7 +221,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-5 control-label" style="">Choose File</label>
                 <div class="col-sm-6">
-                    <span><input type="file" name="file" id="file"  style="border:none;">
+                    <span><input type="file" name="file[]" multiple="multiple" id="file"  style="border:none;">
                     </span>
                     <br>(Allowed Formats:.xls and .xlsx)
 
