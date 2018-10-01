@@ -3209,7 +3209,10 @@ class MappingProductionController extends AppController {
             //pr($keys_sub);
             $groupwisearray[$arrVal] = $keys_sub;
         }
-
+        
+             $input_Headers_table = $connection->execute("SELECT distinct(InputHeaders) from MV_InputHeadersReference where ProjectId = " . $ProjectId . " and ProductionEntityId = " . $ProductionEntityId . " and RecordStatus = 1")->fetchAll('assoc');
+            $input_Headers_table = array_map(current, $input_Headers_table);
+           
         //  pr($groupwisearray);
         $qc_datarownew.='<tr>';
 
@@ -3225,7 +3228,6 @@ class MappingProductionController extends AppController {
         foreach ($sameIdlinkVal as $keys => $value) {
             $outputForm[$value['Column Value']][] = $groupwisearray[$value['Column Name']][0];
         }
-        //   pr($sameIdlinkVal);
 
         foreach ($outputForm as $keys => $value) {
             $finalOutput = $value[0];
@@ -3234,14 +3236,31 @@ class MappingProductionController extends AppController {
           }
        
             $finalarr = $keys;
-            $inputHeader = explode(',', $keys);
+           $inputHeaderTable = explode(',', $keys); 
+              $inputHeader = '';
+            if (count($inputHeaderTable) > 1) {
+            foreach($inputHeaderTable as $keyval => $vals){
+                if (!in_array($vals, $input_Headers_table)) {
+                   $inputHeaderimplode = $inputHeadertemp.','.$vals;
+                   
+                   if (in_array($inputHeaderimplode, $input_Headers_table)) {
+                       $inputHeader[] = $inputHeaderimplode;
+                       $inputHeadertemp = '';
+                   }
+                   $inputHeadertemp = $vals;
+                }
+                else{
+                    $inputHeader[] = $vals; 
+                }
+            }
+            }
+
             if (count($inputHeader) > 1) {
                 $finalarr = implode('[,]', $inputHeader);
                 if($dispOperator[$value[0]] != ''){
                 $finalarr = implode('[' . $dispOperator[$value[0]] . ']', $inputHeader);
                 }
             }
-
             $qc_datarownew.='<tr>';
 
             $qc_datarownew.='<td  cellspacing="15">' . $finalarr . '</td>';

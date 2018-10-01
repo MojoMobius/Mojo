@@ -167,7 +167,9 @@ if ($NoNewJob == 'NoNewJob') {
         width: 4px;
         background: #e4eaec;
     }
-    textarea{border:1px solid #e4eaec;resize:none;}
+    textarea{border:1px solid #e4eaec;resize:none;height:55px !important;}
+    .form-group{margin-bottom:0px;}
+    .form-responsive{padding:0px 0px 5px 0px !important;}
     
     /*        iframe{border:none;width:100%;height: 369px;}*/
     object{height: 81% !important;
@@ -615,6 +617,7 @@ margin :-75px 355px 21px 1114px !important;
                         <h3 class="page-title">
                             <div class="col-md-4 font-size-14">
                         <?php 
+                        //pr($staticFields);
                         $n= 0;
                         ?>
                           <div><b><?php  $n= 0; $prefix = '';
@@ -660,7 +663,7 @@ margin :-75px 355px 21px 1114px !important;
         ?>	
         <!-- Breadcrumb Ends -->
         <div class="panel m-l-30 m-r-30">
-            <div class="panel-body">
+            <div class="panel-body p-t-10">
 			
                 <div id="splitter">
                     <span style="visibility: hidden;">a</span>
@@ -691,8 +694,8 @@ margin :-75px 355px 21px 1114px !important;
                                     </ul>
                                     <div class="tab-content" id="leftpane">
                                         <div class="tab-pane active" id="exampleTabsOne" role="tabpanel" style="display:none !important;">
-										
-                                            <iframe width="100%" onload="onMyFrameLoad(this)" height="100%" style="visibility:visible" id="frame1" name="frame1" src="	" width="auto" height="auto"></iframe>
+
+                                            <iframe  onload="onMyFrameLoad(this)"  style="visibility:visible" id="frame1" name="frame1" src="" width="900px" height="900px"></iframe>
 
                                         </div>
 <!--                                        <div class="tab-pane" id="googletab" role="tabpanel">
@@ -703,7 +706,7 @@ margin :-75px 355px 21px 1114px !important;
                                         </div>
                                         <div class="tab-pane" id="mainurl" role="tabpanel">
 										 <iframe onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" target='_parent'   src="http://mobiuslease.botminds.ai/login" ></iframe>
-                                           <object onload="onMyFrameLoad(this)" width="100%" height="100%" id="frame3" sandbox="" data="<?php //echo $getDomainUrl; ?>" ></object> 
+                                           <object onload="onMyFrameLoad(this)"  width="100%" height="100%" id="frame3" sandbox="" data="<?php //echo $getDomainUrl; ?>" ></object> 
                                            <?php if(empty($getDomainUrl)){
                                                 echo '<p><span style="font-weight:bold">No Website found...</span></p>';
                                             }
@@ -879,7 +882,29 @@ margin :-75px 355px 21px 1114px !important;
                                                 <div style="<?php echo $disnone; ?>Padding:0px;" id="MultiSubGroup_<?php echo $keysub; ?>_<?php echo $grpseq; ?>" class="clearfix">
                                                                 <?php
 																$rentset=0;
+																$mapi=0;$mapj=count($valuesSub);$valuesSubArr='';
+//pr($valuesSub);
                                                             foreach ($valuesSub as $keyprodFields => $valprodFields) {
+ $processinputdata[$valprodFields['AttributeMasterId']][1][$DependentMasterIds['ProductionField']];
+if($processinputdata[$valprodFields['AttributeMasterId']][1][$DependentMasterIds['ProductionField']]!='')
+{
+$valuesSubArr[$mapj]=$valprodFields;
+$mapj--;
+}
+																
+																
+}
+ foreach ($valuesSub as $keyprodFields => $valprodFields) {
+ $processinputdata[$valprodFields['AttributeMasterId']][1][$DependentMasterIds['ProductionField']];
+if($processinputdata[$valprodFields['AttributeMasterId']][1][$DependentMasterIds['ProductionField']]=='')
+{
+$valuesSubArr[$mapj]=$valprodFields;
+$mapj--;
+}
+																
+																
+}
+                                                            foreach ($valuesSubArr as $keyprodFields => $valprodFields) {
 																
 																
 																
@@ -999,6 +1024,7 @@ margin :-75px 355px 21px 1114px !important;
                                                                               $COpyTeXtId = 'id=COpyTeXt_'.$valprodFields['AttributeMasterId'].'_'.$tempSq;
                                                                               $inpOnBlur = 'onblur="'.$mandateFunction.' '.$validate[$valprodFields['ProjectAttributeMasterId']]['FunctionName'].'(\'ProductionFields_' . $valprodFields['AttributeMasterId'].'_'.$DependentMasterIds['ProductionField'].'_'.$tempSq . '\', this.value,' .'\''. $validate[$valprodFields['ProjectAttributeMasterId']]['AllowedCharacter'] . '\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['NotAllowedCharacter'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['Dateformat'].'\', '.'\''.$validate[$valprodFields['ProjectAttributeMasterId']]['AllowedDecimalPoint'].'\');" ';       
                                                                               $inpClass = 'onclick="autoSave(' . $valprodFields['AttributeMasterId'] . ', ' . $DependentMasterIds['ProductionField'] . ', ' . $tempSq.');" class="wid-100per inputsubGrp_'.$key.'_'.$keysub.' testmulti doOnBlur ' . $dbClassName . '"';
+																				$inpClassTxt = 'class="wid-100per form-control ' . $dbClassName . '"';
                                                                             }
                                                                             elseif($valprodFields['ControlName']=='RadioButton' || $valprodFields['ControlName']=='CheckBox') {
                                                                                $inpClass = 'onchange="autoSave(' . $valprodFields['AttributeMasterId'] . ', ' . $DependentMasterIds['ProductionField'] . ', ' . $tempSq.');" class="inputsubGrp_'.$key.'_'.$keysub.' doOnBlur ' . $dbClassName . '" '; 
@@ -1013,7 +1039,7 @@ margin :-75px 355px 21px 1114px !important;
 															<div class="commonClass commonclass_<?php echo $valprodFields['MainGroupId']?>" id="groupAttr_<?php echo $valprodFields['AttributeMasterId'].'_'.$grpseq?>">
                                                             <div id="MultiField_<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $thisseq; ?>" class="clearfix MultiField_<?php echo $valprodFields['AttributeMasterId']; ?> CampaignWiseFieldsDiv_<?php echo $key; ?> row form-responsive" style="<?php echo $disnone; ?>" >
                                                                 
-                                                                <div class="col-md-3 form-title">
+                                                                <div class="col-md-3 form-title" title="Output Headers">
                                                                 <div class="form-group" style=""><p class="link-style"><a onclick="GetFrameData('<?php echo $valprodFields['AttributeName'] ?>');"><?php echo $valprodFields['DisplayAttributeName'] ?></a></p>
 
                                                                     <input type="hidden" value="<?php echo $valprodFields['DisplayAttributeName'] ?>" id="attrdisp<?php echo $valprodFields['AttributeMasterId']; ?>_<?php echo $i; ?>_<?php echo $key; ?>_<?php echo $keysub; ?>" class="removeinputclass">
@@ -1025,7 +1051,7 @@ margin :-75px 355px 21px 1114px !important;
 																	
                                                                 </div>	
                                                                 </div>
-                                                                <div class="col-md-4 form-text">
+                                                                <div class="col-md-7 form-text" title="Input Headers">
                                                                 <div class="form-group">
 																
 																
@@ -1046,7 +1072,7 @@ margin :-75px 355px 21px 1114px !important;
                                                                                         echo '<input type="checkbox" ' . $inpClass . $inpId . $inpName . $inpValue . $inpOnClick . $inpOnBlur .'>';
 										} else if ($inpuControlType == "MultiTextBox") {
                                                                                     
-                                                                                        echo '<textarea readonly="readonly" class="wid-100per form-control" ' . $COpyTeXtId . '>'.$ProdFieldsValue.'</textarea>';
+                                                                                        echo '<textarea readonly="readonly" '.$inpClassTxt.' '.$inpName.' ' . $COpyTeXtId . '>'.$ProdFieldsValue.'</textarea>';
                                                                                         //    if(!empty($valprodFields['Options'])){
                                                                                         //        $inpName = 'name="' . $ProdFieldsName . '[]" ';
                                                                                         //        $ProdFieldsValueArr=explode(',',$ProdFieldsValue);                                   
@@ -1140,7 +1166,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-md-2 form-text">
-                                                                <div class="form-group comments">
+                                                                <div class="form-group comments" style="display:none">
 																<?php if($rentset==0){
 																	$rentset++;
 																	?>
@@ -1155,7 +1181,7 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
 <!--                                                                    <textarea rows="1" cols="50" class="form-control <?php echo $dbClassName_Disposition; ?>" id="" name="<?php echo $CommentsFieldsName; ?>" placeholder="Comments" onclick="loadWebpage(<?php echo $valprodFields['AttributeMasterId']; ?>, <?php echo $valprodFields['ProjectAttributeMasterId']; ?>, <?php echo $valprodFields['MainGroupId']; ?>, <?php echo $valprodFields['SubGroupId']; ?>,<?php echo $tempSq; ?>, 0);"><?php echo $CommentsFieldsValue; ?></textarea>-->
                                                                 </div>
                                                                 </div>
-                                                                <div class="col-md-3 form-status">
+                                                                <div class="col-md-2 form-status" title="Operators">
                                                                 <div class="form-group status">
                                                                    <select style="padding-RIGHT:59px" id="<?php echo $key.'_'.$keysub.'_'.$valprodFields["AttributeMasterId"].'_'.$tempSq;?>" name="<?php echo $DispositionFieldsName; ?>"  class="<?php echo $dbClassName_Disposition; ?> form-control CampaignWiseSelDone_<?php echo $key; ?> dispositionSelect subGrpDisp_<?php echo $key; ?>_<?php echo $keysub; ?>">
                                                                         <option value="">--</option>
@@ -1961,7 +1987,7 @@ $(document).keydown(function(e) {
         $(document).ready(function () {
             baseinfodivcount = 1;
             $("#MySplitter").splitter();
-            $("#MySplitter").trigger("resize", [320]);
+            $("#MySplitter").trigger("resize", [420]);
             $('#myCarousel').carousel({
                 interval: 40000
             });
@@ -2415,7 +2441,7 @@ $(document).keydown(function(e) {
                 dataType: 'text',
                 async: true,
                 success: function (result) {
-				//	alert(result);
+					//alert(result);
                     if (result != '' && result != null) {
                         $('.CntBadge').hide();
                         var obj = JSON.parse(result);
@@ -2423,9 +2449,9 @@ $(document).keydown(function(e) {
                         if (obj['attrinitialhtml'] != '' && obj['attrinitialhtml'] != null) {
 							
                             $('#exampleTabsOne').show();
-                        //    var htmlfileinitial = "<?php echo HTMLfilesPath; ?>" + obj['attrinitialhtml'];
-                          var htmlfileinitial = "https://docs.google.com/viewer?url=http://13.127.184.22/MojoV2htmlfiles/BHP_Shipping_Schedule.xlsx&embedded=true";
-						//	alert(htmlfileinitial);
+                            var htmlfileinitial = obj['attrinitialhtml'];
+                          var htmlfileinitial = "https://docs.google.com/viewer?url=http://13.127.184.22/MojoV2htmlfiles/"+htmlfileinitial+"&embedded=true";
+							//alert(htmlfileinitial);
 							//htmlfileinitial='SH_SH_US017P01-Lease.pdf';
                             document.getElementById('frame1').src = htmlfileinitial;
                             
@@ -2682,7 +2708,7 @@ $(document).keydown(function(e) {
         // Script for enhsplitter Starts
         jQuery(function ($) {
             //$('#splitter-block').enhsplitter();
-            $('#splitter-block').enhsplitter({handle: 'bar', position: 350, leftMinSize: 0, fixed: false});
+            $('#splitter-block').enhsplitter({handle: 'bar', position: 550, leftMinSize: 0, fixed: false});
         });
         // Script for enhsplitter Ends
 
@@ -3466,6 +3492,7 @@ $(document).keydown(function(e) {
 		
         function AjaxSave(addnewpagesave) {
             Updatedata = $(".UpdateFields").serialize();
+			
             Inputdata = $(".InsertFields").serialize();
             ProjectId = $("#ProjectId").val();
             RegionId = $("#RegionId").val();
@@ -4058,8 +4085,8 @@ $("#ProductionArea").css("opacity",0.5);
 			$('.splitter_bar').css({ left: 0});
 			$('.splitter_panel').last().width('1200');
        
-       var file = 'http://mobiuslease.botminds.ai/login';
-       myWindow = window.open("", "myWindow", "width=500, height=500");
+       var file = 'https://docs.google.com/viewer?url=http://13.127.184.22/MojoV2htmlfiles/MappingRule_Nolarma Savona-converted.xlsx&embedded=true';
+       myWindow = window.open("", "myWindow", "width=1000, height=1000"); 
        myWindow.document.write('<iframe id="pdfframe" src="' + file + '" style="width:100%; height:100%; overflow:hidden !important;"></iframe>');
 
     setInterval('gettimercurrentstatus()', 3000);
@@ -4708,7 +4735,8 @@ id = 0;
         padding: 0 10px;
     }
 	.link-style,.pu_cmts_seq{
-	cursor: pointer;
+	cursor: pointer;  font-size:14px;
+	
 	}
         .Zebra_DatePicker_Icon_Inside{
             left: 163px !important;
