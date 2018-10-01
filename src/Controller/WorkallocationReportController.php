@@ -52,8 +52,12 @@ class WorkallocationReportController extends AppController {
         $RegionId = 1011;
         $moduleIdtxt = 'DQC';
         $this->set('RegionId', $RegionId);
-//        $ProjectId = $session->read("ProjectId");
+        $Project = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
+
+ $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $Project]);
+
+$user_list = $JsonArray['UserList'];
 
 
         $Cl_listarray = $connection->execute("select Id,ClientName FROM ClientMaster")->fetchAll('assoc');
@@ -150,7 +154,8 @@ class WorkallocationReportController extends AppController {
         $resqueryData = array();
         $result = array();
         if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
-
+//pr($this->request->data);
+//exit;
             $ProjectId = $this->request->data['ProjectId'];
             
                
@@ -167,12 +172,24 @@ class WorkallocationReportController extends AppController {
                 $this->set('postuser_id', $this->request->data['user_id']);
             else
                 $this->set('postuser_id', '');
+  
+if($ProjectId == ''){
+    $session = $this->request->session();
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+    $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+  $ProjectId = $is_project_mapped_to_user;
+  $ProjectId = $ProjectId;
+}
 
 
             $user_id_list = $this->WorkallocationReport->find('resourceDetailsArrayOnly', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'UserId' => $session->read('user_id'), 'UserGroupId' => $UserGroupId]);
             $this->set('User', $user_id_list);
 
-            
             if (empty($user_id)) {
                 $user_id = array_keys($user_id_list);
             }
@@ -247,7 +264,7 @@ class WorkallocationReportController extends AppController {
                             $formatresult['ProjectId'] = $modval[0]['ProjectId'];
                             $formatresult['ProjectName'] = $JsonArray[$formatresult['ProjectId']];
                             $formatresult['ClientName'] = $Cl_list[$ClientId];
-                            $formatresult['userName'] = $user_id_list[$formatresult['UserId']];
+                            $formatresult['userName'] = $user_list[$formatresult['UserId']];
                             $formatresult['moduleName'] = $modules[$modkey];
 
                             $formatresult['Estimated_Time'] = $Estimated_Time;
@@ -472,14 +489,36 @@ class WorkallocationReportController extends AppController {
 
     function getusergroupdetails() {
         $session = $this->request->session();
-
-        echo $module = $this->WorkallocationReport->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
+        $projectid = $_POST['projectId'];
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+        $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+if($_POST['projectId'][0] == 0){
+    $projectid = $is_project_mapped_to_user;
+}
+        echo $module = $this->WorkallocationReport->find('usergroupdetails', ['ProjectId' => $projectid, 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
 
     function getresourcedetails() {
         $session = $this->request->session();
-        echo $module = $this->WorkallocationReport->find('resourcedetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
+        $sessionProjectId = $session->read("ProjectId");
+        $userid = $session->read('user_id');
+        $projectid = $_POST['projectId'];
+    //    pr($_POST['userGroupId']);
+        set_time_limit(0);
+        $MojoProjectIds = $this->projectmasters->find('Projects');
+        //$this->set('Projects', $ProListFinal);
+        $this->loadModel('EmployeeProjectMasterMappings');
+        $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
+if($_POST['projectId'][0] == 0){
+    $projectid = $is_project_mapped_to_user;
+}
+        echo $module = $this->WorkallocationReport->find('resourcedetails', ['ProjectId' => $projectid, 'RegionId' => $_POST['regionId'], 'UserGroupId' => $_POST['userGroupId']]);
         exit;
     }
 

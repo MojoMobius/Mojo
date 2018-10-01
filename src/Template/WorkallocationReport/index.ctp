@@ -14,7 +14,7 @@ use Cake\Routing\Router
                         <div class="col-sm-6" style="line-height: 0px;">
                              <?php
                        
-                         echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId, 'onchange' => 'getProject()'));
+                         echo $this->Form->input('', array('options' => $Clients, 'id' => 'ClientId', 'name' => 'ClientId', 'class' => 'form-control', 'value' => $ClientId, 'onchange' => 'getProject();getusergroupdetails(1011);'));
                        
                     ?>
                     
@@ -305,7 +305,7 @@ function getStatus(){
         var ProjectId = $('#ProjectId').val();
         var RegionId = $('#RegionId').val();
         var UserGroupId = $('#UserGroupId').val();
-
+//alert(UserGroupId);
         $.ajax({
             type: "POST",
             url: "<?php echo Router::url(array('controller' => 'WorkallocationReport', 'action' => 'getresourcedetails')); ?>",

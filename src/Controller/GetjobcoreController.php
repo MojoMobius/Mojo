@@ -98,7 +98,7 @@ class GetjobcoreController extends AppController {
          $this->set('Expiration', $Expiration);
          $this->set('BaseRent', $BaseRent);
          $this->set('RentInc', $RentInc);
-
+//pr($next_status_id);
 //////rent calculation end////         
       $prod = $JsonArray['ModuleAttributes'][1011][$moduleId]['production'];
      $Commencementkey = $this->searchForId($Commencement,$prod);
@@ -122,115 +122,390 @@ class GetjobcoreController extends AppController {
         }
 	//	exit;
         if ($frameType == 1) {
+         $distinct = $this->GetJob->find('getDistinct', ['ProjectId' => $ProjectId]);
+            $this->set('distinct', $distinct);
+            $this->viewBuilder()->layout('boostrap-default');
+            if (isset($this->request->data['clicktoviewPre'])) {
+                $page = $this->request->data['page'] - 1;
+                $this->redirect(array('controller' => 'Getjobcore', 'action' => 'index/' . $page));
+            }
+            if (isset($this->request->data['clicktoviewNxt'])) {
+                $page = $this->request->data['page'] + 1;
+                $this->redirect(array('controller' => 'Getjobcore', 'action' => 'index/' . $page));
+            }
             if (isset($this->request->query['job']))
                 $newJob = $this->request->query['job'];
             if (isset($this->request->data['NewJob']))
                 $newJob = $this->request->data['NewJob'];
-            $InprogressProductionjob = $connection->execute('SELECT special FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE UserId=' . $user_id . ' AND StatusId in (' . $next_status_id . ') AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
-            exit;
+            $page = 1;
+            if (isset($this->request->params['pass'][0]))
+                $page = $this->request->params['pass'][0];
+
+            $staticSequence = $page;
+            if (isset($this->request->data['AddNew'])) {
+                $staticSequence = $SequenceNumber + 1;
+                $tempFileds = '';
+            }
+
+            $this->set('staticSequence', $staticSequence);
+            $this->set('page', $page);
+            $addnew = '';
+            if (isset($this->request->data['AddNew']))
+                $addnew = 'Addnew';
+            $this->set('ADDNEW', $addnew);
+            $this->set('next_status_id', $next_status_id);
+
+            $connection = ConnectionManager::get('d2k');
+            $statusIdentifier = ReadyforPUReworkIdentifier;
+            $session = $this->request->session();
+            $moduleId = $session->read("moduleId");
+            
+            $PuReworkFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
+            $PuFirst_Status_id = array();
+            $PuNext_Status_ids = array();
+            if (!empty($PuReworkFirstStatus)) {
+                $PuReworkFirstStatus = array_map(current, $PuReworkFirstStatus);
+                foreach ($PuReworkFirstStatus as $val) {
+                    if (array_search($val, $JsonArray['ProjectStatus']))
+                        $PuFirst_Status_id[] = array_search($val, $JsonArray['ProjectStatus']);
+                }
+                $PuFirst_Status_ids = implode(',', $PuFirst_Status_id);
+
+                foreach ($PuFirst_Status_id as $val) {
+                    if ($JsonArray['ModuleStatus_Navigation'][$val][1])
+                        $PuNextStatusId[] = $JsonArray['ModuleStatus_Navigation'][$val][1];
+                }
+                $PuNext_Status_ids = implode(',', $PuNextStatusId);
+            }
+
+            if (!empty($PuFirst_Status_ids)) {
+                $first_Status_id = $first_Status_id . ',' . $PuFirst_Status_ids;
+            } else {
+                $first_Status_id = $first_Status_id;
+            }
+
+            if (!empty($PuNext_Status_ids)) {
+                 $next_status_id = $next_status_id . ',' . $PuNext_Status_ids;
+            } else {
+                $next_status_id = $next_status_id;
+            }
+
+            $connection = ConnectionManager::get('default');
+			//echo 'SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc';
+            $InprogressProductionjob = $connection->execute('SELECT  top 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . ' Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+            //pr($InprogressProductionjob); exit;
+            //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
+            //echo '<pre>';
+            //var_dump( (array) $InprogressProductionjob );
+            // pr($InprogressProductionjob);
+            //exit;
+
             if (empty($InprogressProductionjob)) {
-                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
-                //$productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId=' . $first_Status_id . ' AND SequenceNumber=1 AND ProjectId=' . $ProjectId)->fetchAll('assoc');
-                //               echo "SELECT UserGroupId FROM MV_UserGroupMapping where Projectid=$ProjectId and RegionId=6 and UserId=95534";
+                $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $first_Status_id . ') ' . $userCheck . ' AND ProjectId=' . $ProjectId . ' Order by Priority desc,ProductionEntity,StatusId Desc')->fetchAll('assoc');
+                $FirstStatusId[] = $productionjob[0]['StatusId'];
+                $FirstStatus = $productionjob[0]['StatusId'];
+                $NextStatusId = $JsonArray['ModuleStatus_Navigation'][$FirstStatus][1];
+
+                $ProductionEntityStatus = array_intersect($FirstStatusId, $PuFirst_Status_id);
+
+                $moduleStatus = $FirstStatus;
+                $moduleStatusName = $JsonArray['ProjectStatus'][$moduleStatus];
+
                 if (empty($productionjob)) {
                     $this->set('NoNewJob', 'NoNewJob');
                 } else {
-                    foreach ($productionjob as $val) {
-                        if ($val['StatusId'] == $first_Status_id && ($newJob == 'NewJob' || $newJob == 'newjob')) {
-//                            $updateUserGroupId = $connection->execute("SELECT UserGroupId FROM MV_UserGroupMapping where Projectid=$ProjectId and RegionId=".$val['RegionId']." and UserId=$user_id and RecordStatus=1");
-//                            foreach ($updateUserGroupId as $UserVal) {
-//                               $userGpId = $UserVal['UserGroupId']; 
-//                            }
-//                            $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $next_status_id . ",UserId=" . $user_id . ",UserGroupId=" . $userGpId .",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $val['ProductionEntity']);
-                            $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $next_status_id . ",UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $val['ProductionEntity']);
-                            $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $next_status_id . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $val['ProductionEntity']);
-                            $productiontimemetricMain = $connection->execute("UPDATE ME_Production_TimeMetric SET StatusId=" . $next_status_id . ",UserId=" . $user_id . ",Start_Date='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntityID=" . $val['ProductionEntity'] . " AND Module_Id=" . $moduleId);
-                            $productionjob[0]['StatusId'] = $next_status_id;
-                            $productionjob[0]['StatusId'] = 'Production In Progress';
+                    if ($productionjob[0]['StatusId'] == $FirstStatus && ($newJob == 'NewJob' || $newJob == 'newjob')) {
+                        $inprogressjob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId =" . $NextStatusId . ",UserId=" . $user_id . ",ActStartDate='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntity=" . $productionjob[0]['ProductionEntity']);
+                        if (empty($ProductionEntityStatus)) {
+                            $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
+                        } else {
+                            $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . " WHERE ID=" . $productionjob[0]['ProductionEntity']);
                         }
+//      $productionEntityjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $NextStatusId . ",ProductionStartDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $productionjob[0]['ProductionEntity']);
+                        $productiontimemetricMain = $connection->execute("UPDATE ME_Production_TimeMetric SET StatusId=" . $NextStatusId . ",UserId=" . $user_id . ",Start_Date='" . date('Y-m-d H:i:s') . "' WHERE ProductionEntityID=" . $productionjob[0]['ProductionEntity'] . " AND Module_Id=" . $moduleId);
+                        $productionjob[0]['StatusId'] = $NextStatusId;
+                        $productionjob[0]['StatusId'] = 'Production In Progress';
                     }
-                    $productionjobNew = $productionjob[0];
-                    $this->set('productionjob', $productionjob[0]);
+           
+                    $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $NextStatusId . ') AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . 'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
+                    $productionjobNew = $InprogressProductionjob;
+                    $this->set('productionjob', $InprogressProductionjob[0]);
                 }
             } else {
+
+                $InprogressProductionjob = $connection->execute('SELECT * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $next_status_id . ')  AND ProjectId=' . $ProjectId . ' AND UserId= ' . $user_id . 'Order by ProductionEntity,StatusId Desc')->fetchAll('assoc');
                 $this->set('getNewJOb', '');
                 $this->set('productionjob', $InprogressProductionjob[0]);
-                $productionjobNew = $InprogressProductionjob[0];
+                $productionjobNew = $InprogressProductionjob;
+                $moduleStatus = $productionjobNew[0]['StatusId'];
+                $moduleStatusName = $JsonArray['ProjectStatus'][$moduleStatus];
+                $connection = ConnectionManager::get('d2k');
+                $module = $connection->execute("SELECT ProjectEntityStatusMaster.Status FROM D2K_ModuleStatusMaster inner join d2k_projectmodulestatusmapping on D2K_ModuleStatusMaster.Id = D2K_ProjectModuleStatusMapping.ModuleStatusId inner join projectentitystatusmaster on projectentitystatusmaster.id = D2K_ProjectModuleStatusMapping.ProjectStatusId where D2K_ModuleStatusMaster.status = '" . $moduleStatusName . "'")->fetchAll('assoc');
+                $moduleStatusName = $module[0]['Status'];
             }
-            $RegionId = $productionjobNew['RegionId'];
+            if ($moduleStatusName != '') {
+                $connection = ConnectionManager::get('d2k');
+                $QcCommentsModuleId = $connection->execute("SELECT ModuleId from D2K_ModuleStatusMaster where Status = '" . $moduleStatusName . "' Order by ModuleId desc")->fetchAll('assoc');
+                $QcCommentsModuleId = $QcCommentsModuleId[0]['ModuleId'];
+                $this->set('QcCommentsModuleId', $QcCommentsModuleId);
+            }
 
+            $connection = ConnectionManager::get('default');
+            $RegionId = $productionjobNew[0]['RegionId'];
+            $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+            $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
+            $AttributeGroupMaster = $AttributeGroupMaster[$moduleId];
+            $groupwisearray = array();
+            $subgroupwisearray = array();
+            foreach ($AttributeGroupMaster as $key => $value) {
+                $groupwisearray[$key] = $value;
+                $keys = array_map(function($v) use ($key, $emparr) {
+                    if ($v['MainGroupId'] == $key) {
+                        return $v;
+                    }
+                }, $ProductionFields);
+                $keys_sub = $this->combineBySubGroup($keys);
+                $groupwisearray[$key] = $keys_sub;
+            }
+            $n = 0;
+            $firstValue = array();
+            foreach ($AttributeGroupMaster as $key => $value) {
+                foreach ($groupwisearray[$key] as $keysub => $valuesSub) {
+                    $firstValue[$n] = $valuesSub[0];
+                    $n++;
+                }
+            }
+      
+            $FirstAttribute = $firstValue[0];
+            $this->set('AttributeGroupMaster', $AttributeGroupMaster);
+            $this->set('AttributesListGroupWise', $groupwisearray);
+            $this->set('AttributeSubGroupMasterJSON', $JsonArray['AttributeSubGroupMaster']);
+            $this->set('FirstAttrId', $FirstAttribute['AttributeMasterId']);
+            $this->set('FirstProjAttrId', $FirstAttribute['ProjectAttributeMasterId']);
+            $this->set('FirstGroupId', $FirstAttribute['MainGroupId']);
+            $this->set('FirstSubGroupId', $FirstAttribute['SubGroupId']);
+            $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production']);
             $StaticFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['static'];
-            if ($RegionId == '')
-                $RegionId = 6;
-            $DynamicFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['dynamic'];
-            $ProductionFieldsold = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
-            $key = 0;
-            foreach ($ProductionFieldsold as $val) {
-                $ProductionFields[$key] = $val;
-                $key++;
-            }
+            $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
             $ReadOnlyFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['readonly'];
-            $this->set('ProductionFields', $ProductionFields);
-            $this->set('StaticFields', $StaticFields);
-            $this->set('DynamicFields', $DynamicFields);
-            $this->set('ReadOnlyFields', $ReadOnlyFields);
-            if (isset($productionjobNew)) {
-                $DomainIdName = $productionjobNew[$domainId];
-                $TimeTaken = $productionjobNew['TimeTaken'];
-                $this->set('TimeTaken', $TimeTaken);
-                //echo "SELECT DomainUrl,DownloadStatus FROM ME_DomainUrl WITH (NOLOCK) WHERE   ProjectId=" . $ProjectId . " AND RegionId=" . $productionjobNew['RegionId'] . " AND DomainId='" . $DomainIdName . "'";
-                $link = $connection->execute("SELECT DomainUrl,DownloadStatus FROM ME_DomainUrl WITH (NOLOCK) WHERE   ProjectId=" . $ProjectId . " AND RegionId=" . $productionjobNew['RegionId'] . " AND DomainId='" . $DomainIdName . "'")->fetchAll('assoc');
-                foreach ($link as $key => $value) {
-                    $L = $value['DomainUrl'];
-                    $pos = strpos($L, 'http');
+            //pr($productionjobNew);
+            
+            if ($productionjobNew) {
+                //exit;
+
+                $DependentMasterIdsQuery = $connection->execute('SELECT Id,Type,DisplayInProdScreen,FieldTypeName FROM MC_DependencyTypeMaster where ProjectId=' . $ProjectId . '')->fetchAll('assoc');
+                $DependentMasterIds = $staticDepenIds = array();
+                foreach ($DependentMasterIdsQuery as $vals) {
+                    if ($vals['DisplayInProdScreen'] == 1)
+                        $DependentMasterIds[$vals['Type']] = $vals['Id'];
+
+                    if ($vals['Type'] == "InputValue")
+                        $staticDepenIds[] = $vals['Id'];
+
+                    if ($vals['FieldTypeName'] == "General")
+                        $staticDepenIds[] = $vals['Id'];
+                    
+                    if ($vals['FieldTypeName'] == "After Normalized")
+                    $staticDepenIds[] = $vals['Id'];
+                    
+                }
+                $InputEntityId = $productionjobNew[0]['InputEntityId'];
+                $maxSeq = array();
+                $tempDep = '';
+                $finalprodValue = array();
+
+                foreach ($productionjobNew as $key => $value) {
+                   // pr($value);exit;
+
+                    if ($value['special'] != '') {
+                        $special = '<xml>' . $value['special'] . '</xml>';
+                        $specialArr = simplexml_load_string($special);
+                        $specialArr = json_decode(json_encode($specialArr), 1);
+                        //  pr($productionjobNew);
+                        //exit;
+                        //$specialArr=$this->xml2array($specialArr);
+
+                        foreach ($specialArr as $key2Temp => $value2) {
+                            $key2 = str_replace('_x003', '', $key2Temp);
+                            $key2 = str_replace('_', '', $key2);
+                            if (is_array($value2) && count($value2) == 0)
+                                $value2 = '';
+                            $finalprodValue[$key2][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = $value2;
+                        }
+                        if ($value['SequenceNumber'] > $maxSeq[$value['DependencyTypeMasterId']] && $tempDep == $value['DependencyTypeMasterId']) {
+                            $maxSeq[$value['DependencyTypeMasterId']] = $value['SequenceNumber'];
+                            $tempDep = $value['DependencyTypeMasterId'];
+                        } else {
+                            if (!isset($maxSeq[$value['DependencyTypeMasterId']]))
+                                $maxSeq[$value['DependencyTypeMasterId']] = 1;
+                            $tempDep = $value['DependencyTypeMasterId'];
+                        }
+                    }
+                    //pr($finalprodValue); exit;
+                    //foreach ($value as $key2 => $value2) {
+                    // pr($value2);
+                    //exit;
+//                        if(is_numeric($key2)) {
+//                            if($value2!='' && $value2!=NULL)
+//                        $finalprodValue[$key2][$value['SequenceNumber']][$value['DependencyTypeMasterId']] = $value2;
+//                            
+//                            if($value['SequenceNumber']>$maxSeq[$value['DependencyTypeMasterId']] && $tempDep==$value['DependencyTypeMasterId']) {
+//                                $maxSeq[$value['DependencyTypeMasterId']]=$value['SequenceNumber'];
+//                                $tempDep=$value['DependencyTypeMasterId'];
+//                            }
+//                            else {
+//                                if(!isset($maxSeq[$value['DependencyTypeMasterId']]))
+//                                $maxSeq[$value['DependencyTypeMasterId']]=1;
+//                                $tempDep=$value['DependencyTypeMasterId'];
+//                            }
+//                        }
+                    //}
+                }
+//                echo '<pre>';
+            //    print_r($staticDepenIds);
+            //    exit;
+                $staticFields = array();
+                $static = 0;
+                foreach ($StaticFields as $key => $value) {
+                    foreach ($staticDepenIds as $depkey => $depval) {
+                        if ($finalprodValue[$value['AttributeMasterId']][1][$depval] != '') {
+                            $staticFields[$static] = $finalprodValue[$value['AttributeMasterId']][1][$depval];
+                            $static++;
+                        }
+                    }
+                }
+                //$DependancyId = $DependentMasterIds['InputValue']['Id'];
+                $DependancyId = $DependentMasterIds['InputValue'];
+                $getDomainUrlVal = $finalprodValue[$domainUrl][1][$DependancyId];
+                //   print_r($getDomainUrlVal);
+                //   exit;
+                // $SelDomainUrl = $getDomainUrlVal[0]['AttributeValue'];
+//$getDomainUrlVal='www.techradar.com/news/why-self-driving-vehicles-could-be-the-biggest-winner-in-a-5g-world';
+                $html = strpos($getDomainUrlVal, '.html');
+                if (empty($html)) {
+                    $pos = strpos($getDomainUrlVal, 'http');
                     if ($pos === false) {
-                        $L = "http://" . $L;
+                        $SelDomainUrl = "http://" . $getDomainUrlVal;
+                    } else {
+                        $SelDomainUrl = $getDomainUrlVal;
                     }
-                    if ($value['DownloadStatus'] == 1)
-                        $FilePath = FILE_PATH . $value[0]['InputId'] . '.html';
-                    else
-                        $FilePath = $L;
-                    $LinkArray[$FilePath] = $L;
-                }
-                reset($LinkArray);
-
-                //pr($LinkArray);
-
-                $FirstLink = key($LinkArray);
-                $this->set('Html', $LinkArray);
-                $this->set('FirstLink', $FirstLink);
-
-                $QueryDetails = array();
-
-                $QueryDetails = $connection->execute("SELECT TLComments,Query,StatusID FROM ME_UserQuery WITH (NOLOCK) WHERE   ProductionEntityId=" . $productionjobNew['ProductionEntity'])->fetchAll('assoc');
-                $this->set('QueryDetails', $QueryDetails[0]);
-            }
-            $productionjobId = $this->request->data['ProductionId'];
-            $ProductionEntity = $this->request->data['ProductionEntity'];
-            $productionjobStatusId = $this->request->data['StatusId'];
-            // pr($this->request->data);
-            if (isset($this->request->data['Submit'])) {
-                if (count($DynamicFields) > 1) {
-                    foreach ($DynamicFields as $val) {
-                        $dymamicupdatetempFileds.="[" . $val['AttributeMasterId'] . "]='" . $this->request->data[$val['AttributeMasterId']] . "',";
-                    }
-                    $dymamicupdatetempFileds.="TimeTaken='" . $this->request->data['TimeTaken'] . "'";
-                    $Dynamicproductionjob = $connection->execute('UPDATE ' . $stagingTable . ' SET ' . $dymamicupdatetempFileds . 'where ProductionEntity=' . $ProductionEntity);
-                }
-                $queryStatus = $connection->execute("SELECT count(1) as cnt FROM ME_UserQuery WITH (NOLOCK) WHERE StatusID=1 AND ProjectId=" . $ProjectId . " AND  ProductionEntityId='" . $productionjobNew['ProductionEntity'] . "'")->fetchAll('assoc');
-                if ($queryStatus[0]['cnt'] > 0) {
-                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][2][1];
-//                    $completion_status = $queryStatusId;
-                    $submitType = 'query';
                 } else {
-                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$next_status_id][1];
+                    // echo 'coming';
+                    $SelDomainUrl = "";
+                }
+				if($moduleId==145){
+					 $SelDomainUrl = 'http://mojolease.botminds.ai/login';
+				}
+                //echo $SelDomainUrl; exit;
+                $oldone = 1;
+                foreach ($groupwisearray as $key => $subGrp) {
+                    foreach ($subGrp as $key2 => $subGrpAtt) {
+                        $oldone = 1;
+                        foreach ($subGrpAtt as $key3 => $subGrpAtt3) {
+                            $arryKeys = array_keys($finalprodValue[$subGrpAtt3['AttributeMasterId']]);
+
+                            if (max($arryKeys) > $oldone && $finalGrpprodValue[$key2]['MaxSeq'] < max($arryKeys))
+                                $finalGrpprodValue[$key2]['MaxSeq'] = max($arryKeys);
+
+
+
+                            $oldone = max($arryKeys);
+                        }
+                    }
+                }
+              //  pr($staticFields);exit;
+                $ProjectId = $productionjobNew[0]['ProjectId'];
+                $ProjectName = $JsonArray[$ProjectId];
+
+                $this->set('ProjectName', $ProjectName);
+                $this->set('JsonArray', $JsonArray);
+                $this->set('DependentMasterIds', $DependentMasterIds);
+                $this->set('processinputdata', $finalprodValue);
+                $this->set('GrpSercntArr', $finalGrpprodValue);
+                $this->set('staticFields', $staticFields);
+                $this->set('getDomainUrl', $SelDomainUrl);
+                $this->set('maxSeq', $maxSeq);
+                $TimeTaken = $productionjobNew[0]['TimeTaken'];
+                $this->set('TimeTaken', $TimeTaken);
+                $QueryDetails = array();
+                $QueryDetails = $connection->execute("SELECT TLComments,Query,StatusID FROM ME_UserQuery WITH (NOLOCK) WHERE   ProductionEntityId=" . $productionjobNew[0]['ProductionEntity'])->fetchAll('assoc');
+                $this->set('QueryDetails', $QueryDetails[0]);
+                $HelpContantDetails = array();
+                $HelpContantDetails = $connection->execute("SELECT Id,AttributeMasterId FROM MC_CengageHelp WHERE ProjectId = " . $ProjectId . " AND RegionId = " . $RegionId . " AND RecordStatus=1")->fetchAll('assoc');
+                foreach ($HelpContantDetails as $HelpContantId):
+                    $HelpContId[] = $HelpContantId['AttributeMasterId'];
+                endforeach;
+                $this->set('HelpContantDetails', $HelpContId);
+            }
+   
+            $productionjobId = $this->request->data['ProductionId'];
+            $ProductionEntity = $this->request->data['ProductionEntityID'];
+            $productionjobStatusId = $this->request->data['StatusId'];
+            $CompletionStatusId = $productionjobNew[0]['StatusId'];
+
+            $CompletionStatusEntity[] = $productionjobNew[0]['StatusId'];
+
+            $ProductionEntityStatusCompleted = array_intersect($CompletionStatusEntity, $PuNextStatusId);
+
+            $QcbatchId = $connection->execute("SELECT Qc_Batch_Id FROM ME_Production_TimeMetric WITH (NOLOCK) WHERE  InputEntityId='" . $InputEntityId . "' and Qc_Batch_Id!=''")->fetchAll('assoc');
+            $QcbatchId = $QcbatchId[0]['Qc_Batch_Id'];
+
+            if (!empty($QcbatchId)) {
+                $QcCompletedCount = $connection->execute("SELECT QCCompletedCount FROM MV_QC_BatchMaster WITH (NOLOCK) WHERE  Id='" . $QcbatchId . "'")->fetchAll('assoc');
+                $QcCompletedCount = $QcCompletedCount[0]['QCCompletedCount'];
+                $QcCompletedCount = $QcCompletedCount + 1;
+            }
+       
+            if (isset($this->request->data['Submit'])) {
+
+                $queryStatus = $connection->execute("SELECT count(1) as cnt FROM ME_UserQuery WITH (NOLOCK) WHERE  StatusID=1 AND ProjectId=" . $ProjectId . " AND  ProductionEntityId='" . $productionjobNew[0]['ProductionEntity'] . "'")->fetchAll('assoc');
+
+                $cnt_InputEntity_RejectError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=3 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "' AND ModuleId='" . $QcCommentsModuleId . "'")->fetchAll('assoc');
+
+                $cnt_InputEntity_TLAcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=4 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "' AND ModuleId='" . $QcCommentsModuleId . "'")->fetchAll('assoc');
+
+                $cnt_InputEntity_AcceptError = $connection->execute("SELECT count(1) as cnt FROM MV_QC_Comments WITH (NOLOCK) WHERE  StatusID=2 AND ProjectId=" . $ProjectId . " AND InputEntityId='" . $InputEntityId . "' AND ModuleId='" . $QcCommentsModuleId . "'")->fetchAll('assoc');
+
+                if ($queryStatus[0]['cnt'] > 0) {
+//                    $completion_status = $queryStatusId;
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][2][1];
+                    $submitType = 'query';
+                } else if ($cnt_InputEntity_RejectError[0]['cnt'] != 0) {
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][2][1];
+                    $submitType = 'Rework Reject';
+                } else if ($cnt_InputEntity_TLAcceptError[0]['cnt'] != 0) {
+                    $CompletionStatus = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][2][1];
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatus][1];
+                    $submitType = 'Rework Reject by TL';
+                } else if ($cnt_InputEntity_AcceptError[0]['cnt'] != 0) {
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
+                    $submitType = 'Rework Accept';
+					if(!empty($QcbatchId))
+                    $QCBatchMaster = $connection->execute("UPDATE MV_QC_BatchMaster SET QCCompletedCount=" . $QcCompletedCount . " WHERE Id=" . $QcbatchId);
+                } else {
+                    $completion_status = $JsonArray['ModuleStatus_Navigation'][$CompletionStatusId][1];
                     $submitType = 'completed';
                 }
-                $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completion_status . ",ActEnddate='" . date('Y-m-d H:i:s') . "' ,TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntity=" . $ProductionEntity);
-                $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
+
+                //$Dynamicproductionjob = $connection->execute("UPDATE  $stagingTable  SET TimeTaken='" . $this->request->data['TimeTaken'] . "' where ProductionEntity= ".$ProductionEntity);
+                $productionCompletejob = $connection->execute("UPDATE " . $stagingTable . " SET StatusId=" . $completion_status . ",ActEnddate='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntity=" . $ProductionEntity);
+                if (empty($ProductionEntityStatusCompleted)) {
+                    $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
+                } else {
+                    $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . " WHERE ID=" . $ProductionEntity);
+                }
+                //  $productionjob = $connection->execute("UPDATE ProductionEntityMaster SET StatusId=" . $completion_status . ",ProductionEndDate='" . date('Y-m-d H:i:s') . "' WHERE ID=" . $ProductionEntity);
                 $productiontimemetricMain = $connection->execute("UPDATE ME_Production_TimeMetric SET StatusId=" . $completion_status . ",End_Date='" . date('Y-m-d H:i:s') . "',TimeTaken='" . $this->request->data['TimeTaken'] . "' WHERE ProductionEntityID=" . $ProductionEntity . " AND Module_Id=" . $moduleId);
 
-                $this->redirect(array('controller' => 'Getjobcore', 'action' => '', '?' => array('job' => $submitType)));
+
+                if ($this->request->data['Submit'] == 'saveandcontinue')
+                    $submitArray = array('job' => 'newjob'); //, 'continue' => 'yes'
+                else if ($this->request->data['Submit'] == 'saveandexit') {
+                    $this->redirect(array('controller' => 'users', 'action' => 'logout'));
+                } else
+                    $submitArray = array('job' => $submitType);
+
+                $this->redirect(array('controller' => 'Getjobcore', 'action' => '', '?' => $submitArray));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -239,16 +514,23 @@ class GetjobcoreController extends AppController {
             } else {
                 $this->set('getNewJOb', '');
             }
-            $vals = array();
-            $valKey = array();
+            $validate = array();
+            
+             $vals=array();
+            $valKey=array();
             foreach ($ReadOnlyFields as $key => $val) {
-                $vals[] = $val['AttributeName'];
-                $valKey[] = $val['AttributeMasterId'];
-            }
+                $vals[]= $val['AttributeName'];
+                $valKey[]=$val['AttributeMasterId'];
+
+                }
+                
+            
             foreach ($ProductionFields as $key => $val) {
-                $vals[] = $val['AttributeName'];
-                $valKey[] = $val['AttributeMasterId'];
+                $vals[]= $val['AttributeName'];
+                $valKey[]=$val['AttributeMasterId'];
                 $validationRules = $JsonArray['ValidationRules'][$val['ProjectAttributeMasterId']];
+                $validate[$val['ProjectAttributeMasterId']]['MinLength'] = $validationRules['MinLength'];
+
                 $IsAlphabet = $validationRules['IsAlphabet'];
                 $IsNumeric = $validationRules['IsNumeric'];
                 $IsEmail = $validationRules['IsEmail'];
@@ -268,10 +550,13 @@ class GetjobcoreController extends AppController {
                 $Dateformat = $validationRules['Dateformat'];
                 SWITCH (TRUE) {
                     CASE($IsUrl == 1):
-                        $FunctionName = 'urlValidator';
+                        $FunctionName = 'UrlOnly';
                         BREAK;
                     CASE($IsAlphabet == 1 && $IsNumeric == 0 && $IsSpecialCharacter == 0):
-                        $FunctionName = 'AlphabetOnlyValidator';
+                        $FunctionName = 'AlphabetOnly';
+                        BREAK;
+                    CASE($IsAlphabet == 1 && $IsNumeric == 1 && $IsEmail == 1):
+                        $FunctionName = 'EmailOnly';
                         BREAK;
                     CASE($IsAlphabet == 1 && $IsNumeric == 1 && $IsSpecialCharacter == 0):
                         $FunctionName = 'AlphaNumericOnly';
@@ -290,12 +575,12 @@ class GetjobcoreController extends AppController {
                         $FunctionName = 'SpecialOnly';
                         BREAK;
                     CASE($IsAlphabet == 0 && $IsNumeric == 0 && $IsSpecialCharacter == 0 && $IsEmail == 1 ):
-                        $FunctionName = 'emailValidator';
+                        $FunctionName = 'EmailOnly';
                         BREAK;
                     CASE($IsAlphabet == 0 && $IsNumeric == 1 && $IsSpecialCharacter == 0 && $IsEmail == 0 ):
                         $FunctionName = 'NumbersOnly';
                         BREAK;
-                    CASE($IsAlphabet == 0 && $IsNumeric == 0 && $IsSpecialCharacter == 0 && $IsEmail == 0 && $IsUrl == 1):
+                    CASE($IsAlphabet == 1 && $IsNumeric == 1 && $IsUrl == 1):
                         $FunctionName = 'UrlOnly';
                         BREAK;
                     CASE($IsDate == 1):
@@ -318,46 +603,77 @@ class GetjobcoreController extends AppController {
                 }
 
                 if ($val['ControlName'] == 'DropDownList' && $IsAutoSuggesstion == 1) {
-                    $ProductionFields[$key]['ControlName'] = 'Auto';
+                    $validate[$val['ProjectAttributeMasterId']]['ControlName'] = 'Auto';
                     if ($IsAllowNewValues != 0) {
 
-                        $ProductionFields[$key]['IsAllowNewValues'] = 'datacheck(this.id,this.value)';
+                        $validate[$val['ProjectAttributeMasterId']]['IsAllowNewValues'] = 'datacheck(this.id,this.value)';
                     }
-                    $ProductionFields[$key]['IsAllowNewValues'] = $IsAllowNewValues;
+                    $validate[$val['ProjectAttributeMasterId']]['IsAllowNewValues'] = $IsAllowNewValues;
                 }
-                $ProductionFields[$key]['MinLength'] = $validationRules['MinLength'];
-                $ProductionFields[$key]['MaxLength'] = $validationRules['MaxLength'];
-                $ProductionFields[$key]['FunctionName'] = $FunctionName;
-                $ProductionFields[$key]['Mandatory'] = $Mandatory;
-                $ProductionFields[$key]['AllowedCharacter'] = $AllowedCharacter;
-                $ProductionFields[$key]['NotAllowedCharacter'] = $NotAllowedCharacter;
-                $ProductionFields[$key]['Format'] = $Format;
-                $ProductionFields[$key]['Dateformat'] = $Dateformat;
-                $ProductionFields[$key]['AllowedDecimalPoint'] = $validationRules['AllowedDecimalPoint'];
-                $ProductionFields[$key]['Options'] = $JsonArray['AttributeOrder'][$productionjobNew['RegionId']][$val['ProjectAttributeMasterId']]['Options'];
-                $ProductionFields[$key]['Mapping'] = $JsonArray['AttributeOrder'][$productionjobNew['RegionId']][$val['ProjectAttributeMasterId']]['Mapping'];
-                if ($ProductionFields[$key]['Mapping']) {
-                    $to_be_filled = array_keys($ProductionFields[$key]['Mapping']);
+                $validate[$val['ProjectAttributeMasterId']]['ControlName'] = $val['ControlName'];
+                $validate[$val['ProjectAttributeMasterId']]['DisplayAttributeName'] = $val['DisplayAttributeName'];
+                $validate[$val['ProjectAttributeMasterId']]['IsMandatory'] = $validationRules['IsMandatory'];
+                $validate[$val['ProjectAttributeMasterId']]['MinLength'] = $validationRules['MinLength'];
+                $validate[$val['ProjectAttributeMasterId']]['MaxLength'] = $validationRules['MaxLength'];
+                $validate[$val['ProjectAttributeMasterId']]['FunctionName'] = $FunctionName;
+                //if ($IsMandatory == 1) {
+                $validate[$val['ProjectAttributeMasterId']]['Mandatory'] = $Mandatory;
+//                }else{
+//                 $validate[$val['ProjectAttributeMasterId']]['Mandatory'] = '';   
+//                }
+                //$validate[$val['ProjectAttributeMasterId']]['AllowedCharacter'] = $AllowedCharacter;
+                $validate[$val['ProjectAttributeMasterId']]['AllowedCharacter'] = htmlspecialchars($AllowedCharacter);
+                $validate[$val['ProjectAttributeMasterId']]['NotAllowedCharacter'] = htmlspecialchars($NotAllowedCharacter);
+
+                
+                 $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
+                 $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
+                 $validate[$val['ProjectAttributeMasterId']]['Dateformat'] = $Dateformat;
+                   
+                $validate[$val['ProjectAttributeMasterId']]['IsDatepicker'] = $validationRules['IsDatepicker'];
+                $validate[$val['ProjectAttributeMasterId']]['IsDatecalculator'] = $validationRules['IsDatecalculator'];
+                $validate[$val['ProjectAttributeMasterId']]['IsRentcalculator'] = $validationRules['IsRentcalculator'];
+
+                $validate[$val['ProjectAttributeMasterId']]['Options'] = htmlspecialchars($JsonArray['AttributeOrder'][$productionjobNew[0]['RegionId']][$val['ProjectAttributeMasterId']]['Options']);
+                $validate[$val['ProjectAttributeMasterId']]['Mapping'] = $JsonArray['AttributeOrder'][$productionjobNew[0]['RegionId']][$val['ProjectAttributeMasterId']]['Mapping'];
+
+                if ($validate[$val['ProjectAttributeMasterId']]['Mapping']) {
+                    $to_be_filled = array_keys($validate[$val['ProjectAttributeMasterId']]['Mapping']);
                     $against = $to_be_filled[0];
-                    $against_org = $JsonArray['AttributeOrder'][$productionjobNew['RegionId']][$against]['AttributeId'];
-                    $ProductionFields[$key]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against_org . ');';
+                    $against_org = $JsonArray['AttributeOrder'][$productionjobNew[0]['RegionId']][$against]['AttributeId'];
+                    // $validate[$val['ProjectAttributeMasterId']]['Reload'] = 'LoadValue(' . $val['ProjectAttributeMasterId'] . ',this.value,' . $against . ','.$against_org.'';
+                    $validate[$val['ProjectAttributeMasterId']]['Reload'] = $against . ',' . $against_org;
                 }
-                $ops = 0;
-                foreach ($ProductionFields[$key]['Options'] as $valops) {
-                    $ProductionFields[$key]['Optionsbut'][$ops] = $valops;
-                    $ops++;
-                }
-                $ProductionFields[$key]['Optionsbut1'] = 'NO';
-                if (isset($ProductionFields[$key]['Optionsbut']))
-                    $ProductionFields[$key]['Optionsbut1'] = json_encode($ProductionFields[$key]['Optionsbut']);
+
+           //     $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->Getjobcore->ajax_GetQcComments_seq($productionjobNew[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1, $QcCommentsModuleId);
             }
+            $this->set('QcErrorComments', $QcErrorComments);
+            $this->set('validate', $validate);
             $this->set('ProductionFields', $ProductionFields);
             $this->set('handsonHeaders', $vals);
             $this->set('valKey', $valKey);
+            $this->set('DynamicFields', $DynamicFields);
+            $this->set('Mandatory', $Mandatory);
+            $this->set('AutoSuggesstion', $AutoSuggesstion);
+            $this->set('ReadOnlyFields', $ReadOnlyFields);
             $this->set('session', $session);
-            $this->render('/Getjobcore/index_vertical');
-            /* GRID END******************************************************************************************************************************************************************* */
+            $dynamicData = $SequenceNumber[0];
+            $this->set('dynamicData', $dynamicData);
+$this->render('/Getjobcore/index_handson');
+            foreach ($PuNextStatusId as $val) {
+                if (($BatchRejectionStatus == 2) && ($productionjobNew[0]['StatusId'] == $val)) {
+                    $this->render('/Getjobcore/index');
+                } else if ($productionjobNew[0]['StatusId'] == $val) {
+                    $this->render('/Getjobcore/index_rework');
+                }
+            }
         }
+  
+        
+          
+            /* GRID END******************************************************************************************************************************************************************* */
+        
+            /* GRID END******************************************************************************************************************************************************************* */
         elseif ($frameType == 2) {
 
             if (isset($this->request->data['clicktoviewPre'])) {
@@ -2430,54 +2746,124 @@ class GetjobcoreController extends AppController {
         }
         return $status;
     }
-
-    function ajaxgetdatahand() {
-        $ProductionEntityId = $_POST['ProductionEntityId'];
-        $AttributeMasterId = $_POST['AttributeMasterId'];
+function ajaxgetdatahand() {
         $session = $this->request->session();
         $ProjectId = $session->read("ProjectId");
         $connection = ConnectionManager::get('default');
         $user_id = $session->read("user_id");
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
-        $moduleId = $session->read("moduleId");
+        $moduleId= $session->read("moduleId");
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
         $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
 
         $next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
         $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
-        $PivotId = '';
-        $finalval = array();
-        $link2 = $connection->execute("SELECT FieldTypeName,Id FROM MC_DependencyTypeMaster WHERE Type IN ('ProductionField') AND ProjectId=" . $ProjectId)->fetchAll('assoc');
-        foreach ($link2 as $keytype => $valuetype) {
-            //echo $keytype.'<br>';
-            $PivotId.= '[' . $valuetype["Id"] . '],';
-            $FieldTyper = $valuetype['FieldTypeName'];
-            $FieldTypeId = $valuetype['Id'];
-            $FieldTypeName = preg_replace('/\s+/', '', $FieldTyper);
-            $finalval[$FieldTypeId] = $FieldTypeName;
-            $depene = $valuetype["Id"];
-        }
-        $PivotId = rtrim($PivotId, ',');
-
-        //$link = $connection->execute("SELECT * FROM MC_CengageProcessInputData WHERE AttributeMasterId=" . $AttributeMasterId . " AND ProductionEntityID=" . $ProductionEntityId . "AND DependencyTypeMasterId IN (1008,1012,1011) AND ProjectId=" . $ProjectId)->fetchAll('assoc');
-        //$link = $connection->execute("select * from (select Attributevalue, SequenceNumber, DependencyTypeMasterId from MC_CengageProcessInputData WHERE AttributeMasterId=" . $AttributeMasterId . " AND ProductionEntityID=" . $ProductionEntityId . " AND ProjectId=" . $ProjectId . " ) a pivot ( max(Attributevalue) for DependencyTypeMasterId in ($PivotId)) piv;")->fetchAll('assoc');
-
-        $link = $connection->execute("select MAX([$AttributeMasterId]) as data from $stagingTable where ProductionEntity=" . $ProductionEntityId . " AND ProjectId=" . $ProjectId . " AND DependencyTypeMasterId =$depene Group by SequenceNumber")->fetchAll('assoc');
-        //$link = $connection->execute("SELECT * FROM MC_CengageProcessInputData WHERE AttributeMasterId=2993 AND ProductionEntityID=43108 AND DependencyTypeMasterId IN (1008,1012,1011) AND ProjectId=2308")->fetchAll('assoc');
-        $RegionId = $link[0]['RegionId'];
-        //pr($link);
+        
+        $link = $connection->execute("SELECT * FROM ".$stagingTable." WHERE UserId=" . $user_id . " AND StatusId=" . $next_status_id  )->fetchAll('assoc');
+        $RegionId=$link[0]['RegionId'];
+       
+        $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+        $ReadOnlyFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['readonly'];
         $valArr = array();
         $i = 0;
+        $linkVal = array();
+      //  $nj = 1;
+       
+         
+//         foreach ($link as $key => $value) {
+//         //    pr($value);
+//             if($value['Column Value'] != ''){
+//             $linkVal['vals'][$value['Column Name']][] = $value['Column Value'];
+//             $linkVal['vals']['Id'][] = $value['Id'];
+//             }
+//             //$linkVal[$value['Column Value']][] = $value['Column Name'];
+//            }
+          
+        // }
+    //   pr($link);
         foreach ($link as $key => $value) {
-            //  pr($value);
-            $valArr['handson'][$i]['data'] = $value['data'];
-            $valArr['handson'][$i]['Id'] = $i;
+           // foreach($ProductionFields as $key2=>$val2){
+            //    if($key == $val2["AttributeMasterId"]){
+               //   $attrVal  = 
+            //    }
+                 if ($value['special'] != '') {
+                        $special = '<xml>' . $value['special'] . '</xml>';
+                        $specialArr = simplexml_load_string($special);
+                        $specialArr = json_decode(json_encode($specialArr), 1);
+                        //  pr($productionjobNew);
+                        //exit;
+                        //$specialArr=$this->xml2array($specialArr);
+                                
+                        foreach ($specialArr as $key2Temp => $value2) {
+                            $key2 = str_replace('_x003', '', $key2Temp);
+                            $key2 = str_replace('_', '', $key2);
+                         //   pr($key2);
+                          //  if (is_array($value2) && count($value2) == 0)
+                                if(count($value2) != 0)
+                            $valArr['handson'][$i]['['.$key2.']'] = $value2;
+                        }
+                 }
+             //   $valArr['handson'][$i]['['.$val2["AttributeMasterId"].']'] = $value['special'][$val2["AttributeMasterId"]];
+//}
+            $valArr['handson'][$i]['DataId'] = $value['Id'];
+          //  $valArr['handson'][$i]['TimeTaken'] = $value['TimeTaken'];
+           $valArr['handson'][$i]['Id'] = $i;
             $i++;
         }
+        
+    //    pr($valArr);
+ 
         echo json_encode($valArr);
         exit;
     }
+//    function ajaxgetdatahand() {
+//        $ProductionEntityId = $_POST['ProductionEntityId'];
+//        $AttributeMasterId = $_POST['AttributeMasterId'];
+//        $session = $this->request->session();
+//        $ProjectId = $session->read("ProjectId");
+//        $connection = ConnectionManager::get('default');
+//        $user_id = $session->read("user_id");
+//        $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+//        $moduleId = $session->read("moduleId");
+//        $stagingTable = 'Staging_' . $moduleId . '_Data';
+//        $first_Status_name = $JsonArray['ModuleStatusList'][$moduleId][0];
+//        $first_Status_id = array_search($first_Status_name, $JsonArray['ProjectStatus']);
+//
+//        $next_status_name = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][0];
+//        $next_status_id = $JsonArray['ModuleStatus_Navigation'][$first_Status_id][1];
+//        $PivotId = '';
+//        $finalval = array();
+//        $link2 = $connection->execute("SELECT FieldTypeName,Id FROM MC_DependencyTypeMaster WHERE Type IN ('ProductionField') AND ProjectId=" . $ProjectId)->fetchAll('assoc');
+//        foreach ($link2 as $keytype => $valuetype) {
+//            //echo $keytype.'<br>';
+//            $PivotId.= '[' . $valuetype["Id"] . '],';
+//            $FieldTyper = $valuetype['FieldTypeName'];
+//            $FieldTypeId = $valuetype['Id'];
+//            $FieldTypeName = preg_replace('/\s+/', '', $FieldTyper);
+//            $finalval[$FieldTypeId] = $FieldTypeName;
+//            $depene = $valuetype["Id"];
+//        }
+//        $PivotId = rtrim($PivotId, ',');
+//
+//        //$link = $connection->execute("SELECT * FROM MC_CengageProcessInputData WHERE AttributeMasterId=" . $AttributeMasterId . " AND ProductionEntityID=" . $ProductionEntityId . "AND DependencyTypeMasterId IN (1008,1012,1011) AND ProjectId=" . $ProjectId)->fetchAll('assoc');
+//        //$link = $connection->execute("select * from (select Attributevalue, SequenceNumber, DependencyTypeMasterId from MC_CengageProcessInputData WHERE AttributeMasterId=" . $AttributeMasterId . " AND ProductionEntityID=" . $ProductionEntityId . " AND ProjectId=" . $ProjectId . " ) a pivot ( max(Attributevalue) for DependencyTypeMasterId in ($PivotId)) piv;")->fetchAll('assoc');
+//
+//        $link = $connection->execute("select MAX([$AttributeMasterId]) as data from $stagingTable where ProductionEntity=" . $ProductionEntityId . " AND ProjectId=" . $ProjectId . " AND DependencyTypeMasterId =$depene Group by SequenceNumber")->fetchAll('assoc');
+//        //$link = $connection->execute("SELECT * FROM MC_CengageProcessInputData WHERE AttributeMasterId=2993 AND ProductionEntityID=43108 AND DependencyTypeMasterId IN (1008,1012,1011) AND ProjectId=2308")->fetchAll('assoc');
+//        $RegionId = $link[0]['RegionId'];
+//        //pr($link);
+//        $valArr = array();
+//        $i = 0;
+//        foreach ($link as $key => $value) {
+//            //  pr($value);
+//            $valArr['handson'][$i]['data'] = $value['data'];
+//            $valArr['handson'][$i]['Id'] = $i;
+//            $i++;
+//        }
+//        echo json_encode($valArr);
+//        exit;
+//    }
 
     function ajaxsavedatahand() {
         $session = $this->request->session();
@@ -2552,8 +2938,8 @@ class GetjobcoreController extends AppController {
                             $primary_Id = $seq_check[0]['Id'];
                             $connection->execute("UPDATE " . $stagingTable . " SET " . $colMap[$colId] . " = N'" . $newVal . "' WHERE id = " . $primary_Id);
                         } else {
-                            $connection->execute("INSERT INTO " . $stagingTable . "(BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,SequenceNumber,StatusId,UserId,ActStartDate,TimeTaken,RecordStatus,CreatedBy,CreatedDate," . $tempFields . "$colMap[$colId]) "
-                                    . " values(" . $InprogressProductionjob[0]['BatchID'] . ",'" . $InprogressProductionjob[0]['BatchCreated'] . "'," . $InprogressProductionjob[0]['ProjectId'] . "," . $InprogressProductionjob[0]['RegionId'] . "," . $InprogressProductionjob[0]['InputEntityId'] . "," . $InprogressProductionjob[0]['ProductionEntity'] . "," . ($InprogressProductionjob[0]['SequenceNumber'] + 1) . "," . $InprogressProductionjob[0]['StatusId'] . "," . $InprogressProductionjob[0]['UserId'] . ",'" . $InprogressProductionjob[0]['ActStartDate'] . "','" . $InprogressProductionjob[0]['TimeTaken'] . "',1,1,'" . date('Y-m-d H:i:s') . "'," . $tempData . "N'" . $newVal . "')");
+                            $connection->execute("INSERT INTO " . $stagingTable . "(BatchID,BatchCreated,ProjectId,RegionId,InputEntityId,ProductionEntity,SequenceNumber,DependencyTypeMasterId,StatusId,UserId,ActStartDate,TimeTaken,RecordStatus,CreatedBy,CreatedDate," . $tempFields . "$colMap[$colId]) "
+                                    . " values(" . $InprogressProductionjob[0]['BatchID'] . ",'" . $InprogressProductionjob[0]['BatchCreated'] . "'," . $InprogressProductionjob[0]['ProjectId'] . "," . $InprogressProductionjob[0]['RegionId'] . "," . $InprogressProductionjob[0]['InputEntityId'] . "," . $InprogressProductionjob[0]['ProductionEntity'] . "," . ($InprogressProductionjob[0]['SequenceNumber'] + 1) . ",221," . $InprogressProductionjob[0]['StatusId'] . "," . $InprogressProductionjob[0]['UserId'] . ",'" . $InprogressProductionjob[0]['ActStartDate'] . "','" . $InprogressProductionjob[0]['TimeTaken'] . "',1,1,'" . date('Y-m-d H:i:s') . "'," . $tempData . "N'" . $newVal . "')");
                         }
                     }
                     $out = array(
@@ -2926,6 +3312,15 @@ class GetjobcoreController extends AppController {
         }
         return $mainarr;
     }
+    
+      function combineBySubGroupOptions($keysss) {
+        $mainarr = array();
+        foreach ($keysss as $key => $value) {
+            if (!empty($value))
+                $mainarr[] = $value;
+        }
+        return $mainarr;
+    }
 
     function ajaxhelptooltip() {
         $session = $this->request->session();
@@ -3116,7 +3511,7 @@ class GetjobcoreController extends AppController {
 	function ajaxGetAPIToken(){
 		$session = $this->request->session();
 		$ProjectId = $session->read("ProjectId");
-		
+		$moduleId= $session->read("moduleId");
 		 $jobId = $_POST['domainId'];
 		
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
@@ -3181,7 +3576,7 @@ echo 'error in copy';
 exit;
  }
  */
-  $filepath = 'C:\xampp\htdocs\mojo\webroot\test.tsv';
+  $filepath = 'D:\xampp\htdocs\mojo\webroot\CSB_US026P01_Lease_1536041199.tsv';
  $load_keys=false;
  $array = array();
  
@@ -3203,6 +3598,7 @@ exit;
   $ProductionFields = $JsonArray['ModuleAttributes']['1011'][145]['production'];
   $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
   $SubGroupAttribute=$JsonArray['AttributeSubGroupMaster'];
+   $AttributeOrder=$JsonArray['AttributeOrder'];
   
         $connection = ConnectionManager::get('default');
         $ProdFieldID = $connection->execute("Select Id from MC_DependencyTypeMaster where Type in ('ProductionField','Disposition') AND ProjectId=" . $ProjectId)->fetchAll('assoc');
@@ -3218,9 +3614,51 @@ exit;
 			   if(!empty($keys_sub))
                 $groupwisearray[$key] = $keys_sub;
             }
+            
+           foreach ($GroupAttribute as $key => $value) {
+              //  $groupwisearray[$key] = $value;
+                $keys = array_map(function($v) use ($key, $emparr) {
+                    if ($v['MainGroupId'] == $key) {
+                        return $v;
+                    }
+                }, $ProductionFields);
+                $keys_sub = $this->combineBySubGroupOptions($keys);
+			   if(!empty($keys_sub))
+                $groupwisearrayOptions[$key] = $keys_sub;
+            }
+            
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
-                       
-                                               $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'CAM/OpEx/ServChrg',17=>'Free Rent / Abatement',18=>'RE Tax',19=>'Insurance',20=>'Parking',21=>'VAT',22=>'Sales Tax',23=>'Utilities',24=>'Storage',25=>'Tenant Improvements',26=>'Security Deposit',27=>'Peppercorn',28=>'Other',29=>'Alterations',30=>'Assignment/Sublet',31=>'Audit Rights',32=>'Holdover',33=>'Insurance - Building',34=>'Late Charges',35=>'Parking',36=>'Permitted Use',37=>'Relocation',38=>'Signage',39=>'Surrender/Reinstatement',40=>'UK L&T Act',41=>'Safety Equipment',42=>'Tenant Improvements/Allowance',43=>'Right of 1st Offer/Refusal',44=>'Redecoration (UK)',45=>'RE Taxes/Rates/Appeals',46=>'Other Charges & Fees',47=>'Opex/Service Charges',48=>'Maintenance & Repairs',49=>'Estoppel',50=>'Landlord',51=>'Notice - Landlord',52=>'Notice - Tenant',53=>'Payee',54=>'Tenant',55=>'Auto Renew/Expiry Notice',56=>'Cancel/Break - LL',57=>'Rolling Cancel/Break - LL',58=>'Cancel/Break - Mutual',59=>'Rent Change - Index',60=>'Rent Review - Market',61=>'Rolling Cancel/Break - Mutual',62=>'Expiration Notice',63=>'Cancel/Break - TT',64=>'Rolling Cancel/Break - TT',65=>'Contraction',66=>'Expansion',67=>'Purchase/Buy',68=>'Must Expand',69=>'Must Reduce');
+                        
+                   $arr = array(0=>'Expense Type',1=>'Key Dates Type',2=>'Option Type',3=>'Contact Type',4=>'Clauses Type');
+                   $grpArrRent = array_search("Rent",$GroupAttribute);
+                   $grpArrKeyOptions = array_search("Key Dates & Options",$GroupAttribute);
+                   $grpArrContacts = array_search("Contacts",$GroupAttribute);
+                   $grpArrLeaseClauses = array_search("Lease Clauses",$GroupAttribute);
+         $attrKeysRent = array_keys(array_column($groupwisearrayOptions[$grpArrRent], 'DisplayAttributeName','AttributeMasterId'), $arr[0]);
+         $attrKeysDates = array_keys(array_column($groupwisearrayOptions[$grpArrKeyOptions], 'DisplayAttributeName','AttributeMasterId'), $arr[1]);
+         $attrOptions = array_keys(array_column($groupwisearrayOptions[$grpArrKeyOptions], 'DisplayAttributeName','AttributeMasterId'), $arr[2]);
+         $attrKeysContacts = array_keys(array_column($groupwisearrayOptions[$grpArrContacts], 'DisplayAttributeName','AttributeMasterId'), $arr[3]);
+         $attrKeysLeaseClauses = array_keys(array_column($groupwisearrayOptions[$grpArrLeaseClauses], 'DisplayAttributeName','AttributeMasterId'), $arr[4]);
+
+         $option_list_arr = $connection->execute("Select DropDownValue from ME_DropdownMaster where ProjectId = $ProjectId AND ModuleId = $moduleId AND AttributeMasterId IN ($attrKeysRent[0],$attrKeysDates[0],$attrOptions[0],$attrKeysContacts[0],$attrKeysLeaseClauses[0]) and RecordStatus = 1")->fetchAll('assoc');
+     $option_list_arr = array_map(current, $option_list_arr);
+ // $option_list_arr = implode(',', $option_list_l);
+     
+     $toHighCharts = array();
+
+// loop through current array items
+foreach($option_list_arr as $k=>$v)
+{
+  
+    // append string with desired format
+    $toHghCharts.= $k.'=>'.$v.',';
+}
+
+$option_list = $toHghCharts;
+  
+   // $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'CAM/OpEx/ServChrg',17=>'Free Rent / Abatement',18=>'RE Tax',19=>'Insurance',20=>'Parking',21=>'VAT',22=>'Sales Tax',23=>'Utilities',24=>'Storage',25=>'Tenant Improvements',26=>'Security Deposit',27=>'Peppercorn',28=>'Other',29=>'Alterations',30=>'Assignment/Sublet',31=>'Audit Rights',32=>'Holdover',33=>'Insurance - Building',34=>'Late Charges',35=>'Parking',36=>'Permitted Use',37=>'Relocation',38=>'Signage',39=>'Surrender/Reinstatement',40=>'UK L&T Act',41=>'Safety Equipment',42=>'Tenant Improvements/Allowance',43=>'Right of 1st Offer/Refusal',44=>'Redecoration (UK)',45=>'RE Taxes/Rates/Appeals',46=>'Other Charges & Fees',47=>'Opex/Service Charges',48=>'Maintenance & Repairs',49=>'Estoppel',50=>'Landlord',51=>'Notice - Landlord',52=>'Notice - Tenant',53=>'Payee',54=>'Tenant',55=>'Auto Renew/Expiry Notice',56=>'Cancel/Break - LL',57=>'Rolling Cancel/Break - LL',58=>'Cancel/Break - Mutual',59=>'Rent Change - Index',60=>'Rent Review - Market',61=>'Rolling Cancel/Break - Mutual',62=>'Expiration Notice',63=>'Cancel/Break - TT',64=>'Rolling Cancel/Break - TT',65=>'Contraction',66=>'Expansion',67=>'Purchase/Buy',68=>'Must Expand',69=>'Must Reduce');
+  //  $option_list = array([0] =>'Base Rent',[1] =>'CAM/OpEx/ServChrg',[2] =>'Free Rent / Abatement',[3] =>'RE Tax',[4] =>'Insurance',[5] =>'Parking',[6] =>'VAT',[7] =>'Sales Tax',[8] =>'Utilities',[9] =>'Storage',[10] =>'Tenant Improvements',[11] =>'Security Deposit',[12] =>'Peppercorn',[13] =>'Other',[14] =>'Expiration',[15] =>'Renewal',[16] =>'Auto Renew/Expiry Notice',[17] =>'Cancel/Break - LL',[18] =>'Rolling Cancel/Break - LL',[19] =>'Cancel/Break - Mutual',[20] =>'Rent Change - Index',[21] =>'Rent Review - Market',[22] =>'Rolling Cancel/Break - Mutual',[23] =>'Expiration Notice',[24] =>'Cancel/Break - TT',[25] =>'Rolling Cancel/Break - TT',[26] =>'Contraction',[27] =>'Expansion',[28] =>'Purchase/Buy',[29] =>'Must Expand',[30] =>'Must Reduce',[31] =>'Other',[32] =>'Alterations',[33] =>'Assignment/Sublet',[34] =>'Audit Rights',[35] =>'Estoppel',[36] =>'Holdover',[37] =>'Insurance - Building',[38] =>'Late Charges',[39] =>'Maintenance & Repairs',[40] =>'Opex/Service Charges',[41] =>'Other Charges & Fees',[42] =>'Parking',[43] =>'Permitted Use',[44] =>'RE Taxes/Rates/Appeals',[45] =>'Redecoration (UK)',[46] =>'Relocation',[47] =>'Right of 1st Offer/Refusal',[48] =>'Signage',[49] =>'Surrender/Reinstatement',[50] =>'Tenant Improvements/Allowance',[51] =>'UK L&T Act',[52] =>'Utilities',[53] =>'Landlord',[54] =>' Notice - Landlord',[55] =>' Notice - Tenant',[56] =>' Payee',[57] =>' Sublessee',[58] =>' Sublessor',[59] =>' Tenant',[60] =>'Sublessee Notice Copy',[61] =>'Sublessor Notice Copy');
+ //print_r($option_list);
  $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
 
      foreach($array as $attributeArr){  
@@ -3273,6 +3711,9 @@ exit;
                     }
                }
          }
+       //  pr($attributeArr);
+       //  echo '<br>';
+      //   pr($groupidorg);
          if($tempGrpSearch != ''){
             $t=1;
             $rentSearch  = in_array($attributeArr[0], $option_list);
@@ -3342,6 +3783,7 @@ exit;
                        
             }
         }
+      
         if($tempGrpSearch == ''){
 			if(count($attributeArr) > 2){
 				$groupAddition = $connection->execute("Select Is_Distinct from MC_Subgroup_Config where Primary_Group_Id = $groupidorg AND Subgroup_Id = $subgrup AND RecordStatus = 1 AND ProjectId=" . $ProjectId)->fetchAll('assoc');
@@ -3376,8 +3818,9 @@ exit;
    if($update == ''){
       $update = 'No Data';
    }
-   //pr($update);
-   echo json_encode($update);
+   echo '<pre>';
+   pr($update);
+   echo json_encode($update);   
  
 curl_close($ch); 
 		exit;

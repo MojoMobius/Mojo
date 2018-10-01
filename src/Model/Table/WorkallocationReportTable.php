@@ -60,6 +60,7 @@ class WorkallocationReportTable extends Table {
         $connection = ConnectionManager::get('default');
 
         $ProjectIds = implode(',',$ProjectId);
+        
         $queries = $connection->execute("select UGMapping.UserId,UGMapping.ProjectId from MV_UserGroupMapping as UGMapping"
                 . " where UGMapping.ProjectId IN ($ProjectIds) AND UGMapping.RegionId = " . $RegionId . " AND UGMapping.UserGroupId IN (" . $UserGroupId . ") AND UGMapping.RecordStatus = 1 AND UGMapping.UserRoleId IN ("
                 . " SELECT Split.a.value('.', 'VARCHAR(100)') AS String  
@@ -88,6 +89,7 @@ class WorkallocationReportTable extends Table {
     
      public function findajaxProjectNameList(Query $query, array $options) {
          $proId = $options['proId'];
+         
          $ClientId = $options['ClientId']; 
 		 $RegionId = $options['RegionId'];
         $clientCheck="";
@@ -98,7 +100,7 @@ class WorkallocationReportTable extends Table {
         $connection = ConnectionManager::get('default');
         
         
-         $modulesArr =  $connection->execute('select ProjectName,ProjectId from ProjectMaster where '.$clientCheck.' ProjectId in (' . $test . ') AND RecordStatus = 1');
+         $modulesArr =  $connection->execute('select ProjectName,ProjectId from ProjectMaster where '.$clientCheck.' ProjectId in (' . $test . ') AND RecordStatus = 1')->fetchAll('assoc');
         
        
       
@@ -107,8 +109,14 @@ class WorkallocationReportTable extends Table {
         if (!empty($modulesArr)) {
 
             foreach ($modulesArr as $key => $value) {             
-               
-                $template.='<option  value="' . $value['ProjectId'] . '">';
+//                foreach ($proId as $keys => $values) { 
+//             if ($value['ProjectId'] == $values) {
+//                    $selected = 'selected=' . $value['ProjectId'];
+//                } else {
+//                    $selected = '';
+//                }
+//                }
+                $template.='<option value="' . $value['ProjectId'] . '">';
                 $template.=$value['ProjectName'];
                 $template.='</option>';
             }
@@ -125,7 +133,6 @@ class WorkallocationReportTable extends Table {
         $ProjectId = $options['ProjectId'];
         $RegionId = $options['RegionId'];
         $UserGroupId = $options['UserGroupId'];
-        
         $ProjectIds = implode(",", $ProjectId);
 
         if ($options['UserId'] != '') {
