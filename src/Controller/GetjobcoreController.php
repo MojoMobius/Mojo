@@ -12,7 +12,7 @@ use DateInterval;
 
 /**
  * Bookmarks Controller
- *
+ *ajx
  * @property \App\Model\Table\ImportInitiates $ImportInitiates
  */
 class GetjobcoreController extends AppController {
@@ -48,8 +48,49 @@ class GetjobcoreController extends AppController {
 }
 
 
+function open_dir ($dir_name)
+{
+    $dir = "Z:";
+    echo $dir_name;
+if ($handle = opendir ($dir_name)) 
+{
+while (($file = readdir($handle)) != false)
+{
+if ($file != '.' && $file != '..')
+if (filetype($dir_name.'/'.$file)== 'dir')
+{
+open_dir ($dir_name.'/'.$file);
+}
+else
+{
+echo $file." ";
+echo "-------------";
+}
+}
+closedir($handle);
+}
+}
+
+
     public function index() {
+        // Define the parameters for the shell command
+$location = "\\13.233.4.75\TEST\\";
+$user = "perlzuser";
+$pass = "3c149d0KNR";
+$letter = "Z";
+
+// Map the drive
+system("net use ".$letter.": \"".$location."\" ".$pass." /user:".$user." /persistent:no>nul 2>&1");
+
+// Open the directory
+
+$this->open_dir("Z:\\TEST\\");
+
         
+       // $this->open_dir ("C:\Users\MOB140003359\AppData\Roaming\Microsoft\Windows\Network Shortcuts\13.233.4.75\TEST\\");
+       // echo 'Jaih';
+        //echo fopen('\\\\13.233.4.75\TEST\sd\eula.1028.txt','rb');  
+       // echo scandir("\\\\13.233.4.75\\TEST\\");exit;
         //echo '<pre>';
         // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
        // exit;
@@ -3234,23 +3275,46 @@ fclose($fp);
             }
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
                        
-                        $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'Alterations',17=>'Assignment/Sublet',18=>'Audit Rights',19=>'Holdover',20=>'Insurance - Building',21=>'Late Charges',22=>'Parking',23=>'Permitted Use',24=>'Relocation',25=>'Signage',26=>'Surrender/Reinstatement',27=>'Utilities',28=>'Safety Equipment',29=>'CAM/OpEx/ServChrg',30=>'RE Tax',31=>'Insurance');
- $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
+            $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'CAM/OpEx/ServChrg',17=>'Free Rent / Abatement',18=>'RE Tax',19=>'Insurance',20=>'Parking',21=>'VAT',22=>'Sales Tax',23=>'Utilities',24=>'Storage',25=>'Tenant Improvements',26=>'Security Deposit',27=>'Peppercorn',28=>'Other',29=>'Alterations',30=>'Assignment/Sublet',31=>'Audit Rights',32=>'Holdover',33=>'Insurance - Building',34=>'Late Charges',35=>'Parking',36=>'Permitted Use',37=>'Relocation',38=>'Signage',39=>'Surrender/Reinstatement',40=>'UK L&T Act',41=>'Safety Equipment',42=>'Tenant Improvements/Allowance',43=>'Right of 1st Offer/Refusal',44=>'Redecoration (UK)',45=>'RE Taxes/Rates/Appeals',46=>'Other Charges & Fees',47=>'Opex/Service Charges',48=>'Maintenance & Repairs',49=>'Estoppel',50=>'Landlord',51=>'Notice - Landlord',52=>'Notice - Tenant',53=>'Payee',54=>'Tenant',55=>'Auto Renew/Expiry Notice',56=>'Cancel/Break - LL',57=>'Rolling Cancel/Break - LL',58=>'Cancel/Break - Mutual',59=>'Rent Change - Index',60=>'Rent Review - Market',61=>'Rolling Cancel/Break - Mutual',62=>'Expiration Notice',63=>'Cancel/Break - TT',64=>'Rolling Cancel/Break - TT',65=>'Contraction',66=>'Expansion',67=>'Purchase/Buy',68=>'Must Expand',69=>'Must Reduce');
+            $option_list_key = array(1=>'Expiration');
+            $option_list_option = array(54=>'Renewal',55=>'Auto Renew/Expiry Notice',56=>'Cancel/Break - LL',57=>'Rolling Cancel/Break - LL',58=>'Cancel/Break - Mutual',59=>'Rent Change - Index',60=>'Rent Review - Market',61=>'Rolling Cancel/Break - Mutual',62=>'Expiration Notice',63=>'Cancel/Break - TT',64=>'Rolling Cancel/Break - TT',65=>'Contraction',66=>'Expansion',67=>'Purchase/Buy',68=>'Must Expand',69=>'Must Reduce',70=>'other');
+
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';$tempsubgrup='';
 
      foreach($array as $attributeArr){  
          //echo $attributeArr[0];
-        // echo '<br>';
+         //echo '<br>';
 	   if(count($attributeArr)==1){
                //if($tempGrpId!=$groupidorg)
                         //$lastSequenc=1;
             $tempGrpSearch = '';
-            $rentSearch  = in_array($attributeArr[0], $option_list);
+             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
                
 				if($groupidorg!=''){
-					$groupidorg=$groupId;
-					$subgrup = array_keys($SubGroupAttribute[$groupidorg]);
-					$subgrup = $subgrup[0];
+                                    $groupidorg=$groupId;
+                                    $subgrup = array_keys($SubGroupAttribute[$groupidorg]);
+                                    //pr($subgrup);
+                                   // echo $attributeArr[0];
+                                    if(in_array($attributeArr[0], $option_list_key))
+                                    {
+                                         if($tempsubgrup!=$subgrup)
+                                        $start_array=-1;
+					 $subgrup = $subgrup[0];
+                                         $tempsubgrup=$subgrup;
+                                    }
+                                    else if(in_array($attributeArr[0], $option_list_option)){
+                                        if($tempsubgrup!=$subgrup)
+                                        $start_array=-1;
+                                         $subgrup = $subgrup[1];
+                                         $tempsubgrup=$subgrup;
+                                    }
+                                    else {
+                                        
+					 $subgrup = $subgrup[0];
+                                    }
+					
+					//echo $subgrup;
 				}
 				 $tempGrpSearch = 'options';
                                 // echo $tempGrpId."!=".$groupidorg;
@@ -3289,8 +3353,10 @@ fclose($fp);
          }  
          if($tempGrpSearch != ''){
             $t=1;
+            //echo count($attributeArr);
             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
+                if(count($attributeArr)==1) {
                 $type_name = $attributeArr[0];
                 $work_type = $SubGroupAttribute[$groupidorg][$subgrup];
                 if($work_type == 'Rent'){
@@ -3298,6 +3364,9 @@ fclose($fp);
                 }
                 else if($work_type == 'Key Dates'){
                     $final_type = 'Key Dates Type';
+                }
+                else if($work_type == 'Options'){
+                    $final_type = 'Option Type';
                 }
 				else if($work_type == 'Contacts'){
                     $final_type = 'Contacts';
@@ -3308,7 +3377,9 @@ fclose($fp);
                 else {
                     $final_type = 'Option Type';
                 }
+                
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
+                
              //echo '<br>' ;                                  ;
              //echo $attributeArr[0];
              //echo '-';
@@ -3316,16 +3387,18 @@ fclose($fp);
              //echo '<br>' ;
            if($start_array!=-1)
            {
+               //echo 'coming';
                $start_array=$lastSequenc+1;
                 $count=count($attributeArr)+$start_array;
                 
            }
-           else
+           else {
                $start_array=1;
            $seq=1;$lastSequenc=1;
            $count=count($attributeArr);
                $type_keys = $keys;
-              
+           }
+                }
             }
             
             else{
@@ -3336,7 +3409,7 @@ fclose($fp);
                   if($start_array!=1) 
                       $count=(count($attributeArr)-1)+$start_array;
             }
-           // echo '<br>'.$start_array.'-'.$count.'<br>';
+          //  echo '<br>'.$start_array.'-'.$count.'<br>';
             for($c= $start_array; $c < $count; $c++)
             {
                 $temp = $keyss[0];
@@ -3390,7 +3463,7 @@ fclose($fp);
    if($update == ''){
       $update = 'No Data';
    }
-  // pr($update);
+   //pr($update);
    echo json_encode($update);
  
 curl_close($ch); 
@@ -3785,7 +3858,7 @@ foreach ($result as $set) {
      $ListAttrId='';
      $qc_datarownew='';
      $tblheadnew='';
-    $totattr= count($setArr);
+    echo $totattr= count($setArr);
     $OrderAttribute='[' . $setArr[0] . ']';
      foreach ($setArr as $val){       
          if($i > 0){
@@ -3844,11 +3917,12 @@ foreach ($result as $set) {
                 $handskeymain =$val['MainGroupId'];
             }
         }
-       
+       //echo "SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc";
         $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc")->fetchAll('assoc');
                //$seq=0;
                $Rowdata=array();
 		foreach ($link4 as $key => $value) {
+                   // pr($value);
                    // $seq++;
                     $seq=$value['sequenceNumber'];
                      $qc_datarownew.='<tr>';
@@ -3861,7 +3935,8 @@ foreach ($result as $set) {
                       $text_onclk = "onclick=loadMultiFieldqcerror($AttributeMasterId,$seq,$Prvseq)";
                         }
                      $text_cls = "pu_cmts_seq";
-                     if($value[$setArr[0]] !=NULL)
+                    // echo $setArr[0];
+                     if(!is_null($value[$setArr[0]]))
 		     $qc_datarownew.='<td '.$text_onclk.' class ="'.$text_cls.'" cellspacing="10">'.$value[$setArr[$i]].'</td>';
 		  
                    }
