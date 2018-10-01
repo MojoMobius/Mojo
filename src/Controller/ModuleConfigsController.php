@@ -157,9 +157,13 @@ class ModuleConfigsController extends AppController {
 
             $temp[$i] = $i;
         }
+        //pr($ModuleConfigs); exit;
         $ProjectId = $ModuleConfigs['Project'];
         $ModuleId = $ModuleConfigs['ModuleId'];
         $LevelId = $ModuleConfigs['LevelId'];
+        $Simple_Estimated_Time = $ModuleConfigs['Simple_Estimated_Time'];
+        $Medium_Estimated_Time = $ModuleConfigs['Medium_Estimated_Time'];
+        $Complex_Estimated_Time = $ModuleConfigs['Complex_Estimated_Time'];
         $IsHistoryTrackValue = $ModuleConfigs['IsHistoryTrack'];
         $IsInputMandatoryValue = $ModuleConfigs['IsInputMandatory'];
         $IsVisibilityValue = $ModuleConfigs['IsAllowedToDisplay'];
@@ -252,6 +256,9 @@ class ModuleConfigsController extends AppController {
         $this->set('ModuleId', $ModuleId);
         $this->set('temp', $temp);
         $this->set('LevelId', $LevelId);
+        $this->set('Simple_Estimated_Time', $Simple_Estimated_Time);
+        $this->set('Medium_Estimated_Time', $Medium_Estimated_Time);
+        $this->set('Complex_Estimated_Time', $Complex_Estimated_Time);
 		$this->set('selectedStatusArr', $selectedStatusArr);
         $this->set('IsHistoryTrackValue', $IsHistoryTrackValue);
         $this->set('IsInputMandatoryValue', $IsInputMandatoryValue);

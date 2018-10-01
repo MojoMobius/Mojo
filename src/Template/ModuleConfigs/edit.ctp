@@ -105,6 +105,44 @@
                </div> </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label"><b>Simple Estimated TIme</b></label>
+                <div class="col-sm-6">
+                    <div class="col-sm-2" >
+                        <input type="text" name="Simple_Estimated_Time" id="Simple_Estimated_Time" value="<?php echo $Simple_Estimated_Time;?>" class="form-control" style='width:150px;'>
+                    <?php
+					//pr($fromstatus); exit;
+                                        
+                     //echo $this->Form->input('Estimated_Time', $Estimated_Time, ['Id' => 'Estimated_Time','name' => 'Estimated_Time','class'=>'form-control','style'=>'width:200px;' ]);
+                    ?>
+               </div> </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label"><b>Medium Estimated TIme</b></label>
+                <div class="col-sm-6">
+                    <div class="col-sm-2" >
+                        <input type="text" name="Medium_Estimated_Time" id="Medium_Estimated_Time" value="<?php echo $Medium_Estimated_Time;?>" class="form-control" style='width:150px;'>
+                    <?php
+					//pr($fromstatus); exit;
+                                        
+                     //echo $this->Form->input('Estimated_Time', $Estimated_Time, ['Id' => 'Estimated_Time','name' => 'Estimated_Time','class'=>'form-control','style'=>'width:200px;' ]);
+                    ?>
+               </div> </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-6 control-label"><b>Complex Estimated TIme</b></label>
+                <div class="col-sm-6">
+                    <div class="col-sm-2" >
+                        <input type="text" name="Complex_Estimated_Time" id="Complex_Estimated_Time" value="<?php echo $Complex_Estimated_Time;?>" class="form-control" style='width:150px;'>
+                    <?php
+					//pr($fromstatus); exit;
+                                        
+                     //echo $this->Form->input('Estimated_Time', $Estimated_Time, ['Id' => 'Estimated_Time','name' => 'Estimated_Time','class'=>'form-control','style'=>'width:200px;' ]);
+                    ?>
+               </div> </div>
+            </div>
+        </div>
         <?php if($HygineCheckCnt == '1') { ?>
         <div class="col-md-4">
             <div class="form-group">
