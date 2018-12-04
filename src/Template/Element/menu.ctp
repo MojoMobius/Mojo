@@ -16,7 +16,8 @@
                     $session = $this->request->session();
                     if($menus){
                     //pr($menus);
-                    foreach ($menus as $key => $value) {
+ foreach ($menus as $key2 => $value2) {
+                    foreach ($value2 as $key => $value) {
                     ?>
                     <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $key?> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -31,17 +32,8 @@
                     </li>
                     <?php
                     }
-					
-                    if($session->read('UserRole') == 'QCTL'){
-                    ?>
-					
-                        <li class="dropdown site-menu-item has-sub navbar-brand navbar-brand-center font-size-14 font-weight-100">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>Dashboard</b><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                    <li><?php echo $this->Html->link(__('QC Dashboard', true), array('controller' => 'Dashboard', 'action' => '')); ?></li>
-                            </ul>
-                        </li>
-                    <?php } 
+			}		
+                     
                     }
 					//exit;
                     ?>

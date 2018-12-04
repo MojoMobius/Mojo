@@ -6,13 +6,14 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
+use Cake\View\Helper\BreadcrumbsHelper;
 use DateTime;
 use DatePeriod;
 use DateInterval;
 
 /**
  * Bookmarks Controller
- *
+ *ajx
  * @property \App\Model\Table\ImportInitiates $ImportInitiates
  */
 class GetjobcoreController extends AppController {
@@ -34,6 +35,7 @@ class GetjobcoreController extends AppController {
         $this->loadModel('Getjobcore');
         // $this->loadHelper('Html');
         $this->loadComponent('RequestHandler');
+       // $this->loadHelper('Breadcrumb', ['className' => 'Breadcrumb.Breadcrumb']);
     }
     
     
@@ -48,20 +50,26 @@ class GetjobcoreController extends AppController {
 }
 
 
-    public function index() {
-        
-        //echo '<pre>';
-        // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
-       // exit;
 
+
+
+    public function index() {
+      // $this->request->query['menu'];
+      //exit; 
+       
+    
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
+        //echo $this->request->here; exit;
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+        $ctrl = $this->request->controller; //exit;
+        //echo $action = $this->request->action; exit;
+        $avail_menus = $this->SearchValue($Menu,  strtolower($ctrl_act));
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
 
@@ -88,6 +96,7 @@ class GetjobcoreController extends AppController {
             }
             $next_status_id = implode(',', $next_status_idArr);
         }
+        
 //////rent calculation////
          $RentAttribute = $connection->execute('SELECT * FROM RentCalc_Config  WHERE ProjectId=' . $ProjectId . '')->fetchAll('assoc');
          $Commencement=$RentAttribute[0]['Commencement_Date_AttrId'];
@@ -120,6 +129,7 @@ class GetjobcoreController extends AppController {
         if ($joballocation_type == 1) {
             $userCheck = ' AND UserId=' . $user_id;
         }
+        
 	//	exit;
         if ($frameType == 1) {
          $distinct = $this->GetJob->find('getDistinct', ['ProjectId' => $ProjectId]);
@@ -1084,7 +1094,8 @@ $this->render('/Getjobcore/index_handson');
             $statusIdentifier = ReadyforPUReworkIdentifier;
             $session = $this->request->session();
             $moduleId = $session->read("moduleId");
-            
+           // echo "SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1";
+            //echo 'coming';exit;
             $PuReworkFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
             $PuFirst_Status_id = array();
             $PuNext_Status_ids = array();
@@ -1122,8 +1133,8 @@ $this->render('/Getjobcore/index_handson');
             //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
             //echo '<pre>';
             //var_dump( (array) $InprogressProductionjob );
-            // pr($InprogressProductionjob);
-            //exit;
+             pr($InprogressProductionjob);
+            exit;
 
             if (empty($InprogressProductionjob)) {
                 $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $first_Status_id . ') ' . $userCheck . ' AND ProjectId=' . $ProjectId . ' Order by Priority desc,ProductionEntity,StatusId Desc')->fetchAll('assoc');
@@ -1174,10 +1185,14 @@ $this->render('/Getjobcore/index_handson');
                 $QcCommentsModuleId = $QcCommentsModuleId[0]['ModuleId'];
                 $this->set('QcCommentsModuleId', $QcCommentsModuleId);
             }
-
+			
+            $Category=$productionjobNew[0]['Category'];
             $connection = ConnectionManager::get('default');
             $RegionId = $productionjobNew[0]['RegionId'];
-            $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+            if($Category==''){
+               $Category= 'production';
+            }
+            $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId][$Category];
             $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
             $AttributeGroupMaster = $AttributeGroupMaster[$moduleId];
             $groupwisearray = array();
@@ -1211,7 +1226,9 @@ $this->render('/Getjobcore/index_handson');
             $this->set('FirstSubGroupId', $FirstAttribute['SubGroupId']);
             $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production']);
             $StaticFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['static'];
+            //if()
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+            
             $ReadOnlyFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['readonly'];
             //pr($productionjobNew);
             
@@ -1436,11 +1453,11 @@ $this->render('/Getjobcore/index_handson');
                 $this->set('getNewJOb', '');
             }
             $validate = array();
-        
+        //pr($JsonArray['ValidationRules']); exit;
             foreach ($ProductionFields as $key => $val) {
                 $validationRules = $JsonArray['ValidationRules'][$val['ProjectAttributeMasterId']];
                 $validate[$val['ProjectAttributeMasterId']]['MinLength'] = $validationRules['MinLength'];
-
+//pr()
                 $IsAlphabet = $validationRules['IsAlphabet'];
                 $IsNumeric = $validationRules['IsNumeric'];
                 $IsEmail = $validationRules['IsEmail'];
@@ -1450,7 +1467,7 @@ $this->render('/Getjobcore/index_handson');
                 $NotAllowedCharacter = addslashes($validationRules['NotAllowedCharacter']);
                 $Format = $validationRules['Format'];
                 $IsUrl = $validationRules['IsUrl'];
-                $IsMandatory = $validationRules['IsMandatory'];
+                 $IsMandatory = $validationRules['IsMandatory'];
                 $IsDate = $validationRules['IsDate'];
                 $IsDecimal = $validationRules['IsDecimal'];
 
@@ -1504,6 +1521,7 @@ $this->render('/Getjobcore/index_handson');
                         BREAK;
                 }
                 if ($IsMandatory == 1) {
+                    $Mandatory[$manKey]['ProjectAttributeMasterId'] = $val['ProjectAttributeMasterId'];
                     $Mandatory[$manKey]['AttributeMasterId'] = $val['AttributeMasterId'];
                     $Mandatory[$manKey]['DisplayAttributeName'] = $val['DisplayAttributeName'];
                     $manKey++;
@@ -1557,6 +1575,7 @@ $this->render('/Getjobcore/index_handson');
 
                 $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->Getjobcore->ajax_GetQcComments_seq($productionjobNew[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1, $QcCommentsModuleId);
             }
+           // pr($Mandatory); exit;
             $this->set('QcErrorComments', $QcErrorComments);
             $this->set('validate', $validate);
             $this->set('ProductionFields', $ProductionFields);
@@ -2289,12 +2308,12 @@ $this->render('/Getjobcore/index_handson');
     function ajaxqueryposing() {
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        //$role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
         $RegionId = $_POST['RegionId'];
         echo $_POST['query'];
-        $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
+        $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'],'category' => $_POST['category'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
         exit;
     }
     function ajaxquerypostingmulti() {
@@ -2306,7 +2325,7 @@ $this->render('/Getjobcore/index_handson');
        }
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        //$role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
         $RegionId = $_POST['RegionId'];	
@@ -3325,7 +3344,7 @@ function ajaxgetdatahand() {
     function ajaxhelptooltip() {
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        //$role_id = $session->read("RoleId");
         $moduleId = $session->read("moduleId");
         $ProjectId = $_POST['ProjectId'];
         $RegionId = $_POST['RegionId'];
@@ -3580,20 +3599,34 @@ exit;
  $load_keys=false;
  $array = array();
  
-    if (!file_exists($filepath)){ return $array; }
-    $content = file($filepath);
-   // echo '<pre>';
- 
-    for ($x=0; $x < count($content); $x++){
-        if (trim($content[$x]) != ''){
-            $line = explode("\t", trim($content[$x]));
-            if ($load_keys){
-                $key = array_shift($line);
-                $array[$key] = $line;
-            }
-            else { $array[] = $line; }
-        }
-    }
+//    if (!file_exists($filepath)){ return $array; }
+//    $content = file($filepath);
+//   // echo '<pre>';
+// 
+//    for ($x=0; $x < count($content); $x++){
+//        if (trim($content[$x]) != ''){
+//            $line = explode("\t", trim($content[$x]));
+//            if ($load_keys){
+//                $key = array_shift($line);
+//                $array[$key] = $line;
+//            }
+//            else { $array[] = $line; }
+//        }
+//    }
+    
+    $fp = fopen('C:\xampp\htdocs\mojo\webroot\test.tsv','r');
+$result = array();
+
+while (($line = fgetcsv($fp, 0, "\t")) !== FALSE) if ($line) { 
+    //echo $line;
+    if($line[0]!='')
+        $array[] = $line; 
+    
+}
+fclose($fp);
+
+
+//pr($result);
   //pr($array);
   $ProductionFields = $JsonArray['ModuleAttributes']['1011'][145]['production'];
   $GroupAttribute=$JsonArray['AttributeGroupMasterDirect'];
@@ -3602,7 +3635,7 @@ exit;
   
         $connection = ConnectionManager::get('default');
         $ProdFieldID = $connection->execute("Select Id from MC_DependencyTypeMaster where Type in ('ProductionField','Disposition') AND ProjectId=" . $ProjectId)->fetchAll('assoc');
-        
+       
   foreach ($GroupAttribute as $key => $value) {
                 $groupwisearray[$key] = $value;
                 $keys = array_map(function($v) use ($key, $emparr) {
@@ -3628,6 +3661,7 @@ exit;
             }
             
 			$groupwisearray= array_filter(array_map('array_filter', $groupwisearray));
+<<<<<<< HEAD
                         
                    $arr = array(0=>'Expense Type',1=>'Key Dates Type',2=>'Option Type',3=>'Contact Type',4=>'Clauses Type');
                    $grpArrRent = array_search("Rent",$GroupAttribute);
@@ -3660,6 +3694,14 @@ $option_list = $toHghCharts;
   //  $option_list = array([0] =>'Base Rent',[1] =>'CAM/OpEx/ServChrg',[2] =>'Free Rent / Abatement',[3] =>'RE Tax',[4] =>'Insurance',[5] =>'Parking',[6] =>'VAT',[7] =>'Sales Tax',[8] =>'Utilities',[9] =>'Storage',[10] =>'Tenant Improvements',[11] =>'Security Deposit',[12] =>'Peppercorn',[13] =>'Other',[14] =>'Expiration',[15] =>'Renewal',[16] =>'Auto Renew/Expiry Notice',[17] =>'Cancel/Break - LL',[18] =>'Rolling Cancel/Break - LL',[19] =>'Cancel/Break - Mutual',[20] =>'Rent Change - Index',[21] =>'Rent Review - Market',[22] =>'Rolling Cancel/Break - Mutual',[23] =>'Expiration Notice',[24] =>'Cancel/Break - TT',[25] =>'Rolling Cancel/Break - TT',[26] =>'Contraction',[27] =>'Expansion',[28] =>'Purchase/Buy',[29] =>'Must Expand',[30] =>'Must Reduce',[31] =>'Other',[32] =>'Alterations',[33] =>'Assignment/Sublet',[34] =>'Audit Rights',[35] =>'Estoppel',[36] =>'Holdover',[37] =>'Insurance - Building',[38] =>'Late Charges',[39] =>'Maintenance & Repairs',[40] =>'Opex/Service Charges',[41] =>'Other Charges & Fees',[42] =>'Parking',[43] =>'Permitted Use',[44] =>'RE Taxes/Rates/Appeals',[45] =>'Redecoration (UK)',[46] =>'Relocation',[47] =>'Right of 1st Offer/Refusal',[48] =>'Signage',[49] =>'Surrender/Reinstatement',[50] =>'Tenant Improvements/Allowance',[51] =>'UK L&T Act',[52] =>'Utilities',[53] =>'Landlord',[54] =>' Notice - Landlord',[55] =>' Notice - Tenant',[56] =>' Payee',[57] =>' Sublessee',[58] =>' Sublessor',[59] =>' Tenant',[60] =>'Sublessee Notice Copy',[61] =>'Sublessor Notice Copy');
  //print_r($option_list);
  $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';
+=======
+                       
+            $option_list = array(0=>'Base Rent',1=>'Tags',2=>'Units',3=>'Operations',4=>'Lessee',5=>'Lessor',6=>'Renewal',7=>'Expiration',8=>'Rent Change - Index',9=>'Lessee Notice Copy',10=>'Lessor Notice Copy',11=>'Payment Contact',12=>'Sublessee',13=>'Sublessee Notice Copy',14=>'Sublessor',15=>'Sublessor Notice Copy',16=>'CAM/OpEx/ServChrg',17=>'Free Rent / Abatement',18=>'RE Tax',19=>'Insurance',20=>'Parking',21=>'VAT',22=>'Sales Tax',23=>'Utilities',24=>'Storage',25=>'Tenant Improvements',26=>'Security Deposit',27=>'Peppercorn',28=>'Other',29=>'Alterations',30=>'Assignment/Sublet',31=>'Audit Rights',32=>'Holdover',33=>'Insurance - Building',34=>'Late Charges',35=>'Parking',36=>'Permitted Use',37=>'Relocation',38=>'Signage',39=>'Surrender/Reinstatement',40=>'UK L&T Act',41=>'Safety Equipment',42=>'Tenant Improvements/Allowance',43=>'Right of 1st Offer/Refusal',44=>'Redecoration (UK)',45=>'RE Taxes/Rates/Appeals',46=>'Other Charges & Fees',47=>'Opex/Service Charges',48=>'Maintenance & Repairs',49=>'Estoppel',50=>'Landlord',51=>'Notice - Landlord',52=>'Notice - Tenant',53=>'Payee',54=>'Tenant',55=>'Auto Renew/Expiry Notice',56=>'Cancel/Break - LL',57=>'Rolling Cancel/Break - LL',58=>'Cancel/Break - Mutual',59=>'Rent Change - Index',60=>'Rent Review - Market',61=>'Rolling Cancel/Break - Mutual',62=>'Expiration Notice',63=>'Cancel/Break - TT',64=>'Rolling Cancel/Break - TT',65=>'Contraction',66=>'Expansion',67=>'Purchase/Buy',68=>'Must Expand',69=>'Must Reduce');
+            $option_list_key = array(1=>'Expiration');
+            $option_list_option = array(54=>'Renewal',55=>'Auto Renew/Expiry Notice',56=>'Cancel/Break - LL',57=>'Rolling Cancel/Break - LL',58=>'Cancel/Break - Mutual',59=>'Rent Change - Index',60=>'Rent Review - Market',61=>'Rolling Cancel/Break - Mutual',62=>'Expiration Notice',63=>'Cancel/Break - TT',64=>'Rolling Cancel/Break - TT',65=>'Contraction',66=>'Expansion',67=>'Purchase/Buy',68=>'Must Expand',69=>'Must Reduce',70=>'other');
+
+ $groupId='';$groupidorg='';$subgrup=0;$start_array = 1;$rentSearchprevoud='';$type_name = ''; $type_keys='';$final_type='';$temp = '';$tempsubgrup='';
+>>>>>>> c294e78812aeb9df56fd6ca8e3be8e7e4af2dac3
 
      foreach($array as $attributeArr){  
          //echo $attributeArr[0];
@@ -3668,16 +3710,36 @@ $option_list = $toHghCharts;
                //if($tempGrpId!=$groupidorg)
                         //$lastSequenc=1;
             $tempGrpSearch = '';
-            $rentSearch  = in_array($attributeArr[0], $option_list);
+             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
                
 				if($groupidorg!=''){
-					$groupidorg=$groupId;
-					$subgrup = array_keys($SubGroupAttribute[$groupidorg]);
-					$subgrup = $subgrup[0];
+                                    $groupidorg=$groupId;
+                                    $subgrup = array_keys($SubGroupAttribute[$groupidorg]);
+                                    //pr($subgrup);
+                                   // echo $attributeArr[0];
+                                    if(in_array($attributeArr[0], $option_list_key))
+                                    {
+                                         if($tempsubgrup!=$subgrup)
+                                        $start_array=-1;
+					 $subgrup = $subgrup[0];
+                                         $tempsubgrup=$subgrup;
+                                    }
+                                    else if(in_array($attributeArr[0], $option_list_option)){
+                                        if($tempsubgrup!=$subgrup)
+                                        $start_array=-1;
+                                         $subgrup = $subgrup[1];
+                                         $tempsubgrup=$subgrup;
+                                    }
+                                    else {
+                                        
+					 $subgrup = $subgrup[0];
+                                    }
+					
+					//echo $subgrup;
 				}
 				 $tempGrpSearch = 'options';
-                               //  echo $tempGrpId."!=".$groupidorg;
+                                // echo $tempGrpId."!=".$groupidorg;
                                  if($tempGrpId!=$groupidorg){
                                        $start_array=-1;
                                  // $lastSequenc=1;
@@ -3710,14 +3772,20 @@ $option_list = $toHghCharts;
                     $update['singleAttr']['ProductionFields_'.$keys[0].'_'.$ProdFieldID[1]['Id'].'_1']='A';
                     }
                }
+<<<<<<< HEAD
          }
        //  pr($attributeArr);
        //  echo '<br>';
       //   pr($groupidorg);
+=======
+         }  
+>>>>>>> c294e78812aeb9df56fd6ca8e3be8e7e4af2dac3
          if($tempGrpSearch != ''){
             $t=1;
+            //echo count($attributeArr);
             $rentSearch  = in_array($attributeArr[0], $option_list);
             if($rentSearch){
+                if(count($attributeArr)==1) {
                 $type_name = $attributeArr[0];
                 $work_type = $SubGroupAttribute[$groupidorg][$subgrup];
                 if($work_type == 'Rent'){
@@ -3725,6 +3793,9 @@ $option_list = $toHghCharts;
                 }
                 else if($work_type == 'Key Dates'){
                     $final_type = 'Key Dates Type';
+                }
+                else if($work_type == 'Options'){
+                    $final_type = 'Option Type';
                 }
 				else if($work_type == 'Contacts'){
                     $final_type = 'Contacts';
@@ -3735,7 +3806,9 @@ $option_list = $toHghCharts;
                 else {
                     $final_type = 'Option Type';
                 }
+                
                 $keys = array_keys(array_column($groupwisearray[$groupidorg][$subgrup], 'DisplayAttributeName','AttributeMasterId'), $final_type); 
+                
              //echo '<br>' ;                                  ;
              //echo $attributeArr[0];
              //echo '-';
@@ -3743,16 +3816,18 @@ $option_list = $toHghCharts;
              //echo '<br>' ;
            if($start_array!=-1)
            {
+               //echo 'coming';
                $start_array=$lastSequenc+1;
                 $count=count($attributeArr)+$start_array;
                 
            }
-           else
+           else {
                $start_array=1;
            $seq=1;$lastSequenc=1;
            $count=count($attributeArr);
                $type_keys = $keys;
-              
+           }
+                }
             }
             
             else{
@@ -3763,7 +3838,7 @@ $option_list = $toHghCharts;
                   if($start_array!=1) 
                       $count=(count($attributeArr)-1)+$start_array;
             }
-            //echo '<br>'.$start_array.'-'.$count.'<br>';
+          //  echo '<br>'.$start_array.'-'.$count.'<br>';
             for($c= $start_array; $c < $count; $c++)
             {
                 $temp = $keyss[0];
@@ -3782,8 +3857,12 @@ $option_list = $toHghCharts;
             }
                        
             }
+<<<<<<< HEAD
         }
       
+=======
+        }   //echo 'coming'; exit;
+>>>>>>> c294e78812aeb9df56fd6ca8e3be8e7e4af2dac3
         if($tempGrpSearch == ''){
 			if(count($attributeArr) > 2){
 				$groupAddition = $connection->execute("Select Is_Distinct from MC_Subgroup_Config where Primary_Group_Id = $groupidorg AND Subgroup_Id = $subgrup AND RecordStatus = 1 AND ProjectId=" . $ProjectId)->fetchAll('assoc');
@@ -3814,7 +3893,7 @@ $option_list = $toHghCharts;
 			}
 		}
     }
-          
+         
    if($update == ''){
       $update = 'No Data';
    }
@@ -4214,7 +4293,7 @@ foreach ($result as $set) {
      $ListAttrId='';
      $qc_datarownew='';
      $tblheadnew='';
-    $totattr= count($setArr);
+    echo $totattr= count($setArr);
     $OrderAttribute='[' . $setArr[0] . ']';
      foreach ($setArr as $val){       
          if($i > 0){
@@ -4273,11 +4352,12 @@ foreach ($result as $set) {
                 $handskeymain =$val['MainGroupId'];
             }
         }
-       
+       //echo "SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc";
         $link4 = $connection->execute("SELECT DISTINCT sequenceNumber,$ListAttrId FROM $stagingtable WITH (NOLOCK) WHERE  ProjectId='".$ProjectId."' AND InputEntityId='".$InputEntity."' AND DependencyTypeMasterId=$NormalizedId AND UserId= $user_id  Order by $OrderAttribute asc")->fetchAll('assoc');
                //$seq=0;
                $Rowdata=array();
 		foreach ($link4 as $key => $value) {
+                   // pr($value);
                    // $seq++;
                     $seq=$value['sequenceNumber'];
                      $qc_datarownew.='<tr>';
@@ -4290,7 +4370,8 @@ foreach ($result as $set) {
                       $text_onclk = "onclick=loadMultiFieldqcerror($AttributeMasterId,$seq,$Prvseq)";
                         }
                      $text_cls = "pu_cmts_seq";
-                     if($value[$setArr[0]] !=NULL)
+                    // echo $setArr[0];
+                     if(!is_null($value[$setArr[0]]))
 		     $qc_datarownew.='<td '.$text_onclk.' class ="'.$text_cls.'" cellspacing="10">'.$value[$setArr[$i]].'</td>';
 		  
                    }
@@ -4329,6 +4410,29 @@ foreach ($result as $set) {
         
         echo '<input type="text" value="'.$date.'" readonly id="newDate">';
         exit;
+    }
+    function ajaxcheckquery(){
+        $session = $this->request->session();
+        $moduleId = $session->read("moduleId");
+        $proejctId=$_POST['ProjectId'];
+        $ProductionEntityId=$_POST['ProductionEntityID'];
+        $AttributeMasterID=$_POST['AttributeMasterId'];
+        $user_id = $session->read("user_id");
+        $connection = ConnectionManager::get('default');
+       
+        $qryCnt = $connection->execute("SELECT DISTINCT ProductionEntityId FROM ME_UserQuery WITH (NOLOCK) "
+                      . "WHERE  ProjectId='".$proejctId."' "
+                      . "AND ProductionEntityId='".$ProductionEntityId."' "
+                      . "AND AttributeMasterID=$AttributeMasterID "
+                      . "AND UserID= $user_id AND StatusId=1
+                          AND ModuleId=$moduleId")->fetchAll('assoc');
+       // pr($qryCnt);
+        if($qryCnt){
+            echo 1;
+        }
+        else
+            echo 0;
+         exit;
     }
  
 }

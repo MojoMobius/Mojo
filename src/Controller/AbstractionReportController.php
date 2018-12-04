@@ -14,7 +14,10 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Helper;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+require ROOT.DS. 'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php' ;
 /**
  * Bookmarks Controller
  *
@@ -80,6 +83,11 @@ class AbstractionReportController extends AppController {
     }
 
     public function index() {
+        
+        $spreadsheet = new Spreadsheet();
+        
+
+//die;
 
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
@@ -180,7 +188,7 @@ class AbstractionReportController extends AppController {
 
         $resqueryData = array();
         $result = array();
-        if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit'])) {
+        if (isset($this->request->data['check_submit']) || isset($this->request->data['formSubmit']) || isset($this->request->data['campaign_submit'])) {
 
             $ProjectId = $this->request->data['ProjectId'];
             $QueryDateFrom = $this->request->data['QueryDateFrom'];
@@ -374,10 +382,83 @@ class AbstractionReportController extends AppController {
                 }
 
 
-//                $this->pr($finalarray);
+              // pr($finalarray); exit;
 //            $this->pr($finalarray,1);
+                    
+                if(isset($this->request->data['campaign_submit'])) {
+                   $spreadsheet = new Spreadsheet();
+        
+ $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
+        $content = file_get_contents($path);
+        $contentArr = json_decode($content, true);
+        $module = $contentArr['Module'];
+        $moduleConfig = $contentArr['ModuleConfig'];
+        $AttributeGroupMaster = $contentArr['AttributeGroupMasterDirect'];
+       // pr($AttributeGroupMaster);
 
+$i=0;
+//pr($finalarray);
+foreach($finalarray as $key=>$val){
+    //pr($val); exit;
+   // echo $key; exit;
+    // Create a new worksheet called "My Data"
+    //echo $AttributeGroupMaster[$key];
+    if($AttributeGroupMaster[$key]!='' ){
+        $AttributeGroupMaster[$key]= str_replace('/', '', $AttributeGroupMaster[$key]);
+        $myWorkSheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $AttributeGroupMaster[$key]);
 
+        // Attach the "My Data" worksheet as the first worksheet in the Spreadsheet object
+        $spreadsheet->addSheet($myWorkSheet, $i);
+        $i++;
+        $spreadsheet->getSheetByName('test'.$key);
+        $col=array(0=>'A',1=>'B',2=>'C',3=>'D',4=>'E',5=>'F',6=>'G',7=>'H',8=>'I',9=>'J',10=>'K',11=>'L',12=>'M',13=>'N',14=>'O',15=>'P',16=>'Q',17=>'R',18=>'S',19=>'T',20=>'U',21=>'V',22=>'W',23=>'X',24=>'Y',25=>'Z',25=>'AA',26=>'AB',27=>'AC',28=>'AD',29=>'AE',30=>'AF',31=>'AG',32=>'AH',33=>'AI',34=>'AJ',35=>'AK',36=>'AL',37=>'AM',38=>'AN',39=>'AO',40=>'AP');
+        $k=0;
+        foreach ($val['main'][0] as $subkey => $subval){
+           // pr($subval); exit;
+        $spreadsheet->getSheetByName($AttributeGroupMaster[$key])->setCellValue($col[$k].'1', $subval['DisplayAttributeName']);
+        $row=2;
+        foreach($subval['res'] as $key2=>$val2) {
+            $spreadsheet->getSheetByName($AttributeGroupMaster[$key])->setCellValue($col[$k].$row, $val2);
+            $row++;
+        }
+        //$spreadsheet->getSheetByName('test'.$key)->setCellValue($col[$k].'2', $subval['res'][0]);
+        $k++;
+        } 
+       
+        //pr($val['sub']); echo $key;
+        $k=0;
+        foreach ($val['sub'] as $subkey => $subval){
+            foreach ($subval[0] as $key3=>$val3){
+                 echo $col[$k]; echo $AttributeGroupMaster[$key]; echo $val3['DisplayAttributeName']; echo "$col[$k]1";echo '<br>';
+                $spreadsheet->getSheetByName($AttributeGroupMaster[$key])->setCellValue("$col[$k]1", $val3['DisplayAttributeName']);
+                //$spreadsheet->getSheetByName('test'.$key)->setCellValue($col[$k].'2', $subval['res'][0]);
+                $row=2;
+                foreach($val3['res'] as $key4=>$val4) {
+                   // $spreadsheet->getSheetByName($AttributeGroupMaster[$key])->setCellValue($col[$k].$row, $val4);
+                   // $row++;
+                }
+                $k++;
+            }
+        } 
+    }
+} exit;
+$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+//$writer->save( WWW_ROOT . '/example'.date('ymdhis').'.xlsx' );
+unlink(WWW_ROOT . '/'.$LeaseId.'.xlsx');
+
+$writer->save( WWW_ROOT . '/campaign_'.$LeaseId.'.xlsx' );
+$this->layout = null;
+                    if (headers_sent())
+                        throw new Exception('Headers sent.');
+                    while (ob_get_level() && ob_end_clean());
+                    if (ob_get_level())
+                        throw new Exception('Buffering is still active.');
+                    header("Content-type: application/vnd.ms-excel");
+                    header("Content-Disposition:attachment;filename=$LeaseId.xls");
+                    readfile(WWW_ROOT . '/campaign_'.$LeaseId.'.xlsx');
+                    exit;
+                    
+                }else {
                 $productionData = '';
                 if (!empty($finalarray)) {
                     $productionData = $this->AbstractionReport->find('export', ['ProjectId' => $ProjectId, 'condition' => $finalarray]);
@@ -388,9 +469,10 @@ class AbstractionReportController extends AppController {
                     if (ob_get_level())
                         throw new Exception('Buffering is still active.');
                     header("Content-type: application/vnd.ms-excel");
-                    header("Content-Disposition:attachment;filename=QAreviewreport.xls");
+                    header("Content-Disposition:attachment;filename=$LeaseId.xls");
                     echo $productionData;
                     exit;
+                }
                 }
             }
 

@@ -68,9 +68,11 @@ $user_list = $JsonArray['UserList'];
         $this->set('Clients', $Cl_list);
 
         $MojoProjectIds = $this->projectmasters->find('Projects');
+        //pr($MojoProjectIds); exit;
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $user_id, 'Project' => $MojoProjectIds]);
         $ProList = $this->Puquery->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
+       // pr($ProList); exit;
         $ProListFinal = array('0' => '--Select Project--');
         foreach ($ProList as $values):
             $ProListFinal[$values['ProjectId']] = $values['ProjectName'];
@@ -78,6 +80,8 @@ $user_list = $JsonArray['UserList'];
 
 
         $this->set('Projects', $ProListFinal);
+       // pr($ProListFinal);
+       // exit;
 
 //        $this->request->data['ProjectId'] = 3346;
 //        $ProjectId = 3346;
@@ -158,7 +162,7 @@ $user_list = $JsonArray['UserList'];
 //exit;
             $ProjectId = $this->request->data['ProjectId'];
             
-               
+             // pr($ProjectId) ; exit; 
             $RegionId = $this->request->data['regionId'];
 //            $ModuleId = $this->request->data['ModuleId'];
             $UserGroupId = $this->request->data['UserGroupId'];
@@ -255,9 +259,10 @@ if($ProjectId == ''){
                     if (!empty($moduleresult)) {
                         foreach ($moduleresult as $modkey => $modval) {
                             $fdrids = array_column($modval, 'fdrid');
+							$fdrids=array_filter($fdrids);
                             $Estimated_Times = array_column($modval, 'Estimated_Time');
                             $Estimated_Time = array_sum($Estimated_Times);
-                            $formatresult['numberofjobs'] = count($modval);
+                            $formatresult['numberofjobs'] = count($fdrids);
                             $formatresult['fdrid'] = implode(',', $fdrids);
                             $formatresult['UserId'] = $modval[0]['UserId'];
                             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $modval[0]['ProjectId']]);

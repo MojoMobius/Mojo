@@ -68,7 +68,9 @@ $cakeDescription = 'MOJO 2.0';
 		echo $this->fetch('script');
                
                 echo $this->Html->script('jquery-1.12.4');
+                echo $this->Html->script('bootstrap');
                 echo $this->Html->script('bootstrap.min');
+                
                 //echo $this->Html->script('jquery-2.1.3');
                 echo $this->Html->script('tableHeadFixer');
                 
@@ -80,7 +82,7 @@ $cakeDescription = 'MOJO 2.0';
                 // echo $this->Html->script('jquery.datetimepicker');
                 echo $this->Html->script('zebra_datepicker');
                  echo $this->Html->script('jquery.timepicker');
-                 echo $this->Html->script('jquery.timepicker.min.js');
+                // echo $this->Html->script('jquery.timepicker.min.js');
                  echo $this->Html->script('jquery.datetimepicker');
                 echo $this->Html->script('kendo.web.min');
               //  echo $this->Html->script(array('jquery.min'));
@@ -89,7 +91,7 @@ $cakeDescription = 'MOJO 2.0';
                 
                 echo $this->Html->script(array('jquery.dataTables.min.js'));
                echo $this->Html->script(array('dataTables.bootstrap.min.js'));
-                        echo $this->Html->script(array('shortcut.js'));
+              // echo $this->Html->script(array('shortcut.js'));
               
         ?>
 
@@ -149,6 +151,7 @@ $cakeDescription = 'MOJO 2.0';
                 $('#QueryDateFrom').Zebra_DatePicker({
                     format: 'd-m-Y',
                     pair: $('#QueryDateTo'),
+                    // direction: [today.getDate() + '-' + ((today.getMonth() + 1 < 10 ? '0' : '') + (today.getMonth() + 1)) + '-' + today.getFullYear(),true],
                     onChange: function (view, elements) {
                         $('#QueryDateTo').val('');
 

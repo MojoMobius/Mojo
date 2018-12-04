@@ -88,7 +88,7 @@ class ValidationrulesTable extends Table {
 //            WHERE ME_ValidationRules.RecordStatus=1 AND ME_ValidationRules.ProjectId=$ProjectId AND ME_ValidationRules.RegionId=$RegionId AND ME_ValidationRules.ModuleId=$ModuleId");
         $MojoTemplate = $connection->execute("SELECT ProjectAttributeMasterId,IsMandatory,IsAlphabet,IsNumeric,IsEmail,IsUrl,IsDate,DateFormat,IsDecimal,AllowedDecimalPoint,
             IsAutoSuggesstion,IsAllowNewValues,IsSpecialCharacter,AllowedCharacter,NotAllowedCharacter,Format,MaxLength,MinLength,IsDatepicker,IsRentcalculator,IsDatecalculator FROM ME_ValidationRules 
-            WHERE ME_ValidationRules.RecordStatus=1 AND ME_ValidationRules.ProjectId=$ProjectId AND ME_ValidationRules.RegionId=$RegionId");
+            WHERE ME_ValidationRules.RecordStatus=1 AND ME_ValidationRules.ProjectId=$ProjectId AND ME_ValidationRules.RegionId=$RegionId AND ME_VAlidationRules.ModuleId=$ModuleId");
         $mojoArr = $MojoTemplate->fetchAll('assoc');
         return $mojoArr;
     }
@@ -191,14 +191,14 @@ class ValidationrulesTable extends Table {
                 $checkedisdatepicker='checked=""';
             else
                 $checkedisdatepicker='';    
-            $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsDatepicker[]" '.$checkedisdatepicker.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+            $templatenew.='<td><input class="form-control" type="checkbox" id="IsDatepick_'.$mojo['AttributeMasterId'].'" name="IsDatepicker[]" '.$checkedisdatepicker.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" onclick="updteDatechk('.$mojo['AttributeMasterId'].');" ></td>';
             //isdatepicker ends 
             //isdatecalculator starts
             if($MappedAttribute[$i]['IsDatecalculator']=='1')
                 $checkedisdatecalculator='checked=""';
             else
                 $checkedisdatecalculator='';    
-            $templatenew.='<td><input class="form-control" type="checkbox" id="IsUrl_'.$mojo['AttributeMasterId'].'" name="IsDatecalculator[]" '.$checkedisdatecalculator.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" ></td>';
+            $templatenew.='<td><input class="form-control" type="checkbox" id="IsDatecal_'.$mojo['AttributeMasterId'].'" name="IsDatecalculator[]" '.$checkedisdatecalculator.' value="'.$mojo['ProjectAttributeMasterId'].'_'.$mojo['AttributeMasterId'].'" onclick="updteDatechk('.$mojo['AttributeMasterId'].');" ></td>';
             //isdatecalculator ends 
             //isrentcalculator starts
                 if($MappedAttribute[$i]['IsRentcalculator']=='1')
@@ -225,10 +225,12 @@ class ValidationrulesTable extends Table {
             if($MappedAttribute[$i]['DateFormat']==''){
              $selected ='selected';
              
-              $templatenew.='<option value="MM-dd-yy">MM-DD-YYYY</option>'; 
+              $templatenew.='<option value="M-d-y">MM-DD-YYYY</option>'; 
              $templatenew.='<option value="y-M-d">YYYY-MM-DD</option>';
              $templatenew.='<option value="M/d/y">MM/DD/YYYY</option>';
              $templatenew.='<option value="M/d/y H:m">MM/DD/YYYY H:M</option>';
+             $templatenew.='<option value="d/M/y">DD/MM/YYYY</option>';
+             $templatenew.='<option value="d-M-y">DD-MM-YYYY</option>';
              
             }else{
             if($MappedAttribute[$i]['DateFormat']=='MM-dd-yy'){
@@ -254,6 +256,18 @@ class ValidationrulesTable extends Table {
                 $templatenew.='<option selected="'.$selected.'" value="M/d/y H:m">MM/DD/YYYY H:M</option>';
             }else{
                 $templatenew.='<option value="M/d/y H:m">MM/DD/YYYY H:M</option>';
+            }
+            if($MappedAttribute[$i]['DateFormat']=='d/M/y'){
+                $selected ='selected';
+                $templatenew.='<option selected="'.$selected.'" value="d/M/y">DD/MM/YYYY</option>';
+            }else{
+                $templatenew.='<option value="d/M/y">DD/MM/YYYY</option>';
+            }
+            if($MappedAttribute[$i]['DateFormat']=='d-M-y'){
+                $selected ='selected';
+                $templatenew.='<option selected="'.$selected.'" value="d-M-y">DD-MM-YYYY</option>';
+            }else{
+                $templatenew.='<option value="d-M-y">DD-MM-YYYY</option>';
             }
             }
             $templatenew.='</select></td>';

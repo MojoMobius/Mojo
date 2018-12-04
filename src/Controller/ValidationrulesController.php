@@ -62,7 +62,8 @@ class ValidationrulesController extends AppController {
             $ModuleId = $this->request->data('ModuleId');
             $existing = array(
                 'ProjectId' => $ProjectId,
-                'RegionId' => $RegionId
+                'RegionId' => $RegionId,
+                'ModuleId' => $ModuleId
             );
             $Validationrulestable->deleteAll($existing);
             $i=0;

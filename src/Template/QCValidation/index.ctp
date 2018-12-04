@@ -483,7 +483,7 @@ width:100%;
                         ?></b></div>
 
                     </div>
-
+<input type="hidden" name="timerstatus" id="timerstatus" class="form-control" value="0">
                             <label class="pull-right font-size-14">Timer 
                                 <span class="badge" id='countdown'>
                                     <div class="col-md-4">
@@ -496,6 +496,9 @@ width:100%;
                                     </div>
                                 </span>
     <?php echo $this->Form->input('', array('type' => 'hidden', 'id' => 'TimeTaken', 'name' => 'TimeTaken', 'value' => $hrms[0])); ?>
+    <button class="btn btn-default" type="button" id="stopTimermode" data-target="#pausetimermodal" data-toggle="modal" data-backdrop="static" data-keyboard="false">Pause Timer</button>
+
+
     <?php echo $this->Form->input('', array('type' => 'hidden', 'id' => 'getreworkjob', 'name' => 'getreworkjob', 'value' => $QCStatus_find)); ?>
                             </label>
                         </h3>
@@ -987,6 +990,44 @@ width:100%;
         </div>-->
         <!--        </div>-->
         <!-- Right side flip canvas for Page Taggs ends -->	
+<!-- start pausetimermodal--->   
+ 
+<div class="modal fade" id="pausetimermodal" aria-hidden="true" aria-labelledby="pausetimermodal" role="dialog" tabindex="-1">
+            <div class="modal-dialog" style="max-width:388px;">
+                <div class="modal-content">
+				<div class="modal-header">
+                        
+                        <h4 class="modal-title" id="exampleModalTitle">Timer</h4>
+                    </div>
+			<div class="modal-body" style="height:125px;overflow-y:auto;">                       
+                            <div class="form-group">
+							
+                                <div class="form-group col-md-6">
+				<div class="col-md-6"> 
+
+                                </div>
+				<div class="col-md-6">
+
+<button class="btn btn-default" type="button" id="startTimermode" data-toggle="modal">Start Timer</button>
+			</div>
+                                </div>
+								 <div class="form-group col-md-6">
+								   <div class="col-md-6"> 
+
+</div>
+                                <div class="col-md-6">
+
+                                </div>
+                                </div>
+				</div>
+                            </div>
+                        
+                    </div>
+					  
+				</div>
+            </div>
+     <!-- end pausetimermodal--->   
+
         <!-- Modal -->
 
         <div class="modal fade modal-fill-in" id="exampleFillIn" aria-hidden="false" aria-labelledby="exampleFillIn" role="dialog" tabindex="-1">
@@ -3005,7 +3046,42 @@ $('#qcstatusinfo_'+attributeMasterId+currentSeq).css("display", "none");;
         document.getElementById('TimeTaken').value = hour + ":" + minutes + ":" + remainingSeconds;
         seconds++;
     }
-    var countdownTimer = setInterval('secondPassed()', 1000);
+   // var countdownTimer = setInterval('secondPassed()', 1000);
+var timer = null, 
+    interval = 1000,
+    value = 0;
+
+timer = setInterval(function () {
+     secondPassed();
+  }, interval); 
+
+$("#startTimermode").click(function() {
+$("#timerstatus").val(0);
+
+  if (timer !== null){return;}
+  timer = setInterval(function () {
+     secondPassed();
+  }, interval); 
+
+ setTimeout(function () {
+           $("#pausetimermodal").hide();
+        }, 1500);
+  //  $("#ProductionArea").css("opacity",1);
+document.getElementById("fade").style.display = "none";
+});
+
+$("#stopTimermode").click(function() {
+ setTimeout(function () {
+           $("#pausetimermodal").show();
+        }, 1500);
+    $("#timerstatus").val(1);
+  clearInterval(timer);
+  timer = null
+  AjaxSave('');
+
+//$("#ProductionArea").css("opacity",0.5);
+
+});
 
 </script>
 

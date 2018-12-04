@@ -11,7 +11,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 
-class ProductionDashBoardsController extends AppController {
+class UserTrackReportController extends AppController {
 
     public $paginate = [
         'limit' => 10,
@@ -22,7 +22,7 @@ class ProductionDashBoardsController extends AppController {
 
     public function initialize() {
         parent::initialize();
-        $this->loadModel('ProductionDashBoards');
+        $this->loadModel('UserTrackReport');
         $this->loadModel('projectmasters');
         $this->loadComponent('RequestHandler');
     }
@@ -33,10 +33,13 @@ class ProductionDashBoardsController extends AppController {
         $userid = $session->read('user_id');
         set_time_limit(0);
         $MojoProjectIds = $this->projectmasters->find('Projects');
+        
+         $productionHours = ProductionHours;
+        
         //$this->set('Projects', $ProListFinal);
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
-        $ProList = $this->ProductionDashBoards->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
+        $ProList = $this->UserTrackReport->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
         $ProListFinal = array('0' => '--Select Project--');
 		
         foreach ($ProList as $values):
@@ -59,7 +62,7 @@ class ProductionDashBoardsController extends AppController {
         $this->set('Clients', $Cl_list);
         
         if ($this->request->data['ClientId'] > 0) {
-                 $Clients = $this->ProductionDashBoards->find('client', ['ClientId' => $this->request->data['ClientId']]);
+                 $Clients = $this->UserTrackReport->find('client', ['ClientId' => $this->request->data['ClientId']]);
                  $this->set('ClientId', $Clients);
                 } else {
                    
@@ -79,7 +82,7 @@ class ProductionDashBoardsController extends AppController {
             $ProjectId = 0;
         }
 
-        $path = JSONPATH . '\\ProjectConfig_' . $sessionProjectId . '.json';
+        $path = JSONPATH . '\\ProjectConfig_' . $ProjectId . '.json';
         $content = file_get_contents($path);
         $contentArr = json_decode($content, true);        
         $region = $regionMainList = $contentArr['RegionList'];
@@ -100,6 +103,7 @@ class ProductionDashBoardsController extends AppController {
         $ModuleUser = $contentArr['ModuleUser'];
         $domainId = $contentArr['ProjectConfig']['DomainId'];
         $moduleConfig = $contentArr['ModuleConfig'];
+        $UserList = $contentArr['UserList'];
         asort($status_list);
         $search_text='Query';
        // pr($status_list);
@@ -150,9 +154,10 @@ class ProductionDashBoardsController extends AppController {
         $this->set('moduleConfig', $moduleConfig);
         $this->set('ModuleStatus', $ModuleStatus);
         $this->set('queryStatus', $queryStatus);
+        $this->set('UserList', $UserList);
 //pr($completed_status_idsss); exit;
         if (isset($this->request->data['ProjectId']) || isset($this->request->data['RegionId'])) {
-            $region = $this->ProductionDashBoards->find('region', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'SetIfOneRow' => 'yes']);
+            $region = $this->UserTrackReport->find('region', ['ProjectId' => $this->request->data['ProjectId'], 'RegionId' => $this->request->data['RegionId'], 'SetIfOneRow' => 'yes']);
             $this->set('RegionId', $region);
         } else {
             $this->set('RegionId', 0);
@@ -164,7 +169,7 @@ class ProductionDashBoardsController extends AppController {
         }
 
         if (isset($this->request->data['UserGroupId'])) {
-            $UserGroup = $this->ProductionDashBoards->find('usergroupdetails', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
+            $UserGroup = $this->UserTrackReport->find('usergroupdetails', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
             $this->set('UserGroupId', $UserGroup);
             $UserGroupId = $this->request->data('UserGroupId');
         } else {
@@ -174,14 +179,14 @@ class ProductionDashBoardsController extends AppController {
 		
 //       if(isset($this->request->data['reportSP_data']))
 //        {
-//            $this->ProductionDashBoards->SpRunFuncRPEMMonthWise();
+//            $this->UserTrackReport->SpRunFuncRPEMMonthWise();
 //            $this->Flash->success(__('Report generate has been completed!'));
 //            return $this->redirect(['action' => 'index']);
 //        }
 
 
         if (isset($this->request->data['load_data'])) {
-            $this->ProductionDashBoards->getLoadData();
+            $this->UserTrackReport->getLoadData();
             $this->Flash->success(__('Load has been completed!'));
             return $this->redirect(['action' => 'index']);
         }
@@ -223,13 +228,13 @@ class ProductionDashBoardsController extends AppController {
 		
         if (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) {
 
-            $CheckSPDone = $this->ProductionDashBoards->find('CheckSPDone', ['ProjectId' => $_POST['ProjectId']]);
+            $CheckSPDone = $this->UserTrackReport->find('CheckSPDone', ['ProjectId' => $_POST['ProjectId']]);
 
             $conditions = '';
 		
             if ($this->request->data['UserGroupId'] > 0) {
 				
-                $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'],'UserGroupId' =>$this->request->data['UserGroupId'], 'UserId' => $session->read('user_id')]);
+                $user_id_list = $this->UserTrackReport->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'],'UserGroupId' =>$this->request->data['UserGroupId'], 'UserId' => $session->read('user_id')]);
 				
               
                 $this->set('User', $user_id_list);
@@ -278,7 +283,7 @@ class ProductionDashBoardsController extends AppController {
                 }
 
 
-                $conditions.="  ProductionStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ProductionStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
+                $conditions.="  StartTime >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND StartTime <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
                 //$conditionsIs.="  ActStartDate >='" . date('Y-m-d', strtotime($batch_from)) . " 00:00:00' AND ActStartDate <='" . date('Y-m-d', strtotime($batch_to)) . " 23:59:59'";
 
                 if ((count($user_id) == 1 && $user_id[0] > 0) || (count($user_id) > 1)) {
@@ -286,81 +291,79 @@ class ProductionDashBoardsController extends AppController {
                     //$conditions_status.=' AND b.[' . $ModuleId . '] IN(' . implode(",", $user_id) . ')';
                 }
 
-                if (!empty($status) && count($status) > 0) {
-                    $conditions.=' AND StatusId IN(' . implode(",", $status) . ')';
-                    $conditionsIs.='  StatusId IN(' . $readyforprod . ')';
-//                    $statusresult = array_diff($status, $completed_status_ids);
-//                    if (!empty($statusresult))
-//                        $conditions_status.=' AND StatusId IN(' . implode(",", $statusresult) . ')';
-//                    else
-//                        $conditions_status.=' AND StatusId IN(0)';
-                        
-                        $conditions_status.=' AND StatusId IN(' . implode(",", $status) . ')';
-                } else {
-                    if (!empty($status_list) && count($status_list) > 0) {
-                        $conditions.=" AND StatusId in (" . implode(',', array_keys($status_list)) . ")";
-                        $conditionsIs.=" StatusId in (" . implode(',', array_keys($completed_status_idsss)) . ")";
-                        //                $conditions_status.=' AND StatusId IN(3)';
-                        //$conditions_status.=" AND StatusId in (" . implode(',', array_keys($second_condition_status_list)) . ")";
-                        $conditions_status.=" AND StatusId in (" . implode(',', array_keys($status_list)) . ")";
-                    }
-                }
+               
 
                 if ($query != '') {
-                    $conditions.= " AND [" . $domainId . "] LIKE '%" . $query . "%' ";
-                    $conditions_status.= " AND [" . $domainId . "] LIKE '%" . $query . "%' ";
+                    $conditions.= " AND DomainId LIKE '%" . $query . "%' ";
+                    $conditions_status.= " AND DomainId LIKE '%" . $query . "%' ";
                 }
 				
-                $ProductionDashboard = $this->ProductionDashBoards->find('users', ['condition' => $conditions, 'Module' => $ModuleStatus, 'conditionsIs' => $conditionsIs,'conditions_timemetric' => $conditions_timemetric, 'Project_Id' => $ProjectId, 'domainId' => $domainId, 'RegionId' => $RegionId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'AttributeIds' => $attributeIds, 'CheckSPDone' => $CheckSPDone]);
-                //pr($ProductionDashboard);exit;
+                $ProductionDashboard = $this->UserTrackReport->find('users', ['condition' => $conditions, 'Module' => $ModuleStatus, 'conditionsIs' => $conditionsIs,'conditions_timemetric' => $conditions_timemetric, 'Project_Id' => $ProjectId, 'domainId' => $domainId, 'RegionId' => $RegionId, 'Module_Id' => $ModuleId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'conditions_status' => $conditions_status, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'AttributeIds' => $attributeIds, 'CheckSPDone' => $CheckSPDone]);
+              //  pr($ProductionDashboard);exit;
                 if ($ProductionDashboard == 'RunReportSPError') {
                     $this->Flash->error(__("Please click 'Report Generate' button to generate results and search again."));
                     $this->set('RunReportSPError', 'RunReportSPError');
                 } else {
-                    $ProductionDashboardarr = $ProductionDashboard[0];
-                    $timeDetails = $ProductionDashboard[1];
-                    //pr($timeDetails); die;
+                    $ProductionDashboardarr = $ProductionDashboard;
+                 //   pr($ProductionDashboardarr); die;
                     $i = 0;
                     $Production_dashboard = array();
                     foreach ($ProductionDashboardarr as $Production):
+                        $Production_dashboard[$i]['ClientName'] = $Production['ClientName'];
                         $Production_dashboard[$i]['InputEntityId'] = $Production['InputEntityId'];
-                        $Production_dashboard[$i]['priority'] = $Production['priority'];
-                        $Production_dashboard[$i]['AttributeValue'] = $Production['domainId'];
                         $Production_dashboard[$i]['ProjectId'] = $Production['ProjectId'];
-                        $Production_dashboard[$i]['RegionId'] = $Production['RegionId'];
-                        $Production_dashboard[$i]['StatusId'] = $Production['StatusId'];
-                        $Production_dashboard[$i]['domainId'] = $Production['domainId'];
-                        $Production_dashboard[$i]['Id'] = $Production['Id'];
+                        $Production_dashboard[$i]['DomainId'] = $Production['DomainId'];
+                        $Production_dashboard[$i]['ModuleId'] = $Production['ModuleId'];
+                        $Production_dashboard[$i]['Date'] = $Production['CreatedDate'];
+                        $Production_dashboard[$i]['UserId'] = $Production['UserId'];
 
-                        foreach ($module as $key => $val) {
-                            $Production_dashboard[$i][$key]['UserId'] = $Production[$key];
-                        }
-                        if ($Production['ProductionStartDate'] != '') {
-                            $Production_dashboard[$i]['ProductionStartDate'] = date("d-m-Y H:i:s", strtotime($Production['ProductionStartDate']));
-                        } else {
-                            $Production_dashboard[$i]['ProductionStartDate'] = '';
-                        }
-                        if ($Production['ProductionEndDate'] != '') {
-                            $Production_dashboard[$i]['ProductionEndDate'] = date("d-m-Y H:i:s", strtotime($Production['ProductionEndDate']));
-                        } else {
-                            $Production_dashboard[$i]['ProductionEndDate'] = '';
-                        }
+                        $datetime1   = $productionHours;
+                        $exd1 = explode(":", $datetime1);
+                        $PrSecs = $exd1[0] * 3600 + $exd1[1] * 60 + $exd1[2];
+                     
+                        $datetime2   = $Production['time'];
+                        $ex = explode(".", $datetime2);
+                        $res = $ex[0];
+                        $ex = explode(":", $res);
+                        $Imsecs = $ex[0] * 3600 + $ex[1] * 60 + $ex[2];
 
-                        if ($Production['CreatedDate'] != '') {
-                            $Production_dashboard[$i]['CreatedDate'] = date("d-m-Y H:i:s", strtotime($Production['CreatedDate']));
-                        } else {
-                            $Production_dashboard[$i]['CreatedDate'] = '';
-                        }
+                        $interval = $PrSecs - $Imsecs;
+                        $timediff =  gmdate("H:i:s", $interval);
+                        
+                        $Production_dashboard[$i]['Productiontime'] = $res;
+                        $Production_dashboard[$i]['NonProductiontime'] = $timediff;
+                      //  $ph = "convert(varchar(5),DateDiff(s, $productionHours, $Production_dashboard[$i]['time'])/3600)+':'+convert(varchar(5),DateDiff(s, $productionHours, $Production_dashboard[$i]['time'])%3600/60)+':'+convert(varchar(5),(DateDiff(s, $productionHours, $Production_dashboard[$i]['time'])%60))";
+                      
 
-                        $Production_dashboard[$i]['month'] = date("n", strtotime($Production['ProductionStartDate']));
-                        $Production_dashboard[$i]['year'] = date("Y", strtotime($Production['ProductionStartDate']));
-
-                        if ($Production['TotalTimeTaken'] != '')
-                            $Production_dashboard[$i]['TotalTimeTaken'] = date(" H:i:s", strtotime($Production['TotalTimeTaken']));
-                        else
-                            $Production_dashboard[$i]['TotalTimeTaken'] = '';
-
-                        $Production_dashboard[$i]['UserGroupId'] = $Production['UserGroupId'];
+//                        foreach ($module as $key => $val) {
+//                            $Production_dashboard[$i][$key]['UserId'] = $Production[$key];
+//                        }
+//                        if ($Production['ProductionStartDate'] != '') {
+//                            $Production_dashboard[$i]['ProductionStartDate'] = date("d-m-Y H:i:s", strtotime($Production['ProductionStartDate']));
+//                        } else {
+//                            $Production_dashboard[$i]['ProductionStartDate'] = '';
+//                        }
+//                        if ($Production['ProductionEndDate'] != '') {
+//                            $Production_dashboard[$i]['ProductionEndDate'] = date("d-m-Y H:i:s", strtotime($Production['ProductionEndDate']));
+//                        } else {
+//                            $Production_dashboard[$i]['ProductionEndDate'] = '';
+//                        }
+//
+//                        if ($Production['CreatedDate'] != '') {
+//                            $Production_dashboard[$i]['CreatedDate'] = date("d-m-Y H:i:s", strtotime($Production['CreatedDate']));
+//                        } else {
+//                            $Production_dashboard[$i]['CreatedDate'] = '';
+//                        }
+//
+//                        $Production_dashboard[$i]['month'] = date("n", strtotime($Production['ProductionStartDate']));
+//                        $Production_dashboard[$i]['year'] = date("Y", strtotime($Production['ProductionStartDate']));
+//
+//                        if ($Production['TotalTimeTaken'] != '')
+//                            $Production_dashboard[$i]['TotalTimeTaken'] = date(" H:i:s", strtotime($Production['TotalTimeTaken']));
+//                        else
+//                            $Production_dashboard[$i]['TotalTimeTaken'] = '';
+//
+//                        $Production_dashboard[$i]['UserGroupId'] = $Production['UserGroupId'];
 
                         $i++;
                     endforeach;
@@ -368,7 +371,7 @@ class ProductionDashBoardsController extends AppController {
 
                     if (isset($this->request->data['downloadFile'])) {
                         $productionData = '';
-                        $productionData = $this->ProductionDashBoards->find('export', ['ProjectId' => $ProjectId, 'condition' => $Production_dashboard, 'time' => $timeDetails]);
+                        $productionData = $this->UserTrackReport->find('export', ['ProjectId' => $ProjectId, 'condition' => $Production_dashboard, 'time' => $timeDetails]);
                         $this->layout = null;
                         if (headers_sent())
                             throw new Exception('Headers sent.');
@@ -384,170 +387,48 @@ class ProductionDashBoardsController extends AppController {
                     if (empty($Production_dashboard)) {
                         $this->Flash->error(__('No Record found for this combination!'));
                     }
-
+                  
                     $this->set('Production_dashboard', $Production_dashboard);
                     $this->set('timeDetails', $timeDetails);
                 }
             }
-        } else if (isset($this->request->data['productivityReport_submit']) || isset($this->request->data['productivityReport_downloadFile'])) {
-
-            $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
-            $this->set('User', $user_id_list);
-
-            $RegionId = $this->request->data('RegionId');
-            $UserGroupId = $this->request->data('UserGroupId');
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
-            $user_id = $this->request->data('user_id');
-            $status = $this->request->data('status');
-            $query = $this->request->data('query');
-            $selected_month_first = strtotime($batch_to);
-            $month_start = date('Y-m-d', strtotime('first day of this month', $selected_month_first));
-            $selected_month_last = strtotime($batch_from);
-            $month_end = date('Y-m-d', strtotime('last day of this month', $selected_month_last));
-
-            if (empty($user_id)) {
-                $user_id = array_keys($user_id_list);
-            }
-            if (empty($user_id)) {
-                $this->Flash->error(__('No UserId(s) found for this UserGroup combination!'));
-                $ShowErrorOnly = TRUE;
-            }
-
-            if ($ShowErrorOnly) {
-                
-            } else {
-                $moduleDetails = array();
-                foreach ($module as $key => $val) {
-                    if (($moduleConfig[$key]['IsAllowedToDisplay'] == 1) && ($moduleConfig[$key]['IsModuleGroup'] == 1))
-                        $moduleDetails[] = $key;
-                }
-                //pr($moduleDetails); pr($module); 
-                $this->set('moduleDetails', $moduleDetails);
-
-                $ProductionDashboard = $this->ProductionDashBoards->find('productivityReportDetails', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'UserGroupId' => $UserGroupId, 'UserId' => $user_id, 'User_id_list' => $user_id_list, 'ModuleDetails' => $moduleDetails]);
-                $this->set('Production_dashboard', $ProductionDashboard);
-                //pr($ProductionDashboard); pr($module); die;
-
-                if (isset($this->request->data['productivityReport_downloadFile'])) {
-                    //$productionData = '';
-                    $productionData = $this->ProductionDashBoards->find('productivityReportDetailsExport', ['condition' => $ProductionDashboard, 'module' => $module, 'moduleDetails' => $moduleDetails]);
-                    $this->layout = null;
-                    if (headers_sent())
-                        throw new Exception('Headers sent.');
-                    while (ob_get_level() && ob_end_clean());
-                    if (ob_get_level())
-                        throw new Exception('Buffering is still active.');
-                    header("Content-type: application/vnd.ms-excel");
-                    header("Content-Disposition:attachment;filename=ProductivityReport.xls");
-                    echo $productionData;
-                    exit;
-                }
-
-                if (empty($ProductionDashboard)) {
-                    $this->Flash->error(__('No Record found for this combination!'));
-                }
-            }
-
-            $this->render('/ProductionDashBoards/Productivity_Report');
-        } else if (isset($this->request->data['ModuleSummary_submit']) || isset($this->request->data['ModuleSummary_downloadFile'])) {
-
-            $user_id_list = $this->ProductionDashBoards->find('resourceDetailsArrayOnly', ['ProjectId' => $_POST['ProjectId'], 'RegionId' => $_POST['RegionId'], 'UserId' => $session->read('user_id'), 'UserGroupId' => $this->request->data['UserGroupId']]);
-            $this->set('User', $user_id_list);
-
-            $RegionId = $this->request->data('RegionId');
-            $UserGroupId = $this->request->data('UserGroupId');
-            $batch_from = $this->request->data('batch_from');
-            $batch_to = $this->request->data('batch_to');
-            $user_id = $this->request->data('user_id');
-            $status = $this->request->data('status');
-            $query = $this->request->data('query');
-            $selected_month_first = strtotime($batch_to);
-            $month_start = date('Y-m-d', strtotime('first day of this month', $selected_month_first));
-            $selected_month_last = strtotime($batch_from);
-            $month_end = date('Y-m-d', strtotime('last day of this month', $selected_month_last));
-
-            if (empty($user_id)) {
-                $user_id = array_keys($user_id_list);
-            }
-            if (empty($user_id)) {
-                $this->Flash->error(__('No UserId(s) found for this UserGroup combination!'));
-                $ShowErrorOnly = TRUE;
-            }
-
-            if ($ShowErrorOnly) {
-                
-            } else {
-                $moduleDetails = array();
-                foreach ($module as $key => $val) {
-                    if (($moduleConfig[$key]['IsAllowedToDisplay'] == 1) && ($moduleConfig[$key]['IsModuleGroup'] == 1))
-                        $moduleDetails[$key] = $val;
-                }
-                $this->set('moduleDetails', $moduleDetails);
-
-                $ProductionDashboard = $this->ProductionDashBoards->find('ModuleSummaryDetails', ['ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'batch_from' => $batch_from, 'batch_to' => $batch_to, 'UserGroupId' => $UserGroupId, 'ModuleStatus' => $status_list_module, 'ModuleDetails' => $moduleDetails, 'status_list' => $status_list, 'user_id' => $user_id]);
-                $this->set('UGNamedetails', $ProductionDashboard['0']);
-                $this->set('Production_dashboard', $ProductionDashboard['1']);
-                //pr($ProductionDashboard); die;
-
-                if (isset($this->request->data['ModuleSummary_downloadFile'])) {
-                    //$productionData = '';
-                    $productionData = $this->ProductionDashBoards->find('ModuleSummaryDetailsExport', ['condition' => $ProductionDashboard['1'], 'UGNamedetails' => $ProductionDashboard['0']]);
-                    $this->layout = null;
-                    if (headers_sent())
-                        throw new Exception('Headers sent.');
-                    while (ob_get_level() && ob_end_clean());
-                    if (ob_get_level())
-                        throw new Exception('Buffering is still active.');
-                    header("Content-type: application/vnd.ms-excel");
-                    header("Content-Disposition:attachment;filename=ModuleSummary.xls");
-                    echo $productionData;
-                    exit;
-                }
-
-                if (empty($ProductionDashboard)) {
-                    $this->Flash->error(__('No Record found for this combination!'));
-                }
-            }
-
-            $this->render('/ProductionDashBoards/Module_Summary');
-        } else {
+        }  else {
             $this->set('Production_dashboard', $Production_dashboard);
             $this->set('timeDetails', $timeDetails);
         }
     }
 
     function ajaxregion() {
-        echo $region = $this->ProductionDashBoards->find('region', ['ProjectId' => $_POST['projectId']]);
+        echo $region = $this->UserTrackReport->find('region', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
 
     function ajaxstatus() {
-        echo $module = $this->ProductionDashBoards->find('statuslist', ['ProjectId' => $_POST['projectId']]);
+        echo $module = $this->UserTrackReport->find('statuslist', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
 
   /*  function ajaxcengageproject() {
-        echo $CengageCnt = $this->ProductionDashBoards->find('cengageproject', ['ProjectId' => $_POST['projectId']]);
+        echo $CengageCnt = $this->UserTrackReport->find('cengageproject', ['ProjectId' => $_POST['projectId']]);
         exit;
     }
 */
     function getusergroupdetails() {
       
         $session = $this->request->session();
-        echo $module = $this->ProductionDashBoards->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
+        echo $module = $this->UserTrackReport->find('usergroupdetails', ['ProjectId' => $_POST['projectId'], 'RegionId' => $_POST['regionId'], 'UserId' => $session->read('user_id')]);
         exit;
     }
 
     function getresourcedetails() {		
      
         $session = $this->request->session();
-        echo $module = $this->ProductionDashBoards->find('resourcedetails', ['ProjectId' => $_POST['projectId'],'UserGroupId' => $_POST['userGroupId'], 'RegionId' => $_POST['regionId']]);
+        echo $module = $this->UserTrackReport->find('resourcedetails', ['ProjectId' => $_POST['projectId'],'UserGroupId' => $_POST['userGroupId'], 'RegionId' => $_POST['regionId']]);
         exit;
     }
 
     function ajaxupdateuser() {
-        echo $updateuser = $this->ProductionDashBoards->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
+        echo $updateuser = $this->UserTrackReport->find('reallocateuser', ['InputEntityId' => $_POST['InputEntityId'], 'moduleid' => $_POST['moduleid'], 'userid' => $_POST['userid']]);
         exit;
     }
     
@@ -679,15 +560,15 @@ class ProductionDashBoardsController extends AppController {
 				$j++;
 				///selected user start////////////
 				 $SavedUser = $connection->execute("select Estimated_Time,UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
-                                 
-                                 
-				 $DbUser=$SavedUser[0]['UserId'];	 
+                             
+                                
+				 $DbUser=$SavedUser[0]['UserId'];
                                  
 				 $Estimated_Time=$SavedUser[0]['Estimated_Time'];	 
 				///selected user end//////////////
                                 ///status check//////////////
                                  $readonly="";
-                                
+                               
                                  
                                  $EntityResult = $connection->execute("select StatusId from ProductionEntityMaster  where  Id ='" . $row . "'")->fetchAll('assoc');
                                  $Status_id=$EntityResult[0]['StatusId'];
@@ -716,8 +597,8 @@ class ProductionDashBoardsController extends AppController {
                                  
 				$templateUser="<table><tbody><tr><td style='padding-left:2%;'>User </td><td style='padding-left:5%;'>EST</td></tr>";
                                 $templateUser.="<tr><td><select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
-				
 					
+				
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
 					 $selected_mode="";
 					 if($DbUser == $values['Id']){
@@ -739,7 +620,7 @@ class ProductionDashBoardsController extends AppController {
 				$tbl_view.='<td>'.$templateUser.'</td>';
 				endforeach;
 				///dynamic td end////
-				
+                             
 				
 		   endforeach;
 	   }	   
@@ -771,13 +652,6 @@ class ProductionDashBoardsController extends AppController {
 		
 		endforeach;
 		
-		foreach($searcharray['UserId'][$i] as $key =>$val):
-		 $Stagingtable = 'Staging_'.$searcharray['module'][$i][$key].'_Data';
-		 $queryUpdateStaging = "update ".$Stagingtable." set UserId='" . $val . "' , Priority='".$searcharray['pri_id'][$searcharray['entity'][$i][$key]]."' where  ProductionEntity ='" . $searcharray['entity'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
-         $connection->execute($queryUpdateStaging);
-		
-		endforeach;
-		
                 foreach($searcharray['estimatedtime'][$i] as $key =>$val):
 		 $queryUpdatetimemetric = "update ME_Production_TimeMetric set Estimated_Time='" . $val . "' where  ProductionEntityID ='" . $searcharray['entity'][$i][$key] . "' and  Module_Id='" . $searcharray['module'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
          $connection->execute($queryUpdatetimemetric);
@@ -797,7 +671,7 @@ class ProductionDashBoardsController extends AppController {
         //$this->set('Projects', $ProListFinal);
         $this->loadModel('EmployeeProjectMasterMappings');
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
-        $ProList = $this->ProductionDashBoards->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId'],'RegionId' => $_POST['RegionId']]);
+        $ProList = $this->UserTrackReport->find('ajaxProjectNameList', ['proId' => $is_project_mapped_to_user,'ClientId' => $_POST['ClientId'],'RegionId' => $_POST['RegionId']]);
        echo $ProList;
        exit;
         

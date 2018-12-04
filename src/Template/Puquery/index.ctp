@@ -609,7 +609,7 @@ if ($CallUserGroupFunctions == 'yes') {
 <script>
   $('#respDate<?php echo $data3['Id'];?>').Zebra_DatePicker({
           format: 'd-m-Y',
-          direction: true,
+         // direction: true,
           });
      
 </script>

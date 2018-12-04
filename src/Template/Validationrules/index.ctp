@@ -274,11 +274,11 @@ use Cake\Routing\Router; ?>
         }
     }
 
-    function updteDatechk(chkval)
+   function updteDatechk(chkval)
     {
         var test = $("#IsDate_" + chkval + ":checked").val();
 
-        if (($("#IsDate_" + chkval + ":checked").val()) != undefined) {
+        if (($("#IsDate_" + chkval + ":checked").val()) != undefined || ($("#IsDatepick_" + chkval + ":checked").val()) != undefined || ($("#IsDatecal_" + chkval + ":checked").val()) != undefined) {
             $("#DateFormat_" + chkval).prop('selectedIndex', 1);
             $("#DateFormat_" + chkval).css('pointer-events','');
             $("#DateFormat_" + chkval).removeAttr("readonly", "readonly");
@@ -316,7 +316,7 @@ use Cake\Routing\Router; ?>
             $("#MinLength_" + chkval).val('');
             $("#MinLength_" + chkval).attr("readonly", "readonly");
         }
-        if (($("#IsDate_" + chkval + ":checked").val()) == undefined)
+        if (($("#IsDate_" + chkval + ":checked").val()) == undefined && ($("#IsDatepick_" + chkval + ":checked").val()) == undefined && ($("#IsDatecal_" + chkval + ":checked").val()) == undefined)
         {
             $("#DateFormat_" + chkval).prop('selectedIndex', 0);
             $("#DateFormat_" + chkval).css('pointer-events','none');

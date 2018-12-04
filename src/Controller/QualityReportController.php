@@ -67,13 +67,15 @@ class QualityReportController extends AppController {
 		 $strClient.=$values['Id'];
 		 endforeach;
 		  
-		$Cl_list = array('0' => '--Select--');
+		$Cl_list = array('0' => '--Select11--');
 		if(count($Cl_listarray) > 1 ){
-		$Cl_list[$strClient] ='All';
+		 $Cl_list[$strClient] ='All';
 		}
         foreach ($Cl_listarray as $values):
             $Cl_list[$values['Id']] = $values['ClientName'];
         endforeach;
+        //$Cl_list[$strClient] ='All';
+        //pr($Cl_list);
         $this->set('Clients', $Cl_list);
 
         $MojoProjectIds = $this->projectmasters->find('Projects');
@@ -91,7 +93,7 @@ class QualityReportController extends AppController {
         endforeach;
 		
 		
-        $ProListFinal = array('0' => '--Select Project--');
+        $ProListFinal = array();
 		if(!empty($this->request->data['ClientId'])){
 		$ProListFinal[$strPro] = 'All';
         foreach ($ProList as $values):
@@ -172,6 +174,7 @@ class QualityReportController extends AppController {
             $this->set('ModuleIds', 0);
         }
 //        QueryRaisedDate
+       // echo $this->request->data['UserGroupId'];
         if (isset($this->request->data['UserGroupId']))
             $this->set('postbatch_UserGroupId', $this->request->data['UserGroupId']);
         else
@@ -260,15 +263,19 @@ class QualityReportController extends AppController {
 				}
                 $StrProject .= $val;
 			}*/
+               
 		$Cl_listarray = $connection->execute("SELECT Id,ClientName FROM ClientMaster WHERE Id='".$ClientId."'")->fetchAll('assoc');
          
 			$SDate="";
 			$EDate="";
-			$UserId="";
+			
 			if(!empty($this->request->data['user_id'])){
 				$UserId=implode(",",$this->request->data['user_id']);
-				$Listuser="and cm.UserId IN ($UserId)";
+				$Listuser="and pt.UserId IN ($UserId)";
 			}
+                        else{
+                            
+                        }
 			
 			if($QueryDateFrom !=""){
 			$SDate= "AND rpm.ProductionStartDate >='" . date('Y-m-d', strtotime($QueryDateFrom)) . " 00:00:00'";
@@ -283,6 +290,7 @@ class QualityReportController extends AppController {
                   foreach ($ProjectId as $valpro) {
 					  
 					$prodEntitymastertab = "Report_ProductionEntityMaster" . $dt;
+                                        $MeProTimeTbl="ME_Production_TimeMetric". $dt;
                     $prodtimeMatricstab = "ME_Production_TimeMetric" . $dt;
 					$JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $valpro]);
 					$totalAttributes = 	$JsonArray['ProjectConfig']['TotalAttributes'];
@@ -311,22 +319,24 @@ class QualityReportController extends AppController {
 						$DomainWhere='';
 					}
 					
-					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate,cl.ClientName from $prodEntitymastertab as rpm
+					 $sql = "select DISTINCT rpm.InputEntityId,rpm.Id,$DomainColumn cm.ModuleId,pt.UserId,cm.Id as commentId,cm.QCComments,rpm.ProductionStartDate,cl.ClientName from $prodEntitymastertab as rpm
 					LEFT JOIN MV_QC_Comments as cm ON cm.InputEntityId = rpm.InputEntityId
 					LEFT JOIN ProjectMaster as pm ON pm.ProjectId = rpm.ProjectId
 					LEFT JOIN ClientMaster as cl ON cl.Id = pm.client_id
+					LEFT JOIN $MeProTimeTbl as pt ON pt.ProductionEntityID = rpm.ProductionEntityID
 					where rpm.ProjectId ='".$valpro."' $DomainWhere $SDate $EDate $Listuser";
                     $listArr = $connection->execute($sql)->fetchAll('assoc');
 					
 					foreach($listArr as $value){		
 						
 						$Record_data['CommentHead']=$CommentName;						
-						$Record_data['Client']=$value['ClientName'];					
+						$Record_data['Client']=$value['ClientName'];						
+						$Record_data['UserName']=$JsonArray['UserList'][$value['UserId']];					
 						$Record_data['leaseId']=$value['FDR'];		
 						$Record_data['project_name']=$ProName;
 						$Record_data['date']=$value['ProductionStartDate'];
 						$Record_data['totalAttributes']=$totalAttributes;
-						$Record_data['comments'][$value['ModuleId']][$value['InputEntityId']][]=$value['QCComments'];
+						$Record_data['comments'][$value['ModuleId']][$value['InputEntityId']][$value['commentId']]=$value['QCComments'];
 						$Record_datas[$value['InputEntityId']]=$Record_data;
 						
 				
@@ -337,7 +347,7 @@ class QualityReportController extends AppController {
 			/////////////rahamath end/////////////////////////
            
 // $this->pr($results);
-//pr($Record_datas);exit;
+     //pr($Record_datas);exit;                           
             $this->set('result', $Record_datas);
 
             if (isset($this->request->data['downloadFile'])) {

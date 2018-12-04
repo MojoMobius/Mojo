@@ -48,7 +48,7 @@ class UserrolesTable extends Table {
         return 'd2k';
     }
     public function findUserrole(Query $query, array $options){
-        $query = $this->find()
+        $query = $this->find('ALL')
                 ->select(['RoleMaster.Name','RoleMaster.SystemName','RoleMaster.Id'])
                 ->join([
                   'RoleMaster' => [
@@ -75,18 +75,22 @@ class UserrolesTable extends Table {
                  
                 ])
                 ->where(['Employee_ProjectRole_Mapping.EmployeeId'=>$options['userId'],'D2K_ProjectRoleMapping.ProjectId' => $options['ProjectId']])
-                
+                ->group(['RoleMaster.Name','RoleMaster.SystemName','RoleMaster.Id'])
                 ;
-        $query->first();
+        $query->all();
         $role=array();
        // pr($query);
         //exit;
+        $i=0;
         foreach ($query as $pass) {
-           // pr($pass); exit;
-             $role['Name']=$pass->RoleMaster['Name'];
-             $role['Id']=$pass->RoleMaster['Id'];
-             $role['SystemName']=$pass->RoleMaster['SystemName'];
+            echo 'coming';
+           // pr($pass);// exit;
+             $role['Name'][$i]=$pass->RoleMaster['Name'];
+             $role['Id'][$i]=$pass->RoleMaster['Id'];
+             $role['SystemName'][$i]=$pass->RoleMaster['SystemName'];
+             $i++;
         }
+       // pr($role); exit;
         return $role;
     }
     public function findLogin(Query $query, array $options){

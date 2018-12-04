@@ -16,7 +16,7 @@ class ProjectLandingController extends AppController {
     // Access Model file
     // Function for Validate the user credentials
     public function index() {
-		
+		//exit;
         $session = $this->request->session();
         $userid = $session->read('user_id');
 //        $this->loadModel('projectmasters');
@@ -28,11 +28,15 @@ class ProjectLandingController extends AppController {
         $is_project_mapped_to_user = $this->EmployeeProjectMasterMappings->find('Employeemappinglanding', ['userId' => $userid, 'Project' => $MojoProjectIds]);
         //pr($is_project_mapped_to_user); exit;
         if (empty($is_project_mapped_to_user) == false) {
-            $ProjectCount = count($is_project_mapped_to_user);
+            
+           echo $ProjectCount = count($is_project_mapped_to_user); //exit;
             if ($ProjectCount == 1) {
                 $session->write("ProjectId", $is_project_mapped_to_user[0]);
+                
                 $this->loadModel('Userroles');
+               // exit;
                 $user_role = $this->Userroles->find('userrole', ['userId' => $userid, 'ProjectId' => $is_project_mapped_to_user[0]]);
+                //pr($user_role); exit;
                 $role_id = $user_role['Id'];
                 $role_name = $user_role['Name'];
                 $system_name = $user_role['SystemName']; //exit;
@@ -68,15 +72,18 @@ class ProjectLandingController extends AppController {
                 $session->write("ProjectId", $is_project_mapped_to_user[0]);
                 $this->loadModel('Userroles');
                 $user_role = $this->Userroles->find('userrole', ['userId' => $userid, 'ProjectId' => $is_project_mapped_to_user[0]]);
+               // pr($user_role); exit;
                 $role_id = $user_role['Id'];
                 $role_name = $user_role['Name'];
                 $system_name = $user_role['SystemName']; //exit;
                 $session->write("RoleId", $role_id);
                 $session->write("RoleName", $role_name);
                 $session->write("UserRole", $system_name);
+               // exit;
                 if ($system_name == 'Administrators' || $system_name == 'Admin')
                     ($userid) ? $this->redirect(array('controller' => 'Projectconfig', 'action' => 'index')) : "";
                 else {
+                    //exit;
                     $this->loadModel('Projectlanding');
                     $ProList = $this->Projectlanding->find('GetMojoProjectNameList', ['proId' => $is_project_mapped_to_user]);
                     //$ProListopt = '<select name="ProjectId" id="ProjectId" class="form-control"><option value=0>--Select--</option>';
@@ -93,6 +100,7 @@ class ProjectLandingController extends AppController {
                    // $this->set('UserProject', $ProListopt);
 					$this->set('Proname', $ProName);
 					$this->set('Proid', $ProId);
+                                       // exit;
 					
                 }
             }
@@ -107,8 +115,9 @@ class ProjectLandingController extends AppController {
             $user_role = $this->Userroles->find('userrole', ['userId' => $userid, 'ProjectId' => $ProId]);
             //pr($user_role);
             $role_id = $user_role['Id'];
-            $role_name = $user_role['Name'];
-            $system_name = $user_role['SystemName']; //exit;
+            $role_id=$role_id[0];
+             $role_name = $user_role['Name'][0];
+            $system_name = $user_role['SystemName'][0]; //exit;
             $session->write("RoleId", $role_id);
             $session->write("RoleName", $role_name);
             $session->write("UserRole", $system_name);
@@ -116,8 +125,11 @@ class ProjectLandingController extends AppController {
             $path = JSONPATH . '\\ProjectConfig_' . $project_id . '.json';
             $content = file_get_contents($path);
             $JsonArray = json_decode($content, true);
+            //pr($session->read($module));
             $modulelist = current($JsonArray['Menu'][$role_id]);
-            $modulecontroller = current($modulelist);
+           // pr($modulelist); exit;
+             $modulecontroller = current($modulelist);
+            //exit;
             if(!empty($modulecontroller)){
                 ($userid) ? $this->redirect(array('controller' => $modulecontroller, 'action' => 'index')) : "";
             } else {

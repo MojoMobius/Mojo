@@ -309,7 +309,14 @@ if (count($list) > 0) {
                                         $RegionName = $contentArr['RegionList'][$input['Region']];
                                         $StatusType = $contentArr['ProjectStatus'];
                                         $recordStatus = $input['RecordStatus'];
-
+                                        $class='black';
+                                        if($recordStatus==3){
+                                            $class='green';
+                                        }
+                                        if($recordStatus==4)
+                                        {
+                                            $class='red';
+                                        }
                                         $CreatedDate = $input['CreatedDate']; 
                                         $newCreatedDate = date('d-m-Y H:i:s', strtotime($CreatedDate));
                                         //$basefilepath_file =  $this->request->webroot.$basefilepath.'/'.$input['FileName'];
@@ -324,7 +331,7 @@ if (count($list) > 0) {
                                          <td><?php echo $StatusType[$input['InputToStatus']]; ?></td>
                                           <td><?php echo $input['ResponseData']; ?></td>
                                         <td><?php echo $newCreatedDate; ?></td>
-                                        <td><?php echo $recordstatusarray[$recordStatus]; ?></td>
+                                        <td style="color:<?php echo $class;?>"><?php echo $recordstatusarray[$recordStatus]; ?></td>
                                         
                                     </tr>
                                     <?php

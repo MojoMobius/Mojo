@@ -197,7 +197,7 @@ if (count($result) > 0) {
                             <input type="hidden" name="UpdateId" id="UpdateId">
                             <button style="float:right; height:18px; visibility: hidden; margin-right:15px;" type='hidden' name='downloadFile' id='downloadFile' value='downloadFile'></button>
 
-                            <table style='width:100%;' class="table table-striped table-center" id='example'>
+                            <table style='width:100%;' class="table table-striped table-center dqc-report" id='example'>
                                 <thead>
                                     <tr class="Heading">
                                         <th style='width:5%;'>S.No</th>
@@ -209,6 +209,7 @@ if (count($result) > 0) {
                                         <th style='width:5%;'>Status</th>
                                         <th style='width:15%;'>On-Hold Comments</th>
                                         <th style='width:10%;'>On-hold reported date</th>
+                                        <th style='width:15%;'>TL Comments</th>
                                         <th style='width:10%;'>Client Responses</th>
                                         <th style='width:10%;'>Client resolution date</th>
                                     </tr>
@@ -226,8 +227,9 @@ if (count($result) > 0) {
                                         <td style='width:25%;'><?php echo $data1['pdfname'];?></td>
 
                                         <td style='width:5%;'><?php echo $data1['status'];?></td>
-                                        <td style='width:15%;'><?php echo $data1['holdcomments'];?></td>
+                                        <td style='width:15%;'><?php echo $data1['Query'];?></td>
                                         <td style='width:10%;'><?php echo $data1['holdreportdate'];?></td>
+                                        <td style='width:15%;'><?php echo $data1['holdcomments'];?></td>
                                         <td style='width:10%;'><?php echo $data1['Client_Response'];?></td>
                                         <td style='width:10%;'><?php echo $data1['Client_Response_Date'];?></td>
                                     </tr>

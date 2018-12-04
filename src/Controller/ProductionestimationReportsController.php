@@ -274,7 +274,7 @@ class ProductionestimationReportsController extends AppController {
 //            $prodtimematricstab = "Report_ProductionTimeMetric_6_2018";
 
                     $prodEntitymastertab = "Report_ProductionEntityMaster" . $dt;
-                    $prodtimeMatricstab = "ME_Production_TimeMetric" . $dt;
+                    echo $prodtimeMatricstab = "ME_Production_TimeMetric" . $dt;
 
                     $get_tableexist_TimeMatrix = $connection->execute("IF OBJECT_ID (N'$prodtimeMatricstab', N'U') IS NOT NULL SELECT 1 AS res ELSE SELECT 0 AS res ")->fetchAll('assoc');
 

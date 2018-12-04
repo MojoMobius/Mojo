@@ -234,6 +234,7 @@ foreach($result as $key=>$val){
                                     <tr class="Heading">
                                         <th style='width:5%;'>S.No</th>
                                         <th style='width:10%;'>Client</th>
+                                        <th style='width:10%;'>User Name</th>
                                         <th style='width:10%;'>Project Name</th>
                                         <th style='width:5%;'>Date</th>
                                         <th style='width:10%;'>LeaseId</th>
@@ -259,6 +260,7 @@ if (count($result) > 0) {
                                     <tr>
                                         <td><?php echo $i;?></td>
                                         <td><?php echo $val['Client']; ?></td>
+                                        <td><?php echo $val['UserName']; ?></td>
                                         <td><?php echo $val['project_name']; ?></td>
                                         <td><?php echo $val['date'];?> </td>
                                         <td><?php echo $val['leaseId'];?></td>
@@ -387,7 +389,7 @@ function getStatus(){
            Proselect="Yes";		  
 		 });		
           if (Proselect == "No" ) {
-			alert('Please Select Client ');
+			alert('Please Select Project ');
             $('#projectId').focus();
             return false;
 		  }	
@@ -446,6 +448,28 @@ if ( (isset($this->request->data['check_submit']) || isset($this->request->data[
         optionValues.join(',')
        // $('#UserGroupId').prepend('<option selected value="' + optionValues + '">All</option>');
         $("#UserGroupId option[value='<?php echo $postbatch_UserGroupId; ?>']").prop('selected', true);
+        
+        //$("#user_id option[value='<?php //echo $UserId; ?>']").prop('selected', true);
+    });
+</script>
+    <?php
+}
+?>
+<?php
+
+if ( (isset($this->request->data['check_submit']) || isset($this->request->data['downloadFile'])) && !empty($postuser_id) ) {
+    ?>
+<script>
+    $(window).bind("load", function () {
+        getresourcedetails();
+        
+        var optionValues = [];
+        $('#user_id option').each(function () {
+            optionValues.push($(this).val());
+        });
+        optionValues.join(',')
+       // $('#UserGroupId').prepend('<option selected value="' + optionValues + '">All</option>');
+        $("#user_id option[value='<?php echo $postuser_id; ?>']").prop('selected', true);
         
         //$("#user_id option[value='<?php //echo $UserId; ?>']").prop('selected', true);
     });

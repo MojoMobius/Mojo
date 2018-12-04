@@ -100,7 +100,7 @@ class ProjectleaseReportTable extends Table {
         $ProjectId = $options['ProjectId'];
       
           $tableData = '<table border=1><thead>';
-            $tableData.='<tr class="Heading"><th>S No</th><th>Project</th><th>Lease ID</th><th>No. of Documents</th><th>PDF Name</th><th>Status</th><th>On-Hold Comments</th><th>On-hold reported date</th><th>Client Responses</th><th>Client resolution date</th>';
+            $tableData.='<tr class="Heading"><th>S No</th><th>Project</th><th>Lease ID</th><th>No. of Documents</th><th>PDF Name</th><th>Status</th><th>On-Hold Comments</th><th>On-hold reported date</th><th>TL Comments</th><th>Client Responses</th><th>Client resolution date</th>';
         $tableData.= '</tr>';
         $tableData.='</thead>';
         $i = 1;
@@ -113,8 +113,9 @@ class ProjectleaseReportTable extends Table {
                 $tableData.='<td>' . $input['noofdocuments'] . '</td>';
                 $tableData.='<td>' . $input['pdfname'] . '</td>';
 				$tableData.='<td>' . $input['status'] . '</td>';
-				$tableData.='<td>' . $input['holdcomments'] . '</td>';
+				$tableData.='<td>' . $input['query'] . '</td>';
 				$tableData.='<td>' . $input['holdreportdate'] . '</td>';
+                                $tableData.='<td>' . $input['holdcomments'] . '</td>';
 				$tableData.='<td>' . $input['Client_Response'] . '</td>';
 				$tableData.='<td>' . $input['Client_Response_Date'] . '</td>';
                 
