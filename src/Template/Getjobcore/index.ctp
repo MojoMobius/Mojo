@@ -846,7 +846,7 @@ margin :-75px 355px 21px 1114px !important;
 																 <?php 
 																// echo $AttributeSubGroupMasterJSON[$key][$keysub];
 
-																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Brands"){ ?>
+																 if($AttributeSubGroupMasterJSON[$key][$keysub]=="Rent"){ ?>
 
 																 <input type="hidden" name="CurSeq" id="CurSeq" value="1">
 
@@ -966,7 +966,7 @@ margin :-75px 355px 21px 1114px !important;
                                                                             $IsMandatory=$validate[$valprodFields['ProjectAttributeMasterId']]['IsMandatory'];
                                                                             $DisplayAttributeName=$validate[$valprodFields['ProjectAttributeMasterId']]['DisplayAttributeName'];
                                                                             if($IsMandatory==1){
-                                                                                $mandateFunction = "MandatoryValue(this.id,this.value,'$DisplayAttributeName');";
+                                                                              //  $mandateFunction = "MandatoryValue(this.id,this.value,'$DisplayAttributeName');";
                                                                             }else{
                                                                                $mandateFunction =''; 
                                                                             }
@@ -1705,6 +1705,16 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                     <div class="modal-body">
                         <form class="form-inline" action="/action_page.php">
                             <div class="form-group">
+                                <label for="Query" class="query" >Category</label>
+                                <select class="form-control" name="category" id="category"><option value="0">--Select--</option>
+								<option value="Duplicate invoices">Duplicate invoices</option>
+								<option value="Vendor name mismatched with workday DB">Vendor name mismatched with workday DB</option>
+								<option value="PO details mismatched with workday DB">PO details mismatched with workday DB</option>
+								<option value="Other than PO and Non PO invoices">Other than PO and Non PO invoices</option>
+								<option value="Invoice does not contain all necessary fields">Invoice does not contain all necessary fields</option>
+								</select>
+                            </div><br><br>
+                            <div class="form-group">
                                 <label for="Query" class="query">Query</label>
                                 <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
                             </div>
@@ -1753,6 +1763,16 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
                     </div>
                     <div class="modal-body">
                         <form class="form-inline" action="/action_page.php">
+						<div class="form-group">
+                                <label for="Query" class="query" >Category</label>
+                                <select class="form-control" name="category" id="category"><option value="0">--Select--</option>
+								<option value="Duplicate invoices">Duplicate invoices</option>
+								<option value="Vendor name mismatched with workday DB">Vendor name mismatched with workday DB</option>
+								<option value="PO details mismatched with workday DB">PO details mismatched with workday DB</option>
+								<option value="Other than PO and Non PO invoices">Other than PO and Non PO invoices</option>
+								<option value="Invoice does not contain all necessary fields">Invoice does not contain all necessary fields</option>
+								</select>
+                            </div></br></br>
                             <div class="form-group">
                                 <label for="Query" class="query">Query</label>
                                 <textarea name="query" id="query" rows="4" cols="30" placeholder="Enter Your Query"><?php echo $QueryDetails['Query']; ?></textarea>
@@ -1784,10 +1804,58 @@ datepickerformat('<?php echo $valprodFields['ProjectAttributeMasterId'];?>','<?p
          var project_scope_id = "<?php echo $staticFields[0]; ?>";
     
        function AjaxValidation(){
-AjaxSave();
-           // console.log(attr_array);
-           // $(".formsubmit_validation_endisable").show();
-            $(".validationloader").show();
+$(".validationloader").show();
+            ProjectId = $("#ProjectId").val();
+            ProductionEntityID = $("#ProductionEntityID").val();
+            <?php  if(isset($Mandatory)) {
+            $js_array = json_encode($Mandatory);
+            echo "var mandatoryArr = ". $js_array . ";\n";
+            }  ?>
+
+             var mandatary = 0;
+             if (typeof mandatoryArr != 'undefined') {
+             $.each(mandatoryArr, function (key, elementArr) {
+             element = elementArr['AttributeMasterId']
+             elementId= "ProductionFields_"+element+"_164_1";
+            $("#"+elementId+"_error").html("");
+            $("#"+elementId+"_error").hide();
+             if ($('#' + elementId).val() == '') {
+             // alert(($('#' + element).val()));
+
+            $("#"+elementId+"_error").html("Please fill the values!");
+            $("#"+elementId+"_error").show();
+            // $('#' + elementId).focus();
+             mandatary = '1';
+             return false;
+             }
+            else {
+               
+                 if ($('#' + elementId).val() == 'Yes') {
+                 $.ajax({
+                type: "POST",
+                url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxcheckquery')); ?>",
+                data: ({ProjectId:ProjectId,AttributeMasterId:element,ProductionEntityID:ProductionEntityID}),
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                if(result==0){
+                mandatary = '1';
+                $("#"+elementId+"_error").html("Kindly Raise Query!");
+                $("#"+elementId+"_error").show();
+                //alert('Kindly Raise query for "' + elementArr['DisplayAttributeName']+'"');
+                return false;
+
+                }
+                }
+
+                });
+                }
+             }
+             });
+             }
+             if (mandatary == 0) {
+             AjaxSave('');
+
             $(".validation_error").hide();
              $(".validationerrorcnt").hide();
             $(".validation_error_pagination").css("color", "#4397e6");
@@ -1796,6 +1864,18 @@ AjaxSave();
             setTimeout(function(){
                 AjaxValidationstart(); 
             }, 500);
+            // return true;
+             } else {
+                $(".validationloader").css({"display": "none"});
+             return false;
+             }
+		
+
+
+
+           // console.log(attr_array);
+           // $(".formsubmit_validation_endisable").show();
+            
             
     }
     
@@ -2305,7 +2385,7 @@ $(document).keydown(function(e) {
                 toappendData += '<div id="MultiField_' + atributeId + '_' + nxtSeq + '" style="border-bottom: 1px dotted rgb(196, 196, 196) !important"  class=" row form-responsive clearfix MultiField_' + atributeId + ' CampaignWiseFieldsDiv_' + groupId + '">' +
                         '<div class="col-md-3 form-title"><div class="form-group" style=""><p>' + element['DisplayAttributeName'] + '</p></div></div>' +
                         '<div class="col-md-4 form-text"><div class="form-group">' ;
-                if(element['ControlName']=='TextBox')
+                if(element['ControlName']=='TextBox')f
                         toappendData +='<input '+inpOnBlur+' type="text" class="inputsubGrp_'+groupId+'_'+subgrpId+' wid-100per form-control doOnBlur '+dbClass+'" id="' + inpId + '" name="' + inpName + '" onclick="getThisId(this);loadWebpage('+atributeId+', '+pam+', '+groupId+', '+subgrpId+', '+nxtSeq+', 0);">' ;
 //-------->>>>>>>>>>>>Onload MultiText Box<<<<<<<<<<<-----------
 		if(element['ControlName']=='MultiTextBox') {
@@ -3252,6 +3332,12 @@ $(document).keydown(function(e) {
         //  Query posting
 
         function valicateQuery() {
+			if ($("#category").val() == 0)
+            {
+                alert('Select Category');
+                $("#category").focus();
+                return false;
+            }
             if ($("#query").val() == '')
             {
                 alert('Enter Query');
@@ -3261,12 +3347,12 @@ $(document).keydown(function(e) {
             var regionid = $('#RegionId').val();
             query = $("#query").val();
             InputEntyId = $("#ProductionEntity").val();
-
+			var category= $("#category").val();
             var result = new Array();
             $.ajax({
                 type: "POST",
                 url: "<?php echo Router::url(array('controller' => 'Getjobcore', 'action' => 'ajaxqueryposing')); ?>",
-                data: ({query: query, InputEntyId: InputEntyId, RegionId: regionid}),
+                data: ({query: query, InputEntyId: InputEntyId, RegionId: regionid,category:category}),
                 dataType: 'text',
                 async: false,
                 success: function (result) {
@@ -3404,10 +3490,10 @@ $(document).keydown(function(e) {
         }
 
         function formSubmit() {
-<?php /* if(isset($Mandatory)) {
+<?php  if(isset($Mandatory)) {
   $js_array = json_encode($Mandatory);
   echo "var mandatoryArr = ". $js_array . ";\n";
-  } */ ?>
+  }  ?>
             /*var mandatary = 0;
              if (typeof mandatoryArr != 'undefined') {
              $.each(mandatoryArr, function (key, elementArr) {
@@ -3547,6 +3633,7 @@ $("#timerstatus").val(0);
            $("#pausetimermodal").hide();
         }, 1500);
     $("#ProductionArea").css("opacity",1);
+
 });
 
 $("#stopTimermode").click(function() {

@@ -303,7 +303,7 @@ $ReportDateCondition="";
         foreach ($GetPeriodArray as $dt) {
             $DataExistsCount = $this->DataExistsInMonthwiseCheck($options['Project_Id'], $dt);
             if ($DataExistsCount != "") {
-                $/* CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
+                /*$ CountQry = $connection2->execute("select TOP 1 Id from MV_SP_Run_CheckList WHERE ProjectId = '" . $options['Project_Id'] . "' AND SP_Name = 'ProductionAndTimetricBothViewAndReportTableSPRun' AND SP_Id = 1");
                 $CountQrys = $CountQry->fetchAll('assoc');
                 $CheckSPRPEMMonthWiseDone = count($CountQrys);
                 
@@ -366,15 +366,8 @@ $IsItOkay = TRUE;
         }
 
         //Check This Project Attributes are created as table columns in ProductionEntityMaster tbl
-        $IsItOkay = TRUE;
-        if ($CheckSPDone <= 0) {
-            $this->SpRunFunc();
-            $IsItOkay = $this->CheckAttributesMatching($options['Project_Id']);
-            if ($IsItOkay) {
-                $queryInsert = "Insert into MV_SP_Run_CheckList (ProjectId,SP_Name,SP_Id,RecordStatus,CreatedDate) values('" . $options['Project_Id'] . "','CreateView_ProductionEntityMaster',1,1,'" . date('Y-m-d H:i:s') . "')";
-                $connection->execute($queryInsert);
-            }
-        }
+        
+        
         $IsItOkay = TRUE;
         if ($IsItOkay) {
 			
@@ -387,7 +380,7 @@ $IsItOkay = TRUE;
 						$ReportDateCondition =" AND ((production.ProductionStartDate IS NULL AND production.ProductionEndDate IS NULL)  OR (CONVERT(char(10), ProductionStartDate, 120) >=  '".date('Y-m-d', strtotime($batch_from))."' AND CONVERT(char(10), ProductionStartDate, 120) <=  '".date('Y-m-d', strtotime($batch_from))."'))";
 						}
             //echo "select production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]";
-           
+           //echo "select  production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where   production.InputEntityId IS NOT NULL " .$ReportDateCondition. $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]";
              $querie4 = $connection->execute("select  production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where   production.InputEntityId IS NOT NULL " .$ReportDateCondition. $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]");
 //		 echo "select  production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "] as domainId  from ML_CengageProductionEntityMaster as production where  production.InputEntityId IS NOT NULL " . $options['conditions_status'] . " AND production.ProjectId = " . $options['Project_Id'] . " AND [" . $domainId . "] IS NOT NULL AND [" . $domainId . "] != '' AND production.SequenceNumber = 1 $inputentityidNotIn GROUP BY production.InputEntityId,production.Id,production.ProjectId,production.priority,production.RegionId,production.StatusId,production.ProductionStartDate,production.ProductionEndDate,production.TotalTimeTaken,[" . $domainId . "]";
             $querie4 = $querie4->fetchAll('assoc');
@@ -433,6 +426,8 @@ $IsItOkay = TRUE;
 						//echo "SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId";
 						
                        $timeMetricsdata = $connection->execute("SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId")->fetchAll("assoc");
+					   
+					     $timeMetricsdataallocation = $connection->execute("SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") AND Start_Date IS NULL $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId")->fetchAll("assoc");
 //					   echo "SELECT max(Start_Date) as Start_Date,max(End_Date) as End_Date,max(TimeTaken) as TimeTaken,ProductionEntityID as ProductionEntityID,UserId,Module_Id FROM $staging_table WHERE InputEntityId in(" . implode(',', $productionIdarraylast) . ") $DateCond $conditions_timemetric group by ProductionEntityID ,Module_Id, UserId";
                         //pr($timeMetricsdata);exit;
                         //$timeMetricdata = array_merge($timeMetricdata, $timeMetricsdata);
@@ -450,11 +445,16 @@ $IsItOkay = TRUE;
                             $timeDetails[$time['Module_Id']][$time['ProductionEntityID']]['UserId'] = $time['UserId'];
                             $timeDetails[$time['Module_Id']][$time['ProductionEntityID']]['UserGroupId'] = $queriesUGNamedetails[$time['UserId']];
                         endforeach;
+						
+						 foreach ($timeMetricsdataallocation as $time):
+                            $timeDetails[$time['Module_Id']][$time['ProductionEntityID']]['UserId'] = $time['UserId'];
+                            $timeDetails[$time['Module_Id']][$time['ProductionEntityID']]['UserGroupId'] = $queriesUGNamedetails[$time['UserId']];
+                        endforeach;
                     }
                 }
             }
         }
-
+//print_r($queries);
         return array($queries, $timeDetails);
     }
 

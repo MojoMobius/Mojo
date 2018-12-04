@@ -6,6 +6,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
+use Cake\View\Helper\BreadcrumbsHelper;
 use DateTime;
 use DatePeriod;
 use DateInterval;
@@ -34,6 +35,7 @@ class GetjobcoreController extends AppController {
         $this->loadModel('Getjobcore');
         // $this->loadHelper('Html');
         $this->loadComponent('RequestHandler');
+       // $this->loadHelper('Breadcrumb', ['className' => 'Breadcrumb.Breadcrumb']);
     }
     
     
@@ -48,61 +50,26 @@ class GetjobcoreController extends AppController {
 }
 
 
-function open_dir ($dir_name)
-{
-    $dir = "Z:";
-    echo $dir_name;
-if ($handle = opendir ($dir_name)) 
-{
-while (($file = readdir($handle)) != false)
-{
-if ($file != '.' && $file != '..')
-if (filetype($dir_name.'/'.$file)== 'dir')
-{
-open_dir ($dir_name.'/'.$file);
-}
-else
-{
-echo $file." ";
-echo "-------------";
-}
-}
-closedir($handle);
-}
-}
+
 
 
     public function index() {
-        // Define the parameters for the shell command
-$location = "\\13.233.4.75\TEST\\";
-$user = "perlzuser";
-$pass = "3c149d0KNR";
-$letter = "Z";
-
-// Map the drive
-system("net use ".$letter.": \"".$location."\" ".$pass." /user:".$user." /persistent:no>nul 2>&1");
-
-// Open the directory
-
-$this->open_dir("Z:\\TEST\\");
-
-        
-       // $this->open_dir ("C:\Users\MOB140003359\AppData\Roaming\Microsoft\Windows\Network Shortcuts\13.233.4.75\TEST\\");
-       // echo 'Jaih';
-        //echo fopen('\\\\13.233.4.75\TEST\sd\eula.1028.txt','rb');  
-       // echo scandir("\\\\13.233.4.75\\TEST\\");exit;
-        //echo '<pre>';
-        // print_r(simplexml_load_string('<xml><_x0032_060></_x0032_060><_x0032_062>Murray</_x0032_062><_x0033_104></_x0033_104><_x0033_542>Joseph</_x0033_542><_x0034_213>4235421</_x0034_213><_x0034_214>Contact</_x0034_214><_x0034_399>4014533</_x0034_399><_x0037_22></_x0037_22></xml>'));
-       // exit;
-
+      // $this->request->query['menu'];
+      //exit; 
+       
+    
         $connection = ConnectionManager::get('default');
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
+        //echo $this->request->here; exit;
         $stagingTable = 'Staging_' . $moduleId . '_Data';
         $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $ProjectId]);
+        $ctrl = $this->request->controller; //exit;
+        //echo $action = $this->request->action; exit;
+        $avail_menus = $this->SearchValue($Menu,  strtolower($ctrl_act));
         $isHistoryTrack = $JsonArray['ModuleConfig'][$moduleId]['IsHistoryTrack'];
 		$LevelModule = $JsonArray['ModuleConfig'][$moduleId]['Level'];
 
@@ -129,6 +96,7 @@ $this->open_dir("Z:\\TEST\\");
             }
             $next_status_id = implode(',', $next_status_idArr);
         }
+        
 //////rent calculation////
          $RentAttribute = $connection->execute('SELECT * FROM RentCalc_Config  WHERE ProjectId=' . $ProjectId . '')->fetchAll('assoc');
          $Commencement=$RentAttribute[0]['Commencement_Date_AttrId'];
@@ -161,6 +129,7 @@ $this->open_dir("Z:\\TEST\\");
         if ($joballocation_type == 1) {
             $userCheck = ' AND UserId=' . $user_id;
         }
+        
 	//	exit;
         if ($frameType == 1) {
             if (isset($this->request->query['job']))
@@ -809,7 +778,8 @@ $this->open_dir("Z:\\TEST\\");
             $statusIdentifier = ReadyforPUReworkIdentifier;
             $session = $this->request->session();
             $moduleId = $session->read("moduleId");
-            
+           // echo "SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1";
+            //echo 'coming';exit;
             $PuReworkFirstStatus = $connection->execute("SELECT Status FROM D2K_ModuleStatusMaster where ModuleId=$moduleId and ModuleStatusIdentifier='$statusIdentifier' AND RecordStatus=1")->fetchAll('assoc');
             $PuFirst_Status_id = array();
             $PuNext_Status_ids = array();
@@ -847,8 +817,8 @@ $this->open_dir("Z:\\TEST\\");
             //$InprogressProductionjob=simplexml_load_string('<xml>'.$InprogressProductionjob[0]['special'].'</xml>');
             //echo '<pre>';
             //var_dump( (array) $InprogressProductionjob );
-            // pr($InprogressProductionjob);
-            //exit;
+             pr($InprogressProductionjob);
+            exit;
 
             if (empty($InprogressProductionjob)) {
                 $productionjob = $connection->execute('SELECT TOP 1 * FROM ' . $stagingTable . ' WITH (NOLOCK) WHERE StatusId IN (' . $first_Status_id . ') ' . $userCheck . ' AND ProjectId=' . $ProjectId . ' Order by Priority desc,ProductionEntity,StatusId Desc')->fetchAll('assoc');
@@ -899,10 +869,14 @@ $this->open_dir("Z:\\TEST\\");
                 $QcCommentsModuleId = $QcCommentsModuleId[0]['ModuleId'];
                 $this->set('QcCommentsModuleId', $QcCommentsModuleId);
             }
-
+			
+            $Category=$productionjobNew[0]['Category'];
             $connection = ConnectionManager::get('default');
             $RegionId = $productionjobNew[0]['RegionId'];
-            $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+            if($Category==''){
+               $Category= 'production';
+            }
+            $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId][$Category];
             $AttributeGroupMaster = $JsonArray['AttributeGroupMaster'];
             $AttributeGroupMaster = $AttributeGroupMaster[$moduleId];
             $groupwisearray = array();
@@ -936,7 +910,9 @@ $this->open_dir("Z:\\TEST\\");
             $this->set('FirstSubGroupId', $FirstAttribute['SubGroupId']);
             $this->set('ModuleAttributes', $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production']);
             $StaticFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['static'];
+            //if()
             $ProductionFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['production'];
+            
             $ReadOnlyFields = $JsonArray['ModuleAttributes'][$RegionId][$moduleId]['readonly'];
             //pr($productionjobNew);
             
@@ -1161,11 +1137,11 @@ $this->open_dir("Z:\\TEST\\");
                 $this->set('getNewJOb', '');
             }
             $validate = array();
-        
+        //pr($JsonArray['ValidationRules']); exit;
             foreach ($ProductionFields as $key => $val) {
                 $validationRules = $JsonArray['ValidationRules'][$val['ProjectAttributeMasterId']];
                 $validate[$val['ProjectAttributeMasterId']]['MinLength'] = $validationRules['MinLength'];
-
+//pr()
                 $IsAlphabet = $validationRules['IsAlphabet'];
                 $IsNumeric = $validationRules['IsNumeric'];
                 $IsEmail = $validationRules['IsEmail'];
@@ -1175,7 +1151,7 @@ $this->open_dir("Z:\\TEST\\");
                 $NotAllowedCharacter = addslashes($validationRules['NotAllowedCharacter']);
                 $Format = $validationRules['Format'];
                 $IsUrl = $validationRules['IsUrl'];
-                $IsMandatory = $validationRules['IsMandatory'];
+                 $IsMandatory = $validationRules['IsMandatory'];
                 $IsDate = $validationRules['IsDate'];
                 $IsDecimal = $validationRules['IsDecimal'];
 
@@ -1229,6 +1205,7 @@ $this->open_dir("Z:\\TEST\\");
                         BREAK;
                 }
                 if ($IsMandatory == 1) {
+                    $Mandatory[$manKey]['ProjectAttributeMasterId'] = $val['ProjectAttributeMasterId'];
                     $Mandatory[$manKey]['AttributeMasterId'] = $val['AttributeMasterId'];
                     $Mandatory[$manKey]['DisplayAttributeName'] = $val['DisplayAttributeName'];
                     $manKey++;
@@ -1282,6 +1259,7 @@ $this->open_dir("Z:\\TEST\\");
 
                 $QcErrorComments[$ProductionFields[$key]['AttributeMasterId']]['seq'] = $this->Getjobcore->ajax_GetQcComments_seq($productionjobNew[0]['InputEntityId'], $ProductionFields[$key]['AttributeMasterId'], $ProductionFields[$key]['ProjectAttributeMasterId'], 1, $QcCommentsModuleId);
             }
+           // pr($Mandatory); exit;
             $this->set('QcErrorComments', $QcErrorComments);
             $this->set('validate', $validate);
             $this->set('ProductionFields', $ProductionFields);
@@ -2014,12 +1992,12 @@ $this->open_dir("Z:\\TEST\\");
     function ajaxqueryposing() {
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        //$role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
         $RegionId = $_POST['RegionId'];
         echo $_POST['query'];
-        $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
+        $file = $this->Getjobcore->find('querypost', ['ProductionEntity' => $_POST['InputEntyId'],'category' => $_POST['category'], 'query' => $_POST['query'], 'ProjectId' => $ProjectId, 'RegionId' => $RegionId, 'moduleId' => $moduleId, 'user' => $user_id]);
         exit;
     }
     function ajaxquerypostingmulti() {
@@ -2031,7 +2009,7 @@ $this->open_dir("Z:\\TEST\\");
        }
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        //$role_id = $session->read("RoleId");
         $ProjectId = $session->read("ProjectId");
         $moduleId = $session->read("moduleId");
         $RegionId = $_POST['RegionId'];	
@@ -2971,7 +2949,7 @@ $this->open_dir("Z:\\TEST\\");
     function ajaxhelptooltip() {
         $session = $this->request->session();
         $user_id = $session->read("user_id");
-        $role_id = $session->read("RoleId");
+        //$role_id = $session->read("RoleId");
         $moduleId = $session->read("moduleId");
         $ProjectId = $_POST['ProjectId'];
         $RegionId = $_POST['RegionId'];
@@ -3975,6 +3953,29 @@ foreach ($result as $set) {
         
         echo '<input type="text" value="'.$date.'" readonly id="newDate">';
         exit;
+    }
+    function ajaxcheckquery(){
+        $session = $this->request->session();
+        $moduleId = $session->read("moduleId");
+        $proejctId=$_POST['ProjectId'];
+        $ProductionEntityId=$_POST['ProductionEntityID'];
+        $AttributeMasterID=$_POST['AttributeMasterId'];
+        $user_id = $session->read("user_id");
+        $connection = ConnectionManager::get('default');
+       
+        $qryCnt = $connection->execute("SELECT DISTINCT ProductionEntityId FROM ME_UserQuery WITH (NOLOCK) "
+                      . "WHERE  ProjectId='".$proejctId."' "
+                      . "AND ProductionEntityId='".$ProductionEntityId."' "
+                      . "AND AttributeMasterID=$AttributeMasterID "
+                      . "AND UserID= $user_id AND StatusId=1
+                          AND ModuleId=$moduleId")->fetchAll('assoc');
+       // pr($qryCnt);
+        if($qryCnt){
+            echo 1;
+        }
+        else
+            echo 0;
+         exit;
     }
  
 }

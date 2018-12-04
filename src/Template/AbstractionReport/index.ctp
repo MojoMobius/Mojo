@@ -76,6 +76,7 @@ use Cake\Routing\Router
             <div class="col-sm-12">
                 <input type="hidden" name='formSubmit'>
                 <button type="submit" name = 'check_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Export Report</button>
+                <button type="submit" name = 'campaign_submit'class="btn btn-primary btn-sm" onclick="return formSubmitValidation();">Campaign Report</button>
                 <button type="button" name = 'clear'class="btn btn-primary btn-sm" onclick="return ClearFields();">Clear</button>
                     <?php
 // echo $this->Form->button('Export Report', array('id' => 'downloadFile', 'name' => 'downloadFile', 'value' => 'downloadFile', 'style' => 'margin-left:5px;', 'class' => 'btn btn-primary btn-sm', 'onclick' => 'return formSubmitValidation()', 'type' => 'submit'));   ?>
@@ -144,6 +145,7 @@ use Cake\Routing\Router
             // "scrollX": true,
             "aoColumnDefs": [
                 {"bSearchable": false,
+                    
                     //"aTargets": [5]
                 }
             ]

@@ -679,15 +679,15 @@ class ProductionDashBoardsController extends AppController {
 				$j++;
 				///selected user start////////////
 				 $SavedUser = $connection->execute("select Estimated_Time,UserId from ME_Production_TimeMetric  where  ProductionEntityID ='" . $row . "' and  Module_Id='" . $val . "' and ProjectId='" . $ProjectId . "'")->fetchAll('assoc');
-                             
-                                
-				 $DbUser=$SavedUser[0]['UserId'];
+                                 
+                                 
+				 $DbUser=$SavedUser[0]['UserId'];	 
                                  
 				 $Estimated_Time=$SavedUser[0]['Estimated_Time'];	 
 				///selected user end//////////////
                                 ///status check//////////////
                                  $readonly="";
-                               
+                                
                                  
                                  $EntityResult = $connection->execute("select StatusId from ProductionEntityMaster  where  Id ='" . $row . "'")->fetchAll('assoc');
                                  $Status_id=$EntityResult[0]['StatusId'];
@@ -716,8 +716,8 @@ class ProductionDashBoardsController extends AppController {
                                  
 				$templateUser="<table><tbody><tr><td style='padding-left:2%;'>User </td><td style='padding-left:5%;'>EST</td></tr>";
                                 $templateUser.="<tr><td><select ".$readonly."  name='UserId[".$j."][]' id='UserId-".$val."-".$row."' class='form-control  user-".$val."-".$row."' ><option value=0>--Select--</option>"; 
-					
 				
+					
 					foreach($contentArr['ModuleUser'][$val] as $key => $values):					
 					 $selected_mode="";
 					 if($DbUser == $values['Id']){
@@ -739,7 +739,7 @@ class ProductionDashBoardsController extends AppController {
 				$tbl_view.='<td>'.$templateUser.'</td>';
 				endforeach;
 				///dynamic td end////
-                             
+				
 				
 		   endforeach;
 	   }	   
@@ -768,6 +768,13 @@ class ProductionDashBoardsController extends AppController {
 		foreach($searcharray['UserId'][$i] as $key =>$val):
 		 $queryUpdatetimemetric = "update ME_Production_TimeMetric set UserId='" . $val . "' where  ProductionEntityID ='" . $searcharray['entity'][$i][$key] . "' and  Module_Id='" . $searcharray['module'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
          $connection->execute($queryUpdatetimemetric);
+		
+		endforeach;
+		
+		foreach($searcharray['UserId'][$i] as $key =>$val):
+		 $Stagingtable = 'Staging_'.$searcharray['module'][$i][$key].'_Data';
+		 $queryUpdateStaging = "update ".$Stagingtable." set UserId='" . $val . "' , Priority='".$searcharray['pri_id'][$searcharray['entity'][$i][$key]]."' where  ProductionEntity ='" . $searcharray['entity'][$i][$key] . "' and ProjectId='" . $searcharray['ProjectId'] . "'";	
+         $connection->execute($queryUpdateStaging);
 		
 		endforeach;
 		

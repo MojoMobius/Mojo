@@ -242,9 +242,10 @@ class WorkallocationReportController extends AppController {
                     if (!empty($moduleresult)) {
                         foreach ($moduleresult as $modkey => $modval) {
                             $fdrids = array_column($modval, 'fdrid');
+							$fdrids=array_filter($fdrids);
                             $Estimated_Times = array_column($modval, 'Estimated_Time');
                             $Estimated_Time = array_sum($Estimated_Times);
-                            $formatresult['numberofjobs'] = count($modval);
+                            $formatresult['numberofjobs'] = count($fdrids);
                             $formatresult['fdrid'] = implode(',', $fdrids);
                             $formatresult['UserId'] = $modval[0]['UserId'];
                             $JsonArray = $this->GetJob->find('getjob', ['ProjectId' => $modval[0]['ProjectId']]);

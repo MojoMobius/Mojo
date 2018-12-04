@@ -57,9 +57,9 @@ class UsersController extends AppController {
                     $this->loadModel('Userroles');
                     //  $user_role = $this->Userroles->find('userrole',['userId'=>$userid,'ProjectId'=>2292]);
                     $user_role = $this->Userroles->find('userrole', ['userId' => $userid, 'ProjectId' => current($is_project_mapped_to_user)]);
-                    $role_id = $user_role['Id'];  //exit;
-                    $role_name = $user_role['Name']; //exit;
-                    $system_name = $user_role['SystemName']; //exit;
+                    $role_id = implode(',',$user_role['Id']);  //exit;
+                    $role_name = implode(',',$user_role['Name']); //exit;
+                    $system_name = implode(',',$user_role['SystemName']); //exit;
                     $session->write("RoleId", $role_id);
                     $session->write("RoleName", $role_name);
                     $session->write("UserRole", $system_name);
@@ -88,7 +88,9 @@ class UsersController extends AppController {
                     $path = JSONPATH . '\\ProjectConfig_' . $project_id . '.json';
                     $content = file_get_contents($path);
                     $JsonArray = json_decode($content, true);
-                    $modulelist = current($JsonArray['Menu'][$role_id]);
+                    pr($JsonArray['Menu']);
+                    $modulelist = current($JsonArray['Menu'][$user_role['Id'][0]]);
+                    pr($modulelist);
                     $modulecontroller = current($modulelist);
                         
                     if ($ProjectCount == 1) {
@@ -98,11 +100,12 @@ class UsersController extends AppController {
                             $this->redirect(array('controller' => 'Denied', 'action' => 'index'));
                         }
                     } else {
-//                        if ($system_name == 'Administrators' || $system_name == 'Admin')
-//                            ($userid) ? $this->redirect(array('controller' => 'projectconfig', 'action' => 'index')) : "";
+                        if ($system_name == 'Administrators' || $system_name == 'Admin')
+                            ($userid) ? $this->redirect(array('controller' => 'projectconfig', 'action' => 'index')) : "";
 //                        else if ($system_name == 'TeamLeader' && (!empty($modulecontroller)))
 //                            ($userid) ? $this->redirect(array('controller' => $modulecontroller, 'action' => 'index')) : "";
 //                        else
+                        //exit;
                             ($userid) ? $this->redirect(array('controller' => 'ProjectLanding', 'action' => '')) : "";
                     }
                 }

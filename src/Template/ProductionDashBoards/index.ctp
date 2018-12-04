@@ -251,9 +251,9 @@ if (count($Production_dashboard) > 0) {
                     <div id="left-pane" class="pa-lef-10">
                         <div class="pane-content" >
                             
-                              <input type="button" id="prioritize" name="prioritize" value="Allocate/Prioritize" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="priority();" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal">
+                              <input type="button" id="prioritize" name="prioritize" value="Allocate/Prioritize" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" data-rel="page-tag" data-target="#exampleFillPopup" data-toggle="modal">
                               
-                              <input type="button" id="prioritize" name="prioritize" value="Direct/Abstraction" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" onclick="directabstraction();" data-rel="page-tag" data-target="#exampleFillPopupdirectabs" data-toggle="modal">
+                              <input type="button" id="directabstraction" name="directabstraction" value="Direct/Abstraction" style="margin:0px 30px 30px;display:inline;" class="btn btn-primary btn-sm" data-rel="page-tag" data-target="#exampleFillPopupdirectabs" data-toggle="modal">
                               
                             <input type="hidden" name="UpdateId" id="UpdateId">
                             <button style="float:right; height:18px; visibility: hidden; margin-right:15px;" type='hidden' name='downloadFile' id='downloadFile' value='downloadFile'></button>
@@ -262,6 +262,7 @@ if (count($Production_dashboard) > 0) {
                                     <tr>
                                         <th colspan="7"></th>
                                             <?php
+										//	print_r($module);
                                                 foreach ($module as $key => $val) {
                                                 if(($moduleConfig[$key]['IsAllowedToDisplay']==1) && ($moduleConfig[$key]['IsModuleGroup']==1)){
                                             ?>
@@ -275,7 +276,7 @@ if (count($Production_dashboard) > 0) {
                                         <th class="Cell" width="10%" hidden="">InputEntityId</th> 
                                         <th class="Cell" width="7%"></th>
                                         <th class="Cell" width="10%">Project Name</th> 
-                                        <th class="Cell" width="10%">Region</th> 
+                                      <!--  <th class="Cell" width="10%">Region</th> -->
                                         <th class="Cell" width="10%">Id</th>
                                         <th class="Cell" width="10%">Status</th>
                                         <th class="Cell" width="7%">Priority</th>
@@ -292,7 +293,7 @@ if (count($Production_dashboard) > 0) {
                                                 }
                                             }
                                             ?>
-<!--                                        <th class="Cell" width="10%">Reallocate</th>   -->
+                                       <!-- <th class="Cell" width="10%">Reallocate</th>   -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -334,7 +335,7 @@ if (count($Production_dashboard) > 0) {
                                           <input type="hidden" class="InputEntityId_ids" name="InputEntityId[<?php echo $input['Id'];?>]" id="InputEntityId_ids.<?php echo $input['InputEntityId']; ?>" value="<?php echo $input['InputEntityId'];?>">
                                         </td>
                                         <td><?php echo $Projects[$input['ProjectId']]; ?></td>
-                                        <td><?php echo $region[$input['RegionId']]; ?></td>
+                                      <!--  <td><?php echo $region[$input['RegionId']]; ?></td>  -->
                                         <td><?php echo $input['domainId']; ?></td>
                                         <td><?php echo $Status[$input['StatusId']]; ?></td>
                                         <td><?php echo $input['priority']; ?></td>
@@ -368,9 +369,9 @@ if (count($Production_dashboard) > 0) {
 //                                            }
 //                                            $teset = "reallocate('$projectId','$status',$i);";
                                         ?>
-<!--                                        <td class="Cell lastrow" overflow="hidden" width="10%"> <?php if($input['StatusId']==$queryStatus){ ?> 
+                                        <!-- <td class="Cell lastrow" overflow="hidden" width="10%"> <?php if($input['StatusId']==$queryStatus){ ?> 
                                             <a href="#popup1"> <input type="radio" name="reallocate" onclick="reallocate('<?php echo $InputEntityId; ?>', '<?php echo $module[$i]; ?>')"></a><?php } ?> 
-                                        </td>-->
+                                        </td>  -->
                                     </tr>
                                     <?php
 //                                        }
@@ -555,26 +556,7 @@ echo $this->Form->end();
         //alert(sessionProject);
 //        $('#productivityReport_submit').hide();
 //        $('#ModuleSummary_submit').hide();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxcengageproject')); ?>",
-            data: ({projectId: sessionProject}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-
-                if(result != 0){
-                    $('#productivityReport_submit').hide();
-                    $('#ModuleSummary_submit').hide();
-                }else{
-                    $('#productivityReport_submit').show();
-                    $('#ModuleSummary_submit').show();
-                }
-                //document.getElementById('LoadStatus').innerHTML = result;
-
-                // document.getElementById('RegionId').value = result;
-            }
-        });
+        
 
 <?php
 $js_array = json_encode($ProdDB_PageLimit);
@@ -695,29 +677,7 @@ echo "var mandatoryArr = " . $js_array . ";\n";
         });
     }
 
-    function getCengageProject(projectId) {
-        var result = new Array();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo Router::url(array('controller' => 'ProductionDashBoards', 'action' => 'ajaxcengageproject')); ?>",
-            data: ({projectId: projectId}),
-            dataType: 'text',
-            async: false,
-            success: function (result) {
-
-                if(result != 0){
-                    $('#productivityReport_submit').hide();
-                    $('#ModuleSummary_submit').hide();
-                }else{
-                    $('#productivityReport_submit').show();
-                    $('#ModuleSummary_submit').show();
-                }
-                //document.getElementById('LoadStatus').innerHTML = result;
-
-                // document.getElementById('RegionId').value = result;
-            }
-        });
-    }
+    
 
     function ClearFields()
     {
@@ -949,9 +909,18 @@ if ($CallUserGroupFunctions == 'yes') {
 ?>
 <script>
         
-function directabstraction(){
+$("#directabstraction").click(function(){
  //var n = $("input[name^='priority']").length;
+ var arraydata='';
+ var arraydata = $('.Pri_ids:checked').serialize();
+ if(arraydata==''){
  
+     alert('Please select any one Job for Direct Abstraction!');
+      $($(this).data("exampleFillPopupdirectabs")).hide();
+     return false;
+ }
+ else {
+ $($(this).data("exampleFillPopupdirectabs")).show();
  var array_inputentityid_data = $('.InputEntityId_ids').serialize();
  var arraydata = $('.Pri_ids:checked').serialize();
  var arraydomain = $('.domain_ids').serialize();
@@ -976,6 +945,7 @@ function directabstraction(){
             }
         });
 }
+});
      
      
 function directabstractionsubmit(){
@@ -1000,15 +970,20 @@ function directabstractionsubmit(){
 }
      
      
-function priority(){
- //var n = $("input[name^='priority']").length;
- var arraydata='';
+   $("#prioritize").click(function(){
+ 
+  var arraydata='';
  var arraydata = $('.Pri_ids:checked').serialize();
  if(arraydata==''){
-     alert('Please select any one Job to Allocate/Prioritize!')
+  
+     alert('Please select any one Job to Allocate/Prioritize!');
+        $($(this).data("target")).hide();
      return false;
  }
-        var arraydomain = $('.domain_ids').serialize();
+ else {
+       $($(this).data("target")).show();
+   
+ var arraydomain = $('.domain_ids').serialize();
  var arraystatus = $('.status_ids').serialize();
  var arraysaved = $('.pri_saved_ids').serialize();
  
@@ -1024,7 +999,9 @@ function priority(){
 			$(".hot").html(res);
             }
         });
-        }
+}    
+        
+}); 
 function prioritysubmit(){
  //var n = $("input[name^='priority']").length;
  
