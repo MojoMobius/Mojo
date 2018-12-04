@@ -28,16 +28,18 @@
                             </i>
                         </a>
                     </li>
-                    <?php foreach ($menus as $key => $value) { ?>
+ <?php foreach ($menus as $key2 => $value2) { ?>
+                    <?php foreach ($value2 as $key => $value) { ?>
                         <li class="dropdown site-menu-item has-sub navbar-brand navbar-brand-center font-size-14 font-weight-100">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b><?php echo $key?></b><span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <?php foreach ($value as $key1 => $value1) { ?>
-                                    <li><?php echo $this->Html->link(__($key1, true), array('controller' => $value1, 'action' => '')); ?></li>
+                                    <li data='<?php echo $key;?>'><?php echo $this->Html->link(__($key1, true), array('controller' => $value1.'@'.$key, 'action' => '')); ?></li>
                                 <?php } ?>
                             </ul>
                         </li>
                     <?php } ?>
+<?php } ?>
                 </ul>
                 <!-- End Navbar Toolbar -->
                 <!-- Navbar Toolbar Right -->
